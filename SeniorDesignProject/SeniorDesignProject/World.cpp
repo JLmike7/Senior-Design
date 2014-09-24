@@ -16,7 +16,7 @@ void setPlayer(int index)
 
 }
 
-void convert(int teamIndex, int personIndex)
+void convert(int teamIndex, int personIndex)      
 {
 
 }
