@@ -12,7 +12,7 @@ public:
 	bool Init();
 	void OnResize();
 	void UpdateScene(float dt);
-	void DrawScene();
+	void DrawScene(); //asdfads
 };
 
 // Class methods
