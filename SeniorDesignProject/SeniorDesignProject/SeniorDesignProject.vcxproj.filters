@@ -16,6 +16,9 @@
     <Filter Include="Common">
       <UniqueIdentifier>{c9252ad4-910b-4d11-ac53-12445fee0493}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Problem Domain">
+      <UniqueIdentifier>{43c8dcd7-b5b9-4042-be78-464a0cbecbd0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="D3DApp.cpp">
@@ -51,6 +54,15 @@
     <ClCompile Include="..\..\..\..\3DGameProgramming\Common\xnacollision.cpp">
       <Filter>Common</Filter>
     </ClCompile>
+    <ClCompile Include="World.cpp">
+      <Filter>Source Files\Problem Domain</Filter>
+    </ClCompile>
+    <ClCompile Include="Person.cpp">
+      <Filter>Source Files\Problem Domain</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="D3DApp.h">
@@ -85,6 +97,15 @@
     </ClInclude>
     <ClInclude Include="..\..\..\..\3DGameProgramming\Common\xnacollision.h">
       <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="World.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Person.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

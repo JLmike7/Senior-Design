@@ -96,6 +96,9 @@
     <ClCompile Include="..\..\..\..\3DGameProgramming\Common\xnacollision.cpp" />
     <ClCompile Include="D3DApp.cpp" />
     <ClCompile Include="D3DTestApp.cpp" />
+    <ClCompile Include="Person.cpp" />
+    <ClCompile Include="Settings.cpp" />
+    <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\3DGameProgramming\Common\Camera.h" />
@@ -109,6 +112,9 @@
     <ClInclude Include="..\..\..\..\3DGameProgramming\Common\Waves.h" />
     <ClInclude Include="..\..\..\..\3DGameProgramming\Common\xnacollision.h" />
     <ClInclude Include="D3DApp.h" />
+    <ClInclude Include="Person.h" />
+    <ClInclude Include="Settings.h" />
+    <ClInclude Include="World.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
