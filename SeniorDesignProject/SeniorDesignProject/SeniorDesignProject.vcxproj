@@ -41,6 +41,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(IncludePath);$(DXSDK_DIR)Include;C:\Users\Aaron\Documents\Visual Studio 2013\3DGameProgramming\Common</IncludePath>
+    <LibraryPath>$(LibraryPath);$(DXSDK_DIR)Lib\x86;C:\Users\Aaron\Documents\Visual Studio 2013\3DGameProgramming\Common</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -53,13 +55,14 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\Aaron\Downloads\ovr_sdk_win_0.4.1\OculusSDK\LibOVR\Include;C:\Users\Aaron\Downloads\ovr_sdk_win_0.4.1\OculusSDK\LibOVR\Src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Users\Aaron\Downloads\ovr_sdk_win_0.4.1\OculusSDK\LibOVR\Lib\x64\VS2013;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libovr64d.lib;Winmm.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>d3d11.lib;d3dx11d.lib;D3DCompiler.lib;Effects11d.lib;dxerr.lib;dxguid.lib;dxgi.lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>d3d11.lib;d3dx11d.lib;D3DCompiler.lib;Effects11d.lib;dxerr.lib;dxgi.lib;dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -82,7 +85,30 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="..\..\..\..\3DGameProgramming\Common\Camera.cpp" />
+    <ClCompile Include="..\..\..\..\3DGameProgramming\Common\d3dUtil.cpp" />
+    <ClCompile Include="..\..\..\..\3DGameProgramming\Common\GameTimer.cpp" />
+    <ClCompile Include="..\..\..\..\3DGameProgramming\Common\GeometryGenerator.cpp" />
+    <ClCompile Include="..\..\..\..\3DGameProgramming\Common\LightHelper.cpp" />
+    <ClCompile Include="..\..\..\..\3DGameProgramming\Common\MathHelper.cpp" />
+    <ClCompile Include="..\..\..\..\3DGameProgramming\Common\TextureMgr.cpp" />
+    <ClCompile Include="..\..\..\..\3DGameProgramming\Common\Waves.cpp" />
+    <ClCompile Include="..\..\..\..\3DGameProgramming\Common\xnacollision.cpp" />
+    <ClCompile Include="D3DApp.cpp" />
+    <ClCompile Include="D3DTestApp.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\Camera.h" />
+    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\d3dUtil.h" />
+    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\d3dx11effect.h" />
+    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\GameTimer.h" />
+    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\GeometryGenerator.h" />
+    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\LightHelper.h" />
+    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\MathHelper.h" />
+    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\TextureMgr.h" />
+    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\Waves.h" />
+    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\xnacollision.h" />
+    <ClInclude Include="D3DApp.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

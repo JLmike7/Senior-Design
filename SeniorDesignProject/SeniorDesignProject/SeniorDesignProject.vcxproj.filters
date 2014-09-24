@@ -18,6 +18,18 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="D3DApp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D3DTestApp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\3DGameProgramming\Common\Camera.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\3DGameProgramming\Common\d3dUtil.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\3DGameProgramming\Common\GameTimer.cpp">
       <Filter>Common</Filter>
     </ClCompile>
@@ -39,20 +51,20 @@
     <ClCompile Include="..\..\..\..\3DGameProgramming\Common\xnacollision.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\3DGameProgramming\Common\Camera.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\3DGameProgramming\Common\d3dUtil.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
-    <ClCompile Include="D3DApp.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="D3DTestApp.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="D3DApp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\Camera.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\d3dUtil.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\d3dx11effect.h">
+      <Filter>Common</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\..\3DGameProgramming\Common\GameTimer.h">
       <Filter>Common</Filter>
     </ClInclude>
@@ -73,18 +85,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\..\3DGameProgramming\Common\xnacollision.h">
       <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\Camera.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\d3dUtil.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\d3dx11effect.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="D3DApp.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
