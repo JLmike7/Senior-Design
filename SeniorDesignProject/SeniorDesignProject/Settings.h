@@ -11,7 +11,7 @@ public:
 	bool getFF();
 	void setFF(bool FF);
 	bool getIsFullScreen();
-	void setIsFullScreen(bool isFullScreen);
+	void setIsFullScreen(bool FS);
 	int getDetailLevel();
 	void setDetailLevel(int level);
 	int getTextureLevel();
