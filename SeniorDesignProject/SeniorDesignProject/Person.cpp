@@ -30,7 +30,7 @@ void Person::setStance(Stance iCanMove)
 }
 bool Person::getDeath()
 {
-
+	return isDead;
 }
 void Person::setDeath(bool isDead)
 {
@@ -43,16 +43,16 @@ void Person::setWeapon(Weapon gunType){
 
 }
 int Person::getTeam(){
-
+	return teamNumber;
 }
 void Person::setTeam(int team){
-
+	
 }
 int Person::takeHit(int damage){
 
 }
 bool Person::fire(){
-
+	return fire;
 }
 
 

@@ -3,10 +3,9 @@
 class World
 {
 public:
-
-	//Person* player;
-	//int numberTeams;
-//	Person people[10];
+	void setPlayer(int index);
+	void convert(int teamIndex, int personIndex);
+	
 
 	World();
 	~World();
@@ -14,6 +13,8 @@ public:
 private:
 
 protected:
-
+	Person* player;
+	int numberTeams;
+	Person people[10];
 };
 
