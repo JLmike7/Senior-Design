@@ -73,7 +73,7 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Physics.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Problem Domain</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
