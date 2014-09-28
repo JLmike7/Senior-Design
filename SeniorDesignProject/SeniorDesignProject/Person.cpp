@@ -17,7 +17,12 @@ void Person::Init()
 	isDead = false;
 	weapons[0];
 	teamNumber = 1;
+	player = new Person;
+	cameraHeight = 5.0f;
+	crawlCameraHeight = 5.0f;
+	teamColor = 1;
 }
+
 
 //Person::getStance(Stance iCanMove)
 //{
@@ -56,10 +61,29 @@ bool Person::fire(){
 }
 
 
-int takeHit(int damage)
+int Person::takeHit(int damage)
 {
 	int hit = damage;
 	int placeholder=0; // is placeholder being equal to hit and or damages
 	//Player.Health -= damage;
 	return placeholder; //Player.Health
+}
+
+float Person::getCameraHeight(){
+	return cameraHeight;
+}
+void Person::setCameraHeight(float newHeight){
+	cameraHeight = newHeight;
+}
+float Person::getCrawlCameraHeight(){
+	return crawlCameraHeight;
+}
+void  Person::setCrawlCameraHeight(float newHeight){
+	crawlCameraHeight = newHeight;
+}
+int Person::getTeamColor(){
+	return teamColor;
+}
+void Person::setTeamColor(int newColor){
+	teamColor = newColor;
 }
