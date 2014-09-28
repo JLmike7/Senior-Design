@@ -4,14 +4,22 @@ class Stance :
 	public Person
 {
 public:
-	Stance Stationary();
-	Stance Running();
-	Stance Walking();
-	Stance Crawling();
+	//Stance Stationary();
+	//Stance Running();
+	//Stance Walking();
+	//Stance Crawling();
+	
 
+	//Stance();
+//	~Stance();
 
-	Stance();
-	~Stance();
+	enum Stances
+	{
+		STATIONARY,
+		RUNNING,
+		WALKING,
+		CRAWLING
+	};
 
 private:
 

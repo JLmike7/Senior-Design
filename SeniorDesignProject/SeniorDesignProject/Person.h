@@ -6,7 +6,7 @@ class Person :
 	public World
 {
 public:
-	void Init();
+	void Init(int health);
 	Stance getStance();
 	void setStance(Stance iCanMove);
 	bool getDeath();
@@ -17,17 +17,26 @@ public:
 	void setTeam(int team);
 	int takeHit(int damage);
 	bool fire();
-
+	int gethealth();
+	void sethealth();
 	Person();
 	~Person();
+
+	enum Stances
+	{
+		STATIONARY,
+		RUNNING,
+		WALKING,
+		CRAWLING
+	};
 
 private:
 
 
 protected:
 
-	Stance		stance;
 	bool		isDead;
 	Weapon		weapons[10];
 	int			teamNumber;
+	int			health;
 };

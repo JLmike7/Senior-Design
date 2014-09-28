@@ -13,7 +13,7 @@ public:
 private:
 
 protected:
-	Person* player;
+	Person player;
 	int numberTeams;
 	Person people[10];
 };

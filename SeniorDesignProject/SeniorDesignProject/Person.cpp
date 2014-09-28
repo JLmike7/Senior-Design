@@ -11,9 +11,9 @@ Person::~Person()
 {
 }
 
-void Person::Init()
+void Person::Init(int health)
 {
-	//stance = Stance->STANDBY;
+	health = 100;
 	isDead = false;
 	weapons[0];
 	teamNumber = 1;
@@ -34,7 +34,7 @@ bool Person::getDeath()
 }
 void Person::setDeath(bool isDead)
 {
-
+	this.isDead = isDead;
 }
 Weapon Person::getWeapon(){
 	return weapons[10];
@@ -46,7 +46,7 @@ int Person::getTeam(){
 	return teamNumber;
 }
 void Person::setTeam(int team){
-	
+	this.team = team;
 }
 int Person::takeHit(int damage){
 
@@ -55,11 +55,18 @@ bool Person::fire(){
 	return fire;
 }
 
+int Person::gethealth(){
+	return health;
+}
+
+void Person::sethealth(int newhealth){
+	this.health = newhealth;
+}
 
 int takeHit(int damage)
 {
 	int hit = damage;
 	int placeholder=0; // is placeholder being equal to hit and or damages
-	//Player.Health -= damage;
+	this.health -= damage;
 	return placeholder; //Player.Health
 }
