@@ -12,7 +12,7 @@ public:
 	bool Init();
 	void OnResize();
 	void UpdateScene(float dt);
-	void DrawScene();
+	void DrawScene(); //asdfads
 };
 
 // Class methods
@@ -73,9 +73,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, PSTR cmdLine, in
 	// Initialize the application
 	if (!theApp.Init())
 	{
-		 return 0;
+		return 0;
 	}
-	 
+
 	// Execute the application
 	return theApp.Run();
 }
