@@ -1,6 +1,5 @@
 #include "Person.h"
 
-
 Person::Person()
 {
 
@@ -9,57 +8,60 @@ Person::Person()
 
 Person::~Person()
 {
+
 }
 
-void Person::Init()
+void Person::Init(int teamNum)
 {
-	//stance = Stance->STANDBY;
-	isDead = false;
-	weapons[0];
-	teamNumber = 1;
+	health = MAX_HEALTH;
+	stance = STATIONARY;
+	weapons[MAX_WEAPONS];
+	teamNumber = teamNum;
 }
 
-//Person::getStance(Stance iCanMove)
-//{
-//
-//}
-
-void Person::setStance(Stance iCanMove)
+Stance Person::getStance()
 {
+	return stance;
+}
 
+void Person::setStance(Stance _stance)
+{
+	stance = _stance;
 }
 bool Person::getDeath()
 {
-	return isDead;
-}
-void Person::setDeath(bool isDead)
-{
-
+	return health < 1;
 }
 Weapon Person::getWeapon(){
-	return weapons[10];
+	return weapons.front();
 }
-void Person::setWeapon(Weapon gunType){
-
+void Person::pushWeapon(Weapon _weapon){
+	weapons.push(_weapon);
+}
+void Person::popWeapon(){
+	return weapons.pop();
 }
 int Person::getTeam(){
 	return teamNumber;
 }
 void Person::setTeam(int team){
-	
+	teamNumber = team;
 }
-int Person::takeHit(int damage){
-
+void Person::takeHit(int damage){
+	health -= damage;
 }
-bool Person::fire(){
-	return fire;
+int Person::getWeaponAttack(){
+	return getWeapon().getAttack();
+}
+int Person::getMeleeAttack(){
+	return MELEE_ATTACK;
 }
 
 
-int takeHit(int damage)
-{
-	int hit = damage;
-	int placeholder=0; // is placeholder being equal to hit and or damages
+//int takeHit(int damage)
+//{
+//	int hit = damage;
+//	int placeholder=0; // is placeholder being equal to hit and or damages
 	//Player.Health -= damage;
-	return placeholder; //Player.Health
-}
+//	return placeholder; //Player.Health
+//}

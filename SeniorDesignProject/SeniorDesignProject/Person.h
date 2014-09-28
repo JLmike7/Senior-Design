@@ -2,21 +2,30 @@
 #include "World.h"
 #include "Stance.h"
 #include "Weapon.h"
+#include <queue>
+
+#define MAX_WEAPONS 10
+#define MAX_HEALTH 100
+#define MELEE_ATTACK 10
+
 class Person :
 	public World
 {
 public:
-	void Init();
+	void Init(int teamNum);
 	Stance getStance();
 	void setStance(Stance iCanMove);
 	bool getDeath();
 	void setDeath(bool isDead);
 	Weapon getWeapon();
-	void setWeapon(Weapon gunType);
+	void pushWeapon(Weapon _weapon);
+	void popWeapon();
+	void setActiveWeapon(int index);
 	int getTeam();
 	void setTeam(int team);
-	int takeHit(int damage);
-	bool fire();
+	void takeHit(int damage);
+	int getWeaponAttack();
+	int getMeleeAttack();
 
 	Person();
 	~Person();
@@ -26,8 +35,9 @@ private:
 
 protected:
 
-	Stance		stance;
-	bool		isDead;
-	Weapon		weapons[10];
-	int			teamNumber;
+	int					index;
+	Stance				stance;
+	std::queue<Weapon>	weapons;
+	int					teamNumber;
+	int					health;
 };

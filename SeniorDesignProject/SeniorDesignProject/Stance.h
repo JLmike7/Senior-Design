@@ -1,21 +1,28 @@
 #pragma once
 #include "Person.h"
-class Stance :
-	public Person
-{
-public:
-	Stance Stationary();
-	Stance Running();
-	Stance Walking();
-	Stance Crawling();
+
+enum Stance { STATIONARY, RUNNING, WALKING, CRAWLING };
+
+//This is much better defined with an enum^^
 
 
-	Stance();
-	~Stance();
 
-private:
+//class Stance :
+//	public Person
+//{
+//public:
+//	Stance Stationary();
+//	Stance Running();
+//	Stance Walking();
+//	Stance Crawling();
+//
 
-protected:
+//	Stance();
+//	~Stance();
 
-};
+//private:
+
+//protected:
+
+//};
 
