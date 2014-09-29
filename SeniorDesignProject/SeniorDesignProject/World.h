@@ -13,6 +13,7 @@ public:
 private:
 
 protected:
+	
 	Object* object;
 	int numberTeams;
 	Object Objects[10];
