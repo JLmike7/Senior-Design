@@ -15,6 +15,7 @@ public:
 	Person* getPerson(int index);
 	Person** getTeam(int teamIndex,bool aliveOnly);
 	int getTeamSize(int teamIndex, bool aliveOnly);
+	Person** getTeams(bool aliveOnly);
 	
 
 	World();
