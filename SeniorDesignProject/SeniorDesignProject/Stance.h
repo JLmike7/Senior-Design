@@ -1,7 +1,7 @@
 #pragma once
-#include "Person.h"
+#include "Biped.h"
 class Stance :
-	public Person
+	public Biped
 {
 public:
 	Stance Stationary();
