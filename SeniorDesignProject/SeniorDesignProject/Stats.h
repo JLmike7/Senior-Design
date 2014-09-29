@@ -1,7 +1,7 @@
 #pragma once
-#include "Person.h"
+#include "Object.h"
 class Stats :
-	public Person
+	public Object
 {
 public:
 	void Init();

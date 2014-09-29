@@ -1,10 +1,10 @@
 #pragma once
-#include "Person.h"
+#include "Object.h"
 class World
 {
 public:
-	void setPlayer(int index);
-	void convert(int teamIndex, int personIndex);
+	void setObject(int index);
+	void convert(int teamIndex, int objectIndex);
 	
 
 	World();
@@ -13,8 +13,8 @@ public:
 private:
 
 protected:
-	Person player;
+	Object* object;
 	int numberTeams;
-	Person people[10];
+	Object Objects[10];
 };
 

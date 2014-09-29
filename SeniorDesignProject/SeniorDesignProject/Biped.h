@@ -1,16 +1,14 @@
 #pragma once
-#include "World.h"
+#include "Object.h"
 #include "Stance.h"
 #include "Weapon.h"
-class Person :
-	public World
+class Biped :
+	public Object
 {
 public:
-	void Init(int health);
+	void Init();
 	Stance getStance();
 	void setStance(Stance iCanMove);
-	bool getDeath();
-	void setDeath(bool isDead);
 	Weapon getWeapon();
 	void setWeapon(Weapon gunType);
 	int getTeam();
@@ -24,26 +22,18 @@ public:
 	int getTeamColor();
 	void setTeamColor(int newColor);
 
-	Person();
-	~Person();
-
-	enum Stances
-	{
-		STATIONARY,
-		RUNNING,
-		WALKING,
-		CRAWLING
-	};
+	Biped();
+	~Biped();
 
 private:
 
 
 protected:
 
-	bool		isDead;
+	Stance		stance;
 	Weapon		weapons[10];
 	int			teamNumber;
-	Person*		player;
+	Biped*		biped;
 	float		cameraHeight;
 	float		crawlCameraHeight;
 	int			teamColor;

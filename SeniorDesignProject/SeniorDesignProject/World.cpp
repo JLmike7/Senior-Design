@@ -11,7 +11,7 @@ World::~World()
 {
 }
 
-void setPlayer(int index)
+void setObject(int index)
 {
 
 }
