@@ -103,6 +103,7 @@
     <ClCompile Include="Settings.cpp" />
     <ClCompile Include="Stance.cpp" />
     <ClCompile Include="Stats.cpp" />
+    <ClCompile Include="Team.cpp" />
     <ClCompile Include="Weapon.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>
@@ -125,6 +126,7 @@
     <ClInclude Include="Settings.h" />
     <ClInclude Include="Stance.h" />
     <ClInclude Include="Stats.h" />
+    <ClInclude Include="Team.h" />
     <ClInclude Include="Weapon.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>
