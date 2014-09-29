@@ -94,8 +94,10 @@
     <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\TextureMgr.cpp" />
     <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\Waves.cpp" />
     <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\xnacollision.cpp" />
+    <ClCompile Include="Controller.cpp" />
     <ClCompile Include="D3DApp.cpp" />
     <ClCompile Include="D3DTestApp.cpp" />
+    <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Person.cpp" />
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="Settings.cpp" />
@@ -115,7 +117,9 @@
     <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\TextureMgr.h" />
     <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\Waves.h" />
     <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\xnacollision.h" />
+    <ClInclude Include="Controller.h" />
     <ClInclude Include="D3DApp.h" />
+    <ClInclude Include="Menu.h" />
     <ClInclude Include="Person.h" />
     <ClInclude Include="Physics.h" />
     <ClInclude Include="Settings.h" />

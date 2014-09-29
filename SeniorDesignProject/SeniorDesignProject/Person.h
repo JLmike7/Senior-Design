@@ -17,8 +17,13 @@ public:
 	void setTeam(int team);
 	int takeHit(int damage);
 	bool fire();
-	int gethealth();
-	void sethealth();
+	float getCameraHeight();
+	void setCameraHeight(float newHeight);
+	float getCrawlCameraHeight();
+	void  setCrawlCameraHeight(float newHeight);
+	int getTeamColor();
+	void setTeamColor(int newColor);
+
 	Person();
 	~Person();
 
@@ -38,5 +43,8 @@ protected:
 	bool		isDead;
 	Weapon		weapons[10];
 	int			teamNumber;
-	int			health;
+	Person*		player;
+	float		cameraHeight;
+	float		crawlCameraHeight;
+	int			teamColor;
 };

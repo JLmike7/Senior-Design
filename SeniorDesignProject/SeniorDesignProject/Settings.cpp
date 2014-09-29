@@ -19,7 +19,8 @@ void Settings::Init()
 	textureLevel = 2;
 	detailLevel = true;
 	isFullScreen = true;
-
+	movementSensitivity = 5;
+	lookSensitivity = 5;
 
 }
 
@@ -82,3 +83,22 @@ void Settings::setDetailLevel(int level)
 {
 	detailLevel == level;
 }
+
+//Get movement sensitivity
+int Settings::getMovementSensitivity(){
+	return movementSensitivity;
+}
+//Set movement sensitivity
+void Settings::setMovementSensitivity(int level){
+	movementSensitivity = level;
+}
+
+//Get look sensitivity
+int Settings::getLookSensitivity(){
+	return lookSensitivity;
+}
+//Set look sensitivity
+void Settings::setLookSensitivity(int level){
+	lookSensitivity = level;
+}
+

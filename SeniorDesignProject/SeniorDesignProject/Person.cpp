@@ -17,12 +17,11 @@ void Person::Init(int health)
 	isDead = false;
 	weapons[0];
 	teamNumber = 1;
+	player = new Person;
+	cameraHeight = 5.0f;
+	crawlCameraHeight = 5.0f;
+	teamColor = 1;
 }
-
-//Person::getStance(Stance iCanMove)
-//{
-//
-//}
 
 void Person::setStance(Stance iCanMove)
 {
@@ -32,9 +31,9 @@ bool Person::getDeath()
 {
 	return isDead;
 }
-void Person::setDeath(bool isDead)
+void Person::setDeath(bool isDeads)
 {
-	this.isDead = isDead;
+	isDead = isDeads;
 }
 Weapon Person::getWeapon(){
 	return weapons[10];
@@ -45,8 +44,8 @@ void Person::setWeapon(Weapon gunType){
 int Person::getTeam(){
 	return teamNumber;
 }
-void Person::setTeam(int team){
-	this.team = team;
+void Person::setTeam(int teams){
+	teamNumber = teams;
 }
 int Person::takeHit(int damage){
 
@@ -60,13 +59,32 @@ int Person::gethealth(){
 }
 
 void Person::sethealth(int newhealth){
-	this.health = newhealth;
+	health = newhealth;
 }
 
-int takeHit(int damage)
+int Person::takeHit(int damage)
 {
 	int hit = damage;
 	int placeholder=0; // is placeholder being equal to hit and or damages
-	this.health -= damage;
+	health -= damage;
 	return placeholder; //Player.Health
+}
+
+float Person::getCameraHeight(){
+	return cameraHeight;
+}
+void Person::setCameraHeight(float newHeight){
+	cameraHeight = newHeight;
+}
+float Person::getCrawlCameraHeight(){
+	return crawlCameraHeight;
+}
+void  Person::setCrawlCameraHeight(float newHeight){
+	crawlCameraHeight = newHeight;
+}
+int Person::getTeamColor(){
+	return teamColor;
+}
+void Person::setTeamColor(int newColor){
+	teamColor = newColor;
 }
