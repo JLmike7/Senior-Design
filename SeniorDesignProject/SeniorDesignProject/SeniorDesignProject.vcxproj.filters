@@ -19,6 +19,15 @@
     <Filter Include="Source Files\Problem Domain">
       <UniqueIdentifier>{43c8dcd7-b5b9-4042-be78-464a0cbecbd0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Menu">
+      <UniqueIdentifier>{1e70425a-4bc0-43f8-a3b9-a6f6d66a3edb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI">
+      <UniqueIdentifier>{79c6661d-8db5-4785-b9d7-70e8ae4217ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Problem Domain\Controller">
+      <UniqueIdentifier>{77165082-ec06-4d89-9a48-3ef0585a2162}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="D3DApp.cpp">
@@ -73,7 +82,13 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Physics.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Problem Domain</Filter>
+    </ClCompile>
+    <ClCompile Include="Menu.cpp">
+      <Filter>Source Files\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="Controller.cpp">
+      <Filter>Source Files\Problem Domain\Controller</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -129,6 +144,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Physics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Menu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Controller.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -18,6 +18,10 @@ public:
 	void setTextureLevel(int level);
 	int getDifficulty();
 	void setDifficulty(int level);
+	int getMovementSensitivity();
+	void setMovementSensitivity(int level);
+	int getLookSensitivity();
+	void setLookSensitivity(int level);
 
 
 private:
@@ -29,5 +33,7 @@ protected:
 	int				detailLevel;
 	int				textureLevel;
 	int				difficulty;
+	int				movementSensitivity;
+	int				lookSensitivity;
 };
 

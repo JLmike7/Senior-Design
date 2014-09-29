@@ -1,7 +1,7 @@
 #pragma once
-#include "Person.h"
+#include "Biped.h"
 class Weapon :
-	public Person
+	public Biped
 {
 public:
 	void Init();

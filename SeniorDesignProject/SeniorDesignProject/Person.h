@@ -12,7 +12,7 @@ class Person :
 	public World
 {
 public:
-	void Init(int teamNum);
+	void Init();
 	Stance getStance();
 	void setStance(Stance iCanMove);
 	bool getDeath();
@@ -23,21 +23,21 @@ public:
 	void setActiveWeapon(int index);
 	int getTeam();
 	void setTeam(int team);
-	void takeHit(int damage);
-	int getWeaponAttack();
-	int getMeleeAttack();
+	int takeHit(int damage);
+	bool fire();
 
 	Person();
 	~Person();
+
+
 
 private:
 
 
 protected:
 
-	int					index;
-	Stance				stance;
-	std::queue<Weapon>	weapons;
-	int					teamNumber;
-	int					health;
+	Stance		stance;
+	bool		isDead;
+	Weapon		weapons[10];
+	int			teamNumber;
 };
