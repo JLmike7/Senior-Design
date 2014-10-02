@@ -1,5 +1,6 @@
 #pragma once
-#include "Person.h"
+#include "Biped.h"
+#include "Physics.h"
 class World
 {
 public:
@@ -13,7 +14,7 @@ public:
 private:
 
 protected:
-	Person* player;
+	Biped* player;
 	int numberTeams;
-	Person people[10];
+	Biped people[10];
 };

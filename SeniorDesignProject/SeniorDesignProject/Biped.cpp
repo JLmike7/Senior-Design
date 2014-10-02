@@ -14,30 +14,30 @@ Biped::~Biped()
 void Biped::Init()
 {
 	//stance = Stance->STANDBY;
-	weapons[0];
+	//weapons[0];
 	teamNumber = 1;
-	biped = new Biped;
 	cameraHeight = 5.0f;
 	crawlCameraHeight = 5.0f;
 	teamColor = 1;
 }
 
 
-//Biped::getStance(Stance iCanMove)
-//{
-//
-//}
-
-void Biped::setStance(Stance iCanMove)
+/*Stance Biped::getStance()
 {
-
+	return stance;
 }
-Weapon Biped::getWeapon(){
+
+void Biped::setStance(Stance stance)
+{
+	Biped::stance = stance;
+}*/
+
+/*Weapon Biped::getWeapon(){
 	return weapons[10];
 }
 void Biped::setWeapon(Weapon gunType){
 
-}
+}*/
 int Biped::getTeam(){
 	return teamNumber;
 }

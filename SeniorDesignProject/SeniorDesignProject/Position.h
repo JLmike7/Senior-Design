@@ -1,9 +1,7 @@
 #pragma once
-#include "Object.h"
 #include "Direction.h"
 #include "Coord.h"
-class Position :
-	public Object
+class Position
 {
 public:
 	void Init();
