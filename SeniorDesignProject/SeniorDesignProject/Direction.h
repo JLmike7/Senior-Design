@@ -7,4 +7,3 @@ public:
 	Direction();
 	~Direction();
 };
-

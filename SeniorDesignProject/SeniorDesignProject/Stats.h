@@ -42,4 +42,3 @@ protected:
 	float maxSpeed;
 	bool inUse;
 };
-

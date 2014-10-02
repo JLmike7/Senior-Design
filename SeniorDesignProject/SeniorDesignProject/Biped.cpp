@@ -14,7 +14,7 @@ Biped::~Biped()
 void Biped::Init()
 {
 	//stance = Stance->STANDBY;
-	weapons[0];
+	weapons;
 	teamNumber = 1;
 	biped = new Biped;
 	cameraHeight = 5.0f;
@@ -28,12 +28,12 @@ void Biped::Init()
 //
 //}
 
-void Biped::setStance(Stance iCanMove)
-{
-
-}
+//void Biped::setStance(Stance iCanMove)
+//{
+//
+//}
 Weapon Biped::getWeapon(){
-	return weapons[10];
+	return weapons;
 }
 void Biped::setWeapon(Weapon gunType){
 
@@ -44,9 +44,7 @@ int Biped::getTeam(){
 void Biped::setTeam(int team){
 	
 }
-int Biped::takeHit(int damage){
 
-}
 bool Biped::fire(){
 	return fire;
 }
