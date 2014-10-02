@@ -1,7 +1,5 @@
 #pragma once
-#include "Biped.h"
-class Weapon :
-	public Biped
+class Weapon
 {
 public:
 	void Init();

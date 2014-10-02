@@ -1,7 +1,5 @@
 #pragma once
-#include "World.h"
-class Settings :
-	public World
+class Settings
 {
 public:
 	//Methods
