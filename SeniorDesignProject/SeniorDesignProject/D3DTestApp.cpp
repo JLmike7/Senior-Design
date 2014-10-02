@@ -1,5 +1,6 @@
 // Include base class declaration
 #include "D3DApp.h"
+#include "Camera.h"
 
 // Subclass declaration
 class D3DTestApp : public D3DApp
@@ -13,14 +14,58 @@ public:
 	void OnResize();
 	void UpdateScene(float dt);
 	void DrawScene();
+
+	void OnMouseDown(WPARAM btnState, int x, int y);
+	void OnMouseUp(WPARAM btnState, int x, int y);
+	void OnMouseMove(WPARAM btnState, int x, int y);
+
+private:
+	void BuildDynamicCubeMapViews();
+
+private:
+	// Dynamic Cube Map
+	ID3D11DepthStencilView* mDynamicCubeMapDSV;
+	ID3D11RenderTargetView* mDynamicCubeMapRTV[6];
+	ID3D11ShaderResourceView* mDynamicCubeMapSRV;
+	D3D11_VIEWPORT mCubeMapViewport;
+
+	static const int CubeMapSize = 256;
+
+	// Camera 
+	Camera mCam;
+	Camera mCubeMapCamera[6];
+
+	// Mouse Point
+	POINT mLastMousePos;
 };
 
 // Class methods
 D3DTestApp::D3DTestApp(HINSTANCE hInstance) : D3DApp(hInstance)
-{};
+{
+	// Caption
+	mMainWndCaption = L"Senior Design Project";
+	// Mouse Position
+	mLastMousePos.x = 0;
+	mLastMousePos.y = 0;
+	// setting the camera position
+	mCam.SetPosition(0.0f, 2.0f, -15.0f);
+	// Setting the maps 
+	for (int i = 0; i < 6; ++i)
+	{
+		mDynamicCubeMapRTV[i] = 0;
+	}
 
-D3DTestApp::~D3DTestApp()
-{};
+
+};
+
+D3DTestApp::~D3DTestApp(){
+	ReleaseCOM(mDynamicCubeMapDSV);
+	ReleaseCOM(mDynamicCubeMapSRV);
+	for (int i = 0; i < 6; ++i)
+		ReleaseCOM(mDynamicCubeMapRTV[i]);
+
+
+};
 
 bool D3DTestApp::Init()
 {
