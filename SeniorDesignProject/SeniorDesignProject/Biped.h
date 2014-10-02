@@ -12,7 +12,7 @@ public:
 	int getTeam();
 	void setTeam(int team);
 	int takeHit(int damage);
-	bool fire();
+	bool firing();
 	float getCameraHeight();
 	void setCameraHeight(float newHeight);
 	float getCrawlCameraHeight();
@@ -34,4 +34,5 @@ protected:
 	float		cameraHeight;
 	float		crawlCameraHeight;
 	int			teamColor;
+	bool		fire;
 };

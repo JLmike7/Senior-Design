@@ -19,6 +19,7 @@ void Biped::Init()
 	cameraHeight = 5.0f;
 	crawlCameraHeight = 5.0f;
 	teamColor = 1;
+	fire = false;
 }
 
 
@@ -44,10 +45,7 @@ int Biped::getTeam(){
 void Biped::setTeam(int team){
 	
 }
-int Biped::takeHit(int damage){
-
-}
-bool Biped::fire(){
+bool Biped::firing(){
 	return fire;
 }
 

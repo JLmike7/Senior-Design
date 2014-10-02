@@ -8,8 +8,8 @@ public:
 	//Stance Crawling();
 	
 
-	//Stance();
-//	~Stance();
+	Stance();
+	~Stance();
 
 	enum Stances
 	{
