@@ -1,7 +1,5 @@
 #pragma once
-#include "Biped.h"
-class Stance :
-	public Biped
+class Stance
 {
 public:
 	//Stance Stationary();
@@ -10,8 +8,8 @@ public:
 	//Stance Crawling();
 	
 
-	//Stance();
-//	~Stance();
+	Stance();
+	~Stance();
 
 	enum Stances
 	{
