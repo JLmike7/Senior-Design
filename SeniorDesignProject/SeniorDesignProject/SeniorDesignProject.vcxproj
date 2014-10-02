@@ -95,14 +95,18 @@
     <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\xnacollision.cpp" />
     <ClCompile Include="..\..\..\..\Visual Studio 2013\3DGameProgramming\Common\Camera.cpp" />
     <ClCompile Include="..\..\..\..\Visual Studio 2013\3DGameProgramming\Common\d3dApp.cpp" />
+    <ClCompile Include="Biped.cpp" />
     <ClCompile Include="Controller.cpp" />
     <ClCompile Include="D3DTestApp.cpp" />
+    <ClCompile Include="Direction.cpp" />
     <ClCompile Include="Menu.cpp" />
-    <ClCompile Include="Person.cpp" />
+    <ClCompile Include="Object.cpp" />
     <ClCompile Include="Physics.cpp" />
+    <ClCompile Include="point.cpp" />
+    <ClCompile Include="Position.cpp" />
     <ClCompile Include="Settings.cpp" />
-    <ClCompile Include="Stance.cpp" />
     <ClCompile Include="Stats.cpp" />
+    <ClCompile Include="Team.cpp" />
     <ClCompile Include="Weapon.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>
@@ -118,14 +122,18 @@
     <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\Waves.h" />
     <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\xnacollision.h" />
     <ClInclude Include="..\..\..\..\Visual Studio 2013\3DGameProgramming\Common\d3dApp.h" />
+    <ClInclude Include="Biped.h" />
     <ClInclude Include="Controller.h" />
     <ClInclude Include="D3DApp.h" />
+    <ClInclude Include="Direction.h" />
     <ClInclude Include="Menu.h" />
-    <ClInclude Include="Person.h" />
+    <ClInclude Include="Object.h" />
     <ClInclude Include="Physics.h" />
+    <ClInclude Include="Position.h" />
     <ClInclude Include="Settings.h" />
     <ClInclude Include="Stance.h" />
     <ClInclude Include="Stats.h" />
+    <ClInclude Include="Team.h" />
     <ClInclude Include="Weapon.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>

@@ -36,12 +36,6 @@
     <ClCompile Include="World.cpp">
       <Filter>Source Files\Problem Domain</Filter>
     </ClCompile>
-    <ClCompile Include="Person.cpp">
-      <Filter>Source Files\Problem Domain</Filter>
-    </ClCompile>
-    <ClCompile Include="Stance.cpp">
-      <Filter>Source Files\Problem Domain</Filter>
-    </ClCompile>
     <ClCompile Include="Weapon.cpp">
       <Filter>Source Files\Problem Domain</Filter>
     </ClCompile>
@@ -90,13 +84,7 @@
     <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\xnacollision.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="Team.cpp">
-      <Filter>Source Files\Problem Domain</Filter>
-    </ClCompile>
     <ClCompile Include="Biped.cpp">
-      <Filter>Source Files\Problem Domain</Filter>
-    </ClCompile>
-    <ClCompile Include="Coord.cpp">
       <Filter>Source Files\Problem Domain</Filter>
     </ClCompile>
     <ClCompile Include="Direction.cpp">
@@ -105,24 +93,18 @@
     <ClCompile Include="Object.cpp">
       <Filter>Source Files\Problem Domain</Filter>
     </ClCompile>
+    <ClCompile Include="point.cpp">
+      <Filter>Source Files\Problem Domain</Filter>
+    </ClCompile>
     <ClCompile Include="Position.cpp">
       <Filter>Source Files\Problem Domain</Filter>
     </ClCompile>
-    <ClCompile Include="point.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Rect.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="triangle.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Team.cpp">
+      <Filter>Source Files\Problem Domain</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="World.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Person.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Settings.h">
@@ -182,16 +164,7 @@
     <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\xnacollision.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="Team.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Biped.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Coord.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="D3DTestApp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Direction.h">
@@ -203,13 +176,7 @@
     <ClInclude Include="Position.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="point.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rect.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="triangle.h">
+    <ClInclude Include="Team.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
