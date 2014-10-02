@@ -1,7 +1,5 @@
 #pragma once
-#include "World.h"
-class Physics : 
-	public World
+class Physics
 {
 public:
 	void Init();

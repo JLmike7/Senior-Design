@@ -1,10 +1,11 @@
 #pragma once
-#include "Object.h"
+#include "Biped.h"
+#include "Physics.h"
 class World
 {
 public:
-	void setObject(int index);
-	void convert(int teamIndex, int objectIndex);
+	void setPlayer(int index);
+	void convert(int teamIndex, int personIndex);
 	
 
 	World();
@@ -13,8 +14,7 @@ public:
 private:
 
 protected:
-//	Object object;
+	Biped* player;
 	int numberTeams;
-//	Object Objects[10];
+	Biped people[10];
 };
-

@@ -1,7 +1,5 @@
 #pragma once
-#include "Position.h"
-class Direction :
-	public Position
+class Direction
 {
 public:
 	Direction();

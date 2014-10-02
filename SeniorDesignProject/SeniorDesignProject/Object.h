@@ -1,7 +1,7 @@
 #pragma once
-#include "World.h"
-class Object :
-	public World
+#include "Position.h"
+
+class Object
 {
 public:
 	void Init();
