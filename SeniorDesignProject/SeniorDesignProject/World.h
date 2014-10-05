@@ -1,5 +1,8 @@
 #pragma once
 #include "Biped.h"
+#define NUMBER_TEAMS 2
+#define TEAM_SIZE 2
+#define FRIENDLY_TEAM 2
 class World
 {
 public:
@@ -8,9 +11,9 @@ public:
 	void convert(int BipedIndex);
 	Biped* getPlayer();
 	Biped* getBiped(int index);
-	Biped** getTeam(int teamIndex, bool aliveOnly);
+	//Biped** getTeam(int teamIndex, bool aliveOnly);
 	int getTeamSize(int teamIndex, bool aliveOnly);
-	Biped** getTeams(bool aliveOnly);
+	//Biped** getTeams(bool aliveOnly);
 	
 
 	World();
@@ -22,4 +25,5 @@ protected:
 	Biped* player;
 	int numberTeams;
 	Biped people[10];
+	int playerIndex;
 };
