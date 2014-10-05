@@ -1,4 +1,5 @@
-#include "point.h"
+#include "Point.h"
+#include <math.h>
 
 
 Point::Point(){
@@ -39,4 +40,11 @@ float Point::getY(){
 }
 float Point::getZ(){
 	return z;
+}
+
+float Point::distanceTo(Point* other){
+	return sqrt(
+		pow(other->getX() - getX(), 2) + 
+		pow(other->getY() - getY(), 2) + 
+		pow(other->getZ() - getZ(),2) );
 }
