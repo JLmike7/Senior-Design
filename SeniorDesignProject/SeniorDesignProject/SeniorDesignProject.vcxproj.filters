@@ -63,9 +63,6 @@
     <ClCompile Include="Biped.cpp">
       <Filter>Source Files\Problem Domain</Filter>
     </ClCompile>
-    <ClCompile Include="Coord.cpp">
-      <Filter>Source Files\Problem Domain</Filter>
-    </ClCompile>
     <ClCompile Include="Direction.cpp">
       <Filter>Source Files\Problem Domain</Filter>
     </ClCompile>
@@ -97,9 +94,6 @@
       <Filter>Common</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\3DGameProgramming\Common\Camera.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\3DGameProgramming\Common\d3dApp.cpp">
       <Filter>Common</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\3DGameProgramming\Common\d3dUtil.cpp">

@@ -86,7 +86,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\..\3DGameProgramming\Common\Camera.cpp" />
-    <ClCompile Include="..\..\..\..\3DGameProgramming\Common\d3dApp.cpp" />
     <ClCompile Include="..\..\..\..\3DGameProgramming\Common\d3dUtil.cpp" />
     <ClCompile Include="..\..\..\..\3DGameProgramming\Common\GameTimer.cpp" />
     <ClCompile Include="..\..\..\..\3DGameProgramming\Common\GeometryGenerator.cpp" />
@@ -97,7 +96,6 @@
     <ClCompile Include="..\..\..\..\3DGameProgramming\Common\xnacollision.cpp" />
     <ClCompile Include="Biped.cpp" />
     <ClCompile Include="Controller.cpp" />
-    <ClCompile Include="Coord.cpp" />
     <ClCompile Include="D3DApp.cpp" />
     <ClCompile Include="D3DTestApp.cpp" />
     <ClCompile Include="Direction.cpp" />

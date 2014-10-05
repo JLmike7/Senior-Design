@@ -1,12 +1,14 @@
 #pragma once
 class Physics
 {
+
 public:
+	
 	void Init();
-	float getGravity();  //I don't think you understand the gravity of this situation
-	void setGravity(float newGravity);
-	float getWind();
-	void setWind(float newWind);
+	double getGravity();  //I don't think you understand the gravity of this situation
+	void setGravity(double newGravity);
+	double getWind();
+	void setWind(double newWind);
 	float getGroundHeight();
 	void setGroundHeight(float newHeight);
 	float getWaterChoppiness();
@@ -15,11 +17,13 @@ public:
 	~Physics();
 
 private:
-
+	
 protected:
-	float gravity;
-	float wind;
+	double gravity;
+	double wind;
 	float groundHeight;
 	float waterChoppiness;
+
+	
 };
 
