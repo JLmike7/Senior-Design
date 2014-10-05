@@ -20,6 +20,7 @@ void Biped::Init()
 	crawlCameraHeight = 5.0f;
 	teamColor = 1;
 	fire = false;
+	death = false;
 }
 
 
@@ -75,4 +76,10 @@ int Biped::getTeamColor(){
 }
 void Biped::setTeamColor(int newColor){
 	teamColor = newColor;
+}
+bool Biped::getDeath(){
+	return death;
+}
+void Biped::setDeath(bool isDead){
+	death = isDead;
 }
