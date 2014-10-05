@@ -12,7 +12,7 @@ Team::~Team()
 
 }
 
-void Team::Init(Person* _members[],int size){
+void Team::Init(Biped* _members[],int size){
 	if (memberCount <= MAX_MEMBERS){
 		for (int i = 0; i < size; i++){
 			addMember(_members[i]);
@@ -20,15 +20,15 @@ void Team::Init(Person* _members[],int size){
 	}
 }
 
-void Team::addMember(Person* member){
+void Team::addMember(Biped* member){
 	members[memberCount] = member;
 	memberCount++;
 }
 
-Person* Team::getMember(int index){
+Biped* Team::getMember(int index){
 	return members[index];
 }
 
-Person** Team::getMembers(){
+Biped** Team::getMembers(){
 	return members;
 }
