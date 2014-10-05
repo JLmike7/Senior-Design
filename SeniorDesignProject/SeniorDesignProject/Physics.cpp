@@ -3,6 +3,10 @@
 
 Physics::Physics()
 {
+	gravity = 9.81; //It's like earth, but better
+	wind = 3.14;
+	groundHeight = 0;
+	waterChoppiness = 1;
 }
 
 
@@ -12,23 +16,20 @@ Physics::~Physics()
 
 void Physics::Init()
 {
-	gravity = 9.81; //It's like earth, but better
-	wind = 3.14;
-	groundHeight = 0;
-	waterChoppiness = 1;
+	
 }
 
 
-float Physics::getGravity(){
+double Physics::getGravity(){
 	return gravity;
 }
-void Physics::setGravity(float newGravity){
+void Physics::setGravity(double newGravity){
 	gravity = newGravity;
 }
-float Physics::getWind(){
+double Physics::getWind(){
 	return wind;
 }
-void Physics::setWind(float newWind){
+void Physics::setWind(double newWind){
 	wind = newWind;
 }
 float Physics::getGroundHeight(){

@@ -33,7 +33,7 @@ bool Settings::getFF()
 //Set Friendly Fire Status
 void Settings::setFF(bool FF)
 {
-	friendlyFire == FF;
+	friendlyFire = FF;
 }
 
 //Get Full Screen Status
@@ -45,7 +45,7 @@ bool Settings::getIsFullScreen()
 //Set Full Screen Status
 void Settings::setIsFullScreen(bool FS)
 {
-	isFullScreen == FS;
+	isFullScreen = FS;
 }
 
 //Get Difficulty
@@ -57,7 +57,7 @@ int Settings::getDifficulty()
 //Set Difficulty
 void Settings::setDifficulty(int level)
 {
-	difficulty == level;
+	difficulty = level;
 }
 
 //Get Textures
@@ -69,7 +69,7 @@ int Settings::getTextureLevel()
 //Set Textures
 void Settings::setTextureLevel(int level)
 {
-	textureLevel == level;
+	textureLevel = level;
 }
 
 //Get Detail
@@ -81,7 +81,7 @@ int Settings::getDetailLevel()
 //Set Detail
 void Settings::setDetailLevel(int level)
 {
-	detailLevel == level;
+	detailLevel = level;
 }
 
 //Get movement sensitivity
