@@ -29,7 +29,6 @@ private:
 protected:
 
 	Stance		stance;
-	//Weapon		weapons[10];
 	int			teamNumber;
 	float		cameraHeight;
 	float		crawlCameraHeight;
