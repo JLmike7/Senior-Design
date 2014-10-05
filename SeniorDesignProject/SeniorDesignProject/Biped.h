@@ -1,6 +1,9 @@
 #pragma once
-#include "Stance.h"
 //#include "Weapon.h"
+enum Stance {
+	Walking, Running, Crouching
+};
+
 class Biped
 {
 public:
@@ -19,6 +22,8 @@ public:
 	void  setCrawlCameraHeight(float newHeight);
 	int getTeamColor();
 	void setTeamColor(int newColor);
+	bool getDeath();
+	void setDeath(bool isDead);
 
 	Biped();
 	~Biped();
@@ -34,4 +39,5 @@ protected:
 	float		crawlCameraHeight;
 	int			teamColor;
 	bool		fire;
+	bool		death;
 };
