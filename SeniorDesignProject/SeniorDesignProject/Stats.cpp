@@ -96,3 +96,5 @@ bool Stats::getInUse(){
 void Stats::setInUse(bool newStatus){
 	inUse = newStatus;
 }
+
+
