@@ -1,11 +1,16 @@
 #pragma once
-#include "Biped.h"
-#include "Physics.h"
+#include "Person.h"
 class World
 {
 public:
+	void Init();
 	void setPlayer(int index);
-	void convert(int teamIndex, int personIndex);
+	void convert(int personIndex);
+	Person* getPlayer();
+	Person* getPerson(int index);
+	Person** getTeam(int teamIndex, bool aliveOnly);
+	int getTeamSize(int teamIndex, bool aliveOnly);
+	Person** getTeams(bool aliveOnly);
 	
 
 	World();
@@ -14,7 +19,7 @@ public:
 private:
 
 protected:
-	Biped* player;
+	Person* player;
 	int numberTeams;
-	Biped people[10];
+	Person people[10];
 };
