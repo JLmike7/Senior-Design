@@ -15,12 +15,12 @@ World::~World()
 void World::Init(){
 	playerIndex = -1;
 	for (int team = 0; team < NUMBER_TEAMS; team++){
-		for (int person = 0; person < TEAM_SIZE; person++){
-			int i = team*TEAM_SIZE + person;
+		for (int Biped = 0; Biped < TEAM_SIZE; Biped++){
+			int i = team*TEAM_SIZE + Biped;
 			if (playerIndex == -1 && team == FRIENDLY_TEAM){
 				playerIndex = i;
 			}
-			people[i] = new Person;
+			people[i] = new Biped;
 			people[i]->setTeam(team);
 		}
 	}
@@ -31,18 +31,18 @@ void World::setPlayer(int index)
 	playerIndex = index;
 }
 
-Person* World::getPlayer()
+Biped* World::getPlayer()
 {
 	return people[playerIndex];
 }
-Person* World::getPerson(int index)
+Biped* World::getBiped(int index)
 {
 	return people[index];
 }
 
 //This method is inneficient.  Use sparingly.
-Person** World::getTeam(int teamNum, bool aliveOnly){
-	//Create a new array of person pointers.
+Biped** World::getTeam(int teamNum, bool aliveOnly){
+	//Create a new array of Biped pointers.
 	//Copy from people[] to team[] if teamIndex matches.
 
 }
@@ -58,9 +58,9 @@ int World::getTeamSize(int teamNum, bool aliveOnly){
 }
 
 //Divides the players by team
-Person** World::getTeams(bool aliveOnly){
+Biped** World::getTeams(bool aliveOnly){
 	//Team size must be able to include all players, in the case that a player converted everyone to their team.
-	Person* teams[NUMBER_TEAMS][TEAM_SIZE*NUMBER_TEAMS];
+	Biped* teams[NUMBER_TEAMS][TEAM_SIZE*NUMBER_TEAMS];
 	int teamCounts[NUMBER_TEAMS];
 	//set all teamCounts to zero
 	for (int i = 0; i < NUMBER_TEAMS; i++)
@@ -75,7 +75,7 @@ Person** World::getTeams(bool aliveOnly){
 	}
 	return teams;
 }
-void World::convert(int personIndex)
+void World::convert(int BipedIndex)
 {
-	people[personIndex]->setTeam(FRIENDLY_TEAM);
+	people[BipedIndex]->setTeam(FRIENDLY_TEAM);
 }

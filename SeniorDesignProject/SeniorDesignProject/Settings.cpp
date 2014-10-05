@@ -3,7 +3,13 @@
 
 Settings::Settings()
 {
-
+	friendlyFire = false;
+	difficulty = 2;
+	textureLevel = 2;
+	detailLevel = 2;
+	isFullScreen = true;
+	movementSensitivity = 5;
+	lookSensitivity = 5;
 }
 
 
@@ -14,13 +20,7 @@ Settings::~Settings()
 void Settings::Init()
 {
 	//Initialize Game Settings
-	friendlyFire = false;
-	difficulty = 2;
-	textureLevel = 2;
-	detailLevel = true;
-	isFullScreen = true;
-	movementSensitivity = 5;
-	lookSensitivity = 5;
+	
 
 }
 
