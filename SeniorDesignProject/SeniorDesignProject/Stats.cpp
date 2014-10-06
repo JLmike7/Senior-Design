@@ -3,6 +3,18 @@
 
 Stats::Stats()
 {
+	maxHealth = 100;
+	health = 100;
+	strength = 50;
+	lives = 3;
+	//hitBox;
+	//mode;
+	//AMode;
+	maxCrawlSpeed = 25.0f;
+	maxWalkSpeed = 60.0f;
+	maxRunSpeed = 100.0f;
+	maxSpeed = 200.0f;
+	inUse = false;
 }
 
 
@@ -11,18 +23,7 @@ Stats::~Stats()
 }
 
 void Stats::Init(){
-	maxHealth = 100;
-	health = 100;
-	strength = 50;
-	lives = 3;
-	//hitBox;
-	//mode;
-	//AMode;
-	maxCrawlSpeed = 25.0;
-	maxWalkSpeed = 60.0;
-	maxRunSpeed = 100.0;
-	maxSpeed = 200.0;
-	inUse = false;
+	
 }
 
 //Getters/Settings for Stats.

@@ -17,3 +17,4 @@
 #include "World.h"
 #include "Stats.h"
 #include "Settings.h"
+#include "Biped.h"

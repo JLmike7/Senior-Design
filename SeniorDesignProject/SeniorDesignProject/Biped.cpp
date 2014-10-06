@@ -1,17 +1,7 @@
 #include "Biped.h"
-
+#include "Stats.h"
 
 Biped::Biped()
-{
-
-}
-
-
-Biped::~Biped()
-{
-}
-
-void Biped::Init()
 {
 	//stance = Stance->STANDBY;
 	//weapons[0];
@@ -21,6 +11,16 @@ void Biped::Init()
 	teamColor = 1;
 	fire = false;
 	death = false;
+}
+
+
+Biped::~Biped()
+{
+}
+
+void Biped::Init()
+{
+	
 }
 
 
@@ -44,7 +44,7 @@ int Biped::getTeam(){
 	return teamNumber;
 }
 void Biped::setTeam(int team){
-	
+	teamNumber = team;
 }
 bool Biped::firing(){
 	return fire;
@@ -56,7 +56,9 @@ int Biped::takeHit(int damage)
 	int hit = damage;
 	int placeholder=0; // is placeholder being equal to hit and or damages
 	//biped.Health -= damage;
-	return placeholder; //biped.Health
+	Stats myStats;
+	//myStats.setHealth(myStats.getHealth =- damage);
+	return 90; //biped.Health
 }
 
 float Biped::getCameraHeight(){

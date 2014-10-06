@@ -58,7 +58,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance,
 SeniorPro::SeniorPro(HINSTANCE hInstance)
 : D3DApp(hInstance), mCubemap(0), mWalkCamMode(false)
 {
-	mMainWndCaption = L"Midterm";
+	mMainWndCaption = L"SeniorPro";
 	mEnable4xMsaa = false;
 
 	mLastMousePos.x = 0;
