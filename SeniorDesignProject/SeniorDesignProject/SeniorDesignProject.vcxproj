@@ -95,6 +95,7 @@
     <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\Waves.cpp" />
     <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\xnacollision.cpp" />
     <ClCompile Include="Biped.cpp" />
+    <ClCompile Include="Box.cpp" />
     <ClCompile Include="Controller.cpp" />
     <ClCompile Include="Coord.cpp" />
     <ClCompile Include="D3DApp.cpp" />
@@ -106,7 +107,7 @@
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="point.cpp" />
     <ClCompile Include="Position.cpp" />
-    <ClCompile Include="Rect.cpp" />
+    <ClCompile Include="Quad.cpp" />
     <ClCompile Include="Settings.cpp" />
     <ClCompile Include="Stance.cpp" />
     <ClCompile Include="Stats.cpp" />
@@ -127,6 +128,7 @@
     <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\Waves.h" />
     <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\xnacollision.h" />
     <ClInclude Include="Biped.h" />
+    <ClInclude Include="Box.h" />
     <ClInclude Include="Controller.h" />
     <ClInclude Include="Coord.h" />
     <ClInclude Include="D3DApp.h" />
@@ -136,14 +138,14 @@
     <ClInclude Include="Object.h" />
     <ClInclude Include="Person.h" />
     <ClInclude Include="Physics.h" />
-    <ClInclude Include="point.h" />
+    <ClInclude Include="Point.h" />
     <ClInclude Include="Position.h" />
-    <ClInclude Include="Rect.h" />
+    <ClInclude Include="Quad.h" />
     <ClInclude Include="Settings.h" />
     <ClInclude Include="Stance.h" />
     <ClInclude Include="Stats.h" />
     <ClInclude Include="Team.h" />
-    <ClInclude Include="triangle.h" />
+    <ClInclude Include="Triangle.h" />
     <ClInclude Include="Weapon.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>
