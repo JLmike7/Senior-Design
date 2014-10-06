@@ -21,5 +21,5 @@ bool Object::getDeath()
 }
 void Object::setDeath(bool isDead)
 {
-
+	Object::isDead = isDead;
 }

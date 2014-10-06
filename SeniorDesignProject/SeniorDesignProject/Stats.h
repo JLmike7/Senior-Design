@@ -1,7 +1,5 @@
 #pragma once
-#include "Object.h"
-class Stats :
-	public Object
+class Stats
 {
 public:
 	void Init();

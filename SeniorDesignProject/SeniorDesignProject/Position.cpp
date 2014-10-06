@@ -18,6 +18,7 @@ void Position::Init(){
 }
 
 //Getters/Settings for Stats.
+/*
 Coord Position::getLocation(){
 	return location;
 }
@@ -52,7 +53,7 @@ void Position::setAccel(Coord newAccel){
 
 void Position::teleport(Coord coord){
 
-}
+}*/
 
 int Position::move(Direction direction){
 	return 0;
@@ -62,6 +63,3 @@ int Position::lookAt(Direction direction){
 	return 0;
 }
 
-bool Position::jump(){
-
-}

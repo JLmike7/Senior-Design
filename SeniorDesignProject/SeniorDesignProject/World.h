@@ -1,10 +1,5 @@
 #pragma once
 #include "Person.h"
-
-#define TEAM_SIZE 5
-#define NUMBER_TEAMS 2
-#define FRIENDLY_TEAM 0
-
 class World
 {
 public:
@@ -16,7 +11,7 @@ public:
 	Person** getTeam(int teamIndex, bool aliveOnly);
 	int getTeamSize(int teamIndex, bool aliveOnly);
 	Person** getTeams(bool aliveOnly);
-
+	
 
 	World();
 	~World();
@@ -24,6 +19,7 @@ public:
 private:
 
 protected:
-	int playerIndex;
-	Person* people[TEAM_SIZE*NUMBER_TEAMS];
+	Person* player;
+	int numberTeams;
+	Person people[10];
 };

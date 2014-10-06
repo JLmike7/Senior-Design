@@ -1,11 +1,7 @@
 #pragma once
-#include "World.h"
 #include "Position.h"
-#include "Stats.h"
-#include "Biped.h"
 
-class Object :
-	public World
+class Object
 {
 public:
 	void Init();
