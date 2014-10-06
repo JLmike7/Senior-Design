@@ -1,7 +1,9 @@
 #pragma once
+#include "Object.h"
 #include "Stance.h"
-//#include "Weapon.h"
-class Biped
+#include "Weapon.h"
+class Biped :
+	public Object
 {
 public:
 	void Init();
@@ -19,6 +21,8 @@ public:
 	void  setCrawlCameraHeight(float newHeight);
 	int getTeamColor();
 	void setTeamColor(int newColor);
+	bool getDeath();
+	void setDeath(bool isDead);
 
 	Biped();
 	~Biped();
@@ -29,10 +33,9 @@ private:
 protected:
 
 	Stance		stance;
-	//Weapon		weapons[10];
+	Weapon		weapons[10];
 	int			teamNumber;
 	float		cameraHeight;
 	float		crawlCameraHeight;
 	int			teamColor;
-	bool		fire;
 };

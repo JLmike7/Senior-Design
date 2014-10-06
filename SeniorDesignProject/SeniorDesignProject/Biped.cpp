@@ -1,9 +1,16 @@
 #include "Biped.h"
-
+#include "Stats.h"
 
 Biped::Biped()
 {
-
+	//stance = Stance->STANDBY;
+	//weapons[0];
+	teamNumber = 1;
+	cameraHeight = 5.0f;
+	crawlCameraHeight = 5.0f;
+	teamColor = 1;
+	fire = false;
+	death = false;
 }
 
 
@@ -14,12 +21,12 @@ Biped::~Biped()
 void Biped::Init()
 {
 	//stance = Stance->STANDBY;
-	//weapons[0];
+	weapons[0];
 	teamNumber = 1;
+	biped = new Biped;
 	cameraHeight = 5.0f;
 	crawlCameraHeight = 5.0f;
 	teamColor = 1;
-	fire = false;
 }
 
 
@@ -45,7 +52,10 @@ int Biped::getTeam(){
 void Biped::setTeam(int team){
 	
 }
-bool Biped::firing(){
+int Biped::takeHit(int damage){
+
+}
+bool Biped::fire(){
 	return fire;
 }
 
@@ -55,7 +65,9 @@ int Biped::takeHit(int damage)
 	int hit = damage;
 	int placeholder=0; // is placeholder being equal to hit and or damages
 	//biped.Health -= damage;
-	return placeholder; //biped.Health
+	Stats myStats;
+	//myStats.setHealth(myStats.getHealth =- damage);
+	return 90; //biped.Health
 }
 
 float Biped::getCameraHeight(){
@@ -75,4 +87,10 @@ int Biped::getTeamColor(){
 }
 void Biped::setTeamColor(int newColor){
 	teamColor = newColor;
+}
+bool Biped::getDeath(){
+	return death;
+}
+void Biped::setDeath(bool isDead){
+	death = isDead;
 }
