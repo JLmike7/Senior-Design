@@ -1,11 +1,11 @@
 #include "Quad.h"
 
-
+//By default, quad is the unit square on the xy axis, centered through to the z axis.
 Quad::Quad(){
-	points[0]= new Point();
-	points[1] = new Point();
-	points[2] = new Point();
-	points[3] = new Point();
+	points[TOP_LEFT]= new Point(-.5,.5,0);
+	points[TOP_RIGHT] = new Point(.5, .5, 0);
+	points[BOTTOM_RIGHT] = new Point(.5, -.5, 0);
+	points[BOTTOM_LEFT] = new Point(-.5, -.5, 0);
 }
 Quad::Quad(Point *_points[4]){
 	setPoints(_points);

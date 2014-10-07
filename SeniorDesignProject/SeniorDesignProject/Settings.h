@@ -4,8 +4,6 @@ class Settings
 public:
 	//Methods
 	void Init();
-	Settings();
-	~Settings();
 	bool getFF();
 	void setFF(bool FF);
 	bool getIsFullScreen();
@@ -20,7 +18,8 @@ public:
 	void setMovementSensitivity(int level);
 	int getLookSensitivity();
 	void setLookSensitivity(int level);
-
+	Settings();
+	~Settings();
 
 private:
 

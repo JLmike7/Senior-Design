@@ -17,7 +17,7 @@ public:
 	~Physics();
 
 private:
-	
+
 protected:
 	double gravity;
 	double wind;

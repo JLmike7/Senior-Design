@@ -1,10 +1,9 @@
 #pragma once
-//#include "Weapon.h"
-enum Stance {
-	Walking, Running, Crouching
-};
-
-class Biped
+#include "Object.h"
+#include "Stance.h"
+#include "Weapon.h"
+class Biped :
+	public Object
 {
 public:
 	void Init();
@@ -34,10 +33,9 @@ private:
 protected:
 
 	Stance		stance;
+	Weapon		weapons[10];
 	int			teamNumber;
 	float		cameraHeight;
 	float		crawlCameraHeight;
 	int			teamColor;
-	bool		fire;
-	bool		death;
 };

@@ -43,7 +43,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\choward8\Documents\Senior_project\Senior-Design\SeniorDesignProject\SeniorDesignProject;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\Aaron\Documents\Visual Studio 2013\Projects\Senior-Design\SeniorDesignProject\SeniorDesignProject;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>true</LinkIncremental>
@@ -61,7 +61,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>C:\Users\choward8\Documents\Senior_project\Senior-Design\SeniorDesignProject\SeniorDesignProject\Debug\Physics.obj;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>C:\Users\Aaron\Documents\Visual Studio 2013\Projects\Senior-Design\SeniorDesignProject\SeniorDesignProject\Debug\Physics.obj;C:\Users\Aaron\Documents\Visual Studio 2013\Projects\Senior-Design\SeniorDesignProject\SeniorDesignProject\Debug\Settings.obj;C:\Users\Aaron\Documents\Visual Studio 2013\Projects\Senior-Design\SeniorDesignProject\SeniorDesignProject\Debug\Stats.obj;C:\Users\Aaron\Documents\Visual Studio 2013\Projects\Senior-Design\SeniorDesignProject\SeniorDesignProject\Debug\Weapon.obj;C:\Users\Aaron\Documents\Visual Studio 2013\Projects\Senior-Design\SeniorDesignProject\SeniorDesignProject\Debug\Biped.obj;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -88,11 +88,15 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BipedTest.cpp" />
+    <ClCompile Include="SettingsTest.cpp" />
+    <ClCompile Include="StatsTest.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="PhysicsTest.cpp" />
+    <ClCompile Include="WeaponTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SeniorDesignProject\SeniorDesignProject.vcxproj">
