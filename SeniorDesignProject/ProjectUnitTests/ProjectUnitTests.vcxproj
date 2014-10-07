@@ -43,7 +43,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\Aaron\Documents\Visual Studio 2013\Projects\Senior-Design\SeniorDesignProject\SeniorDesignProject;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\choward8\Documents\Senior_project\Senior-Design\SeniorDesignProject\SeniorDesignProject;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>true</LinkIncremental>
@@ -61,7 +61,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>C:\Users\Aaron\Documents\Visual Studio 2013\Projects\Senior-Design\SeniorDesignProject\SeniorDesignProject\Debug\Physics.obj;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>C:\Users\choward8\Documents\Senior_project\Senior-Design\SeniorDesignProject\SeniorDesignProject\Debug\Physics.obj;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
