@@ -89,6 +89,12 @@ float Stats::getMaxSpeed(){
 void Stats::setMaxSpeed(float newMaxSpeed){
 	maxSpeed = newMaxSpeed;
 }
+float Stats::getMaxJumpSpeed(){
+	return maxJumpSpeed;
+}
+void Stats::setMaxJumpSpeed(float newMaxJumpSpeed){
+	maxSpeed = newMaxJumpSpeed;
+}
 
 bool Stats::getInUse(){
 	return inUse;

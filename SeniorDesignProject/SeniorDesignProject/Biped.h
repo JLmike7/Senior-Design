@@ -2,17 +2,21 @@
 #include "Object.h"
 #include "Weapon.h"
 #include <deque>
+#include "Position.h"
+#include "Direction.h"
+#include "Stats.h"
+
 class Biped :
 	public Object{
 
-enum Stance { sprint, walk, crouch };
+enum Stance { RUN, WALK, CRAWL };
 
 public:
-	void Init();
+	void Init(Settings *settings);
 	Stance getStance();
 	void setStance(Stance stance);
-	Weapon getWeapon();
-	void pushWeapon(Weapon gunType);
+	Weapon* getWeapon();
+	void pushWeapon(Weapon *newWeapon);
 	void nextWeapon();
 	void prevWeapon();
 	int getTeam();
@@ -27,20 +31,27 @@ public:
 	void setTeamColor(int newColor);
 	bool getDeath();
 	void setDeath(bool isDead);
+	Position* getPosition();
+	void  setPosition(Position *position);
 	void fire();
-	Biped();
+	void move(Direction direction);
+	void jump();
+	void lookTo(Direction direction);
+	void lookAt(Point* point);
+	Biped(Settings* settings);
 	~Biped();
 
 private:
-
+	Settings*			settings;
 
 protected:
 	Stance				stance;
-	std::deque<Weapon>	weapons;
+	std::deque<Weapon>*	weapons;
 	int					teamNumber;
 	float				cameraHeight;
 	float				crawlCameraHeight;
 	int					teamColor;
 	bool				dead;
-	Stats				stats;
+	Stats*				stats;
+	Position*			position;
 };

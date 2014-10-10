@@ -19,6 +19,8 @@ public:
 	void setMaxRun(float newMaxRun);
 	float getMaxSpeed();
 	void setMaxSpeed(float newMaxSpeed);
+	float getMaxJumpSpeed();
+	void setMaxJumpSpeed(float newMaxSpeed);
 	bool getInUse();
 	void setInUse(bool newStatus);
 	Stats();
@@ -38,5 +40,6 @@ protected:
 	float maxWalkSpeed;
 	float maxRunSpeed;
 	float maxSpeed;
+	float maxJumpSpeed;
 	bool inUse;
 };

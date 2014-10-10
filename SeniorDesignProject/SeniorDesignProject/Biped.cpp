@@ -1,9 +1,10 @@
 #include "Biped.h"
 #include "Stats.h"
+#include "Settings.h"
 
-Biped::Biped()
+Biped::Biped(Settings* _settings)
 {
-	Init();
+	Init(_settings);
 }
 
 
@@ -11,62 +12,70 @@ Biped::~Biped()
 {
 }
 
-void Biped::Init()
+void Biped::Init(Settings* _settings)
 {
-	stance = walk;
+	settings = _settings;
+	stance = WALK;
 	teamNumber = 1;
 	cameraHeight = 5.0f;
 	crawlCameraHeight = 5.0f;
 	teamColor = 1;
 }
-
-
 Biped::Stance Biped::getStance()
 {
 	return stance;
 }
-
-void Biped::setStance(Stance stance)
+void Biped::setStance(Stance _stance)
 {
-	Biped::stance = stance;
+	stance = _stance;
 }
-
-Weapon Biped::getWeapon(){
-	return weapons.front();
+Position* Biped::getPosition()
+{
+	return position;
 }
-void Biped::pushWeapon(Weapon newWeapon){
-	weapons.push_front(newWeapon);
+void Biped::setPosition(Position *_position)
+{
+	position = position;
+}
+void Biped::move(Direction direction){
+	if (stance == Stance::WALK){
+		position->move(direction, stats->getMaxWalk());
+	}
+	else if (stance == Stance::CRAWL){
+		position->move(direction, stats->getMaxCrawl());
+	}
+	else if (stance == Stance::RUN){
+		position->move(direction, stats->getMaxRun());
+	}
+}
+Weapon* Biped::getWeapon(){
+	return & weapons->front();
+}
+void Biped::pushWeapon(Weapon *newWeapon){
+	weapons->push_front(*newWeapon);
 }
 int Biped::getTeam(){
 	return teamNumber;
 }
 void Biped::nextWeapon(){
-	weapons.push_back(weapons.front());
-	weapons.pop_front();
+	weapons->push_back(weapons->front());
+	weapons->pop_front();
 }
 void Biped::prevWeapon(){
-	weapons.push_front(weapons.back());
-	weapons.pop_back();
+	weapons->push_front(weapons->back());
+	weapons->pop_back();
 }
 void Biped::setTeam(int _team){
 	teamNumber = _team;
 }
 int Biped::takeHit(int damage){
-	stats.setHealth(stats.getHealth()-damage);
+	stats->setHealth(stats->getHealth()-damage);
+}
+void Biped::jump(){
+	position->move(Direction::UP, stats->getMaxJumpSpeed());
 }
 void Biped::fire(){
 	//TODO: implement
-}
-
-
-int Biped::takeHit(int damage)
-{
-	int hit = damage;
-	int placeholder=0; // is placeholder being equal to hit and or damages
-	//biped.Health -= damage;
-	Stats myStats;
-	//myStats.setHealth(myStats.getHealth =- damage);
-	return 90; //biped.Health
 }
 
 float Biped::getCameraHeight(){
@@ -92,4 +101,10 @@ bool Biped::getDeath(){
 }
 void Biped::setDeath(bool isDead){
 	dead = isDead;
+}
+void Biped::lookTo(Direction direction){
+	position->lookTo(direction,(float)settings->getLookSensitivity());
+}
+void Biped::lookAt(Point* point){
+	position->lookAt(point);
 }
