@@ -136,13 +136,11 @@
     <ClInclude Include="Direction.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Object.h" />
-    <ClInclude Include="Person.h" />
     <ClInclude Include="Physics.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Position.h" />
     <ClInclude Include="Quad.h" />
     <ClInclude Include="Settings.h" />
-    <ClInclude Include="Stance.h" />
     <ClInclude Include="Stats.h" />
     <ClInclude Include="Team.h" />
     <ClInclude Include="Triangle.h" />

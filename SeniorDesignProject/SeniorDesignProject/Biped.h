@@ -1,16 +1,20 @@
 #pragma once
 #include "Object.h"
-#include "Stance.h"
 #include "Weapon.h"
+#include <deque>
 class Biped :
-	public Object
-{
+	public Object{
+
+enum Stance { sprint, walk, crouch };
+
 public:
 	void Init();
 	Stance getStance();
-	void setStance(Stance iCanMove);
-	//Weapon getWeapon();
-	//void setWeapon(Weapon gunType);
+	void setStance(Stance stance);
+	Weapon getWeapon();
+	void pushWeapon(Weapon gunType);
+	void nextWeapon();
+	void prevWeapon();
 	int getTeam();
 	void setTeam(int team);
 	int takeHit(int damage);
@@ -23,7 +27,7 @@ public:
 	void setTeamColor(int newColor);
 	bool getDeath();
 	void setDeath(bool isDead);
-
+	void fire();
 	Biped();
 	~Biped();
 
@@ -31,11 +35,12 @@ private:
 
 
 protected:
-
-	Stance		stance;
-	Weapon		weapons[10];
-	int			teamNumber;
-	float		cameraHeight;
-	float		crawlCameraHeight;
-	int			teamColor;
+	Stance				stance;
+	std::deque<Weapon>	weapons;
+	int					teamNumber;
+	float				cameraHeight;
+	float				crawlCameraHeight;
+	int					teamColor;
+	bool				dead;
+	Stats				stats;
 };

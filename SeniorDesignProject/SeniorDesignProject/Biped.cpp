@@ -3,14 +3,7 @@
 
 Biped::Biped()
 {
-	//stance = Stance->STANDBY;
-	//weapons[0];
-	teamNumber = 1;
-	cameraHeight = 5.0f;
-	crawlCameraHeight = 5.0f;
-	teamColor = 1;
-	fire = false;
-	death = false;
+	Init();
 }
 
 
@@ -20,17 +13,15 @@ Biped::~Biped()
 
 void Biped::Init()
 {
-	//stance = Stance->STANDBY;
-	weapons[0];
+	stance = walk;
 	teamNumber = 1;
-	biped = new Biped;
 	cameraHeight = 5.0f;
 	crawlCameraHeight = 5.0f;
 	teamColor = 1;
 }
 
 
-/*Stance Biped::getStance()
+Biped::Stance Biped::getStance()
 {
 	return stance;
 }
@@ -38,25 +29,33 @@ void Biped::Init()
 void Biped::setStance(Stance stance)
 {
 	Biped::stance = stance;
-}*/
-
-/*Weapon Biped::getWeapon(){
-	return weapons[10];
 }
-void Biped::setWeapon(Weapon gunType){
 
-}*/
+Weapon Biped::getWeapon(){
+	return weapons.front();
+}
+void Biped::pushWeapon(Weapon newWeapon){
+	weapons.push_front(newWeapon);
+}
 int Biped::getTeam(){
 	return teamNumber;
 }
-void Biped::setTeam(int team){
-	
+void Biped::nextWeapon(){
+	weapons.push_back(weapons.front());
+	weapons.pop_front();
+}
+void Biped::prevWeapon(){
+	weapons.push_front(weapons.back());
+	weapons.pop_back();
+}
+void Biped::setTeam(int _team){
+	teamNumber = _team;
 }
 int Biped::takeHit(int damage){
-
+	stats.setHealth(stats.getHealth()-damage);
 }
-bool Biped::fire(){
-	return fire;
+void Biped::fire(){
+	//TODO: implement
 }
 
 
@@ -89,8 +88,8 @@ void Biped::setTeamColor(int newColor){
 	teamColor = newColor;
 }
 bool Biped::getDeath(){
-	return death;
+	return dead;
 }
 void Biped::setDeath(bool isDead){
-	death = isDead;
+	dead = isDead;
 }
