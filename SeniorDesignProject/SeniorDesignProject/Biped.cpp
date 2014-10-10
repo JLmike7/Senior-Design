@@ -72,7 +72,9 @@ int Biped::takeHit(int damage){
 	stats->setHealth(stats->getHealth()-damage);
 }
 void Biped::jump(){
-	position->move(Direction::UP, stats->getMaxJumpSpeed());
+	if (position->isOnGround()){
+		position->addVelocity(new Point(0.0, stats->getMaxJumpSpeed(), 0.0));
+	}
 }
 void Biped::fire(){
 	//TODO: implement

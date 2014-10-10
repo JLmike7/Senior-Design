@@ -7,16 +7,19 @@ class Position
 public:
 	void Init();
 	Point* getLocation();
-	void setLocation(Point* location);
 	LookDirection* getLook();
 	Point* getVelocity();
 	void setVelocity(Point* speed);
+	void addVelocity(Point* speed);
 	Point* getAccel();
 	void setAccel(Point* accel);
+	void addAccel(Point* accel);
 	void teleport(Point* coord);
 	void move(Direction direction,float magnitude);
 	void lookTo(Direction direction,float magnitude);
 	void lookAt(Point* point);
+	bool isOnGround();
+	void applyTickMovement();
 	Position();
 	~Position();
 
@@ -25,7 +28,7 @@ private:
 protected:
 	Point* location;
 	LookDirection* look;
-	Point* speed;
+	Point* velocity;
 	Point* accel;
 };
 

@@ -3,6 +3,7 @@
 
 #define RAD2DEG (180.0f/3.14159f)
 #define DEG2RAD (3.14159f/180.0f)
+#define GRAVITY 9.8
 
 
 Position::Position()
@@ -15,18 +16,13 @@ Position::~Position()
 }
 
 void Position::Init(){
-	location = (0, 0, 0);
-	speed = (0, 0, 0);
-	accel = (0, 0, 0);
+	location = new Point(0, 0, 0);
+	velocity = new Point(0, 0, 0);
+	accel = new Point(0, 0, 0);
 }
 
-//Getters/Settings for Stats.
 Point* Position::getLocation(){
 	return location;
-}
-
-void Position::setLocation(Point* point){
-	location = point;
 }
 
 LookDirection* Position::getLook(){
@@ -42,11 +38,15 @@ void Position::lookAt(Point* point){
 }
 
 Point* Position::getVelocity(){
-	return speed;
+	return velocity;
+}
+
+void Position::addVelocity(Point* newSpeed){
+	velocity->move(newSpeed);
 }
 
 void Position::setVelocity(Point* newSpeed){
-	speed = newSpeed;
+	velocity = newSpeed;
 }
 
 Point* Position::getAccel(){
@@ -57,8 +57,12 @@ void Position::setAccel(Point* newAccel){
 	accel = newAccel;
 }
 
+void Position::addAccel(Point* newAccel){
+	accel->move(newAccel);
+}
+
 void Position::teleport(Point* coord){
-	setLocation(coord);
+	location = coord;
 }
 
 void Position::move(Direction direction,float magnitude){
@@ -87,5 +91,15 @@ void Position::move(Direction direction,float magnitude){
 		//Camera shouldn't matter what direction is up/down
 		location->moveY(magnitude);
 	}
+}
+bool Position::isOnGround(){
+	//TODO: Make this more intricate to account for other landscapes
+	return (location->getX() == 0);
+}
 
+void Position::applyTickMovement(){
+	//add accel to velocity each tick
+	velocity->move(accel);
+	//then add velocity to location each tick
+	location->move(velocity);
 }

@@ -1,4 +1,5 @@
 #pragma once
+#include "Position.h"
 class Physics
 {
 
@@ -13,6 +14,8 @@ public:
 	void setGroundHeight(float newHeight);
 	float getWaterChoppiness();
 	void setWaterChoppiness(float newChoppiness); //I think this is a word but it looks wrong...oh well. 
+	void enableGravity(Position* pos);
+	void applyGroundPushback(Position* pos);
 	Physics();
 	~Physics();
 
@@ -23,7 +26,5 @@ protected:
 	double wind;
 	float groundHeight;
 	float waterChoppiness;
-
-	
 };
 

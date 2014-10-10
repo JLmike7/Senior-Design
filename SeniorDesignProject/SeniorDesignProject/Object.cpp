@@ -23,3 +23,12 @@ void Object::setDeath(bool isDead)
 {
 	Object::isDead = isDead;
 }
+
+Position* Object::getPosition()
+{
+	return position;
+}
+void Object::setPosition(Position *_position)
+{
+	position = position;
+}

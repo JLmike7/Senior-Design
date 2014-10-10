@@ -16,6 +16,8 @@ public:
 	void moveX(float x);
 	void moveY(float y);
 	void moveZ(float z);
+	void move(Point* other);
+	void move(float coords[3]);
 	float* getCoords();
 	float distanceTo(Point* other);
 private:

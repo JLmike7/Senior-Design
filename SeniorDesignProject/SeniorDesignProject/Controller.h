@@ -12,6 +12,9 @@ public:
 	void look(Direction direction);
 	void fire();
 	void jump();
+	void nextWeapon();
+	void prevWeapon();
+	void handleKeyPress(char key);
 private:
 
 protected:

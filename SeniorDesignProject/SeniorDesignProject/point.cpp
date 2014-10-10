@@ -42,6 +42,15 @@ void Point::moveZ(float _z){
 	z += _z;
 }
 
+void Point::move(Point* other){
+	move(other->getCoords);
+}
+void Point::move(float coords[3]){
+	moveX(coords[0]);
+	moveY(coords[1]);
+	moveZ(coords[2]);
+}
+
 float Point::getX(){
 	return x;
 }

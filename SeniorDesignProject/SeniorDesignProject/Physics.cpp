@@ -44,3 +44,12 @@ float Physics::getWaterChoppiness(){
 void Physics::setWaterChoppiness(float newChoppiness){
 	waterChoppiness = newChoppiness;
 }
+void Physics::enableGravity(Position* pos){
+	pos->addAccel(new Point(0, -gravity, 0));
+}
+void Physics::applyGroundPushback(Position* pos){
+	//If on the ground, force Y velocity to zero
+	if (!(pos->isOnGround())){
+		pos->getVelocity()->setY(0);
+	}
+}
