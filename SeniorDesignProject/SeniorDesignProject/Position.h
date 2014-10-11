@@ -15,10 +15,11 @@ public:
 	void setAccel(Point* accel);
 	void addAccel(Point* accel);
 	void teleport(Point* coord);
-	void move(Direction direction,float magnitude);
+	void beginMove(Direction direction,float magnitude);
 	void lookTo(Direction direction,float magnitude);
 	void lookAt(Point* point);
 	bool isOnGround();
+	void halt();
 	void applyTickMovement();
 	Position();
 	~Position();

@@ -22,7 +22,7 @@ void World::Init(){
 				setPlayer(i);
 			}
 			bipeds[i]->setTeam(team);
-			physics->enableGravity(bipeds[i]);
+			physics->enableGravity(bipeds[i]->getPosition());
 		}
 	}
 }
@@ -31,11 +31,14 @@ void World::tick(){
 	//Tick all players then all objects
 	for (int b = 0; b < TEAM_SIZE*NUMBER_TEAMS; b++){
 		bipeds[b]->getPosition()->applyTickMovement();
+		physics->applyGroundPushback(bipeds[b]->getPosition());
 	}
 
-	//TODO: finish object gravity.  Ticking 1024 objects per frame is bad.
+//TODO: finish object gravity.  Ticking 1024 objects per frame is bad.
+
 //	for (int o = 0; o < MAX_OBJECTS; o++){
 //		objects[o]->getPosition()->applyTickMovement();
+//		physics->applyGroundPushback(objects[o]->getPosition());
 //	}
 }
 

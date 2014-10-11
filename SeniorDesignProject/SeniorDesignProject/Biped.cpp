@@ -37,15 +37,21 @@ void Biped::setPosition(Position *_position)
 {
 	position = position;
 }
-void Biped::move(Direction direction){
+void Biped::halt(){
+	position->getVelocity()->setX(0);
+	position->getVelocity()->setZ(0);
+	position->getAccel()->setX(0);
+	position->getAccel()->setZ(0);
+}
+void Biped::beginMove(Direction direction){
 	if (stance == Stance::WALK){
-		position->move(direction, stats->getMaxWalk());
+		position->beginMove(direction, stats->getMaxWalk());
 	}
 	else if (stance == Stance::CRAWL){
-		position->move(direction, stats->getMaxCrawl());
+		position->beginMove(direction, stats->getMaxCrawl());
 	}
 	else if (stance == Stance::RUN){
-		position->move(direction, stats->getMaxRun());
+		position->beginMove(direction, stats->getMaxRun());
 	}
 }
 Weapon* Biped::getWeapon(){

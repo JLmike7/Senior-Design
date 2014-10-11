@@ -5,6 +5,7 @@
 #include "Position.h"
 #include "Direction.h"
 #include "Stats.h"
+#include "Settings.h"
 
 class Biped :
 	public Object{
@@ -22,7 +23,6 @@ public:
 	int getTeam();
 	void setTeam(int team);
 	int takeHit(int damage);
-	bool firing();
 	float getCameraHeight();
 	void setCameraHeight(float newHeight);
 	float getCrawlCameraHeight();
@@ -30,11 +30,12 @@ public:
 	int getTeamColor();
 	void setTeamColor(int newColor);
 	bool getDeath();
+	void beginMove(Direction direction);
 	void setDeath(bool isDead);
 	Position* getPosition();
-	void  setPosition(Position *position);
+	void  setPosition(Position* position);
 	void fire();
-	void move(Direction direction);
+	void halt();
 	void jump();
 	void lookTo(Direction direction);
 	void lookAt(Point* point);

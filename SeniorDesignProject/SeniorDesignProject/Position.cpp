@@ -65,23 +65,31 @@ void Position::teleport(Point* coord){
 	location = coord;
 }
 
-void Position::move(Direction direction,float magnitude){
+void Position::beginMove(Direction direction,float magnitude){
 	float azimuth = look->getAzimuth();
 	if (direction == Direction::FRONT){
-		location->moveX(sin(azimuth*DEG2RAD)*magnitude);
-		location->moveZ(cos(azimuth*DEG2RAD)*magnitude);
+		addVelocity(new Point(
+			sin(azimuth*DEG2RAD)*magnitude,
+			0.0,
+			cos(azimuth*DEG2RAD)*magnitude));
 	}
 	if (direction == Direction::BACK){
-		location->moveX(-sin(azimuth*DEG2RAD)*magnitude);
-		location->moveZ(-cos(azimuth*DEG2RAD)*magnitude);
+		addVelocity(new Point(
+			-sin(azimuth*DEG2RAD)*magnitude,
+			0.0,
+			-cos(azimuth*DEG2RAD)*magnitude));
 	}
 	if (direction == Direction::LEFT){
-		location->moveX(sin((90 + azimuth)*DEG2RAD)*magnitude);
-		location->moveZ(cos((90 + azimuth)*DEG2RAD)*magnitude);
+		addVelocity(new Point(
+			sin((90 + azimuth)*DEG2RAD)*magnitude,
+			0.0,
+			cos((90 + azimuth)*DEG2RAD)*magnitude));
 	}
 	if (direction == Direction::RIGHT){
-		location->moveX(-sin((90 + azimuth)*DEG2RAD)*magnitude);
-		location->moveZ(-cos((90 + azimuth)*DEG2RAD)*magnitude);
+		addVelocity(new Point(
+			-sin((90 + azimuth)*DEG2RAD)*magnitude,
+			0.0,
+			-cos((90 + azimuth)*DEG2RAD)*magnitude));
 	}
 	if (direction == Direction::UP){
 		//Camera shouldn't matter what direction is up/down
@@ -98,8 +106,9 @@ bool Position::isOnGround(){
 }
 
 void Position::applyTickMovement(){
-	//add accel to velocity each tick
-	velocity->move(accel);
-	//then add velocity to location each tick
+	//Note:  Flipping the order of these may break ground pushback.
+	//apply current velocity to the position
 	location->move(velocity);
+	//Add acceleration to velocity to set up for next tick.
+	velocity->move(accel);
 }

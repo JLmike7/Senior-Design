@@ -11,8 +11,8 @@ Controller::~Controller()
 {
 }
 
-void Controller::move(Direction direction){
-	biped->move(direction);
+void Controller::beginMove(Direction direction){
+	biped->beginMove(direction);
 }
 void Controller::look(Direction direction){
 	biped->lookTo(direction);
@@ -29,19 +29,34 @@ void Controller::nextWeapon(){
 void Controller::prevWeapon(){
 	biped->prevWeapon();
 }
+void Controller::halt(){
+	biped->halt();
+}
 void Controller::handleKeyPress(char key){
 	switch (key){
 	case 'w':
-		move(Direction::FRONT);
+		if (!movingFront){
+			movingFront = true;
+			beginMove(Direction::FRONT);
+		}
 		break;
 	case 's':
-		move(Direction::BACK);
+		if (!movingBack){
+			movingBack = true;
+			beginMove(Direction::BACK);
+		}
 		break;
 	case 'a':
-		move(Direction::LEFT);
+		if (!movingBack){
+			movingLeft = true;
+			beginMove(Direction::LEFT);
+		}
 		break;
 	case 'd':
-		move(Direction::RIGHT);
+		if (!movingRight){
+			movingRight = true;
+			beginMove(Direction::RIGHT);
+		}
 		break;
 	case ' ':
 		jump();
@@ -67,5 +82,7 @@ void Controller::handleKeyPress(char key){
 	case 'e':
 		nextWeapon();
 		break;
+	default:
+		halt();
 	}
 }

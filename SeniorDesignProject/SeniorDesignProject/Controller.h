@@ -8,14 +8,19 @@ class Controller :
 public:
 	Controller();
 	~Controller();
-	void move(Direction direction);
+	void beginMove(Direction direction);
 	void look(Direction direction);
 	void fire();
 	void jump();
+	void halt();
 	void nextWeapon();
 	void prevWeapon();
 	void handleKeyPress(char key);
 private:
+	bool movingFront;
+	bool movingBack;
+	bool movingLeft;
+	bool movingRight;
 
 protected:
 	World* world;
