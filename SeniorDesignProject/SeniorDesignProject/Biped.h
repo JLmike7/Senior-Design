@@ -6,11 +6,10 @@
 #include "Direction.h"
 #include "Stats.h"
 #include "Settings.h"
+#include "Stance.h"
 
 class Biped :
 	public Object{
-
-enum Stance { RUN, WALK, CRAWL };
 
 public:
 	void Init(Settings *settings, Box *hitbox);
@@ -19,44 +18,32 @@ public:
 	void setHitbox(Box* box);
 	Box* getHitbox();
 	Weapon* getWeapon();
-	void pushWeapon(Weapon *newWeapon);
+	void addWeapon(Weapon *newWeapon);
 	void nextWeapon();
 	void prevWeapon();
 	int getTeam();
 	void setTeam(int team);
 	int takeHit(int damage);
-	float getCameraHeight();
-	void setCameraHeight(float newHeight);
-	float getCrawlCameraHeight();
-	void  setCrawlCameraHeight(float newHeight);
-	int getTeamColor();
-	void setTeamColor(int newColor);
-	bool getDeath();
+	bool isDead();
 	void beginMove(Direction direction);
-	void setDeath(bool isDead);
 	Position* getPosition();
-	void  setPosition(Position* position);
 	void fire();
 	void jump();
 	void lookTo(Direction direction);
 	void lookAt(Point* point);
 
+	Biped(Settings* settings, Box *hitbox);
 	Biped();
-	Biped(Settings* settings,Box *hitbox);
 	~Biped();
 
 private:
 	Settings*			settings;
 
 protected:
-	Stance				stance;
-	std::deque<Weapon>*	weapons;
 	int					teamNumber;
-	float				cameraHeight;
-	float				crawlCameraHeight;
-	int					teamColor;
-	bool				dead;
+	Stance				stance;
 	Stats*				stats;
+	std::deque<Weapon>*	weapons;
 	Position*			position;
 	Box*				hitbox;
 };

@@ -6,15 +6,20 @@
 
 LookDirection::LookDirection()
 {
-	azimuth = 0.0;
-	elevation = 90.0;
-	updatePoint();
+	Init();
 }
 
 
 LookDirection::~LookDirection()
 {
 
+}
+
+void LookDirection::Init(){
+	azimuth = 0.0;
+	elevation = 90.0;
+	updatePoint();
+	tracking = false;
 }
 
 float LookDirection::getAzimuth(){
@@ -24,6 +29,7 @@ float LookDirection::getAzimuth(){
 void LookDirection::setAzimuth(float _azimuth){
 	azimuth = _azimuth;
 	updatePoint();
+	tracking = false;
 }
 
 float LookDirection::getElevation(){
@@ -33,6 +39,7 @@ float LookDirection::getElevation(){
 void LookDirection::setAzimuth(float _elevation){
 	elevation = _elevation;
 	updatePoint();
+	tracking = false;
 }
 
 void LookDirection::lookTo(Direction direction, float magnitude){
@@ -53,6 +60,14 @@ void LookDirection::lookTo(Direction direction, float magnitude){
 	}
 	updatePoint();
 }
+
+bool LookDirection::isTracking(){
+	return tracking;
+}
+void LookDirection::setTracking(bool _tracking){
+	tracking = _tracking;
+}
+
 //TODO: unit tests very much needed
 void LookDirection::updatePoint(){
 	point->setX(sin(azimuth*DEG2RAD)*sin(elevation*DEG2RAD));
@@ -65,11 +80,16 @@ void LookDirection::updateAzEl(){
 	elevation = -acos(point->getY());
 }
 
-void LookDirection::lookAt(Point* _point){
-	point = _point;
-	updateAzEl();
+void LookDirection::trackingTick(){
+	if (tracking)
+		updateAzEl();
 }
 
+void LookDirection::lookAt(Point* _point,bool _tracking){
+	point = _point;
+	updateAzEl();
+	setTracking(_tracking);
+}
 Point* LookDirection::getLookPoint(){
 	return point;
 }

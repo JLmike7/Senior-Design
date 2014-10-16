@@ -3,7 +3,6 @@
 
 #define RAD2DEG (180.0f/3.14159f)
 #define DEG2RAD (3.14159f/180.0f)
-#define GRAVITY 9.8
 
 
 Position::Position()
@@ -92,12 +91,10 @@ void Position::beginMove(Direction direction,float magnitude){
 			-cos((90 + azimuth)*DEG2RAD)*magnitude));
 	}
 	if (direction == Direction::UP){
-		//Camera shouldn't matter what direction is up/down
-		location->moveY(magnitude);
+		velocity->addY(magnitude);
 	}
 	if (direction == Direction::DOWN){
-		//Camera shouldn't matter what direction is up/down
-		location->moveY(magnitude);
+		velocity->addY(-magnitude);
 	}
 }
 bool Position::isOnGround(){
@@ -111,4 +108,6 @@ void Position::applyTickMovement(){
 	location->move(velocity);
 	//Add acceleration to velocity to set up for next tick.
 	velocity->move(accel);
+	//Tick the look tracking
+	look->trackingTick();
 }

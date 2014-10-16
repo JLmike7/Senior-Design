@@ -13,9 +13,9 @@ public:
 	void setX(float x);
 	void setY(float y);
 	void setZ(float z);
-	void moveX(float x);
-	void moveY(float y);
-	void moveZ(float z);
+	void addX(float x);
+	void addY(float y);
+	void addY(float z);
 	void move(Point* other);
 	void move(float coords[3]);
 	float* getCoords();

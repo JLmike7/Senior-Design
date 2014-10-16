@@ -21,16 +21,16 @@ Box::~Box(){
 
 Triangle** Box::getInwardTriangles(){
 	Triangle* triangles[12];
-	rectanglesToTriangles(getInwardRectangles(),triangles,6);
+	rectanglesToTriangles(getInwardQuads(), triangles, 6);
 	return triangles;
 }
 Triangle** Box::getOutwardTriangles(){
 	Triangle* triangles[12];
-	rectanglesToTriangles(getOutwardRectangles(), triangles, 6);
+	rectanglesToTriangles(getOutwardQuads(), triangles, 6);
 	return triangles;
 }
 
-Quad** Box::getInwardRectangles(){
+Quad** Box::getInwardQuads(){
 	Quad* rectangles[6];
 	rectangles[TOP_FACE] = getInwardTop();
 	rectangles[BOTTOM_FACE] = getInwardBottom();
@@ -40,7 +40,7 @@ Quad** Box::getInwardRectangles(){
 	rectangles[BACK_FACE] = getInwardBack();
 	return rectangles;
 }
-Quad** Box::getOutwardRectangles(){
+Quad** Box::getOutwardQuads(){
 	Quad* rectangles[6];
 	rectangles[TOP_FACE] = getOutwardTop();
 	rectangles[BOTTOM_FACE] = getOutwardBottom();
@@ -51,6 +51,28 @@ Quad** Box::getOutwardRectangles(){
 	return rectangles;
 }
 
+Quad* Box::getOutwardFace(Direction d){
+	switch (d){
+	case Direction::FRONT:
+		return getOutwardFront();
+		break;
+	case Direction::BACK:
+		return getOutwardBack();
+		break;
+	case Direction::LEFT:
+		return getOutwardLeft();
+		break;
+	case Direction::RIGHT:
+		return getOutwardRight();
+		break;
+	case Direction::UP:
+		return getOutwardTop();
+		break;
+	case Direction::DOWN:
+		return getOutwardBottom();
+		break;
+	}
+}
 Quad* Box::getOutwardTop(){
 	return new Quad(points[4], points[5], points[6], points[7]);
 }
@@ -70,6 +92,28 @@ Quad* Box::getOutwardBack(){
 	return new Quad(points[0], points[1], points[5], points[4]);
 }
 
+Quad* Box::getInwardFace(Direction d){
+	switch (d){
+	case Direction::FRONT:
+		return getInwardFront();
+		break;
+	case Direction::BACK:
+		return getInwardBack();
+		break;
+	case Direction::LEFT:
+		return getInwardLeft();
+		break;
+	case Direction::RIGHT:
+		return getInwardRight();
+		break;
+	case Direction::UP:
+		return getInwardTop();
+		break;
+	case Direction::DOWN:
+		return getInwardBottom();
+		break;
+	}
+}
 Quad* Box::getInwardTop(){
 	return new Quad(points[7], points[6], points[5], points[4]);
 }

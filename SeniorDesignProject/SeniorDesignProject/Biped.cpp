@@ -19,12 +19,9 @@ void Biped::Init(Settings* _settings,Box* box)
 	settings = _settings;
 	stance = WALK;
 	teamNumber = 1;
-	cameraHeight = 5.0f;
-	crawlCameraHeight = 5.0f;
-	teamColor = 1;
 	hitbox = box;
 }
-Biped::Stance Biped::getStance()
+Stance Biped::getStance()
 {
 	return stance;
 }
@@ -32,13 +29,10 @@ void Biped::setStance(Stance _stance)
 {
 	stance = _stance;
 }
+//You can get position, but there is no set Position.  Use getPosition->teleport() to set position.
 Position* Biped::getPosition()
 {
 	return position;
-}
-void Biped::setPosition(Position *_position)
-{
-	position = position;
 }
 void Biped::beginMove(Direction direction){
 	if (stance == Stance::WALK){
@@ -60,7 +54,7 @@ void Biped::setHitbox(Box* box){
 Weapon* Biped::getWeapon(){
 	return & weapons->front();
 }
-void Biped::pushWeapon(Weapon *newWeapon){
+void Biped::addWeapon(Weapon *newWeapon){
 	weapons->push_front(*newWeapon);
 }
 int Biped::getTeam(){
@@ -82,36 +76,14 @@ int Biped::takeHit(int damage){
 }
 void Biped::jump(){
 	if (position->isOnGround()){
-		position->addVelocity(new Point(0.0, stats->getMaxJumpSpeed(), 0.0));
+		position->beginMove(Direction::UP, stats->getMaxJumpSpeed());
 	}
 }
 void Biped::fire(){
 	//TODO: implement
 }
-
-float Biped::getCameraHeight(){
-	return cameraHeight;
-}
-void Biped::setCameraHeight(float newHeight){
-	cameraHeight = newHeight;
-}
-float Biped::getCrawlCameraHeight(){
-	return crawlCameraHeight;
-}
-void  Biped::setCrawlCameraHeight(float newHeight){
-	crawlCameraHeight = newHeight;
-}
-int Biped::getTeamColor(){
-	return teamColor;
-}
-void Biped::setTeamColor(int newColor){
-	teamColor = newColor;
-}
-bool Biped::getDeath(){
-	return dead;
-}
-void Biped::setDeath(bool isDead){
-	dead = isDead;
+bool Biped::isDead(){
+	return stats->isDead();
 }
 void Biped::lookTo(Direction direction){
 	position->lookTo(direction,(float)settings->getLookSensitivity());

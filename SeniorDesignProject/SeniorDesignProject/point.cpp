@@ -32,13 +32,13 @@ void Point::setZ(float _z){
 	z = _z;
 }
 
-void Point::moveX(float _x){
+void Point::addX(float _x){
 	x += _x;
 }
-void Point::moveY(float _y){
+void Point::addY(float _y){
 	y += _y;
 }
-void Point::moveZ(float _z){
+void Point::addY(float _z){
 	z += _z;
 }
 
@@ -46,9 +46,9 @@ void Point::move(Point* other){
 	move(other->getCoords);
 }
 void Point::move(float coords[3]){
-	moveX(coords[0]);
-	moveY(coords[1]);
-	moveZ(coords[2]);
+	addX(coords[0]);
+	addY(coords[1]);
+	addY(coords[2]);
 }
 
 float Point::getX(){

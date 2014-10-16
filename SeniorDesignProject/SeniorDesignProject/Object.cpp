@@ -10,13 +10,21 @@ Object::Object()
 {
 }
 
-
 Object::~Object()
 {
 }
 
+void Object::setGravityEnabled(bool gravity){
+	gravityEnabled = gravity;
+}
+
+bool Object::isGravityEnabled(){
+	return gravityEnabled;
+}
+
 void Object::Init(Box hitbox)
 {
+	gravityEnabled = false;
 	isDead = false;
 	hitbox = hitbox;
 }

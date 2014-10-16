@@ -8,6 +8,8 @@ public:
 	void Init(Box hitbox);
 	bool getDeath();
 	void setDeath(bool isDead);
+	void setGravityEnabled(bool gravity);
+	bool isGravityEnabled();
 
 	Position* getPosition();
 	void  setPosition(Position *position);
@@ -23,5 +25,6 @@ protected:
 	Position*	position;
 	bool		isDead;
 	Box			hitbox;
+	bool		gravityEnabled;
 };
 
