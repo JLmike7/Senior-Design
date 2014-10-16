@@ -2,17 +2,19 @@
 #include "Stats.h"
 #include "Settings.h"
 
-Biped::Biped(Settings* _settings)
-{
-	Init(_settings);
+Biped::Biped(Settings* _settings,Box* box){
+	Init(_settings,box);
 }
 
+Biped::Biped()
+{
+}
 
 Biped::~Biped()
 {
 }
 
-void Biped::Init(Settings* _settings)
+void Biped::Init(Settings* _settings,Box* box)
 {
 	settings = _settings;
 	stance = WALK;
@@ -20,6 +22,7 @@ void Biped::Init(Settings* _settings)
 	cameraHeight = 5.0f;
 	crawlCameraHeight = 5.0f;
 	teamColor = 1;
+	hitbox = box;
 }
 Biped::Stance Biped::getStance()
 {
@@ -37,12 +40,6 @@ void Biped::setPosition(Position *_position)
 {
 	position = position;
 }
-void Biped::halt(){
-	position->getVelocity()->setX(0);
-	position->getVelocity()->setZ(0);
-	position->getAccel()->setX(0);
-	position->getAccel()->setZ(0);
-}
 void Biped::beginMove(Direction direction){
 	if (stance == Stance::WALK){
 		position->beginMove(direction, stats->getMaxWalk());
@@ -53,6 +50,12 @@ void Biped::beginMove(Direction direction){
 	else if (stance == Stance::RUN){
 		position->beginMove(direction, stats->getMaxRun());
 	}
+}
+Box* Biped::getHitbox(){
+	return hitbox;
+}
+void Biped::setHitbox(Box* box){
+	hitbox = box;
 }
 Weapon* Biped::getWeapon(){
 	return & weapons->front();

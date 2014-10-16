@@ -2,7 +2,6 @@
 #include "Position.h"
 class Physics
 {
-
 public:
 	
 	void Init();

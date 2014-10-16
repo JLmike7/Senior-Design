@@ -1,6 +1,11 @@
 #include "Object.h"
 
 
+Object::Object(Box hitbox)
+{
+	Init(hitbox);
+}
+
 Object::Object()
 {
 }
@@ -10,9 +15,10 @@ Object::~Object()
 {
 }
 
-void Object::Init()
+void Object::Init(Box hitbox)
 {
 	isDead = false;
+	hitbox = hitbox;
 }
 
 bool Object::getDeath()

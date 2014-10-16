@@ -29,38 +29,47 @@ void Controller::nextWeapon(){
 void Controller::prevWeapon(){
 	biped->prevWeapon();
 }
-void Controller::halt(){
-	biped->halt();
-}
-void Controller::handleKeyPress(char key){
+
+//Begins move in the opposite direction, effectively undoing the velocity that was given by key down.
+void Controller::handleKeyUp(char key){
 	switch (key){
 	case 'w':
-		if (!movingFront){
-			movingFront = true;
-			beginMove(Direction::FRONT);
-		}
+		beginMove(Direction::BACK);
 		break;
 	case 's':
-		if (!movingBack){
-			movingBack = true;
-			beginMove(Direction::BACK);
-		}
+		beginMove(Direction::FRONT);
 		break;
 	case 'a':
-		if (!movingBack){
-			movingLeft = true;
-			beginMove(Direction::LEFT);
-		}
+		beginMove(Direction::RIGHT);
 		break;
 	case 'd':
-		if (!movingRight){
-			movingRight = true;
-			beginMove(Direction::RIGHT);
-		}
+		beginMove(Direction::LEFT);
 		break;
-	case ' ':
-		jump();
+
+
+	default:
 		break;
+	}
+}
+
+void Controller::handleKeyDown(char key){
+	switch (key){
+		
+		//MOVE
+	case 'w':
+		beginMove(Direction::FRONT);
+		break;
+	case 's':
+		beginMove(Direction::BACK);
+		break;
+	case 'a':
+		beginMove(Direction::LEFT);
+		break;
+	case 'd':
+		beginMove(Direction::RIGHT);
+		break;
+
+		//LOOK
 	case '4':
 		look(Direction::LEFT);
 		break;
@@ -73,8 +82,13 @@ void Controller::handleKeyPress(char key){
 	case '2':
 		look(Direction::DOWN);
 		break;
+
+		//OTHER
 	case '0':
 		fire();
+		break;
+	case ' ':
+		jump();
 		break;
 	case 'q':
 		prevWeapon();
@@ -82,7 +96,9 @@ void Controller::handleKeyPress(char key){
 	case 'e':
 		nextWeapon();
 		break;
+
+
 	default:
-		halt();
+		break;
 	}
 }

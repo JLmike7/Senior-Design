@@ -13,9 +13,11 @@ class Biped :
 enum Stance { RUN, WALK, CRAWL };
 
 public:
-	void Init(Settings *settings);
+	void Init(Settings *settings, Box *hitbox);
 	Stance getStance();
 	void setStance(Stance stance);
+	void setHitbox(Box* box);
+	Box* getHitbox();
 	Weapon* getWeapon();
 	void pushWeapon(Weapon *newWeapon);
 	void nextWeapon();
@@ -35,11 +37,12 @@ public:
 	Position* getPosition();
 	void  setPosition(Position* position);
 	void fire();
-	void halt();
 	void jump();
 	void lookTo(Direction direction);
 	void lookAt(Point* point);
-	Biped(Settings* settings);
+
+	Biped();
+	Biped(Settings* settings,Box *hitbox);
 	~Biped();
 
 private:
@@ -55,4 +58,5 @@ protected:
 	bool				dead;
 	Stats*				stats;
 	Position*			position;
+	Box*				hitbox;
 };

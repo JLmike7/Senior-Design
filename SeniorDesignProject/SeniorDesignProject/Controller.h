@@ -15,7 +15,8 @@ public:
 	void halt();
 	void nextWeapon();
 	void prevWeapon();
-	void handleKeyPress(char key);
+	void handleKeyDown(char key);
+	void handleKeyUp(char key);
 private:
 	bool movingFront;
 	bool movingBack;

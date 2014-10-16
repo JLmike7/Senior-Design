@@ -3,14 +3,11 @@
 
 //By default, box is the unit cube centered around the origin
 Box::Box(){
-	points[0] = new Point({ -0.5f, 0.5f, 0.5f });
-	points[1] = new Point({ 0.5f, 0.5f, 0.5f });
-	points[2] = new Point({ 0.5f, 0.5f, -0.5f });
-	points[3] = new Point({ -0.5f, 0.5f, -0.5f });
-	points[4] = new Point({ -0.5f, -0.5f, 0.5f });
-	points[5] = new Point({ 0.5f, -0.5f, 0.5f });
-	points[6] = new Point({ 0.5f, -0.5f, -0.5f });
-	points[7] = new Point({ -0.5f, -0.5f, -0.5f });
+	setFromWHD(1.0f, 1.0f, 1.0f);
+}
+
+Box::Box(float width, float height, float depth){
+	setFromWHD(width,height,depth);
 }
 
 Box::Box(Point* _points[8]){
@@ -102,4 +99,19 @@ void rectanglesToTriangles(Quad** from, Triangle** to, int size){
 void copyTriangles(Triangle** from, Triangle** to, int size){
 	for (int i = 0; i < size; i++)
 		to[i] = from[i];
+}
+
+void Box::setFromWHD(float width, float height, float depth){
+	width /= 2;
+	height /= 2;
+	depth /= 2;
+
+	points[0] = new Point({ -width, height, depth });
+	points[1] = new Point({ width, height, depth });
+	points[2] = new Point({ width, height, -depth });
+	points[3] = new Point({ -width, height, -depth });
+	points[4] = new Point({ -width, -height, depth });
+	points[5] = new Point({ width, -height, depth });
+	points[6] = new Point({ width, -height, -depth });
+	points[7] = new Point({ -width, -height, -depth });
 }

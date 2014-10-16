@@ -24,6 +24,7 @@ class Box
 public:
 	Box();
 	Box(Point* _points[8]);
+	Box(float width, float height, float depth);
 	~Box();
 
 	Triangle** getInwardTriangles();
@@ -44,6 +45,8 @@ public:
 	Quad* getInwardRight();
 	Quad* getInwardFront();
 	Quad* getInwardBack();
+
+	void setFromWHD(float width, float height, float depth);
 
 
 private:
