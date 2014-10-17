@@ -70,14 +70,17 @@ void LookDirection::setTracking(bool _tracking){
 
 //TODO: unit tests very much needed
 void LookDirection::updatePoint(){
-	point->setX(sin(azimuth*DEG2RAD)*sin(elevation*DEG2RAD));
-	point->setY(-cos(elevation*DEG2RAD));
-	point->setZ(cos(azimuth*DEG2RAD)*sin(elevation*DEG2RAD));
+	//Makes up a point exactly 1 unit away from the camera based on the azimuth/elevation.
+	lookAtPoint->setX( lookFromPoint->getX() + (sin(azimuth*DEG2RAD)*sin(elevation*DEG2RAD)));
+	lookAtPoint->setY( lookFromPoint->getY() + (-cos(elevation*DEG2RAD)));
+	lookAtPoint->setZ( lookFromPoint->getZ() + (cos(azimuth*DEG2RAD)*sin(elevation*DEG2RAD)));
 }
 //TODO: unit tests very much needed
 void LookDirection::updateAzEl(){
-	azimuth=tan(point->getX() / point->getZ());
-	elevation = -acos(point->getY());
+	//Calculates the azimuth and elevation based on where the lookFrom and lookAt points are.
+	Point* diffPoint = lookFromPoint->diff(lookAtPoint);
+	azimuth = tan(diffPoint->getX() / diffPoint->getZ());
+	elevation = -acos(diffPoint->getY());
 }
 
 void LookDirection::trackingTick(){
@@ -85,11 +88,12 @@ void LookDirection::trackingTick(){
 		updateAzEl();
 }
 
-void LookDirection::lookAt(Point* _point,bool _tracking){
-	point = _point;
+void LookDirection::lookAt(Point* _lookFrom,Point* _lookAt,bool _tracking){
+	lookFromPoint = _lookFrom;
+	lookAtPoint = _lookAt;
 	updateAzEl();
 	setTracking(_tracking);
 }
-Point* LookDirection::getLookPoint(){
-	return point;
+Point* LookDirection::getLookAtPoint(){
+	return lookAtPoint;
 }

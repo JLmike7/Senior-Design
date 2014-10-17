@@ -20,6 +20,7 @@ public:
 	void move(float coords[3]);
 	float* getCoords();
 	float distanceTo(Point* other);
+	Point* diff(Point* other);
 private:
 	float x, y, z;
 };

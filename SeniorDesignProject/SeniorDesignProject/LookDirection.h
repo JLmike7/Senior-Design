@@ -15,9 +15,9 @@ public:
 	float getElevation();
 	void setElevation(float elevation);
 	void lookTo(Direction direction,float magnitude);
-	void lookAt(Point *point,bool tracking);
+	void lookAt(Point* lookFrom,Point* lookAt,bool tracking);
 	void trackingTick();
-	Point* getLookPoint();
+	Point* getLookAtPoint();
 
 private:
 	void updatePoint();
@@ -26,7 +26,8 @@ private:
 protected:
 	float azimuth;
 	float elevation;
-	Point* point;
+	Point* lookAtPoint;
+	Point* lookFromPoint;
 	bool tracking;
 };
 

@@ -72,3 +72,10 @@ float Point::distanceTo(Point* other){
 		pow(other->getY() - getY(), 2) + 
 		pow(other->getZ() - getZ(),2) );
 }
+
+Point* Point::diff(Point* other){
+	Point* diff = new Point();
+	diff->setX(x - other->getX());
+	diff->setY(y - other->getY());
+	diff->setZ(z - other->getZ());
+}
