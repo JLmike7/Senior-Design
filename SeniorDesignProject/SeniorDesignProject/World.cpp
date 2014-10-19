@@ -14,10 +14,13 @@ World::~World()
 
 void World::Init(){
 	physics = new Physics();
+	settings = new Settings();
 	playerIndex = -1;
 	for (int team = 0; team < NUMBER_TEAMS; team++){
 		for (int teamBipedIndex = 0; teamBipedIndex < TEAM_SIZE; teamBipedIndex++){
 			int i = (team*TEAM_SIZE) + teamBipedIndex;
+			bipeds[i] = new Biped(settings);
+			//First biped on friendly team is the player
 			if (playerIndex == -1 && team == FRIENDLY_TEAM){
 				setPlayer(i);
 			}
@@ -32,6 +35,7 @@ void World::tick(){
 	for (int b = 0; b < TEAM_SIZE*NUMBER_TEAMS; b++){
 		bipeds[b]->getPosition()->applyTickMovement();
 		physics->applyGroundPushback(bipeds[b]->getPosition());
+		
 	}
 
 //TODO: finish object gravity.  Ticking 1024 objects per frame is bad.
@@ -65,6 +69,7 @@ Team* World::getTeam(int teamNum, bool aliveOnly){
 			team->addMember(bipeds[i], false);
 		}
 	}
+	return team;
 }
 //This method is inneficient.  Use sparingly.
 int World::getTeamSize(int teamNum, bool aliveOnly){

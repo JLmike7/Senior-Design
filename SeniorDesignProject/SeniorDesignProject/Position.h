@@ -17,7 +17,7 @@ public:
 	void teleport(Point* coord);
 	void beginMove(Direction direction,float magnitude);
 	void lookTo(Direction direction,float magnitude);
-	void lookAt(Point* point);
+	void lookAt(Point* point,bool tracking);
 	bool isOnGround();
 	void halt();
 	void applyTickMovement();

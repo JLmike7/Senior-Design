@@ -3,11 +3,11 @@
 
 //By default, box is the unit cube centered around the origin
 Box::Box(){
-	setFromWHD(1.0f, 1.0f, 1.0f);
+	setFromWHD(new Point(0.0f,0.0f,0.0f), 1.0f, 1.0f, 1.0f);
 }
 
-Box::Box(float width, float height, float depth){
-	setFromWHD(width,height,depth);
+Box::Box(Point* center,float width, float height, float depth){
+	setFromWHD(center,width,height,depth);
 }
 
 Box::Box(Point* _points[8]){
@@ -134,28 +134,31 @@ Quad* Box::getInwardBack(){
 }
 
 //to array must be twice the size of from, because there will be twice as many triangles as rectangles.
-void rectanglesToTriangles(Quad** from, Triangle** to, int size){
+void Box::rectanglesToTriangles(Quad** from, Triangle** to, int size){
 	for (int i = 0; i < size; i++){
-		copyTriangles(from[i]->getTriangles, to, 2);
+		copyTriangles(from[i]->getTriangles(), to, 2);
 	}
 }
 
-void copyTriangles(Triangle** from, Triangle** to, int size){
+void Box::copyTriangles(Triangle** from, Triangle** to, int size){
 	for (int i = 0; i < size; i++)
 		to[i] = from[i];
 }
 
-void Box::setFromWHD(float width, float height, float depth){
+void Box::setFromWHD(Point* center,float width, float height, float depth){
 	width /= 2;
 	height /= 2;
 	depth /= 2;
+	float x = center->getX();
+	float y = center->getY();
+	float z = center->getZ();
 
-	points[0] = new Point({ -width, height, depth });
-	points[1] = new Point({ width, height, depth });
-	points[2] = new Point({ width, height, -depth });
-	points[3] = new Point({ -width, height, -depth });
-	points[4] = new Point({ -width, -height, depth });
-	points[5] = new Point({ width, -height, depth });
-	points[6] = new Point({ width, -height, -depth });
-	points[7] = new Point({ -width, -height, -depth });
+	points[0] = new Point({ x - width, y + height, z + depth });
+	points[1] = new Point({ x + width, y + height, z + depth });
+	points[2] = new Point({ x + width, y + height, z - depth });
+	points[3] = new Point({ x - width, y + height, z - depth });
+	points[4] = new Point({ x - width, y - height, z + depth });
+	points[5] = new Point({ x + width, y - height, z + depth });
+	points[6] = new Point({ x + width, y - height, z - depth });
+	points[7] = new Point({ x - width, y - height, z - depth });
 }

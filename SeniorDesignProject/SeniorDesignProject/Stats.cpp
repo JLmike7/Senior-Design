@@ -13,7 +13,6 @@ Stats::Stats()
 	maxWalkSpeed = 60.0f;
 	maxRunSpeed = 100.0f;
 	maxSpeed = 200.0f;
-	inUse = false;
 }
 
 

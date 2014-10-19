@@ -25,8 +25,10 @@ class Box
 public:
 	Box();
 	Box(Point* _points[8]);
-	Box(float width, float height, float depth);
+	Box(Point* center, float width, float height, float depth);
 	~Box();
+
+	void setFromWHD(Point* center,float width, float height, float depth);
 
 	Triangle** getInwardTriangles();
 	Triangle** getOutwardTriangles();
@@ -51,9 +53,9 @@ public:
 	Quad* getInwardFront();
 	Quad* getInwardBack();
 
-	void setFromWHD(float width, float height, float depth);
 
-
-private:
+protected:
+	void rectanglesToTriangles(Quad** from, Triangle** to, int size);
+	void copyTriangles(Triangle** from, Triangle** to, int size);
 	Point *points[8];
 };

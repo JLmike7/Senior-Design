@@ -2,8 +2,8 @@
 #include "Stats.h"
 #include "Settings.h"
 
-Biped::Biped(Settings* _settings,Box* box){
-	Init(_settings,box);
+Biped::Biped(Settings* _settings){
+	Init(_settings);
 }
 
 Biped::Biped()
@@ -12,14 +12,16 @@ Biped::Biped()
 
 Biped::~Biped()
 {
+
 }
 
-void Biped::Init(Settings* _settings,Box* box)
+void Biped::Init(Settings* _settings)
 {
+	position = new Position();
 	settings = _settings;
 	stance = WALK;
-	teamNumber = 1;
-	hitbox = box;
+	teamNumber = -1;
+	hitbox = new Box(position->getLocation(),HIT_BOX_WIDTH,HIT_BOX_HEIGHT,HIT_BOX_DEPTH);
 }
 Stance Biped::getStance()
 {
@@ -29,7 +31,7 @@ void Biped::setStance(Stance _stance)
 {
 	stance = _stance;
 }
-//You can get position, but there is no set Position.  Use getPosition->teleport() to set position.
+//You can get position, but there is no set Position.  Use getPosition->teleport() to set a new location.
 Position* Biped::getPosition()
 {
 	return position;
@@ -71,7 +73,7 @@ void Biped::prevWeapon(){
 void Biped::setTeam(int _team){
 	teamNumber = _team;
 }
-int Biped::takeHit(int damage){
+void Biped::takeHit(int damage){
 	stats->setHealth(stats->getHealth()-damage);
 }
 void Biped::jump(){
@@ -88,6 +90,6 @@ bool Biped::isDead(){
 void Biped::lookTo(Direction direction){
 	position->lookTo(direction,(float)settings->getLookSensitivity());
 }
-void Biped::lookAt(Point* point){
-	position->lookAt(point);
+void Biped::lookAt(Point* point,bool tracking){
+	position->lookAt(point,tracking);
 }

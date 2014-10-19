@@ -38,12 +38,12 @@ void Point::addX(float _x){
 void Point::addY(float _y){
 	y += _y;
 }
-void Point::addY(float _z){
+void Point::addZ(float _z){
 	z += _z;
 }
 
 void Point::move(Point* other){
-	move(other->getCoords);
+	move(other->getCoords());
 }
 void Point::move(float coords[3]){
 	addX(coords[0]);
@@ -78,4 +78,5 @@ Point* Point::diff(Point* other){
 	diff->setX(x - other->getX());
 	diff->setY(y - other->getY());
 	diff->setZ(z - other->getZ());
+	return diff;
 }

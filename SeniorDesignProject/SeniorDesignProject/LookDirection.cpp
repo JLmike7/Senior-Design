@@ -36,7 +36,7 @@ float LookDirection::getElevation(){
 	return elevation;
 }
 
-void LookDirection::setAzimuth(float _elevation){
+void LookDirection::setElevation(float _elevation){
 	elevation = _elevation;
 	updatePoint();
 	tracking = false;

@@ -8,11 +8,16 @@
 #include "Settings.h"
 #include "Stance.h"
 
+#define HIT_BOX_WIDTH 0.75f
+#define HIT_BOX_HEIGHT 2.0f
+#define HIT_BOX_DEPTH 0.75f
+
+
 class Biped :
 	public Object{
 
 public:
-	void Init(Settings *settings, Box *hitbox);
+	void Init(Settings *settings);
 	Stance getStance();
 	void setStance(Stance stance);
 	void setHitbox(Box* box);
@@ -23,23 +28,23 @@ public:
 	void prevWeapon();
 	int getTeam();
 	void setTeam(int team);
-	int takeHit(int damage);
+	void takeHit(int damage);
 	bool isDead();
 	void beginMove(Direction direction);
 	Position* getPosition();
 	void fire();
 	void jump();
 	void lookTo(Direction direction);
-	void lookAt(Point* point);
+	void lookAt(Point* point,bool tracking);
 
-	Biped(Settings* settings, Box *hitbox);
+	Biped(Settings* settings);
 	Biped();
 	~Biped();
 
 private:
-	Settings*			settings;
 
 protected:
+	Settings*			settings;
 	int					teamNumber;
 	Stance				stance;
 	Stats*				stats;

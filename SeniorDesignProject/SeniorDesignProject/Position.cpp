@@ -32,8 +32,8 @@ void Position::lookTo(Direction direction,float magnitude){
 	look->lookTo(direction,magnitude);
 }
 
-void Position::lookAt(Point* point){
-	look->lookAt(point);
+void Position::lookAt(Point* point,bool tracking){
+	look->lookAt(location, point, tracking);
 }
 
 Point* Position::getVelocity(){
