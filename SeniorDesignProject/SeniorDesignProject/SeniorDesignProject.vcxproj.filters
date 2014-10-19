@@ -155,17 +155,17 @@
     <ClInclude Include="Physics.h">
       <Filter>Header Files\Problem Domain</Filter>
     </ClInclude>
-    <ClInclude Include="Stats.h">
-      <Filter>Header Files\Problem Domain</Filter>
+    <ClInclude Include="Person.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Stance.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Weapon.h">
-      <Filter>Header Files\Problem Domain</Filter>
-    </ClInclude>
-    <ClInclude Include="World.h">
-      <Filter>Header Files\Problem Domain</Filter>
-    </ClInclude>
-    <ClInclude Include="Menu.h">
-      <Filter>Header Files\Menu</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Settings.h">
       <Filter>Header Files\Menu</Filter>

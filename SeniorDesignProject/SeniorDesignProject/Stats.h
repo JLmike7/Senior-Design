@@ -19,8 +19,9 @@ public:
 	void setMaxRun(float newMaxRun);
 	float getMaxSpeed();
 	void setMaxSpeed(float newMaxSpeed);
-	bool getInUse();
-	void setInUse(bool newStatus);
+	float getMaxJumpSpeed();
+	void setMaxJumpSpeed(float newMaxSpeed);
+	bool isDead();
 	Stats();
 	~Stats();
 
@@ -31,12 +32,11 @@ protected:
 	int health;
 	int strength;
 	int lives;
-	//Box hitBox;
 	//AiMode mode;
 	//AssignedAiMode AMode;
 	float maxCrawlSpeed;
 	float maxWalkSpeed;
 	float maxRunSpeed;
 	float maxSpeed;
-	bool inUse;
+	float maxJumpSpeed;
 };

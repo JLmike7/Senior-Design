@@ -1,12 +1,12 @@
 #include "Physics.h"
 
+#define GRAVITY 9.81
+#define WATER_CHOPPYNESS 1
 
 Physics::Physics()
 {
-	gravity = 9.81; //It's like earth, but better
 	wind = 3.14;
 	groundHeight = 0;
-	waterChoppiness = 1;
 }
 
 
@@ -20,12 +20,6 @@ void Physics::Init()
 }
 
 
-double Physics::getGravity(){
-	return gravity;
-}
-void Physics::setGravity(double newGravity){
-	gravity = newGravity;
-}
 double Physics::getWind(){
 	return wind;
 }
@@ -38,9 +32,12 @@ float Physics::getGroundHeight(){
 void Physics::setGroundHeight(float newHeight){
 	groundHeight = newHeight;
 }
-float Physics::getWaterChoppiness(){
-	return waterChoppiness;
+void Physics::enableGravity(Position* pos){
+	pos->getAccel()->addY(-GRAVITY);
 }
-void Physics::setWaterChoppiness(float newChoppiness){
-	waterChoppiness = newChoppiness;
+void Physics::applyGroundPushback(Position* pos){
+	//If on the ground, take away gravity by undoing the gravity's acceleration for this tick
+	if (!(pos->isOnGround())){
+		pos->getVelocity()->addY(GRAVITY);
+	}
 }

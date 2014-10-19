@@ -32,6 +32,25 @@ void Point::setZ(float _z){
 	z = _z;
 }
 
+void Point::addX(float _x){
+	x += _x;
+}
+void Point::addY(float _y){
+	y += _y;
+}
+void Point::addY(float _z){
+	z += _z;
+}
+
+void Point::move(Point* other){
+	move(other->getCoords);
+}
+void Point::move(float coords[3]){
+	addX(coords[0]);
+	addY(coords[1]);
+	addY(coords[2]);
+}
+
 float Point::getX(){
 	return x;
 }
@@ -42,9 +61,21 @@ float Point::getZ(){
 	return z;
 }
 
+float* Point::getCoords(){
+	float coords[3] = { x, y, z };
+	return coords;
+}
+
 float Point::distanceTo(Point* other){
 	return sqrt(
 		pow(other->getX() - getX(), 2) + 
 		pow(other->getY() - getY(), 2) + 
 		pow(other->getZ() - getZ(),2) );
+}
+
+Point* Point::diff(Point* other){
+	Point* diff = new Point();
+	diff->setX(x - other->getX());
+	diff->setY(y - other->getY());
+	diff->setZ(z - other->getZ());
 }
