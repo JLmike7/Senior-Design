@@ -71,6 +71,9 @@ Quad* Box::getOutwardFace(Direction d){
 	case Direction::DOWN:
 		return getOutwardBottom();
 		break;
+	default:
+		throw std::invalid_argument("Invalid Face Direction");
+		break;
 	}
 }
 Quad* Box::getOutwardTop(){
@@ -111,6 +114,9 @@ Quad* Box::getInwardFace(Direction d){
 		break;
 	case Direction::DOWN:
 		return getInwardBottom();
+		break;
+	default:
+		throw std::invalid_argument("Invalid Face Direction");
 		break;
 	}
 }

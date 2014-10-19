@@ -3,6 +3,7 @@
 #include "Point.h"
 #include "Triangle.h"
 #include "Direction.h"
+#include <stdexcept>
 
 #define FRONT_TOP_LEFT 0
 #define FRONT_TOP_RIGHT 1
