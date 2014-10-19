@@ -30,14 +30,6 @@ void World::setPlayer(int index)
 	playerIndex = index;
 }
 
-Biped* World::getPlayer()
-{
-	return &people[playerIndex];
-}
-Biped* World::getBiped(int index)
-{
-	return &people[index];
-}
 
 //This method is inneficient.  Use sparingly.
 /*Biped** World::getTeam(int teamNum, bool aliveOnly){

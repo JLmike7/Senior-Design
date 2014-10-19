@@ -1,5 +1,4 @@
 #pragma once
-#include "Direction.h"
 //#include "Coord.h"
 class Position
 {
@@ -14,8 +13,6 @@ public:
 	Coord getAccel();
 	void setAccel(Coord accel);
 	void teleport(Coord coord);*/
-	int move(Direction direction);
-	int lookAt(Direction direction);
 	Position();
 	~Position();
 

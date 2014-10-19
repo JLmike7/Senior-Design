@@ -3,8 +3,6 @@
 
 Biped::Biped()
 {
-	//stance = Stance->STANDBY;
-	//weapons[0];
 	teamNumber = 1;
 	cameraHeight = 5.0f;
 	crawlCameraHeight = 5.0f;
@@ -20,10 +18,8 @@ Biped::~Biped()
 
 void Biped::Init()
 {
-	//stance = Stance->STANDBY;
 	weapons[0];
 	teamNumber = 1;
-	biped = new Biped;
 	cameraHeight = 5.0f;
 	crawlCameraHeight = 5.0f;
 	teamColor = 1;
