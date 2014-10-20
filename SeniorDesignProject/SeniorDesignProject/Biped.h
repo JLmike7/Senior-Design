@@ -7,6 +7,7 @@
 #include "Stats.h"
 #include "Settings.h"
 #include "Stance.h"
+#include "WalkingStatus.h"
 
 #define HIT_BOX_WIDTH 0.75f
 #define HIT_BOX_HEIGHT 2.0f
@@ -36,6 +37,8 @@ public:
 	void jump();
 	void lookTo(Direction direction);
 	void lookAt(Point* point,bool tracking);
+	void makeWalk(Direction direction);
+	void makeNotWalk(Direction direction);
 
 	Biped(Settings* settings);
 	Biped();
@@ -51,4 +54,5 @@ protected:
 	std::deque<Weapon>*	weapons;
 	Position*			position;
 	Box*				hitbox;
+	WalkingStatus*		walkingStatus;
 };

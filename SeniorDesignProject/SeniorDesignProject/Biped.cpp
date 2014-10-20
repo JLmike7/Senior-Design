@@ -47,6 +47,35 @@ void Biped::beginMove(Direction direction){
 		position->beginMove(direction, stats->getMaxRun());
 	}
 }
+void Biped::makeWalk(Direction direction){
+	if (walkingStatus->isWalking(direction)){
+		//Do nothing, you're already walking
+	}
+	else{
+		walkingStatus->setTrue(direction);
+		beginMove(direction);
+	}
+}
+void Biped::makeNotWalk(Direction direction){
+	if (walkingStatus->isWalking(direction)){
+		walkingStatus->setFalse(direction);
+		if (direction == Direction::FRONT){
+			beginMove(Direction::BACK);
+		}
+		if (direction == Direction::BACK){
+			beginMove(Direction::FRONT);
+		}
+		if (direction == Direction::LEFT){
+			beginMove(Direction::RIGHT);
+		}
+		if (direction == Direction::RIGHT){
+			beginMove(Direction::LEFT);
+		}
+	}
+	else{
+		//Do nothing, you're already stopped
+	}
+}
 Box* Biped::getHitbox(){
 	return hitbox;
 }

@@ -26,6 +26,11 @@ Point* Position::getLocation(){
 	return location;
 }
 
+void Position::halt(){
+	velocity = new Point(0, 0, 0);
+	accel = new Point(0, 0, 0);
+}
+
 LookDirection* Position::getLook(){
 	return look;
 }
@@ -81,13 +86,13 @@ void Position::beginMove(Direction direction,float magnitude){
 			0.0,
 			-cos(azimuth*DEG2RAD)*magnitude));
 	}
-	if (direction == Direction::LEFT){
+	if (direction == Direction::RIGHT){
 		addVelocity(new Point(
 			sin((90 + azimuth)*DEG2RAD)*magnitude,
 			0.0,
 			cos((90 + azimuth)*DEG2RAD)*magnitude));
 	}
-	if (direction == Direction::RIGHT){
+	if (direction == Direction::LEFT){
 		addVelocity(new Point(
 			-sin((90 + azimuth)*DEG2RAD)*magnitude,
 			0.0,
