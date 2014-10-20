@@ -3,7 +3,9 @@
 
 
 Point::Point(){
-
+	x = 0.0f;
+	y = 0.0f;
+	z = 0.0f;
 }
 
 //Creates a point at the origin (0,0,0) by default.
@@ -43,12 +45,9 @@ void Point::addZ(float _z){
 }
 
 void Point::move(Point* other){
-	move(other->getCoords());
-}
-void Point::move(float coords[3]){
-	addX(coords[0]);
-	addY(coords[1]);
-	addY(coords[2]);
+	addX(other->getX());
+	addY(other->getY());
+	addZ(other->getZ());
 }
 
 float Point::getX(){

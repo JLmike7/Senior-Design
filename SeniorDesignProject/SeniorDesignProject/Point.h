@@ -17,7 +17,6 @@ public:
 	void addY(float y);
 	void addZ(float z);
 	void move(Point* other);
-	void move(float coords[3]);
 	float* getCoords();
 	float distanceTo(Point* other);
 	Point* diff(Point* other);

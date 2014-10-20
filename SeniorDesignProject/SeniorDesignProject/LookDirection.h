@@ -5,9 +5,9 @@
 class LookDirection
 {
 public:
-	LookDirection();
+	LookDirection(Point* from);
 	~LookDirection();
-	void Init();
+	void Init(Point* from);
 	float getAzimuth();
 	bool isTracking();
 	void setTracking(bool tracking);

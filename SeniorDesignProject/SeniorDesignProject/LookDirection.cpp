@@ -4,9 +4,9 @@
 #define RAD2DEG (180.0f/3.14159f)
 #define DEG2RAD (3.14159f/180.0f)
 
-LookDirection::LookDirection()
+LookDirection::LookDirection(Point* from)
 {
-	Init();
+	Init(from);
 }
 
 
@@ -15,9 +15,11 @@ LookDirection::~LookDirection()
 
 }
 
-void LookDirection::Init(){
-	azimuth = 0.0;
-	elevation = 90.0;
+void LookDirection::Init(Point* from){
+	azimuth = 0.0f;
+	elevation = 90.0f;
+	lookAtPoint = new Point();
+	lookFromPoint = from;
 	updatePoint();
 	tracking = false;
 }

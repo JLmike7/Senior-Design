@@ -7,6 +7,7 @@
 
 Position::Position()
 {
+	Init();
 }
 
 
@@ -18,6 +19,7 @@ void Position::Init(){
 	location = new Point(0, 0, 0);
 	velocity = new Point(0, 0, 0);
 	accel = new Point(0, 0, 0);
+	look = new LookDirection(location);
 }
 
 Point* Position::getLocation(){
@@ -64,6 +66,7 @@ void Position::teleport(Point* coord){
 	location = coord;
 }
 
+//This is used to start all controlled movements.  It adds velocity in relation to the camera's direction.
 void Position::beginMove(Direction direction,float magnitude){
 	float azimuth = look->getAzimuth();
 	if (direction == Direction::FRONT){
@@ -97,12 +100,14 @@ void Position::beginMove(Direction direction,float magnitude){
 		velocity->addY(-magnitude);
 	}
 }
+
 bool Position::isOnGround(){
 	//TODO: Make this more intricate to account for other landscapes
 	return (location->getX() == 0);
 }
 
-void Position::applyTickMovement(){
+//This method updates everything.
+void Position::applyTickMovement(int elapsedMills){
 	//Note:  Flipping the order of these may break ground pushback.
 	//apply current velocity to the position
 	location->move(velocity);

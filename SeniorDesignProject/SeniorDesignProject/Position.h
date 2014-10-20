@@ -20,10 +20,10 @@ public:
 	void lookAt(Point* point,bool tracking);
 	bool isOnGround();
 	void halt();
-	void applyTickMovement();
+	void applyTickMovement(int elapsedMills);
 	Position();
 	~Position();
-
+	
 private:
 
 protected:
