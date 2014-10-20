@@ -6,8 +6,7 @@ public:
 	bool isWalking(Direction d);
 	WalkingStatus();
 	~WalkingStatus();
-	void setTrue(Direction d);
-	void setFalse(Direction d);
+	void set(Direction d,bool startStop);
 private:
 	bool	walkingForward, walkingBackward, walkingLeft, walkingRight;
 };

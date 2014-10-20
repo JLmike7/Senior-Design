@@ -111,13 +111,26 @@ bool Position::isOnGround(){
 	return (location->getX() == 0);
 }
 
-//This method updates everything.
-void Position::applyTickMovement(int elapsedMills){
+//This method updates everything based on the amount of time since its last call.
+void Position::applyTickMovement(){
+	long double currentTime = time(0);
+	long double elapsedMills = currentTime - prevTickTime;
+	prevTickTime = currentTime;
+
+	//Calculate the velocity and acceleration for this tick.
+	float sec = elapsedMills / 1000;
+	Point* tickVel = new Point(velocity->getX()*sec,
+		velocity->getY()*sec,
+		velocity->getZ()*sec);
+	Point* tickAccel = new Point(accel->getX()*sec,
+		accel->getY()*sec,
+		accel->getZ()*sec);
+
 	//Note:  Flipping the order of these may break ground pushback.
 	//apply current velocity to the position
-	location->move(velocity);
+	location->move(tickVel);
 	//Add acceleration to velocity to set up for next tick.
-	velocity->move(accel);
+	velocity->move(tickAccel);
 	//Tick the look tracking
 	look->trackingTick();
 }

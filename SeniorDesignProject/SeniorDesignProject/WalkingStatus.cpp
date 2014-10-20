@@ -30,35 +30,19 @@ bool WalkingStatus::isWalking(Direction d){
 		break;
 	}
 }
-void WalkingStatus::setTrue(Direction d){
+void WalkingStatus::set(Direction d,bool startStop){
 	switch (d){
 	case Direction::FRONT:
-		walkingForward=true;
+		walkingForward = startStop;
 		break;
 	case Direction::BACK:
-		walkingBackward = true;
+		walkingBackward = startStop;
 		break;
 	case Direction::LEFT:
-		walkingLeft = true;
+		walkingLeft = startStop;
 		break;
 	case Direction::RIGHT:
-		walkingRight = true;
-		break;
-	}
-}
-void WalkingStatus::setFalse(Direction d){
-	switch (d){
-	case Direction::FRONT:
-		walkingForward = true;
-		break;
-	case Direction::BACK:
-		walkingBackward = true;
-		break;
-	case Direction::LEFT:
-		walkingLeft = true;
-		break;
-	case Direction::RIGHT:
-		walkingRight = true;
+		walkingRight = startStop;
 		break;
 	}
 }

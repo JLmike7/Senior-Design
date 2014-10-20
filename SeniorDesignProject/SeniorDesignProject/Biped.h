@@ -37,8 +37,7 @@ public:
 	void jump();
 	void lookTo(Direction direction);
 	void lookAt(Point* point,bool tracking);
-	void makeWalk(Direction direction);
-	void makeNotWalk(Direction direction);
+	void walk(Direction direction,bool startStop);
 
 	Biped(Settings* settings);
 	Biped();

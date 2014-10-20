@@ -47,33 +47,30 @@ void Biped::beginMove(Direction direction){
 		position->beginMove(direction, stats->getMaxRun());
 	}
 }
-void Biped::makeWalk(Direction direction){
+//Makes the player walk at their max speed in a direction.  If startStop=false, makes the player stop walking in this direction.
+void Biped::walk(Direction direction,bool startStop){
 	if (walkingStatus->isWalking(direction)){
-		//Do nothing, you're already walking
-	}
-	else{
-		walkingStatus->setTrue(direction);
-		beginMove(direction);
-	}
-}
-void Biped::makeNotWalk(Direction direction){
-	if (walkingStatus->isWalking(direction)){
-		walkingStatus->setFalse(direction);
-		if (direction == Direction::FRONT){
-			beginMove(Direction::BACK);
-		}
-		if (direction == Direction::BACK){
-			beginMove(Direction::FRONT);
-		}
-		if (direction == Direction::LEFT){
-			beginMove(Direction::RIGHT);
-		}
-		if (direction == Direction::RIGHT){
-			beginMove(Direction::LEFT);
+		if (startStop == false){
+			walkingStatus->set(direction, false);
+			if (direction == Direction::FRONT){
+				beginMove(Direction::BACK);
+			}
+			if (direction == Direction::BACK){
+				beginMove(Direction::FRONT);
+			}
+			if (direction == Direction::LEFT){
+				beginMove(Direction::RIGHT);
+			}
+			if (direction == Direction::RIGHT){
+				beginMove(Direction::LEFT);
+			}
 		}
 	}
 	else{
-		//Do nothing, you're already stopped
+		if (startStop == true){
+			walkingStatus->set(direction,true);
+			beginMove(direction);
+		}
 	}
 }
 Box* Biped::getHitbox(){

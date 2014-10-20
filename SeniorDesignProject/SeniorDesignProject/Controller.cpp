@@ -11,9 +11,6 @@ Controller::~Controller()
 {
 }
 
-void Controller::beginMove(Direction direction){
-	biped->beginMove(direction);
-}
 void Controller::look(Direction direction){
 	biped->lookTo(direction);
 }
@@ -30,45 +27,32 @@ void Controller::prevWeapon(){
 	biped->prevWeapon();
 }
 
-//Begins move in the opposite direction, effectively undoing the velocity that was given by key down.
-void Controller::handleKeyUp(char key){
-	switch (key){
-	case 'w':
-		beginMove(Direction::BACK);
-		break;
-	case 's':
-		beginMove(Direction::FRONT);
-		break;
-	case 'a':
-		beginMove(Direction::RIGHT);
-		break;
-	case 'd':
-		beginMove(Direction::LEFT);
-		break;
-
-
-	default:
-		break;
+void Controller::handleKey(char key){
+	if (key == 'w'){
+		biped->walk(Direction::FRONT, true);
 	}
-}
+	else
+		biped->walk(Direction::FRONT, false);
 
-void Controller::handleKeyDown(char key){
+	if (key == 's'){
+		biped->walk(Direction::BACK, true);
+	}
+	else
+		biped->walk(Direction::BACK, false);
+
+	if (key == 'a'){
+		biped->walk(Direction::LEFT, true);
+	}
+	else
+		biped->walk(Direction::LEFT, false);
+
+	if (key == 'd'){
+		biped->walk(Direction::RIGHT, true);
+	}
+	else
+		biped->walk(Direction::RIGHT, false);
+
 	switch (key){
-		
-		//MOVE
-	case 'w':
-		beginMove(Direction::FRONT);
-		break;
-	case 's':
-		beginMove(Direction::BACK);
-		break;
-	case 'a':
-		beginMove(Direction::LEFT);
-		break;
-	case 'd':
-		beginMove(Direction::RIGHT);
-		break;
-
 		//LOOK
 	case '4':
 		look(Direction::LEFT);

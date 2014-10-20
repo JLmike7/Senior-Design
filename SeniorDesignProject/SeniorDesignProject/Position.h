@@ -2,6 +2,8 @@
 #include "Direction.h"
 #include "Point.h"
 #include "LookDirection.h"
+#include <ctime>
+
 class Position
 {
 public:
@@ -20,7 +22,7 @@ public:
 	void lookAt(Point* point,bool tracking);
 	bool isOnGround();
 	void halt();
-	void applyTickMovement(int elapsedMills);
+	void applyTickMovement();
 	Position();
 	~Position();
 	
@@ -31,5 +33,6 @@ protected:
 	LookDirection* look;
 	Point* velocity;
 	Point* accel;
+	long double prevTickTime;
 };
 
