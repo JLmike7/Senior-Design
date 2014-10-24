@@ -33,6 +33,7 @@ void World::Init(){
 void World::tick(){
 	//Tick all players then all gravity-enabled objects
 	for (int b = 0; b < TEAM_SIZE*NUMBER_TEAMS; b++){
+		//bipeds[b]->getPosition()->applyTickMovement(1);
 		bipeds[b]->getPosition()->applyTickMovement();
 		physics->applyGroundPushback(bipeds[b]->getPosition());
 		

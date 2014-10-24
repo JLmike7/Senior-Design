@@ -2,7 +2,8 @@
 #include <math.h>
 
 #define RAD2DEG (180.0f/3.14159f)
-#define DEG2RAD (3.14159f/180.0f)
+#define DEG2RAD (1)
+//#define DEG2RAD (3.14159f/180.0f)
 
 
 Position::Position()
@@ -113,7 +114,7 @@ bool Position::isOnGround(){
 
 //This method updates everything based on the amount of time since its last call.
 void Position::applyTickMovement(){
-	long double currentTime = time(0);
+	/*long double currentTime = time(0);
 	long double elapsedMills = currentTime - prevTickTime;
 	prevTickTime = currentTime;
 
@@ -131,6 +132,15 @@ void Position::applyTickMovement(){
 	location->move(tickVel);
 	//Add acceleration to velocity to set up for next tick.
 	velocity->move(tickAccel);
+	//Tick the look tracking
+	look->trackingTick();*/
+
+
+	//Note:  Flipping the order of these may break ground pushback.
+	//apply current velocity to the position
+	location->move(velocity);
+	//Add acceleration to velocity to set up for next tick.
+	velocity->move(accel);
 	//Tick the look tracking
 	look->trackingTick();
 }
