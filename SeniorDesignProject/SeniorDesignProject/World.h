@@ -2,6 +2,7 @@
 #include "Biped.h"
 #include "Team.h"
 #include "Physics.h"
+#include "Settings.h"
 
 #define TEAM_SIZE 5
 #define NUMBER_TEAMS 2
@@ -32,4 +33,5 @@ protected:
 	Biped* people[TEAM_SIZE*NUMBER_TEAMS];
 	Physics* physics;
 	Object* objects[MAX_OBJECTS];
+	Settings* settings;
 };

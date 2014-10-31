@@ -1,6 +1,6 @@
 #include "Physics.h"
 
-#define GRAVITY 9.81
+#define GRAVITY 9.81f
 #define WATER_CHOPPYNESS 1
 
 Physics::Physics()
@@ -18,7 +18,6 @@ void Physics::Init()
 {
 	
 }
-
 
 double Physics::getWind(){
 	return wind;

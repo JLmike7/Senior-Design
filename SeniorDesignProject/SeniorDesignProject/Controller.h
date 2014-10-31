@@ -13,8 +13,7 @@ public:
 	void halt();
 	void nextWeapon();
 	void prevWeapon();
-	void handleKeyDown(char key);
-	void handleKeyUp(char key);
+	void handleKey(char key);
 private:
 	bool movingFront;
 	bool movingBack;

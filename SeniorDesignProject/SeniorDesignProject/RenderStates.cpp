@@ -1,10 +1,16 @@
+//***************************************************************************************
+// RenderStates.cpp by Frank Luna (C) 2011 All Rights Reserved.
+//***************************************************************************************
+
 #include "RenderStates.h"
 
-ID3D11RasterizerState* RenderStates::WireframeRS = 0;
-ID3D11RasterizerState* RenderStates::NoCullRS = 0;
+ID3D11RasterizerState*   RenderStates::WireframeRS = 0;
+ID3D11RasterizerState*   RenderStates::NoCullRS = 0;
 
-ID3D11BlendState*      RenderStates::AlphaToCoverageBS = 0;
-ID3D11BlendState*      RenderStates::TransparentBS = 0;
+ID3D11DepthStencilState* RenderStates::EqualsDSS = 0;
+
+ID3D11BlendState*        RenderStates::AlphaToCoverageBS = 0;
+ID3D11BlendState*        RenderStates::TransparentBS = 0;
 
 void RenderStates::InitAll(ID3D11Device* device)
 {
@@ -31,6 +37,17 @@ void RenderStates::InitAll(ID3D11Device* device)
 	noCullDesc.DepthClipEnable = true;
 
 	HR(device->CreateRasterizerState(&noCullDesc, &NoCullRS));
+
+	//
+	// EqualsDSS
+	//
+	D3D11_DEPTH_STENCIL_DESC equalsDesc;
+	ZeroMemory(&equalsDesc, sizeof(D3D11_DEPTH_STENCIL_DESC));
+	equalsDesc.DepthEnable = true;
+	equalsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+	equalsDesc.DepthFunc = D3D11_COMPARISON_EQUAL;
+
+	HR(device->CreateDepthStencilState(&equalsDesc, &EqualsDSS));
 
 	//
 	// AlphaToCoverageBS
@@ -68,6 +85,7 @@ void RenderStates::DestroyAll()
 {
 	ReleaseCOM(WireframeRS);
 	ReleaseCOM(NoCullRS);
+	ReleaseCOM(EqualsDSS);
 	ReleaseCOM(AlphaToCoverageBS);
 	ReleaseCOM(TransparentBS);
 }

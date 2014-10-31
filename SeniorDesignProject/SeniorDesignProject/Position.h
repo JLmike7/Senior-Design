@@ -1,6 +1,9 @@
 #pragma once
+#include "Direction.h"
 #include "Point.h"
 #include "LookDirection.h"
+#include <ctime>
+
 class Position
 {
 public:
@@ -14,13 +17,15 @@ public:
 	void setAccel(Point* accel);
 	void addAccel(Point* accel);
 	void teleport(Point* coord);
-	void lookAt(Point* point);
+	void beginMove(Direction direction,float magnitude);
+	void lookTo(Direction direction,float magnitude);
+	void lookAt(Point* point,bool tracking);
 	bool isOnGround();
 	void halt();
 	void applyTickMovement();
 	Position();
 	~Position();
-
+	
 private:
 
 protected:
@@ -28,5 +33,6 @@ protected:
 	LookDirection* look;
 	Point* velocity;
 	Point* accel;
+	long double prevTickTime;
 };
 
