@@ -29,7 +29,7 @@ private:
 
 protected:
 	int playerIndex;
-	Biped* bipeds[TEAM_SIZE*NUMBER_TEAMS];
+	Biped* people[TEAM_SIZE*NUMBER_TEAMS];
 	Physics* physics;
 	Object* objects[MAX_OBJECTS];
 };

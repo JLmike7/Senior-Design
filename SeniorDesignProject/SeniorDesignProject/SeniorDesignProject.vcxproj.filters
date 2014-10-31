@@ -132,16 +132,7 @@
     <ClCompile Include="SeniorPro.cpp">
       <Filter>Source Files\UI</Filter>
     </ClCompile>
-    <ClCompile Include="Box.cpp">
-      <Filter>Source Files\Unused</Filter>
-    </ClCompile>
     <ClCompile Include="Position.cpp">
-      <Filter>Source Files\Unused</Filter>
-    </ClCompile>
-    <ClCompile Include="Quad.cpp">
-      <Filter>Source Files\Unused</Filter>
-    </ClCompile>
-    <ClCompile Include="triangle.cpp">
       <Filter>Source Files\Unused</Filter>
     </ClCompile>
   </ItemGroup>
@@ -155,17 +146,17 @@
     <ClInclude Include="Physics.h">
       <Filter>Header Files\Problem Domain</Filter>
     </ClInclude>
-    <ClInclude Include="Person.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Settings.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Stance.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Stats.h">
+      <Filter>Header Files\Problem Domain</Filter>
     </ClInclude>
     <ClInclude Include="Weapon.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Problem Domain</Filter>
+    </ClInclude>
+    <ClInclude Include="World.h">
+      <Filter>Header Files\Problem Domain</Filter>
+    </ClInclude>
+    <ClInclude Include="Menu.h">
+      <Filter>Header Files\Menu</Filter>
     </ClInclude>
     <ClInclude Include="Settings.h">
       <Filter>Header Files\Menu</Filter>
@@ -230,19 +221,10 @@
     <ClInclude Include="Vertex.h">
       <Filter>Header Files\UI</Filter>
     </ClInclude>
-    <ClInclude Include="Box.h">
-      <Filter>Header Files\Unused</Filter>
-    </ClInclude>
     <ClInclude Include="Controller.h">
       <Filter>Header Files\Unused</Filter>
     </ClInclude>
     <ClInclude Include="Position.h">
-      <Filter>Header Files\Unused</Filter>
-    </ClInclude>
-    <ClInclude Include="Quad.h">
-      <Filter>Header Files\Unused</Filter>
-    </ClInclude>
-    <ClInclude Include="Triangle.h">
       <Filter>Header Files\Unused</Filter>
     </ClInclude>
   </ItemGroup>

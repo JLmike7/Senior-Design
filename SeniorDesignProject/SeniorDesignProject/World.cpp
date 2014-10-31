@@ -68,5 +68,4 @@ int World::getTeamSize(int teamNum, bool aliveOnly){
 }*/
 void World::convert(int BipedIndex)
 {
-	people[BipedIndex].setTeam(FRIENDLY_TEAM);
 }

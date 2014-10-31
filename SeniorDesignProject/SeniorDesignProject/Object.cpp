@@ -1,13 +1,9 @@
 #include "Object.h"
 
 
-Object::Object(Box hitbox)
-{
-	Init(hitbox);
-}
-
 Object::Object()
 {
+	Init();
 }
 
 Object::~Object()
@@ -22,11 +18,10 @@ bool Object::isGravityEnabled(){
 	return gravityEnabled;
 }
 
-void Object::Init(Box hitbox)
+void Object::Init()
 {
 	gravityEnabled = false;
 	isDead = false;
-	hitbox = hitbox;
 }
 
 bool Object::getDeath()

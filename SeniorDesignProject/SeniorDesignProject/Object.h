@@ -1,11 +1,10 @@
 #pragma once
 #include "Position.h"
-#include "Box.h"
 
 class Object
 {
 public:
-	void Init(Box hitbox);
+	void Init();
 	bool getDeath();
 	void setDeath(bool isDead);
 	void setGravityEnabled(bool gravity);
@@ -14,7 +13,7 @@ public:
 	Position* getPosition();
 	void  setPosition(Position *position);
 
-	Object(Box hitbox);
+	Object();
 	Object();
 	~Object();
 

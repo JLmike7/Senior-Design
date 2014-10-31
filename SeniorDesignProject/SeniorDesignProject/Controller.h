@@ -8,8 +8,6 @@ class Controller :
 public:
 	Controller();
 	~Controller();
-	void beginMove(Direction direction);
-	void look(Direction direction);
 	void fire();
 	void jump();
 	void halt();

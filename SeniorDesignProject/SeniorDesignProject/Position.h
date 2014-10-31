@@ -1,5 +1,4 @@
 #pragma once
-#include "Direction.h"
 #include "Point.h"
 #include "LookDirection.h"
 class Position
@@ -15,8 +14,6 @@ public:
 	void setAccel(Point* accel);
 	void addAccel(Point* accel);
 	void teleport(Point* coord);
-	void beginMove(Direction direction,float magnitude);
-	void lookTo(Direction direction,float magnitude);
 	void lookAt(Point* point);
 	bool isOnGround();
 	void halt();

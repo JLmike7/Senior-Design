@@ -48,13 +48,6 @@ int Biped::getTeam(){
 void Biped::setTeam(int team){
 	
 }
-int Biped::takeHit(int damage){
-
-}
-bool Biped::fire(){
-	return fire;
-}
-
 
 int Biped::takeHit(int damage)
 {

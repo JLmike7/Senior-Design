@@ -41,8 +41,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(IncludePath);$(DXSDK_DIR)Include;C:\Users\aaron\Documents\Visual Studio 2013\3DGameProgramming\Common</IncludePath>
-    <LibraryPath>$(LibraryPath);$(DXSDK_DIR)Lib\x86;C:\Users\aaron\Documents\Visual Studio 2013\3DGameProgramming\Common</LibraryPath>
+    <IncludePath>$(IncludePath);$(DXSDK_DIR)Include;C:\Users\choward8\Documents\Visual Studio 2013\3DGameProgramming\Common</IncludePath>
+    <LibraryPath>$(LibraryPath);$(DXSDK_DIR)Lib\x86;C:\Users\choward8\Documents\Visual Studio 2013\3DGameProgramming\Common</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -95,7 +95,6 @@
     <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\Waves.cpp" />
     <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\xnacollision.cpp" />
     <ClCompile Include="Biped.cpp" />
-    <ClCompile Include="Box.cpp" />
     <ClCompile Include="Controller.cpp" />
     <ClCompile Include="cubemap.cpp" />
     <ClCompile Include="D3DApp.cpp" />
@@ -105,14 +104,12 @@
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="point.cpp" />
     <ClCompile Include="Position.cpp" />
-    <ClCompile Include="Quad.cpp" />
     <ClCompile Include="RenderStates.cpp" />
     <ClCompile Include="SeniorPro.cpp" />
     <ClCompile Include="Settings.cpp" />
     <ClCompile Include="Stats.cpp" />
     <ClCompile Include="Team.cpp" />
     <ClCompile Include="Terrain.cpp" />
-    <ClCompile Include="triangle.cpp" />
     <ClCompile Include="Vertex.cpp" />
     <ClCompile Include="Weapon.cpp" />
     <ClCompile Include="World.cpp" />
@@ -129,7 +126,6 @@
     <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\Waves.h" />
     <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\xnacollision.h" />
     <ClInclude Include="Biped.h" />
-    <ClInclude Include="Box.h" />
     <ClInclude Include="Controller.h" />
     <ClInclude Include="cubemap.h" />
     <ClInclude Include="D3DApp.h" />
@@ -139,13 +135,11 @@
     <ClInclude Include="Physics.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Position.h" />
-    <ClInclude Include="Quad.h" />
     <ClInclude Include="RenderStates.h" />
     <ClInclude Include="Settings.h" />
     <ClInclude Include="Stats.h" />
     <ClInclude Include="Team.h" />
     <ClInclude Include="Terrain.h" />
-    <ClInclude Include="Triangle.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="Weapon.h" />
     <ClInclude Include="World.h" />
