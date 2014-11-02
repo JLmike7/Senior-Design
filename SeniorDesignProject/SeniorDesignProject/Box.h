@@ -2,6 +2,8 @@
 #include "Quad.h"
 #include "Point.h"
 #include "Triangle.h"
+#include "Direction.h"
+#include <stdexcept>
 
 #define FRONT_TOP_LEFT 0
 #define FRONT_TOP_RIGHT 1
@@ -24,13 +26,18 @@ class Box
 public:
 	Box();
 	Box(Point* _points[8]);
+	Box(Point* center, float width, float height, float depth);
 	~Box();
+
+	void setFromWHD(Point* center,float width, float height, float depth);
 
 	Triangle** getInwardTriangles();
 	Triangle** getOutwardTriangles();
-	Quad** getInwardRectangles();
-	Quad** getOutwardRectangles();
+	Quad** getInwardQuads();
+	Quad** getOutwardQuads();
 
+	//get the quad facing outward
+	Quad* getOutwardFace(Direction d);
 	Quad* getOutwardTop();
 	Quad* getOutwardBottom();
 	Quad* getOutwardLeft();
@@ -38,6 +45,8 @@ public:
 	Quad* getOutwardFront();
 	Quad* getOutwardBack();
 
+	//get the quad facing inward
+	Quad* getInwardFace(Direction d);
 	Quad* getInwardTop();
 	Quad* getInwardBottom();
 	Quad* getInwardLeft();
@@ -46,6 +55,8 @@ public:
 	Quad* getInwardBack();
 
 
-private:
+protected:
+	void rectanglesToTriangles(Quad** from, Triangle** to, int size);
+	void copyTriangles(Triangle** from, Triangle** to, int size);
 	Point *points[8];
 };

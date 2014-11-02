@@ -1,8 +1,14 @@
 #pragma once
 #include "Biped.h"
+#include "Team.h"
+#include "Physics.h"
+#include "Settings.h"
+
+#define TEAM_SIZE 5
 #define NUMBER_TEAMS 2
-#define TEAM_SIZE 2
-#define FRIENDLY_TEAM 2
+#define FRIENDLY_TEAM 0
+#define MAX_OBJECTS 1024
+
 class World
 {
 public:
@@ -11,10 +17,11 @@ public:
 	void convert(int BipedIndex);
 	Biped* getPlayer();
 	Biped* getBiped(int index);
-	//Biped** getTeam(int teamIndex, bool aliveOnly);
+	Team* getTeam(int teamIndex, bool aliveOnly);
 	int getTeamSize(int teamIndex, bool aliveOnly);
-	//Biped** getTeams(bool aliveOnly);
-	
+	Team** getTeams(bool aliveOnly);
+	void tick();
+
 
 	World();
 	~World();
@@ -22,8 +29,9 @@ public:
 private:
 
 protected:
-	Biped* player;
-	int numberTeams;
-	Biped people[10];
 	int playerIndex;
+	Biped* people[TEAM_SIZE*NUMBER_TEAMS];
+	Physics* physics;
+	Object* objects[MAX_OBJECTS];
+	Settings* settings;
 };

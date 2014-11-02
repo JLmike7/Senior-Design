@@ -7,14 +7,12 @@ Stats::Stats()
 	health = 100;
 	strength = 50;
 	lives = 3;
-	//hitBox;
 	//mode;
 	//AMode;
 	maxCrawlSpeed = 25.0f;
 	maxWalkSpeed = 60.0f;
 	maxRunSpeed = 100.0f;
 	maxSpeed = 200.0f;
-	inUse = false;
 }
 
 
@@ -89,13 +87,13 @@ float Stats::getMaxSpeed(){
 void Stats::setMaxSpeed(float newMaxSpeed){
 	maxSpeed = newMaxSpeed;
 }
-
-bool Stats::getInUse(){
-	return inUse;
+float Stats::getMaxJumpSpeed(){
+	return maxJumpSpeed;
+}
+void Stats::setMaxJumpSpeed(float newMaxJumpSpeed){
+	maxSpeed = newMaxJumpSpeed;
 }
 
-void Stats::setInUse(bool newStatus){
-	inUse = newStatus;
+bool Stats::isDead(){
+	return (health < 1);
 }
-
-

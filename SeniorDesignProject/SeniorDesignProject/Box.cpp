@@ -3,14 +3,11 @@
 
 //By default, box is the unit cube centered around the origin
 Box::Box(){
-	points[0] = new Point({ -0.5f, 0.5f, 0.5f });
-	points[1] = new Point({ 0.5f, 0.5f, 0.5f });
-	points[2] = new Point({ 0.5f, 0.5f, -0.5f });
-	points[3] = new Point({ -0.5f, 0.5f, -0.5f });
-	points[4] = new Point({ -0.5f, -0.5f, 0.5f });
-	points[5] = new Point({ 0.5f, -0.5f, 0.5f });
-	points[6] = new Point({ 0.5f, -0.5f, -0.5f });
-	points[7] = new Point({ -0.5f, -0.5f, -0.5f });
+	setFromWHD(new Point(0.0f,0.0f,0.0f), 1.0f, 1.0f, 1.0f);
+}
+
+Box::Box(Point* center,float width, float height, float depth){
+	setFromWHD(center,width,height,depth);
 }
 
 Box::Box(Point* _points[8]){
@@ -24,16 +21,16 @@ Box::~Box(){
 
 Triangle** Box::getInwardTriangles(){
 	Triangle* triangles[12];
-	rectanglesToTriangles(getInwardRectangles(),triangles,6);
+	rectanglesToTriangles(getInwardQuads(), triangles, 6);
 	return triangles;
 }
 Triangle** Box::getOutwardTriangles(){
 	Triangle* triangles[12];
-	rectanglesToTriangles(getOutwardRectangles(), triangles, 6);
+	rectanglesToTriangles(getOutwardQuads(), triangles, 6);
 	return triangles;
 }
 
-Quad** Box::getInwardRectangles(){
+Quad** Box::getInwardQuads(){
 	Quad* rectangles[6];
 	rectangles[TOP_FACE] = getInwardTop();
 	rectangles[BOTTOM_FACE] = getInwardBottom();
@@ -43,7 +40,7 @@ Quad** Box::getInwardRectangles(){
 	rectangles[BACK_FACE] = getInwardBack();
 	return rectangles;
 }
-Quad** Box::getOutwardRectangles(){
+Quad** Box::getOutwardQuads(){
 	Quad* rectangles[6];
 	rectangles[TOP_FACE] = getOutwardTop();
 	rectangles[BOTTOM_FACE] = getOutwardBottom();
@@ -54,6 +51,31 @@ Quad** Box::getOutwardRectangles(){
 	return rectangles;
 }
 
+Quad* Box::getOutwardFace(Direction d){
+	switch (d){
+	case Direction::FRONT:
+		return getOutwardFront();
+		break;
+	case Direction::BACK:
+		return getOutwardBack();
+		break;
+	case Direction::LEFT:
+		return getOutwardLeft();
+		break;
+	case Direction::RIGHT:
+		return getOutwardRight();
+		break;
+	case Direction::UP:
+		return getOutwardTop();
+		break;
+	case Direction::DOWN:
+		return getOutwardBottom();
+		break;
+	default:
+		throw std::invalid_argument("Invalid Face Direction");
+		break;
+	}
+}
 Quad* Box::getOutwardTop(){
 	return new Quad(points[4], points[5], points[6], points[7]);
 }
@@ -73,6 +95,31 @@ Quad* Box::getOutwardBack(){
 	return new Quad(points[0], points[1], points[5], points[4]);
 }
 
+Quad* Box::getInwardFace(Direction d){
+	switch (d){
+	case Direction::FRONT:
+		return getInwardFront();
+		break;
+	case Direction::BACK:
+		return getInwardBack();
+		break;
+	case Direction::LEFT:
+		return getInwardLeft();
+		break;
+	case Direction::RIGHT:
+		return getInwardRight();
+		break;
+	case Direction::UP:
+		return getInwardTop();
+		break;
+	case Direction::DOWN:
+		return getInwardBottom();
+		break;
+	default:
+		throw std::invalid_argument("Invalid Face Direction");
+		break;
+	}
+}
 Quad* Box::getInwardTop(){
 	return new Quad(points[7], points[6], points[5], points[4]);
 }
@@ -93,13 +140,31 @@ Quad* Box::getInwardBack(){
 }
 
 //to array must be twice the size of from, because there will be twice as many triangles as rectangles.
-void rectanglesToTriangles(Quad** from, Triangle** to, int size){
+void Box::rectanglesToTriangles(Quad** from, Triangle** to, int size){
 	for (int i = 0; i < size; i++){
-		copyTriangles(from[i]->getTriangles, to, 2);
+		copyTriangles(from[i]->getTriangles(), to, 2);
 	}
 }
 
-void copyTriangles(Triangle** from, Triangle** to, int size){
+void Box::copyTriangles(Triangle** from, Triangle** to, int size){
 	for (int i = 0; i < size; i++)
 		to[i] = from[i];
+}
+
+void Box::setFromWHD(Point* center,float width, float height, float depth){
+	width /= 2;
+	height /= 2;
+	depth /= 2;
+	float x = center->getX();
+	float y = center->getY();
+	float z = center->getZ();
+
+	points[0] = new Point({ x - width, y + height, z + depth });
+	points[1] = new Point({ x + width, y + height, z + depth });
+	points[2] = new Point({ x + width, y + height, z - depth });
+	points[3] = new Point({ x - width, y + height, z - depth });
+	points[4] = new Point({ x - width, y - height, z + depth });
+	points[5] = new Point({ x + width, y - height, z + depth });
+	points[6] = new Point({ x + width, y - height, z - depth });
+	points[7] = new Point({ x - width, y - height, z - depth });
 }

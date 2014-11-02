@@ -1,43 +1,57 @@
 #pragma once
-//#include "Weapon.h"
-enum Stance {
-	Walking, Running, Crouching
-};
+#include "Object.h"
+#include "Weapon.h"
+#include <deque>
+#include "Position.h"
+#include "Direction.h"
+#include "Stats.h"
+#include "Settings.h"
+#include "Stance.h"
+#include "WalkingStatus.h"
 
-class Biped
-{
+#define HIT_BOX_WIDTH 0.75f
+#define HIT_BOX_HEIGHT 2.0f
+#define HIT_BOX_DEPTH 0.75f
+
+
+class Biped :
+	public Object{
+
 public:
-	void Init();
+	void Init(Settings *settings);
 	Stance getStance();
-	void setStance(Stance iCanMove);
-	//Weapon getWeapon();
-	//void setWeapon(Weapon gunType);
+	void setStance(Stance stance);
+	void setHitbox(Box* box);
+	Box* getHitbox();
+	Weapon* getWeapon();
+	void addWeapon(Weapon *newWeapon);
+	void nextWeapon();
+	void prevWeapon();
 	int getTeam();
 	void setTeam(int team);
-	int takeHit(int damage);
-	bool firing();
-	float getCameraHeight();
-	void setCameraHeight(float newHeight);
-	float getCrawlCameraHeight();
-	void  setCrawlCameraHeight(float newHeight);
-	int getTeamColor();
-	void setTeamColor(int newColor);
-	bool getDeath();
-	void setDeath(bool isDead);
+	void takeHit(int damage);
+	bool isDead();
+	void beginMove(Direction direction);
+	Position* getPosition();
+	void fire();
+	void jump();
+	void lookTo(Direction direction);
+	void lookAt(Point* point,bool tracking);
+	void walk(Direction direction,bool startStop);
 
+	Biped(Settings* settings);
 	Biped();
 	~Biped();
 
 private:
 
-
 protected:
-
-	Stance		stance;
-	int			teamNumber;
-	float		cameraHeight;
-	float		crawlCameraHeight;
-	int			teamColor;
-	bool		fire;
-	bool		death;
+	Settings*			settings;
+	int					teamNumber;
+	Stance				stance;
+	Stats*				stats;
+	std::deque<Weapon>*	weapons;
+	Position*			position;
+	Box*				hitbox;
+	WalkingStatus*		walkingStatus;
 };

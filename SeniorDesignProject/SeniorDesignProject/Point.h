@@ -13,7 +13,13 @@ public:
 	void setX(float x);
 	void setY(float y);
 	void setZ(float z);
+	void addX(float x);
+	void addY(float y);
+	void addZ(float z);
+	void move(Point* other);
+	float* getCoords();
 	float distanceTo(Point* other);
+	Point* diff(Point* other);
 private:
 	float x, y, z;
 };
