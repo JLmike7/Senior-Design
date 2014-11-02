@@ -7,7 +7,8 @@
 #ifndef SSAO_H
 #define SSAO_H
 
-#include "d3dUtil.h"
+#include <vector>
+#include <xnamath.h>
 
 // Should we render AO at half resolution?
 

@@ -1,4 +1,6 @@
-#pragma once
+#ifndef BIPED_H
+#define BIPED_H
+
 #include "Object.h"
 #include "Weapon.h"
 #include <deque>
@@ -21,8 +23,6 @@ public:
 	void Init(Settings *settings);
 	Stance getStance();
 	void setStance(Stance stance);
-	void setHitbox(Box* box);
-	Box* getHitbox();
 	Weapon* getWeapon();
 	void addWeapon(Weapon *newWeapon);
 	void nextWeapon();
@@ -44,14 +44,13 @@ public:
 	~Biped();
 
 private:
-
-protected:
 	Settings*			settings;
 	int					teamNumber;
 	Stance				stance;
 	Stats*				stats;
 	std::deque<Weapon>*	weapons;
 	Position*			position;
-	Box*				hitbox;
 	WalkingStatus*		walkingStatus;
 };
+
+#endif

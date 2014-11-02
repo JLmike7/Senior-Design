@@ -41,8 +41,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(IncludePath);$(DXSDK_DIR)Include;C:\Users\Nickolas\Documents\Visual Studio 2013\3DGameProgramming\Common</IncludePath>
-    <LibraryPath>$(LibraryPath);$(DXSDK_DIR)Lib\x86;C:\Users\Nickolas\Documents\Visual Studio 2013\3DGameProgramming\Common</LibraryPath>
+    <IncludePath>$(IncludePath);$(DXSDK_DIR)Include;C:\Users\choward8\Documents\Visual Studio 2013\3DGameProgramming\Common</IncludePath>
+    <LibraryPath>$(LibraryPath);$(DXSDK_DIR)Lib\x86;C:\Users\choward8\Documents\Visual Studio 2013\3DGameProgramming\Common</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -159,7 +159,6 @@
     <ClInclude Include="Physics.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Position.h" />
-    <ClInclude Include="Quad.h" />
     <ClInclude Include="RenderStates.h" />
     <ClInclude Include="Settings.h" />
     <ClInclude Include="ShadowMap.h" />

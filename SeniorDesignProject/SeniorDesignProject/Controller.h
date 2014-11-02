@@ -1,6 +1,7 @@
 #pragma once
 #include "World.h"
 #include "Biped.h"
+#include "Direction.h"
 
 class Controller :
 	public World
@@ -14,6 +15,7 @@ public:
 	void nextWeapon();
 	void prevWeapon();
 	void handleKey(char key);
+	void look(Direction direction);
 private:
 	bool movingFront;
 	bool movingBack;
