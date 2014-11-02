@@ -200,6 +200,9 @@
     <ClInclude Include="..\..\..\..\3DGameProgramming\Common\d3dApp.h">
       <Filter>Common</Filter>
     </ClInclude>
+    <ClInclude Include="Wave.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Basic.fx">
@@ -214,5 +217,8 @@
     <FxCompile Include="Terrain.fx">
       <Filter>FX</Filter>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="Music.mp3" />
   </ItemGroup>
 </Project>

@@ -42,7 +42,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(IncludePath);$(DXSDK_DIR)Include;C:\Users\aaron\Documents\Visual Studio 2013\3DGameProgramming\Common</IncludePath>
-    <LibraryPath>$(LibraryPath);$(DXSDK_DIR)Lib\x86;C:\Users\aaron\Documents\Visual Studio 2013\3DGameProgramming\Common</LibraryPath>
+    <LibraryPath>$(LibraryPath);$(DXSDK_DIR)Lib\x86;C:\Users\aaron\Documents\Visual Studio 2013\3DGameProgramming\Common;C:\Program Files (x86)\Windows Kits\8.0\Lib\win8\um\x86</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -62,7 +62,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>d3d11.lib;d3dx11d.lib;D3DCompiler.lib;Effects11.lib;Effects11d.lib;dxerr.lib;dxguid.lib;dxgi.lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>d3d11.lib;d3dx11d.lib;D3DCompiler.lib;Effects11d.lib;Effects11.lib;dxerr.lib;dxgi.lib;dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d11.lib;d3dx11d.lib;D3DCompiler.lib;Effects11d.lib;Effects11.lib;dxerr.lib;dxgi.lib;dxguid.lib;Xaudio2.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <FxCompile>
       <ShaderType>Effect</ShaderType>
@@ -144,6 +144,7 @@
     <ClInclude Include="Stats.h" />
     <ClInclude Include="Terrain.h" />
     <ClInclude Include="Vertex.h" />
+    <ClInclude Include="Wave.h" />
     <ClInclude Include="Weapon.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>
@@ -152,6 +153,9 @@
     <FxCompile Include="cubemap.fx" />
     <FxCompile Include="LightHelper.fx" />
     <FxCompile Include="Terrain.fx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="Music.mp3" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

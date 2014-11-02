@@ -10,6 +10,12 @@
 #include "Camera.h"
 #include "Cubemap.h"
 #include "Terrain.h"
+#include <windows.h>
+#include <xaudio2.h>
+#include "Wave.h"
+#include <tchar.h>
+
+
 
 class SeniorPro : public D3DApp
 {
@@ -26,6 +32,7 @@ public:
 	void OnMouseUp(WPARAM btnState, int x, int y);
 	void OnMouseMove(WPARAM btnState, int x, int y);
 
+
 private:
 	Cubemap* mCubemap;
 	Terrain mTerrain;
@@ -37,7 +44,13 @@ private:
 	bool mWalkCamMode;
 
 	POINT mLastMousePos;
+
+
 };
+
+IXAudio2* g_engine;
+IXAudio2SourceVoice* g_source;
+IXAudio2MasteringVoice* g_master;
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance,
 	PSTR cmdLine, int showCmd)
@@ -49,9 +62,64 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance,
 
 	SeniorPro theApp(hInstance);
 
-	if (!theApp.Init())
+	if (!theApp.Init()){
 		return 0;
+	}
 
+
+	//must call this for COM
+	CoInitializeEx(NULL, COINIT_MULTITHREADED);
+
+	//create the engine
+	if (FAILED(XAudio2Create(&g_engine)))
+	{
+		CoUninitialize();
+		return -1;
+	}
+
+	//create the mastering voice
+	if (FAILED(g_engine->CreateMasteringVoice(&g_master)))
+	{
+		g_engine->Release();
+		CoUninitialize();
+		return -2;
+	}
+
+	//helper class to load wave files; trust me, this makes it MUCH easier
+	Wave buffer;
+
+	//load a wave file
+	if (!buffer.load("Music.wav"))
+	{
+		g_engine->Release();
+		CoUninitialize();
+		return -3;
+	}
+
+	//create the source voice, based on loaded wave format
+	if (FAILED(g_engine->CreateSourceVoice(&g_source, buffer.wf())))
+	{
+		g_engine->Release();
+		CoUninitialize();
+		return -4;
+	}
+
+	//start consuming audio in the source voice
+	g_source->Start();
+
+	//simple message loop
+	//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
+	//{
+		g_source->Stop();
+		g_source->FlushSourceBuffers();
+		g_source->Start();
+
+		//play the sound
+		g_source->SubmitSourceBuffer(buffer.xaBuffer());
+	//}
+
+	
+	
 	return theApp.Run();
 }
 
@@ -84,13 +152,18 @@ SeniorPro::SeniorPro(HINSTANCE hInstance)
 
 SeniorPro::~SeniorPro()
 {
+	//again, for COM
+	CoUninitialize();
+	g_engine->Release();
 	md3dImmediateContext->ClearState();
-
+	
 	SafeDelete(mCubemap);
-
+	//release the engine, NOT the voices!
+	
 	Effects::DestroyAll();
 	InputLayouts::DestroyAll();
 	RenderStates::DestroyAll();
+	
 }
 
 bool SeniorPro::Init()
