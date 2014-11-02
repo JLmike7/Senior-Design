@@ -14,7 +14,20 @@
 #include <xaudio2.h>
 #include "Wave.h"
 #include <tchar.h>
+#include "Ssao.h"
+#include "SkinnedData.h"
+#include "SkinnedModel.h"
+#include "Point.h"
+#include "Direction.h"
+#include "Position.h"
+#include "ShadowMap.h"
 
+struct BoundingSphere
+{
+	BoundingSphere() : Center(0.0f, 0.0f, 0.0f), Radius(0.0f) {}
+	XMFLOAT3 Center;
+	float Radius;
+};
 class SeniorPro : public D3DApp
 {
 public:

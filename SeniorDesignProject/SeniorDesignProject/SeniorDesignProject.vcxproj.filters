@@ -191,9 +191,6 @@
     <ClInclude Include="Biped.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Direction.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Object.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -236,14 +233,8 @@
     <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\TextureMgr.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\Waves.h">
-      <Filter>Common</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\xnacollision.h">
       <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="WalkingStatus.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="cubemap.h">
       <Filter>Header Files</Filter>
@@ -290,7 +281,10 @@
     <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\d3dApp.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="Wave.h">
+    <ClInclude Include="WalkingStatus.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\Waves.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

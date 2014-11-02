@@ -149,7 +149,6 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Controller.h" />
     <ClInclude Include="cubemap.h" />
-    <ClInclude Include="Direction.h" />
     <ClInclude Include="Effects.h" />
     <ClInclude Include="LoadM3d.h" />
     <ClInclude Include="LookDirection.h" />
@@ -172,6 +171,7 @@
     <ClInclude Include="Terrain.h" />
     <ClInclude Include="Triangle.h" />
     <ClInclude Include="Vertex.h" />
+    <ClInclude Include="WalkingStatus.h" />
     <ClInclude Include="Weapon.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>
