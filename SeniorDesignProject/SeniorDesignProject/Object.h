@@ -14,7 +14,7 @@ public:
 	void  setPosition(Position *position);
 
 	Object();
-	Object();
+
 	~Object();
 
 private:
@@ -23,7 +23,7 @@ private:
 protected:
 	Position*	position;
 	bool		isDead;
-	Box			hitbox;
+//	Box			hitbox;
 	bool		gravityEnabled;
 };
 

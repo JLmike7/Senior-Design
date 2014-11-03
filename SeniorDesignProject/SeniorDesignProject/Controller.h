@@ -14,6 +14,7 @@ public:
 	void nextWeapon();
 	void prevWeapon();
 	void handleKey(char key);
+	void look(Direction direction);
 private:
 	bool movingFront;
 	bool movingBack;

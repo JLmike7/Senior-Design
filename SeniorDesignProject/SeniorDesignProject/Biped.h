@@ -21,8 +21,8 @@ public:
 	void Init(Settings *settings);
 	Stance getStance();
 	void setStance(Stance stance);
-	void setHitbox(Box* box);
-	Box* getHitbox();
+//	void setHitbox(Box* box);
+//	Box* getHitbox();
 	Weapon* getWeapon();
 	void addWeapon(Weapon *newWeapon);
 	void nextWeapon();
@@ -52,6 +52,6 @@ protected:
 	Stats*				stats;
 	std::deque<Weapon>*	weapons;
 	Position*			position;
-	Box*				hitbox;
+//	Box*				hitbox;
 	WalkingStatus*		walkingStatus;
 };
