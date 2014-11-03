@@ -19,13 +19,13 @@ void World::Init(){
 	for (int team = 0; team < NUMBER_TEAMS; team++){
 		for (int teamBipedIndex = 0; teamBipedIndex < TEAM_SIZE; teamBipedIndex++){
 			int i = (team*TEAM_SIZE) + teamBipedIndex;
-			bipeds[i] = new Biped(settings);
+			people[i] = new Biped(settings);
 			//First biped on friendly team is the player
 			if (playerIndex == -1 && team == FRIENDLY_TEAM){
 				setPlayer(i);
 			}
-			bipeds[i]->setTeam(team);
-			physics->enableGravity(bipeds[i]->getPosition());
+			people[i]->setTeam(team);
+			physics->enableGravity(people[i]->getPosition());
 		}
 	}
 }
@@ -33,9 +33,9 @@ void World::Init(){
 void World::tick(){
 	//Tick all players then all gravity-enabled objects
 	for (int b = 0; b < TEAM_SIZE*NUMBER_TEAMS; b++){
-		//bipeds[b]->getPosition()->applyTickMovement(1);
-		bipeds[b]->getPosition()->applyTickMovement();
-		physics->applyGroundPushback(bipeds[b]->getPosition());
+		//people[b]->getPosition()->applyTickMovement(1);
+		people[b]->getPosition()->applyTickMovement();
+		physics->applyGroundPushback(people[b]->getPosition());
 		
 	}
 
@@ -54,11 +54,11 @@ void World::setPlayer(int index)
 
 Biped* World::getPlayer()
 {
-	return bipeds[playerIndex];
+	return people[playerIndex];
 }
 Biped* World::getBiped(int index)
 {
-	return bipeds[index];
+	return people[index];
 }
 
 //This method is inneficient.  Use sparingly.
@@ -66,8 +66,8 @@ Team* World::getTeam(int teamNum, bool aliveOnly){
 	Team* team = new Team(teamNum);
 	//for each player, put them in the team object
 	for (int i = 0; i < TEAM_SIZE*NUMBER_TEAMS; i++){
-		if (!aliveOnly || !bipeds[i]->getDeath()){
-			team->addMember(bipeds[i], false);
+		if (!aliveOnly || !people[i]->getDeath()){
+			team->addMember(people[i], false);
 		}
 	}
 	return team;
@@ -76,7 +76,7 @@ Team* World::getTeam(int teamNum, bool aliveOnly){
 int World::getTeamSize(int teamNum, bool aliveOnly){
 	int peopleInTeam = 0;
 	for (int i = 0; i < TEAM_SIZE*NUMBER_TEAMS; i++){
-		if (bipeds[i]->getTeam() == teamNum && (!aliveOnly || bipeds[i]->getDeath())){
+		if (people[i]->getTeam() == teamNum && (!aliveOnly || people[i]->getDeath())){
 			peopleInTeam++;
 		}
 	}
@@ -92,13 +92,13 @@ Team** World::getTeams(bool aliveOnly){
 	}
 	//for each player, put them in their team object
 	for (int i = 0; i < TEAM_SIZE*NUMBER_TEAMS; i++){
-		if (!aliveOnly || !bipeds[i]->getDeath()){
-			teams[bipeds[i]->getTeam()]->addMember(bipeds[i],false);
+		if (!aliveOnly || !people[i]->getDeath()){
+			teams[people[i]->getTeam()]->addMember(people[i],false);
 		}
 	}
 	return teams;
 }
 void World::convert(int BipedIndex)
 {
-	bipeds[BipedIndex]->setTeam(FRIENDLY_TEAM);
+	people[BipedIndex]->setTeam(FRIENDLY_TEAM);
 }

@@ -21,7 +21,7 @@ void Biped::Init(Settings* _settings)
 	settings = _settings;
 	stance = WALK;
 	teamNumber = -1;
-	hitbox = new Box(position->getLocation(),HIT_BOX_WIDTH,HIT_BOX_HEIGHT,HIT_BOX_DEPTH);
+	//hitbox = new Box(position->getLocation(),HIT_BOX_WIDTH,HIT_BOX_HEIGHT,HIT_BOX_DEPTH);
 }
 Stance Biped::getStance()
 {
@@ -73,12 +73,12 @@ void Biped::walk(Direction direction,bool startStop){
 		}
 	}
 }
-Box* Biped::getHitbox(){
-	return hitbox;
-}
-void Biped::setHitbox(Box* box){
-	hitbox = box;
-}
+//Box* Biped::getHitbox(){
+//	return hitbox;
+//}
+//void Biped::setHitbox(Box* box){
+//	hitbox = box;
+//}
 Weapon* Biped::getWeapon(){
 	return & weapons->front();
 }
