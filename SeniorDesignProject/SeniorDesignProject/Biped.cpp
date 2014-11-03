@@ -1,4 +1,6 @@
 #include "Biped.h"
+#include "Stats.h"
+#include "Settings.h"
 
 Biped::Biped(Settings* _settings){
 	Init(_settings);
@@ -6,9 +8,7 @@ Biped::Biped(Settings* _settings){
 
 Biped::Biped()
 {
-	teamNumber = 1;
 }
-
 
 Biped::~Biped()
 {
@@ -17,26 +17,21 @@ Biped::~Biped()
 
 void Biped::Init(Settings* _settings)
 {
+	position = new Position();
 	settings = _settings;
 	stance = WALK;
-	teamNumber = 1;
+	teamNumber = -1;
+	//hitbox = new Box(position->getLocation(),HIT_BOX_WIDTH,HIT_BOX_HEIGHT,HIT_BOX_DEPTH);
 }
-
-
-/*Stance Biped::getStance()
+Stance Biped::getStance()
 {
 	return stance;
 }
-
-void Biped::setStance(Stance stance)
+void Biped::setStance(Stance _stance)
 {
-	Biped::stance = stance;
-}*/
-
-/*Weapon Biped::getWeapon(){
-	return weapons[10];
+	stance = _stance;
 }
-//You can get position, but there is no set Position.  Use getPosition->teleport() to set position.
+//You can get position, but there is no set Position.  Use getPosition->teleport() to set a new location.
 Position* Biped::getPosition()
 {
 	return position;
@@ -52,12 +47,38 @@ void Biped::beginMove(Direction direction){
 		position->beginMove(direction, stats->getMaxRun());
 	}
 }
-Box* Biped::getHitbox(){
-	return hitbox;
+//Makes the player walk at their max speed in a direction.  If startStop=false, makes the player stop walking in this direction.
+void Biped::walk(Direction direction,bool startStop){
+	if (walkingStatus->isWalking(direction)){
+		if (startStop == false){
+			walkingStatus->set(direction, false);
+			if (direction == Direction::FRONT){
+				beginMove(Direction::BACK);
+			}
+			if (direction == Direction::BACK){
+				beginMove(Direction::FRONT);
+			}
+			if (direction == Direction::LEFT){
+				beginMove(Direction::RIGHT);
+			}
+			if (direction == Direction::RIGHT){
+				beginMove(Direction::LEFT);
+			}
+		}
+	}
+	else{
+		if (startStop == true){
+			walkingStatus->set(direction,true);
+			beginMove(direction);
+		}
+	}
 }
-void Biped::setHitbox(Box* box){
-	hitbox = box;
-}
+//Box* Biped::getHitbox(){
+//	return hitbox;
+//}
+//void Biped::setHitbox(Box* box){
+//	hitbox = box;
+//}
 Weapon* Biped::getWeapon(){
 	return & weapons->front();
 }
@@ -67,42 +88,34 @@ void Biped::addWeapon(Weapon *newWeapon){
 int Biped::getTeam(){
 	return teamNumber;
 }
-void Biped::setTeam(int team){
-	
+void Biped::nextWeapon(){
+	weapons->push_back(weapons->front());
+	weapons->pop_front();
 }
-
-int Biped::takeHit(int damage)
-{
-	int hit = damage;
-	int placeholder=0; // is placeholder being equal to hit and or damages
-	//biped.Health -= damage;
-	Stats myStats;
-	//myStats.setHealth(myStats.getHealth =- damage);
-	return 90; //biped.Health
+void Biped::prevWeapon(){
+	weapons->push_front(weapons->back());
+	weapons->pop_back();
 }
-
-float Biped::getCameraHeight(){
-	return cameraHeight;
+void Biped::setTeam(int _team){
+	teamNumber = _team;
 }
-int Biped::takeHit(int damage){
+void Biped::takeHit(int damage){
 	stats->setHealth(stats->getHealth()-damage);
 }
-float Biped::getCrawlCameraHeight(){
-	return crawlCameraHeight;
+void Biped::jump(){
+	if (position->isOnGround()){
+		position->beginMove(Direction::UP, stats->getMaxJumpSpeed());
 	}
-void  Biped::setCrawlCameraHeight(float newHeight){
-	crawlCameraHeight = newHeight;
 }
-int Biped::getTeamColor(){
-	return teamColor;
+void Biped::fire(){
+	//TODO: implement
 }
-void Biped::setTeamColor(int newColor){
-	teamColor = newColor;
+bool Biped::isDead(){
+	return stats->isDead();
 }
-bool Biped::getDeath(){
-	return death;
+void Biped::lookTo(Direction direction){
+	position->lookTo(direction,(float)settings->getLookSensitivity());
 }
-void Biped::lookAt(Point* point){
-	position->lookAt(point);
+void Biped::lookAt(Point* point,bool tracking){
+	position->lookAt(point,tracking);
 }
-*/

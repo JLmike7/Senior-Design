@@ -1,18 +1,48 @@
 //***************************************************************************************
+//Include and link appropriate libraries and headers//
+#pragma comment(lib, "d3d11.lib")
+#pragma comment(lib, "d3dx11.lib")
+#pragma comment(lib, "d3dx10.lib")
+#pragma comment (lib, "D3D10_1.lib")
+#pragma comment (lib, "DXGI.lib")
+#pragma comment (lib, "D2D1.lib")
+#pragma comment (lib, "dwrite.lib")
+#pragma comment (lib, "dinput8.lib")
+#pragma comment (lib, "dxguid.lib")
+
+#include "d3dApp.h"
+#include "d3dx11Effect.h"
+#include "GeometryGenerator.h"
+#include "MathHelper.h"
+#include "LightHelper.h"
 #include "Effects.h"
 #include "Vertex.h"
 #include "RenderStates.h"
 #include "Camera.h"
 #include "Cubemap.h"
 #include "Terrain.h"
-
-#include "ShadowMap.h"
+#include <windows.h>
+#include <sstream>
+#include <dwrite.h>
+#include <dinput.h>
+#include <vector>
+#include "Wave.h"
+#include <tchar.h>
 #include "Ssao.h"
-#include "TextureMgr.h"
-#include "BasicModel.h"
+#include "SkinnedData.h"
 #include "SkinnedModel.h"
-
+#include "Point.h"
+#include "Direction.h"
 #include "Position.h"
+#include "ShadowMap.h"
+#include <memory>
+#include <d3d11.h>
+#include <d3dx11.h>
+#include <d3dx10.h>
+#include <xnamath.h>
+#include <D3D10_1.h>
+#include <DXGI.h>
+#include <D2D1.h>
 
 struct BoundingSphere
 {
@@ -20,7 +50,6 @@ struct BoundingSphere
 	XMFLOAT3 Center;
 	float Radius;
 };
-
 class SeniorPro : public D3DApp
 {
 public:
@@ -32,11 +61,14 @@ public:
 	void UpdateScene(float dt);
 	void DrawScene();
 
+	bool InitDirectInput(HINSTANCE hInstance);
 	void OnMouseDown(WPARAM btnState, int x, int y);
 	void OnMouseUp(WPARAM btnState, int x, int y);
 	void OnMouseMove(WPARAM btnState, int x, int y);
 
+
 private:
+	
 	void DrawSceneToSsaoNormalDepthMap();
 	void DrawSceneToShadowMap();
 	void DrawScreenQuad(ID3D11ShaderResourceView* srv);
@@ -51,6 +83,7 @@ private:
 
 	//DirectionalLight mDirLights[3];
 
+	
 	//Camera mCam;
 
 	float playerHeight;
@@ -90,6 +123,9 @@ private:
 	ID3D11ShaderResourceView* mBrickNormalTexSRV;
 
 	BoundingSphere mSceneBounds;
+
+
+
 
 	static const int SMapSize = 2048;
 	ShadowMap* mSmap;
@@ -133,9 +169,101 @@ private:
 	UINT mSkullIndexCount;
 
 	Camera mCam;
-
+	
 	POINT mLastMousePos;
+	
+
+
 };
+
+
+//Text Stuff
+ID3D11DeviceContext* d3d11DevCon;
+ID3D11RenderTargetView* renderTargetView;
+ID3D11Buffer* squareIndexBuffer;
+ID3D11DepthStencilView* depthStencilView;
+ID3D11Texture2D* depthStencilBuffer;
+ID3D11Buffer* squareVertBuffer;
+ID3D11VertexShader* VS;
+ID3D11PixelShader* PS;
+ID3D11PixelShader* D2D_PS;
+ID3D10Blob* D2D_PS_Buffer;
+ID3D10Blob* VS_Buffer;
+ID3D10Blob* PS_Buffer;
+ID3D11InputLayout* vertLayout;
+ID3D11Buffer* cbPerObjectBuffer;
+ID3D11BlendState* d2dTransparency;
+ID3D11RasterizerState* CCWcullMode;
+ID3D11RasterizerState* CWcullMode;
+ID3D11ShaderResourceView* CubesTexture;
+ID3D11SamplerState* CubesTexSamplerState;
+ID3D11Buffer* cbPerFrameBuffer;
+ID3D10Device1 *d3d101Device;
+IDXGIKeyedMutex *keyedMutex11;
+IDXGIKeyedMutex *keyedMutex10;
+ID2D1RenderTarget *D2DRenderTarget;
+ID2D1SolidColorBrush *Brush;
+ID3D11Texture2D *BackBuffer11;
+ID3D11Texture2D *sharedTex11;
+ID3D11Buffer *d2dVertBuffer;
+ID3D11Buffer *d2dIndexBuffer;
+ID3D11ShaderResourceView *d2dTexture;
+IDWriteFactory *DWriteFactory;
+IDWriteTextFormat *TextFormat;
+
+int Width = 800;
+int Height = 600;
+
+std::wstring printText;
+XMMATRIX WVP;
+
+struct cbPerObject
+{
+	XMMATRIX  WVP;
+	XMMATRIX World;
+
+	///////////////**************new**************////////////////////
+	//These will be used for the pixel shader
+	XMFLOAT4 difColor;
+	bool hasTexture;
+	///////////////**************new**************////////////////////
+};
+cbPerObject cbPerObj;
+
+
+D3D11_INPUT_ELEMENT_DESC layout[] =
+{
+	{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+	{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+	{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 20, D3D11_INPUT_PER_VERTEX_DATA, 0 }
+};
+
+struct Vertex2	//Overloaded Vertex Structure
+{
+	Vertex2(){}
+	Vertex2(float x, float y, float z,
+		float u, float v,
+		float nx, float ny, float nz)
+		: pos(x, y, z), texCoord(u, v), normal(nx, ny, nz){}
+
+	XMFLOAT3 pos;
+	XMFLOAT2 texCoord;
+	XMFLOAT3 normal;
+};
+
+LPDIRECTINPUT8 DirectInput;
+IDirectInputDevice8* DIKeyboard;
+IDirectInputDevice8* DIMouse;
+HRESULT hr;
+HWND hwnd = NULL;
+float camYaw = 0.0f;
+float camPitch = 0.0f;
+DIMOUSESTATE mouseLastState;
+IXAudio2* g_engine;
+IXAudio2SourceVoice* g_source;
+IXAudio2MasteringVoice* g_master;
+//Sounds 
+Wave buffer;
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance,
 	PSTR cmdLine, int showCmd)
@@ -147,9 +275,56 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance,
 
 	SeniorPro theApp(hInstance);
 
-	if (!theApp.Init())
+	if (!theApp.Init()){
 		return 0;
+	}
+	WNDCLASSEX wndClass = { 0 };
+	wndClass.hCursor = LoadCursor(NULL, IDC_ARROW);
 
+	//must call this for COM
+	CoInitializeEx(NULL, COINIT_MULTITHREADED);
+
+	//create the engine
+	if (FAILED(XAudio2Create(&g_engine)))
+	{
+		CoUninitialize();
+		return -1;
+	}
+
+	//create the mastering voice
+	if (FAILED(g_engine->CreateMasteringVoice(&g_master)))
+	{
+		g_engine->Release();
+		CoUninitialize();
+		return -2;
+	}
+
+	//helper class to load wave files; trust me, this makes it MUCH easier
+
+
+	//load a wave file
+	if (!buffer.load("Music2.wav"))
+	{
+		g_engine->Release();
+		CoUninitialize();
+		return -3;
+	}
+
+	//create the source voice, based on loaded wave format
+	if (FAILED(g_engine->CreateSourceVoice(&g_source, buffer.wf())))
+	{
+		g_engine->Release();
+		CoUninitialize();
+		return -4;
+	}
+	if (!theApp.InitDirectInput(hInstance))
+	{
+		MessageBox(0, L"Direct Input Initialization - Failed",
+			L"Error", MB_OK);
+		return 0;
+	}
+	
+	
 	return theApp.Run();
 }
 
@@ -224,7 +399,7 @@ SeniorPro::SeniorPro(HINSTANCE hInstance)
 
 		XMStoreFloat4x4(&mSphereWorld[i * 2 + 0], XMMatrixTranslation(-5.0f, 3.5f, 90.0f + i*5.0f));
 		XMStoreFloat4x4(&mSphereWorld[i * 2 + 1], XMMatrixTranslation(+5.0f, 3.5f, 90.0f + i*5.0f));
-	}
+}
 
 	mDirLights[0].Ambient = XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f);
 	mDirLights[0].Diffuse = XMFLOAT4(1.0f, 0.9f, 0.9f, 1.0f);
@@ -280,9 +455,13 @@ SeniorPro::SeniorPro(HINSTANCE hInstance)
 
 SeniorPro::~SeniorPro()
 {
+	DIKeyboard->Unacquire();
+	DIMouse->Unacquire();
+	DirectInput->Release();
 	md3dImmediateContext->ClearState();
 
 	SafeDelete(mCubemap);
+	//release the engine, NOT the voices!
 
 	SafeDelete(mCharacterModel);
 
@@ -299,6 +478,9 @@ SeniorPro::~SeniorPro()
 	Effects::DestroyAll();
 	InputLayouts::DestroyAll();
 	RenderStates::DestroyAll();
+	//again, for COM
+	CoUninitialize();
+	g_engine->Release();
 }
 
 bool SeniorPro::Init()
@@ -381,7 +563,33 @@ void SeniorPro::OnResize()
 	if (mSsao)
 	{
 		mSsao->OnSize(mClientWidth, mClientHeight, mCam.GetFovY(), mCam.GetFarZ());
-	}
+}
+}
+
+
+bool SeniorPro::InitDirectInput(HINSTANCE hInstance)
+{
+	hr = DirectInput8Create(hInstance,
+		DIRECTINPUT_VERSION,
+		IID_IDirectInput8,
+		(void**)&DirectInput,
+		NULL);
+
+	hr = DirectInput->CreateDevice(GUID_SysKeyboard,
+		&DIKeyboard,
+		NULL);
+
+	hr = DirectInput->CreateDevice(GUID_SysMouse,
+		&DIMouse,
+		NULL);
+
+	hr = DIKeyboard->SetDataFormat(&c_dfDIKeyboard);
+	hr = DIKeyboard->SetCooperativeLevel(hwnd, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE);
+
+	hr = DIMouse->SetDataFormat(&c_dfDIMouse);
+	hr = DIMouse->SetCooperativeLevel(hwnd, DISCL_EXCLUSIVE | DISCL_NOWINKEY | DISCL_FOREGROUND);
+
+	return true;
 }
 
 void SeniorPro::UpdateScene(float dt)
@@ -397,12 +605,31 @@ void SeniorPro::UpdateScene(float dt)
 	modelOffset = XMMatrixTranslation(0.0f, 0.0f, 89.0f);
 	XMStoreFloat4x4(&mCharacterInstance1.World, modelScale*modelRot*modelOffset);*/
 
+	DIMOUSESTATE mouseCurrState;
+
+	BYTE keyboardState[256];
+
+	DIKeyboard->Acquire();
+
+	DIMouse->GetDeviceState(sizeof(DIMOUSESTATE), &mouseCurrState);
+	DIMouse->Acquire();
+
+
+	DIKeyboard->GetDeviceState(sizeof(keyboardState), (LPVOID)&keyboardState);
+
+
+
 	Point loc = *playerLoc.getLocation();
-	if (GetAsyncKeyState('W') & 0x8000)
+
+	//If Escape is hit, let user escape
+	if (keyboardState[DIK_ESCAPE] & 0x80)
+		PostMessage(hwnd, WM_DESTROY, 0, 0);
+
+	if (keyboardState[DIK_W] & 0x80)
 	{
 		if (flycam)
 		{
-			mCam.Walk(10.0f*dt);
+		mCam.Walk(10.0f*dt);
 		}
 		else
 		{
@@ -410,11 +637,28 @@ void SeniorPro::UpdateScene(float dt)
 		}
 	}
 
-	if (GetAsyncKeyState('S') & 0x8000)
+	if (keyboardState[DIK_M] & 0x80)
+	{
+		//start consuming audio in the source voice
+		g_source->Start();
+
+		//simple message loop
+		//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
+		//{
+		g_source->Stop();
+		g_source->FlushSourceBuffers();
+		g_source->Start();
+
+		//play the sound
+		g_source->SubmitSourceBuffer(buffer.xaBuffer());
+		//}
+	}
+
+	if (keyboardState[DIK_S] & 0x80)
 	{
 		if (flycam)
 		{
-			mCam.Walk(-10.0f*dt);
+		mCam.Walk(-10.0f*dt);
 		}
 		else
 		{
@@ -422,11 +666,11 @@ void SeniorPro::UpdateScene(float dt)
 		}
 	}
 
-	if (GetAsyncKeyState('A') & 0x8000)
+	if (keyboardState[DIK_A] & 0x80)
 	{
 		if (flycam)
 		{
-			mCam.Strafe(-10.0f*dt);
+		mCam.Strafe(-10.0f*dt);
 		}
 		else
 		{
@@ -434,11 +678,11 @@ void SeniorPro::UpdateScene(float dt)
 		}
 	}
 
-	if (GetAsyncKeyState('D') & 0x8000)
+	if (keyboardState[DIK_D] & 0x80)
 	{
 		if (flycam)
 		{
-			mCam.Strafe(10.0f*dt);
+		mCam.Strafe(10.0f*dt);
 		}
 		else
 		{
@@ -446,19 +690,27 @@ void SeniorPro::UpdateScene(float dt)
 		}
 	}
 
-	if ((GetAsyncKeyState('R') & 0x8000) && (flycam == true))
+	if (keyboardState[DIK_R] & 0x80 && (flycam == true))
 		mCam.Raise(10.0f*dt);
 
-	if ((GetAsyncKeyState('F') & 0x8000) && (flycam == true))
+	if (keyboardState[DIK_F] & 0x80 && (flycam == true))
 		mCam.Raise(-10.0f*dt);
 
-	if (GetAsyncKeyState('T') & 0x8000)
+	if (keyboardState[DIK_T] & 0x80)
 		flycam = true;
 
-	if (GetAsyncKeyState('G') & 0x8000)
+	if (keyboardState[DIK_G] & 0x80)
 		flycam = false;
 
-	//
+	//Remove Velocity, don't need player skating across apparent ice.
+	//playerLoc.setVelocity(Direction::UP);
+	//playerLoc.beginMove(Direction::LEFT, 0.0f);
+	//playerLoc.beginMove(Direction::UP, 0.0f);
+	//playerLoc.beginMove(Direction::DOWN, 0.0f);
+
+
+
+	// 
 	// Camera Controls
 	//
 
@@ -466,7 +718,7 @@ void SeniorPro::UpdateScene(float dt)
 	{
 		// Clamp camera to terrain surface in walk mode.
 		/*XMFLOAT3 camPos = mCam.GetPosition();
-		float y = mTerrain.GetHeight(camPos.x, camPos.z);
+	float y = mTerrain.GetHeight(camPos.x, camPos.z);
 		mCam.SetPosition(camPos.x, y + playerHeight, camPos.z);*/
 	}
 	else
@@ -514,6 +766,85 @@ void SeniorPro::UpdateScene(float dt)
 	mCam.UpdateViewMatrix();
 }
 
+void RenderText(std::wstring text, int inInt)
+{
+
+	d3d11DevCon->PSSetShader(D2D_PS, 0, 0);
+
+	//Release the D3D 11 Device
+	keyedMutex11->ReleaseSync(0);
+
+	//Use D3D10.1 device
+	keyedMutex10->AcquireSync(0, 5);
+
+	//Draw D2D content		
+	D2DRenderTarget->BeginDraw();
+
+	//Clear D2D Background
+	D2DRenderTarget->Clear(D2D1::ColorF(0.0f, 0.0f, 0.0f, 0.0f));
+
+	//Create our string
+	std::wostringstream printString;
+	printString << text << inInt << "\n"
+		<< L"Picked Dist: " << 0 << "\n"
+		<< L"Picked Dist: " << 0 << "\n"
+		<< L"Picked Dist: " << 0 << "\n"
+		<< L"Picked Dist: " << 0 << "\n"
+		<< L"Picked Dist: " << 0 << "\n";
+	printText = printString.str();
+
+	//Set the Font Color
+	D2D1_COLOR_F FontColor = D2D1::ColorF(1.0f, 1.0f, 1.0f, 1.0f);
+
+	//Set the brush color D2D will use to draw with
+	Brush->SetColor(FontColor);
+
+	//Create the D2D Render Area
+	D2D1_RECT_F layoutRect = D2D1::RectF(0, 0, Width, Height);
+
+	//Draw the Text
+	D2DRenderTarget->DrawText(
+		printText.c_str(),
+		wcslen(printText.c_str()),
+		TextFormat,
+		layoutRect,
+		Brush
+		);
+
+	D2DRenderTarget->EndDraw();
+
+	//Release the D3D10.1 Device
+	keyedMutex10->ReleaseSync(1);
+
+	//Use the D3D11 Device
+	keyedMutex11->AcquireSync(1, 5);
+
+	//Use the shader resource representing the direct2d render target
+	//to texture a square which is rendered in screen space so it
+	//overlays on top of our entire scene. We use alpha blending so
+	//that the entire background of the D2D render target is "invisible",
+	//And only the stuff we draw with D2D will be visible (the text)
+
+	//Set the blend state for D2D render target texture objects
+	d3d11DevCon->OMSetBlendState(d2dTransparency, NULL, 0xffffffff);
+
+	//Set the d2d Index buffer
+	d3d11DevCon->IASetIndexBuffer(d2dIndexBuffer, DXGI_FORMAT_R32_UINT, 0);
+	//Set the d2d vertex buffer
+	UINT stride = sizeof(Vertex2);
+	UINT offset = 0;
+	d3d11DevCon->IASetVertexBuffers(0, 1, &d2dVertBuffer, &stride, &offset);
+
+	WVP = XMMatrixIdentity();
+	cbPerObj.WVP = XMMatrixTranspose(WVP);
+	d3d11DevCon->UpdateSubresource(cbPerObjectBuffer, 0, NULL, &cbPerObj, 0, 0);
+	d3d11DevCon->VSSetConstantBuffers(0, 1, &cbPerObjectBuffer);
+	d3d11DevCon->PSSetShaderResources(0, 1, &d2dTexture);
+	d3d11DevCon->PSSetSamplers(0, 1, &CubesTexSamplerState);
+
+	d3d11DevCon->RSSetState(CWcullMode);
+	d3d11DevCon->DrawIndexed(6, 0, 0);
+}
 void SeniorPro::DrawScene()
 {
 	//
@@ -844,7 +1175,23 @@ void SeniorPro::OnMouseUp(WPARAM btnState, int x, int y)
 
 void SeniorPro::OnMouseMove(WPARAM btnState, int x, int y)
 {
-	if ((btnState & MK_LBUTTON) != 0)
+	////if ((btnState & MK_LBUTTON) != 0)
+	////{
+	//	// Make each pixel correspond to a quarter of a degree.
+	//	float dx = XMConvertToRadians(0.25f*static_cast<float>(x - mLastMousePos.x));
+	//	float dy = XMConvertToRadians(0.25f*static_cast<float>(y - mLastMousePos.y));
+
+	//	mCam.Pitch(dy);
+	//	mCam.RotateY(dx);
+	//	playerRotation += dx;
+	////}
+
+	DIMOUSESTATE mouseCurrState;
+
+	DIMouse->GetDeviceState(sizeof(DIMOUSESTATE), &mouseCurrState);
+	DIMouse->Acquire();
+
+	if ((mouseCurrState.lX != mouseLastState.lX) || (mouseCurrState.lY != mouseLastState.lY))
 	{
 		// Make each pixel correspond to a quarter of a degree.
 		float dx = XMConvertToRadians(0.25f*static_cast<float>(x - mLastMousePos.x));
@@ -854,7 +1201,6 @@ void SeniorPro::OnMouseMove(WPARAM btnState, int x, int y)
 		mCam.RotateY(dx);
 		playerRotation += dx;
 	}
-
 	mLastMousePos.x = x;
 	mLastMousePos.y = y;
 }

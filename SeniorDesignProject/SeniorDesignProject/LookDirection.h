@@ -1,9 +1,6 @@
-#ifndef LOOKDIRECTION_H
-#define LOOKDIRECTION_H
-
+#pragma once
 #include "Point.h"
 #include "Direction.h"
-#include <math.h>
 
 class LookDirection
 {
@@ -18,21 +15,19 @@ public:
 	float getElevation();
 	void setElevation(float elevation);
 	void lookAt(Point* lookFrom,Point* lookAt,bool tracking);
-	void lookTo(Direction direction, float magnitude);
 	void trackingTick();
+	void lookTo(Direction direction, float magnitude);
 	Point* getLookAtPoint();
 
 private:
 	void updatePoint();
 	void updateAzEl();
 
-private:
+protected:
 	float azimuth;
 	float elevation;
 	Point* lookAtPoint;
 	Point* lookFromPoint;
 	bool tracking;
 };
-
-#endif
 
