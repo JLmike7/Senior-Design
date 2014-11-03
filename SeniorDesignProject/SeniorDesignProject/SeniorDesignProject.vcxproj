@@ -206,6 +206,7 @@
     <None Include="Textures\terrain2.raw" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="Library and Include Files.txt" />
     <Text Include="Models\car.txt" />
     <Text Include="Models\skull.txt" />
   </ItemGroup>

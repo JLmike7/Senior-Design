@@ -377,6 +377,7 @@
     <Text Include="Models\skull.txt">
       <Filter>Models</Filter>
     </Text>
+    <Text Include="Library and Include Files.txt" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Textures\blend.dds">
