@@ -1,7 +1,6 @@
 #ifndef CUBEMAP_H
 #define CUBEMAP_H
 
-
 class Camera;
 
 class Cubemap{

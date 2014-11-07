@@ -7,7 +7,7 @@
 #ifndef VERTEX_H
 #define VERTEX_H
 
-#include <xnamath.h>
+#include <d3dUtil.h>
 #include <vector>
 
 namespace Vertex
