@@ -44,12 +44,6 @@
 #include <DXGI.h>
 #include <D2D1.h>
 
-struct BoundingSphere
-{
-	BoundingSphere() : Center(0.0f, 0.0f, 0.0f), Radius(0.0f) {}
-	XMFLOAT3 Center;
-	float Radius;
-};
 class SeniorPro : public D3DApp
 {
 public:
@@ -68,7 +62,7 @@ public:
 
 
 private:
-	
+
 	void DrawSceneToSsaoNormalDepthMap();
 	void DrawSceneToShadowMap();
 	void DrawScreenQuad(ID3D11ShaderResourceView* srv);
@@ -83,7 +77,7 @@ private:
 
 	//DirectionalLight mDirLights[3];
 
-	
+
 	//Camera mCam;
 
 	float playerHeight;
@@ -169,13 +163,12 @@ private:
 	UINT mSkullIndexCount;
 
 	Camera mCam;
-	
+
 	POINT mLastMousePos;
-	
+
 
 
 };
-
 
 //Text Stuff
 ID3D11DeviceContext* d3d11DevCon;
@@ -375,7 +368,6 @@ SeniorPro::SeniorPro(HINSTANCE hInstance)
 	// position and compute the bounding sphere.
 	mSceneBounds.Center = XMFLOAT3(0.0f, 0.0f, 100.0f);
 	mSceneBounds.Radius = sqrtf(10.0f*10.0f + 15.0f*15.0f);
-
 	XMMATRIX I = XMMatrixIdentity();
 	//XMStoreFloat4x4(&mGridWorld, I);
 
