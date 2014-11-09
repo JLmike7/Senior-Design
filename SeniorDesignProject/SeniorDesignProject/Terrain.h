@@ -7,8 +7,7 @@
 #ifndef TERRAIN_H
 #define TERRAIN_H
 
-#include <vector>
-#include <d3dUtil.h>
+#include "d3dUtil.h"
 
 class Camera;
 struct DirectionalLight;

@@ -1,4 +1,5 @@
 #include "LookDirection.h"
+#include <math.h>
 
 #define RAD2DEG (180.0f/3.14159f)
 #define DEG2RAD (3.14159f/180.0f)

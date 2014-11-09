@@ -1,7 +1,4 @@
 #include "cubemap.h"
-#include "GeometryGenerator.h"
-#include "Camera.h"
-#include "Vertex.h"
 
 Cubemap::Cubemap(ID3D11Device* device, const std::wstring& cubemapFilename, float skySphereRadius)
 {
