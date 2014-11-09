@@ -91,17 +91,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\Desktop\Senior-Design-master\SeniorDesignProject\SeniorDesignProject\Camera.cpp" />
+    <ClCompile Include="..\..\..\..\..\Desktop\Common\d3dApp.cpp" />
+    <ClCompile Include="..\..\..\..\..\Desktop\Common\d3dUtil.cpp" />
+    <ClCompile Include="..\..\..\..\..\Desktop\Common\GameTimer.cpp" />
+    <ClCompile Include="..\..\..\..\..\Desktop\Common\GeometryGenerator.cpp" />
+    <ClCompile Include="..\..\..\..\..\Desktop\Common\LightHelper.cpp" />
+    <ClCompile Include="..\..\..\..\..\Desktop\Common\MathHelper.cpp" />
+    <ClCompile Include="..\..\..\..\..\Desktop\Common\TextureMgr.cpp" />
+    <ClCompile Include="..\..\..\..\..\Desktop\Common\Waves.cpp" />
+    <ClCompile Include="..\..\..\..\..\Desktop\Common\xnacollision.cpp" />
     <ClCompile Include="..\..\..\..\3DGameProgramming\Common\TextureMgr.cpp" />
-    <ClCompile Include="..\..\..\..\Visual Studio 2013\3DGameProgramming\Common\d3dApp.cpp" />
-    <ClCompile Include="..\..\..\..\Visual Studio 2013\3DGameProgramming\Common\d3dUtil.cpp" />
-    <ClCompile Include="..\..\..\..\Visual Studio 2013\3DGameProgramming\Common\GameTimer.cpp" />
-    <ClCompile Include="..\..\..\..\Visual Studio 2013\3DGameProgramming\Common\GeometryGenerator.cpp" />
-    <ClCompile Include="..\..\..\..\Visual Studio 2013\3DGameProgramming\Common\LightHelper.cpp" />
-    <ClCompile Include="..\..\..\..\Visual Studio 2013\3DGameProgramming\Common\MathHelper.cpp" />
-    <ClCompile Include="..\..\..\..\Visual Studio 2013\3DGameProgramming\Common\TextureMgr.cpp" />
-    <ClCompile Include="..\..\..\..\Visual Studio 2013\3DGameProgramming\Common\Waves.cpp" />
-    <ClCompile Include="..\..\..\..\Visual Studio 2013\3DGameProgramming\Common\xnacollision.cpp" />
     <ClCompile Include="BasicModel.cpp" />
     <ClCompile Include="Biped.cpp" />
     <ClCompile Include="Box.cpp" />
@@ -133,19 +132,18 @@
     <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\..\Desktop\Senior-Design-master\SeniorDesignProject\SeniorDesignProject\Camera.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\Common\d3dApp.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\Common\d3dUtil.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\Common\d3dx11effect.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\Common\GameTimer.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\Common\GeometryGenerator.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\Common\LightHelper.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\Common\MathHelper.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\Common\TextureMgr.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\Common\Waves.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\Common\xnacollision.h" />
     <ClInclude Include="..\..\..\..\3DGameProgramming\Common\GameTimer.h" />
     <ClInclude Include="..\..\..\..\3DGameProgramming\Common\TextureMgr.h" />
-    <ClInclude Include="..\..\..\..\Visual Studio 2013\3DGameProgramming\Common\d3dApp.h" />
-    <ClInclude Include="..\..\..\..\Visual Studio 2013\3DGameProgramming\Common\d3dUtil.h" />
-    <ClInclude Include="..\..\..\..\Visual Studio 2013\3DGameProgramming\Common\d3dx11effect.h" />
-    <ClInclude Include="..\..\..\..\Visual Studio 2013\3DGameProgramming\Common\GameTimer.h" />
-    <ClInclude Include="..\..\..\..\Visual Studio 2013\3DGameProgramming\Common\GeometryGenerator.h" />
-    <ClInclude Include="..\..\..\..\Visual Studio 2013\3DGameProgramming\Common\LightHelper.h" />
-    <ClInclude Include="..\..\..\..\Visual Studio 2013\3DGameProgramming\Common\MathHelper.h" />
-    <ClInclude Include="..\..\..\..\Visual Studio 2013\3DGameProgramming\Common\TextureMgr.h" />
-    <ClInclude Include="..\..\..\..\Visual Studio 2013\3DGameProgramming\Common\Waves.h" />
-    <ClInclude Include="..\..\..\..\Visual Studio 2013\3DGameProgramming\Common\xnacollision.h" />
     <ClInclude Include="BasicModel.h" />
     <ClInclude Include="Biped.h" />
     <ClInclude Include="Box.h" />
