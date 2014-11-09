@@ -1,6 +1,7 @@
 #pragma once
 #include "World.h"
 #include "Biped.h"
+#include "Direction.h"
 
 class Controller :
 	public World

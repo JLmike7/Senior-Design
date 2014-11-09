@@ -1,6 +1,4 @@
 #include "Controller.h"
-#include "Direction.h"
-
 
 Controller::Controller()
 {

@@ -1,8 +1,6 @@
 #ifndef CUBEMAP_H
 #define CUBEMAP_H
 
-#include "d3dUtil.h"
-
 class Camera;
 
 class Cubemap{
