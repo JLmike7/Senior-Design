@@ -1,6 +1,12 @@
 #ifndef CUBEMAP_H
 #define CUBEMAP_H
 
+#include "GeometryGenerator.h"
+#include "Camera.h"
+#include "Vertex.h"
+#include <math.h>
+#include "Effects.h"
+
 class Camera;
 
 class Cubemap{

@@ -44,6 +44,13 @@
 #include <DXGI.h>
 #include <D2D1.h>
 
+struct BoundingSphere
+{
+	BoundingSphere() : Center(0.0f, 0.0f, 0.0f), Radius(0.0f) {}
+	XMFLOAT3 Center;
+	float Radius;
+};
+
 class SeniorPro : public D3DApp
 {
 public:

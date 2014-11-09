@@ -11,8 +11,7 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-#include <vector>
-#include <xnamath.h>
+#include "d3dUtil.h"
 
 class Camera
 {

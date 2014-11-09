@@ -2,8 +2,7 @@
 #define SKINNEDDATA_H
 
 #include <map>
-#include <vector>
-#include <xnamath.h>
+#include "d3dUtil.h"
 
 
 ///<summary>
