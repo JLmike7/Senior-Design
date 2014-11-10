@@ -181,7 +181,7 @@
       <Filter>Common</Filter>
     </ClCompile>
     <ClCompile Include="d3dApp.cpp">
-      <Filter>Common</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -249,9 +249,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="VertexMain.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
@@ -339,7 +336,7 @@
       <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="d3dApp.h">
-      <Filter>Common</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
