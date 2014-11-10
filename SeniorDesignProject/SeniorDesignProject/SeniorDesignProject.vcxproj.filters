@@ -34,6 +34,9 @@
     <Filter Include="FX">
       <UniqueIdentifier>{90211cf3-cded-477c-a88f-f1943cd387d5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Problem Domain">
+      <UniqueIdentifier>{8022cfa6-fa6e-498d-93a8-124f7dc3899a}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Header Files\Menu">
       <UniqueIdentifier>{e4042004-37f7-414d-86aa-6659425a1ed5}</UniqueIdentifier>
     </Filter>
@@ -45,9 +48,6 @@
     </Filter>
     <Filter Include="Header Files\sql">
       <UniqueIdentifier>{0342e08d-1b41-42f7-ab17-ea5df9504c6c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Problem Domain\Problem Domain">
-      <UniqueIdentifier>{8022cfa6-fa6e-498d-93a8-124f7dc3899a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -138,6 +138,9 @@
     <ClCompile Include="WalkingStatus.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\3DGameProgramming\Common\TextureMgr.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Mesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -150,64 +153,52 @@
     <ClCompile Include="VertexMain.cpp">
       <Filter>Source Files\UI</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\d3dApp.cpp">
-      <Filter>Common</Filter>
+    <ClCompile Include="..\..\..\..\3DGameProgramming\Common\d3dApp.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\d3dUtil.cpp">
-      <Filter>Common</Filter>
+    <ClCompile Include="..\..\..\..\3DGameProgramming\Common\d3dUtil.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\GameTimer.cpp">
-      <Filter>Common</Filter>
+    <ClCompile Include="..\..\..\..\3DGameProgramming\Common\GameTimer.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\GeometryGenerator.cpp">
-      <Filter>Common</Filter>
+    <ClCompile Include="..\..\..\..\3DGameProgramming\Common\GeometryGenerator.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\LightHelper.cpp">
-      <Filter>Common</Filter>
+    <ClCompile Include="..\..\..\..\3DGameProgramming\Common\LightHelper.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\MathHelper.cpp">
-      <Filter>Common</Filter>
+    <ClCompile Include="..\..\..\..\3DGameProgramming\Common\MathHelper.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\TextureMgr.cpp">
-      <Filter>Common</Filter>
+    <ClCompile Include="..\..\..\..\3DGameProgramming\Common\Waves.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\Waves.cpp">
-      <Filter>Common</Filter>
+    <ClCompile Include="..\..\..\..\3DGameProgramming\Common\xnacollision.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\xnacollision.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\Camera.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
-    <ClCompile Include="Collision.cpp">
-      <Filter>Source Files\Problem Domain</Filter>
-    </ClCompile>
-    <ClCompile Include="Collisionwithroundobj.cpp">
-      <Filter>Source Files\Problem Domain</Filter>
-    </ClCompile>
-    <ClCompile Include="TriangleCollision.cpp">
-      <Filter>Source Files\Problem Domain</Filter>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Biped.h">
-      <Filter>Source Files\Problem Domain\Problem Domain</Filter>
+      <Filter>Header Files\Problem Domain</Filter>
     </ClInclude>
     <ClInclude Include="Object.h">
-      <Filter>Source Files\Problem Domain\Problem Domain</Filter>
+      <Filter>Header Files\Problem Domain</Filter>
     </ClInclude>
     <ClInclude Include="Physics.h">
-      <Filter>Source Files\Problem Domain\Problem Domain</Filter>
+      <Filter>Header Files\Problem Domain</Filter>
     </ClInclude>
     <ClInclude Include="Stats.h">
-      <Filter>Source Files\Problem Domain\Problem Domain</Filter>
+      <Filter>Header Files\Problem Domain</Filter>
     </ClInclude>
     <ClInclude Include="Weapon.h">
-      <Filter>Source Files\Problem Domain\Problem Domain</Filter>
+      <Filter>Header Files\Problem Domain</Filter>
     </ClInclude>
     <ClInclude Include="World.h">
-      <Filter>Source Files\Problem Domain\Problem Domain</Filter>
+      <Filter>Header Files\Problem Domain</Filter>
     </ClInclude>
     <ClInclude Include="Menu.h">
       <Filter>Header Files\Menu</Filter>
@@ -222,10 +213,10 @@
       <Filter>Header Files\Problem Domain</Filter>
     </ClInclude>
     <ClInclude Include="Point.h">
-      <Filter>Source Files\Problem Domain\Problem Domain</Filter>
+      <Filter>Header Files\Problem Domain</Filter>
     </ClInclude>
     <ClInclude Include="Team.h">
-      <Filter>Source Files\Problem Domain\Problem Domain</Filter>
+      <Filter>Header Files\Problem Domain</Filter>
     </ClInclude>
     <ClInclude Include="cubemap.h">
       <Filter>Header Files\UI</Filter>
@@ -278,10 +269,28 @@
     <ClInclude Include="Stance.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Triangle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="WalkingStatus.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Direction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\GameTimer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\TextureMgr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Quad.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Wave.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="d3dApp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Mesh.h">
@@ -296,53 +305,32 @@
     <ClInclude Include="VertexMain.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\d3dApp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\d3dUtil.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\d3dx11effect.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\GeometryGenerator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\LightHelper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\MathHelper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\Waves.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\xnacollision.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\d3dApp.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\d3dUtil.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\d3dx11effect.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\GameTimer.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\GeometryGenerator.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\LightHelper.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\MathHelper.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\TextureMgr.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\Waves.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\xnacollision.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="Wave.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\Camera.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="Collision.h">
-      <Filter>Source Files\Problem Domain\Problem Domain</Filter>
-    </ClInclude>
-    <ClInclude Include="Collisionwithroundobj.h">
-      <Filter>Source Files\Problem Domain\Problem Domain</Filter>
-    </ClInclude>
-    <ClInclude Include="TriangleCollision.h">
-      <Filter>Source Files\Problem Domain\Problem Domain</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -405,6 +393,7 @@
     <None Include="Textures\map1.raw" />
     <None Include="Textures\terrain.raw" />
     <None Include="Textures\terrain2.raw" />
+    <None Include="Enemy.mtl" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Models\car.txt" />
@@ -413,5 +402,8 @@
   </ItemGroup>
   <ItemGroup>
     <Media Include="Music.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <Object Include="Enemy.obj" />
   </ItemGroup>
 </Project>
