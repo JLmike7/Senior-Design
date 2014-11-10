@@ -28,17 +28,26 @@
     <Filter Include="Source Files\Problem Domain\Controller">
       <UniqueIdentifier>{77165082-ec06-4d89-9a48-3ef0585a2162}</UniqueIdentifier>
     </Filter>
-    <Filter Include="SkinnedMesh">
-      <UniqueIdentifier>{02650cfa-5c37-4a5e-9a3e-823706966be7}</UniqueIdentifier>
+    <Filter Include="Header Files\UI">
+      <UniqueIdentifier>{d7d8d146-b519-4cde-ae35-d80a8fd757a8}</UniqueIdentifier>
     </Filter>
     <Filter Include="FX">
-      <UniqueIdentifier>{2aaab7f3-1070-458c-bc1c-e365be6e19d7}</UniqueIdentifier>
+      <UniqueIdentifier>{90211cf3-cded-477c-a88f-f1943cd387d5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Models">
-      <UniqueIdentifier>{813d1255-7ee6-4fca-aca5-111e03991fb7}</UniqueIdentifier>
+    <Filter Include="Header Files\Problem Domain">
+      <UniqueIdentifier>{8022cfa6-fa6e-498d-93a8-124f7dc3899a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Textures">
-      <UniqueIdentifier>{51a03892-03f5-4237-a669-edc2c0801ae3}</UniqueIdentifier>
+    <Filter Include="Header Files\Menu">
+      <UniqueIdentifier>{e4042004-37f7-414d-86aa-6659425a1ed5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Unused">
+      <UniqueIdentifier>{52307f87-6473-46f3-8ab4-1d53271cb09e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Unused">
+      <UniqueIdentifier>{1520cc8a-05b8-4953-a710-34446230a8b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\sql">
+      <UniqueIdentifier>{0342e08d-1b41-42f7-ab17-ea5df9504c6c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -51,7 +60,7 @@
     <ClCompile Include="Stats.cpp">
       <Filter>Source Files\Problem Domain</Filter>
     </ClCompile>
-    <ClCompile Include="Settings.cpp">
+    <ClCompile Include="Physics.cpp">
       <Filter>Source Files\Problem Domain</Filter>
     </ClCompile>
     <ClCompile Include="Physics.cpp">
@@ -63,35 +72,20 @@
     <ClCompile Include="Controller.cpp">
       <Filter>Source Files\Problem Domain\Controller</Filter>
     </ClCompile>
-    <ClCompile Include="Team.cpp">
+    <ClCompile Include="Object.cpp">
       <Filter>Source Files\Problem Domain</Filter>
     </ClCompile>
     <ClCompile Include="Biped.cpp">
       <Filter>Source Files\Problem Domain</Filter>
     </ClCompile>
-    <ClCompile Include="Object.cpp">
-      <Filter>Source Files\Problem Domain</Filter>
-    </ClCompile>
-    <ClCompile Include="Position.cpp">
-      <Filter>Source Files\Problem Domain</Filter>
-    </ClCompile>
     <ClCompile Include="point.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Problem Domain</Filter>
     </ClCompile>
-    <ClCompile Include="Box.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Team.cpp">
+      <Filter>Source Files\Problem Domain</Filter>
     </ClCompile>
-    <ClCompile Include="LookDirection.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="WalkingStatus.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SeniorPro.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>Source Files\UI</Filter>
+    <ClCompile Include="Settings.cpp">
+      <Filter>Source Files\Menu</Filter>
     </ClCompile>
     <ClCompile Include="cubemap.cpp">
       <Filter>Source Files\UI</Filter>
@@ -108,52 +102,73 @@
     <ClCompile Include="Vertex.cpp">
       <Filter>Source Files\UI</Filter>
     </ClCompile>
+    <ClCompile Include="SeniorPro.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Position.cpp">
+      <Filter>Source Files\Unused</Filter>
+    </ClCompile>
     <ClCompile Include="BasicModel.cpp">
-      <Filter>SkinnedMesh</Filter>
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Box.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="LoadM3d.cpp">
-      <Filter>SkinnedMesh</Filter>
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LookDirection.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MeshGeometry.cpp">
-      <Filter>SkinnedMesh</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ShadowMap.cpp">
-      <Filter>SkinnedMesh</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SkinnedData.cpp">
-      <Filter>SkinnedMesh</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SkinnedModel.cpp">
-      <Filter>SkinnedMesh</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Ssao.cpp">
-      <Filter>SkinnedMesh</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\3DGameProgramming\Common\d3dUtil.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\3DGameProgramming\Common\GameTimer.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\3DGameProgramming\Common\GeometryGenerator.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\3DGameProgramming\Common\LightHelper.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\3DGameProgramming\Common\MathHelper.cpp">
-      <Filter>Common</Filter>
+    <ClCompile Include="WalkingStatus.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\3DGameProgramming\Common\TextureMgr.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SqlHelper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Desktop\Common\d3dApp.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\3DGameProgramming\Common\Waves.cpp">
+    <ClCompile Include="..\..\..\..\..\Desktop\Common\d3dUtil.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\3DGameProgramming\Common\xnacollision.cpp">
+    <ClCompile Include="..\..\..\..\..\Desktop\Common\GameTimer.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\3DGameProgramming\Common\d3dApp.cpp">
+    <ClCompile Include="..\..\..\..\..\Desktop\Common\GeometryGenerator.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Desktop\Common\LightHelper.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Desktop\Common\MathHelper.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Desktop\Common\TextureMgr.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Desktop\Common\Waves.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Desktop\Common\xnacollision.cpp">
       <Filter>Common</Filter>
     </ClCompile>
     <ClCompile Include="Mesh.cpp">
@@ -170,134 +185,197 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="World.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Settings.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Weapon.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Stats.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Physics.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Menu.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Controller.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Team.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Biped.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Problem Domain</Filter>
     </ClInclude>
     <ClInclude Include="Object.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Problem Domain</Filter>
     </ClInclude>
-    <ClInclude Include="Position.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Physics.h">
+      <Filter>Header Files\Problem Domain</Filter>
+    </ClInclude>
+    <ClInclude Include="Stats.h">
+      <Filter>Header Files\Problem Domain</Filter>
+    </ClInclude>
+    <ClInclude Include="Weapon.h">
+      <Filter>Header Files\Problem Domain</Filter>
+    </ClInclude>
+    <ClInclude Include="World.h">
+      <Filter>Header Files\Problem Domain</Filter>
+    </ClInclude>
+    <ClInclude Include="Menu.h">
+      <Filter>Header Files\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings.h">
+      <Filter>Header Files\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="Biped.h">
+      <Filter>Header Files\Problem Domain</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.h">
+      <Filter>Header Files\Problem Domain</Filter>
     </ClInclude>
     <ClInclude Include="Point.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Problem Domain</Filter>
     </ClInclude>
-    <ClInclude Include="Triangle.h">
+    <ClInclude Include="Team.h">
+      <Filter>Header Files\Problem Domain</Filter>
+    </ClInclude>
+    <ClInclude Include="cubemap.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Effects.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderStates.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Terrain.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Vertex.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Controller.h">
+      <Filter>Header Files\Unused</Filter>
+    </ClInclude>
+    <ClInclude Include="Position.h">
+      <Filter>Header Files\Unused</Filter>
+    </ClInclude>
+    <ClInclude Include="BasicModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Box.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Quad.h">
+    <ClInclude Include="LoadM3d.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="LookDirection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="cubemap.h">
+    <ClInclude Include="MeshGeometry.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Effects.h">
+    <ClInclude Include="ShadowMap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RenderStates.h">
+    <ClInclude Include="SkinnedData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SkinnedModel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Ssao.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Stance.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Terrain.h">
+    <ClInclude Include="Triangle.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Vertex.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BasicModel.h">
-      <Filter>SkinnedMesh</Filter>
-    </ClInclude>
-    <ClInclude Include="LoadM3d.h">
-      <Filter>SkinnedMesh</Filter>
-    </ClInclude>
-    <ClInclude Include="MeshGeometry.h">
-      <Filter>SkinnedMesh</Filter>
-    </ClInclude>
-    <ClInclude Include="ShadowMap.h">
-      <Filter>SkinnedMesh</Filter>
-    </ClInclude>
-    <ClInclude Include="SkinnedData.h">
-      <Filter>SkinnedMesh</Filter>
-    </ClInclude>
-    <ClInclude Include="SkinnedModel.h">
-      <Filter>SkinnedMesh</Filter>
-    </ClInclude>
-    <ClInclude Include="Ssao.h">
-      <Filter>SkinnedMesh</Filter>
     </ClInclude>
     <ClInclude Include="WalkingStatus.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\d3dUtil.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\d3dx11effect.h">
-      <Filter>Common</Filter>
+    <ClInclude Include="Direction.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\3DGameProgramming\Common\GameTimer.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\GeometryGenerator.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\LightHelper.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\MathHelper.h">
-      <Filter>Common</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\3DGameProgramming\Common\TextureMgr.h">
-      <Filter>Common</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\Waves.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\xnacollision.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\d3dApp.h">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="Direction.h">
+    <ClInclude Include="Quad.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Wave.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SqlHelper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sql\cppconn\statement.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="sql\cppconn\metadata.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="sql\mysql_connection.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="sql\mysql_driver.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="sql\mysql_error.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="sql\cppconn\parameter_metadata.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="sql\cppconn\prepared_statement.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="sql\cppconn\resultset.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="sql\cppconn\resultset_metadata.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="sql\cppconn\sqlstring.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="sql\cppconn\warning.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="sql\cppconn\exception.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="sql\cppconn\driver.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="sql\cppconn\datatype.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="sql\cppconn\connection.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="sql\cppconn\config.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="sql\cppconn\build_config.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\Common\d3dApp.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\Common\d3dUtil.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\Common\d3dx11effect.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\Common\GameTimer.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\Common\GeometryGenerator.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\Common\LightHelper.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\Common\MathHelper.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\Common\TextureMgr.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\Common\Waves.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\Common\xnacollision.h">
+      <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="d3dApp.h">
       <Filter>Header Files</Filter>
@@ -316,184 +394,70 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="FX\Basic.fx">
-      <Filter>FX</Filter>
-    </FxCompile>
-    <FxCompile Include="FX\BuildShadowMap.fx">
-      <Filter>FX</Filter>
-    </FxCompile>
-    <FxCompile Include="FX\cubemap.fx">
-      <Filter>FX</Filter>
-    </FxCompile>
-    <FxCompile Include="FX\DebugTexture.fx">
-      <Filter>FX</Filter>
-    </FxCompile>
-    <FxCompile Include="FX\LightHelper.fx">
-      <Filter>FX</Filter>
-    </FxCompile>
-    <FxCompile Include="FX\NormalMap.fx">
-      <Filter>FX</Filter>
-    </FxCompile>
-    <FxCompile Include="FX\Sky.fx">
-      <Filter>FX</Filter>
-    </FxCompile>
-    <FxCompile Include="FX\Ssao.fx">
-      <Filter>FX</Filter>
-    </FxCompile>
-    <FxCompile Include="FX\SsaoBlur.fx">
-      <Filter>FX</Filter>
-    </FxCompile>
-    <FxCompile Include="FX\SsaoNormalDepth.fx">
-      <Filter>FX</Filter>
-    </FxCompile>
-    <FxCompile Include="FX\Terrain.fx">
-      <Filter>FX</Filter>
-    </FxCompile>
+    <FxCompile Include="FX\Basic.fx" />
+    <FxCompile Include="FX\BuildShadowMap.fx" />
+    <FxCompile Include="FX\cubemap.fx" />
+    <FxCompile Include="FX\DebugTexture.fx" />
+    <FxCompile Include="FX\LightHelper.fx" />
+    <FxCompile Include="FX\NormalMap.fx" />
+    <FxCompile Include="FX\Sky.fx" />
+    <FxCompile Include="FX\Ssao.fx" />
+    <FxCompile Include="FX\SsaoBlur.fx" />
+    <FxCompile Include="FX\SsaoNormalDepth.fx" />
+    <FxCompile Include="FX\Terrain.fx" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="FX\Basic.fxo">
-      <Filter>FX</Filter>
-    </None>
-    <None Include="FX\BuildShadowMap.fxo">
-      <Filter>FX</Filter>
-    </None>
-    <None Include="FX\cubemap.fxo">
-      <Filter>FX</Filter>
-    </None>
-    <None Include="FX\DebugTexture.fxo">
-      <Filter>FX</Filter>
-    </None>
-    <None Include="FX\NormalMap.fxo">
-      <Filter>FX</Filter>
-    </None>
-    <None Include="FX\Sky.fxo">
-      <Filter>FX</Filter>
-    </None>
-    <None Include="FX\Ssao.fxo">
-      <Filter>FX</Filter>
-    </None>
-    <None Include="FX\SsaoBlur.fxo">
-      <Filter>FX</Filter>
-    </None>
-    <None Include="FX\SsaoNormalDepth.fxo">
-      <Filter>FX</Filter>
-    </None>
-    <None Include="FX\Terrain.fxo">
-      <Filter>FX</Filter>
-    </None>
-    <None Include="Models\soldier.m3d">
-      <Filter>Models</Filter>
-    </None>
-    <None Include="Models\tree.m3d">
-      <Filter>Models</Filter>
-    </None>
-    <None Include="Textures\map1.raw">
-      <Filter>Textures</Filter>
-    </None>
-    <None Include="Textures\terrain.raw">
-      <Filter>Textures</Filter>
-    </None>
-    <None Include="Textures\terrain2.raw">
-      <Filter>Textures</Filter>
-    </None>
+    <Image Include="Textures\blend.dds" />
+    <Image Include="Textures\bricks.dds" />
+    <Image Include="Textures\bricks_nmap.dds" />
+    <Image Include="Textures\darkdirt.dds" />
+    <Image Include="Textures\desertcube1024.dds" />
+    <Image Include="Textures\floor.dds" />
+    <Image Include="Textures\floor_nmap.dds" />
+    <Image Include="Textures\grass.dds" />
+    <Image Include="Textures\grasscube1024.dds" />
+    <Image Include="Textures\head_diff.dds" />
+    <Image Include="Textures\head_norm.dds" />
+    <Image Include="Textures\jacket_diff.dds" />
+    <Image Include="Textures\jacket_norm.dds" />
+    <Image Include="Textures\lightdirt.dds" />
+    <Image Include="Textures\pants_diff.dds" />
+    <Image Include="Textures\pants_norm.dds" />
+    <Image Include="Textures\snow.dds" />
+    <Image Include="Textures\snowcube1024.dds" />
+    <Image Include="Textures\stone.dds" />
+    <Image Include="Textures\stones.dds" />
+    <Image Include="Textures\stones_nmap.dds" />
+    <Image Include="Textures\sunsetcube1024.dds" />
+    <Image Include="Textures\terrain.dds" />
+    <Image Include="Textures\tree01-bark_diffuse.dds" />
+    <Image Include="Textures\tree01-bark_normal.dds" />
+    <Image Include="Textures\tree01-leaves_diffuse.dds" />
+    <Image Include="Textures\tree01-leaves_normal.dds" />
+    <Image Include="Textures\upBody_diff.dds" />
+    <Image Include="Textures\upbody_norm.dds" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Models\car.txt">
-      <Filter>Models</Filter>
-    </Text>
-    <Text Include="Models\skull.txt">
-      <Filter>Models</Filter>
-    </Text>
+    <None Include="FX\Basic.fxo" />
+    <None Include="FX\BuildShadowMap.fxo" />
+    <None Include="FX\cubemap.fxo" />
+    <None Include="FX\DebugTexture.fxo" />
+    <None Include="FX\NormalMap.fxo" />
+    <None Include="FX\Sky.fxo" />
+    <None Include="FX\Ssao.fxo" />
+    <None Include="FX\SsaoBlur.fxo" />
+    <None Include="FX\SsaoNormalDepth.fxo" />
+    <None Include="FX\Terrain.fxo" />
+    <None Include="Models\soldier.m3d" />
+    <None Include="Models\tree.m3d" />
+    <None Include="Textures\map1.raw" />
+    <None Include="Textures\terrain.raw" />
+    <None Include="Textures\terrain2.raw" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Models\car.txt" />
+    <Text Include="Models\skull.txt" />
     <Text Include="Library and Include Files.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="Textures\blend.dds">
-      <Filter>Textures</Filter>
-    </Image>
-    <Image Include="Textures\bricks.dds">
-      <Filter>Textures</Filter>
-    </Image>
-    <Image Include="Textures\bricks_nmap.dds">
-      <Filter>Textures</Filter>
-    </Image>
-    <Image Include="Textures\darkdirt.dds">
-      <Filter>Textures</Filter>
-    </Image>
-    <Image Include="Textures\desertcube1024.dds">
-      <Filter>Textures</Filter>
-    </Image>
-    <Image Include="Textures\floor.dds">
-      <Filter>Textures</Filter>
-    </Image>
-    <Image Include="Textures\floor_nmap.dds">
-      <Filter>Textures</Filter>
-    </Image>
-    <Image Include="Textures\grass.dds">
-      <Filter>Textures</Filter>
-    </Image>
-    <Image Include="Textures\grasscube1024.dds">
-      <Filter>Textures</Filter>
-    </Image>
-    <Image Include="Textures\head_diff.dds">
-      <Filter>Textures</Filter>
-    </Image>
-    <Image Include="Textures\head_norm.dds">
-      <Filter>Textures</Filter>
-    </Image>
-    <Image Include="Textures\jacket_diff.dds">
-      <Filter>Textures</Filter>
-    </Image>
-    <Image Include="Textures\jacket_norm.dds">
-      <Filter>Textures</Filter>
-    </Image>
-    <Image Include="Textures\lightdirt.dds">
-      <Filter>Textures</Filter>
-    </Image>
-    <Image Include="Textures\pants_diff.dds">
-      <Filter>Textures</Filter>
-    </Image>
-    <Image Include="Textures\pants_norm.dds">
-      <Filter>Textures</Filter>
-    </Image>
-    <Image Include="Textures\snow.dds">
-      <Filter>Textures</Filter>
-    </Image>
-    <Image Include="Textures\snowcube1024.dds">
-      <Filter>Textures</Filter>
-    </Image>
-    <Image Include="Textures\stone.dds">
-      <Filter>Textures</Filter>
-    </Image>
-    <Image Include="Textures\stones.dds">
-      <Filter>Textures</Filter>
-    </Image>
-    <Image Include="Textures\stones_nmap.dds">
-      <Filter>Textures</Filter>
-    </Image>
-    <Image Include="Textures\sunsetcube1024.dds">
-      <Filter>Textures</Filter>
-    </Image>
-    <Image Include="Textures\terrain.dds">
-      <Filter>Textures</Filter>
-    </Image>
-    <Image Include="Textures\tree01-bark_diffuse.dds">
-      <Filter>Textures</Filter>
-    </Image>
-    <Image Include="Textures\tree01-bark_normal.dds">
-      <Filter>Textures</Filter>
-    </Image>
-    <Image Include="Textures\tree01-leaves_diffuse.dds">
-      <Filter>Textures</Filter>
-    </Image>
-    <Image Include="Textures\tree01-leaves_normal.dds">
-      <Filter>Textures</Filter>
-    </Image>
-    <Image Include="Textures\upBody_diff.dds">
-      <Filter>Textures</Filter>
-    </Image>
-    <Image Include="Textures\upbody_norm.dds">
-      <Filter>Textures</Filter>
-    </Image>
   </ItemGroup>
   <ItemGroup>
     <Media Include="Music.mp3" />
