@@ -1,9 +1,3 @@
-//***************************************************************************************
-// Vertex.h by Frank Luna (C) 2011 All Rights Reserved.
-//
-// Defines vertex structures and input layouts.
-//***************************************************************************************
-
 #ifndef VERTEX_H
 #define VERTEX_H
 
@@ -26,14 +20,15 @@ namespace Vertex
 		XMFLOAT3 pos;
 		XMFLOAT2 texCoord;
 		XMFLOAT3 normal;
+		XMFLOAT3 tangent;
+		XMFLOAT3 biTangent;
 	};
 }
 
 class InputLayoutDesc
 {
 public:
-	static const D3D11_INPUT_ELEMENT_DESC layout[3];
+	static const D3D11_INPUT_ELEMENT_DESC layout[4];
 };
-
 
 #endif // VERTEX_H

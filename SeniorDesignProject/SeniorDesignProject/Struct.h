@@ -14,14 +14,15 @@ namespace Struct
 		XMMATRIX  WVP;
 		XMMATRIX  World;
 
-		///////////////**************new**************////////////////////
 		//These will be used for the pixel shader
 		XMFLOAT4 difColor;
-		bool hasTexture;
-		///////////////**************new**************////////////////////
+		BOOL hasTexture;
+		//Because of HLSL structure packing, we will use windows BOOL
+		//instead of bool because HLSL packs things into 4 bytes, and
+		//bool is only one byte, where BOOL is 4 bytes
+		BOOL hasNormMap;
 	};
 
-	///////////////**************new**************////////////////////
 	struct Light
 	{
 		Light()
@@ -37,31 +38,23 @@ namespace Struct
 		XMFLOAT4 ambient;
 		XMFLOAT4 diffuse;
 	};
-	///////////////**************new**************////////////////////
 
 	struct cbPerFrame
 	{
 		Light  light;
 	};
 
-	///////////////**************new**************////////////////////
 	//Create material structure
 	struct SurfaceMaterial
 	{
 		std::wstring matName;
 		XMFLOAT4 difColor;
 		int texArrayIndex;
+		int normMapTexArrayIndex;
+		bool hasNormMap;
 		bool hasTexture;
 		bool transparent;
 	};
-	///////////////**************new**************////////////////////
 }
-
-/*class InputLayoutDesc
-{
-public:
-	static const D3D11_INPUT_ELEMENT_DESC layout[3];
-};*/
-
 
 #endif // STRUCT_H

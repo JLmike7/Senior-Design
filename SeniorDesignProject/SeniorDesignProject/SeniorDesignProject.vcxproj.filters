@@ -49,6 +49,9 @@
     <Filter Include="Header Files\sql">
       <UniqueIdentifier>{0342e08d-1b41-42f7-ab17-ea5df9504c6c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="DDS">
+      <UniqueIdentifier>{c47a9adf-fe61-4d37-af4c-2cb1d8bf39fc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="World.cpp">
@@ -138,9 +141,6 @@
     <ClCompile Include="WalkingStatus.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\3DGameProgramming\Common\TextureMgr.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Mesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -153,32 +153,32 @@
     <ClCompile Include="VertexMain.cpp">
       <Filter>Source Files\UI</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\3DGameProgramming\Common\d3dApp.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\3DGameProgramming\Common\d3dUtil.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\3DGameProgramming\Common\GameTimer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\3DGameProgramming\Common\GeometryGenerator.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\3DGameProgramming\Common\LightHelper.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\3DGameProgramming\Common\MathHelper.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\3DGameProgramming\Common\Waves.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\3DGameProgramming\Common\xnacollision.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\d3dUtil.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\GameTimer.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\GeometryGenerator.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\LightHelper.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\MathHelper.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\TextureMgr.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\Waves.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\xnacollision.cpp">
+      <Filter>Common</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -278,12 +278,6 @@
     <ClInclude Include="Direction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\GameTimer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\TextureMgr.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Quad.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -305,95 +299,198 @@
     <ClInclude Include="VertexMain.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\d3dApp.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\d3dUtil.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\d3dx11effect.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\GeometryGenerator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\LightHelper.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\MathHelper.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\Waves.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\xnacollision.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\d3dUtil.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\d3dx11effect.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\GameTimer.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\GeometryGenerator.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\LightHelper.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\MathHelper.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\TextureMgr.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\Waves.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\xnacollision.h">
+      <Filter>Common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="FX\Basic.fx" />
-    <FxCompile Include="FX\BuildShadowMap.fx" />
-    <FxCompile Include="FX\cubemap.fx" />
-    <FxCompile Include="FX\DebugTexture.fx" />
-    <FxCompile Include="FX\LightHelper.fx" />
-    <FxCompile Include="FX\NormalMap.fx" />
-    <FxCompile Include="FX\Sky.fx" />
-    <FxCompile Include="FX\Ssao.fx" />
-    <FxCompile Include="FX\SsaoBlur.fx" />
-    <FxCompile Include="FX\SsaoNormalDepth.fx" />
-    <FxCompile Include="FX\Terrain.fx" />
+    <FxCompile Include="FX\Basic.fx">
+      <Filter>FX</Filter>
+    </FxCompile>
+    <FxCompile Include="FX\BuildShadowMap.fx">
+      <Filter>FX</Filter>
+    </FxCompile>
+    <FxCompile Include="FX\cubemap.fx">
+      <Filter>FX</Filter>
+    </FxCompile>
+    <FxCompile Include="FX\DebugTexture.fx">
+      <Filter>FX</Filter>
+    </FxCompile>
+    <FxCompile Include="FX\LightHelper.fx">
+      <Filter>FX</Filter>
+    </FxCompile>
+    <FxCompile Include="FX\NormalMap.fx">
+      <Filter>FX</Filter>
+    </FxCompile>
+    <FxCompile Include="FX\Sky.fx">
+      <Filter>FX</Filter>
+    </FxCompile>
+    <FxCompile Include="FX\Ssao.fx">
+      <Filter>FX</Filter>
+    </FxCompile>
+    <FxCompile Include="FX\SsaoBlur.fx">
+      <Filter>FX</Filter>
+    </FxCompile>
+    <FxCompile Include="FX\SsaoNormalDepth.fx">
+      <Filter>FX</Filter>
+    </FxCompile>
+    <FxCompile Include="FX\Terrain.fx">
+      <Filter>FX</Filter>
+    </FxCompile>
+    <FxCompile Include="Effects.fx" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Textures\blend.dds" />
-    <Image Include="Textures\bricks.dds" />
-    <Image Include="Textures\bricks_nmap.dds" />
-    <Image Include="Textures\darkdirt.dds" />
-    <Image Include="Textures\desertcube1024.dds" />
-    <Image Include="Textures\floor.dds" />
-    <Image Include="Textures\floor_nmap.dds" />
-    <Image Include="Textures\grass.dds" />
-    <Image Include="Textures\grasscube1024.dds" />
-    <Image Include="Textures\head_diff.dds" />
-    <Image Include="Textures\head_norm.dds" />
-    <Image Include="Textures\jacket_diff.dds" />
-    <Image Include="Textures\jacket_norm.dds" />
-    <Image Include="Textures\lightdirt.dds" />
-    <Image Include="Textures\pants_diff.dds" />
-    <Image Include="Textures\pants_norm.dds" />
-    <Image Include="Textures\snow.dds" />
-    <Image Include="Textures\snowcube1024.dds" />
-    <Image Include="Textures\stone.dds" />
-    <Image Include="Textures\stones.dds" />
-    <Image Include="Textures\stones_nmap.dds" />
-    <Image Include="Textures\sunsetcube1024.dds" />
-    <Image Include="Textures\terrain.dds" />
-    <Image Include="Textures\tree01-bark_diffuse.dds" />
-    <Image Include="Textures\tree01-bark_normal.dds" />
-    <Image Include="Textures\tree01-leaves_diffuse.dds" />
-    <Image Include="Textures\tree01-leaves_normal.dds" />
-    <Image Include="Textures\upBody_diff.dds" />
-    <Image Include="Textures\upbody_norm.dds" />
+    <Image Include="Textures\blend.dds">
+      <Filter>DDS</Filter>
+    </Image>
+    <Image Include="Textures\bricks.dds">
+      <Filter>DDS</Filter>
+    </Image>
+    <Image Include="Textures\bricks_nmap.dds">
+      <Filter>DDS</Filter>
+    </Image>
+    <Image Include="Textures\darkdirt.dds">
+      <Filter>DDS</Filter>
+    </Image>
+    <Image Include="Textures\desertcube1024.dds">
+      <Filter>DDS</Filter>
+    </Image>
+    <Image Include="Textures\floor.dds">
+      <Filter>DDS</Filter>
+    </Image>
+    <Image Include="Textures\floor_nmap.dds">
+      <Filter>DDS</Filter>
+    </Image>
+    <Image Include="Textures\grass.dds">
+      <Filter>DDS</Filter>
+    </Image>
+    <Image Include="Textures\grasscube1024.dds">
+      <Filter>DDS</Filter>
+    </Image>
+    <Image Include="Textures\head_diff.dds">
+      <Filter>DDS</Filter>
+    </Image>
+    <Image Include="Textures\head_norm.dds">
+      <Filter>DDS</Filter>
+    </Image>
+    <Image Include="Textures\jacket_diff.dds">
+      <Filter>DDS</Filter>
+    </Image>
+    <Image Include="Textures\jacket_norm.dds">
+      <Filter>DDS</Filter>
+    </Image>
+    <Image Include="Textures\lightdirt.dds">
+      <Filter>DDS</Filter>
+    </Image>
+    <Image Include="Textures\pants_diff.dds">
+      <Filter>DDS</Filter>
+    </Image>
+    <Image Include="Textures\pants_norm.dds">
+      <Filter>DDS</Filter>
+    </Image>
+    <Image Include="Textures\snow.dds">
+      <Filter>DDS</Filter>
+    </Image>
+    <Image Include="Textures\snowcube1024.dds">
+      <Filter>DDS</Filter>
+    </Image>
+    <Image Include="Textures\stone.dds">
+      <Filter>DDS</Filter>
+    </Image>
+    <Image Include="Textures\stones.dds">
+      <Filter>DDS</Filter>
+    </Image>
+    <Image Include="Textures\stones_nmap.dds">
+      <Filter>DDS</Filter>
+    </Image>
+    <Image Include="Textures\sunsetcube1024.dds">
+      <Filter>DDS</Filter>
+    </Image>
+    <Image Include="Textures\terrain.dds">
+      <Filter>DDS</Filter>
+    </Image>
+    <Image Include="Textures\tree01-bark_diffuse.dds">
+      <Filter>DDS</Filter>
+    </Image>
+    <Image Include="Textures\tree01-bark_normal.dds">
+      <Filter>DDS</Filter>
+    </Image>
+    <Image Include="Textures\tree01-leaves_diffuse.dds">
+      <Filter>DDS</Filter>
+    </Image>
+    <Image Include="Textures\tree01-leaves_normal.dds">
+      <Filter>DDS</Filter>
+    </Image>
+    <Image Include="Textures\upBody_diff.dds">
+      <Filter>DDS</Filter>
+    </Image>
+    <Image Include="Textures\upbody_norm.dds">
+      <Filter>DDS</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
-    <None Include="FX\Basic.fxo" />
-    <None Include="FX\BuildShadowMap.fxo" />
-    <None Include="FX\cubemap.fxo" />
-    <None Include="FX\DebugTexture.fxo" />
-    <None Include="FX\NormalMap.fxo" />
-    <None Include="FX\Sky.fxo" />
-    <None Include="FX\Ssao.fxo" />
-    <None Include="FX\SsaoBlur.fxo" />
-    <None Include="FX\SsaoNormalDepth.fxo" />
-    <None Include="FX\Terrain.fxo" />
     <None Include="Models\soldier.m3d" />
     <None Include="Models\tree.m3d" />
     <None Include="Textures\map1.raw" />
     <None Include="Textures\terrain.raw" />
     <None Include="Textures\terrain2.raw" />
-    <None Include="Enemy.mtl" />
+    <None Include="FX\Basic.fxo">
+      <Filter>FX</Filter>
+    </None>
+    <None Include="FX\BuildShadowMap.fxo">
+      <Filter>FX</Filter>
+    </None>
+    <None Include="FX\cubemap.fxo">
+      <Filter>FX</Filter>
+    </None>
+    <None Include="FX\DebugTexture.fxo">
+      <Filter>FX</Filter>
+    </None>
+    <None Include="FX\NormalMap.fxo">
+      <Filter>FX</Filter>
+    </None>
+    <None Include="FX\Sky.fxo">
+      <Filter>FX</Filter>
+    </None>
+    <None Include="FX\Ssao.fxo">
+      <Filter>FX</Filter>
+    </None>
+    <None Include="FX\SsaoBlur.fxo">
+      <Filter>FX</Filter>
+    </None>
+    <None Include="FX\SsaoNormalDepth.fxo">
+      <Filter>FX</Filter>
+    </None>
+    <None Include="FX\Terrain.fxo">
+      <Filter>FX</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Models\car.txt" />
@@ -402,8 +499,5 @@
   </ItemGroup>
   <ItemGroup>
     <Media Include="Music.mp3" />
-  </ItemGroup>
-  <ItemGroup>
-    <Object Include="Enemy.obj" />
   </ItemGroup>
 </Project>
