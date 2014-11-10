@@ -141,9 +141,6 @@
     <ClCompile Include="..\..\..\..\3DGameProgramming\Common\TextureMgr.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SqlHelper.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\..\Desktop\Common\d3dApp.cpp">
       <Filter>Common</Filter>
     </ClCompile>
@@ -170,6 +167,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\..\..\Desktop\Common\xnacollision.cpp">
       <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="recordDatabase.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -281,60 +281,6 @@
     <ClInclude Include="Wave.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SqlHelper.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="sql\cppconn\statement.h">
-      <Filter>Header Files\sql</Filter>
-    </ClInclude>
-    <ClInclude Include="sql\cppconn\metadata.h">
-      <Filter>Header Files\sql</Filter>
-    </ClInclude>
-    <ClInclude Include="sql\mysql_connection.h">
-      <Filter>Header Files\sql</Filter>
-    </ClInclude>
-    <ClInclude Include="sql\mysql_driver.h">
-      <Filter>Header Files\sql</Filter>
-    </ClInclude>
-    <ClInclude Include="sql\mysql_error.h">
-      <Filter>Header Files\sql</Filter>
-    </ClInclude>
-    <ClInclude Include="sql\cppconn\parameter_metadata.h">
-      <Filter>Header Files\sql</Filter>
-    </ClInclude>
-    <ClInclude Include="sql\cppconn\prepared_statement.h">
-      <Filter>Header Files\sql</Filter>
-    </ClInclude>
-    <ClInclude Include="sql\cppconn\resultset.h">
-      <Filter>Header Files\sql</Filter>
-    </ClInclude>
-    <ClInclude Include="sql\cppconn\resultset_metadata.h">
-      <Filter>Header Files\sql</Filter>
-    </ClInclude>
-    <ClInclude Include="sql\cppconn\sqlstring.h">
-      <Filter>Header Files\sql</Filter>
-    </ClInclude>
-    <ClInclude Include="sql\cppconn\warning.h">
-      <Filter>Header Files\sql</Filter>
-    </ClInclude>
-    <ClInclude Include="sql\cppconn\exception.h">
-      <Filter>Header Files\sql</Filter>
-    </ClInclude>
-    <ClInclude Include="sql\cppconn\driver.h">
-      <Filter>Header Files\sql</Filter>
-    </ClInclude>
-    <ClInclude Include="sql\cppconn\datatype.h">
-      <Filter>Header Files\sql</Filter>
-    </ClInclude>
-    <ClInclude Include="sql\cppconn\connection.h">
-      <Filter>Header Files\sql</Filter>
-    </ClInclude>
-    <ClInclude Include="sql\cppconn\config.h">
-      <Filter>Header Files\sql</Filter>
-    </ClInclude>
-    <ClInclude Include="sql\cppconn\build_config.h">
-      <Filter>Header Files\sql</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\..\..\Desktop\Common\d3dApp.h">
       <Filter>Common</Filter>
     </ClInclude>
@@ -364,6 +310,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\..\..\Desktop\Common\xnacollision.h">
       <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="recordDatabase.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
