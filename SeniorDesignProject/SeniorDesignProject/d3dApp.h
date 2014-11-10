@@ -36,6 +36,7 @@ protected:
 	Weapon PlayerWep;
 	Biped thePlayer;
 	Biped enemies[20];
+	Stats enemyStats[20];
 	bool reloadBro = false;
 	Settings* _settings;
 
@@ -76,7 +77,7 @@ protected:
 
 	int ClientWidth;
 	int ClientHeight;
-
+	int hitMe;
 	int score;
 	float pickedDist;
 	float pickedDist2;

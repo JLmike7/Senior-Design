@@ -363,6 +363,8 @@ SeniorPro::~SeniorPro()
 
 bool SeniorPro::InitScene()
 {
+	//Init hit person
+	hitMe = 1;
 	InitD2DScreenTexture();
 
 	// Create cubemap
@@ -379,7 +381,7 @@ bool SeniorPro::InitScene()
 	//	return false;
 	for (int i = 0; i < numBottles; i++)
 	{
-		if (!bottleArray[i].LoadObjModel(L"DoorLeft.obj", material, true, false, d3d11Device, SwapChain))
+		if (!bottleArray[i].LoadObjModel(L"EnemyTes.obj", material, true, false, d3d11Device, SwapChain))
 			return false;
 	}
 
@@ -660,7 +662,7 @@ void SeniorPro::UpdateScene(double time)
 	{
 		if (bottleHit[i] == 0) //No need to check bottles already hit
 		{
-			//Set temp pick distances for camera vs building
+			//Set temp pick distances for camera vs objects
 			tempDist = pick(prwsPos, prwsDir, bottleArray[i].vertPosArray, bottleArray[i].vertIndexArray, bottleArray[i].meshWorld);
 			tempDist2 = pick(prwsPos2, prwsDir2, bottleArray[i].vertPosArray, bottleArray[i].vertIndexArray, bottleArray[i].meshWorld);
 			tempDist3 = pick(prwsPos3, prwsDir3, bottleArray[i].vertPosArray, bottleArray[i].vertIndexArray, bottleArray[i].meshWorld);
@@ -827,11 +829,13 @@ void SeniorPro::RenderText(std::wstring text, int inInt)
 			<< L"Ammo: " << PlayerWep.getMagSize() << "\n"
 			<< L"Lives: " << Player1.getLives() << "\n"
 			<< L"Score: " << score << L"\n"
-			<< L"Picked Dist: " << pickedDist << "\n"
-			<< L"Picked Dist: " << pickedDist2 << "\n"
-			<< L"Picked Dist: " << pickedDist3 << "\n"
-			<< L"Picked Dist: " << pickedDist4 << "\n"
-			<< L"Picked Dist: " << pickedDist5 << "\n"
+			<< L"EnemyHeath: " << enemyStats[hitMe].getHealth() << L"\n"
+			<< L"Enemy Picked: " << hitMe << L"\n"
+			//<< L"Picked Dist: " << pickedDist << "\n"
+			//<< L"Picked Dist: " << pickedDist2 << "\n"
+			//<< L"Picked Dist: " << pickedDist3 << "\n"
+			//<< L"Picked Dist: " << pickedDist4 << "\n"
+			//<< L"Picked Dist: " << pickedDist5 << "\n"
 			<< L"Picked Dist: " << pickedDist6 << "\n"
 			<< L"Picked Dist: " << pickedDist7 << "\n"
 			<< L"Picked Dist: " << pickedDist8 << "\n"
@@ -1002,7 +1006,7 @@ void SeniorPro::DrawScene()
 	RenderText(L"Health: ", Player1.getHealth());
 	RenderText(L"Lives: ", Player1.getLives());
 	RenderText(L"Health: ", PlayerWep.getMagSize());
-
+	RenderText(L"Enemy Picked Health %d", enemyStats[hitMe].getHealth());
 	//Present the backbuffer to the screen
 	SwapChain->Present(0, 0);
 }
@@ -1059,8 +1063,7 @@ void SeniorPro::DetectInput(double time)
 		//moveBackForward += speed;
 		mCam.setMoveBackForward(mCam.getMoveBackForward() + speed);
 	}
-	if (keyboardState[DIK_S] & 0x80 && pickedDist >= 0.5 && pickedDist2 >= 0.5 && pickedDist3 >= 0.5 && pickedDist4 >= 0.5 && pickedDist5 >= 0.5
-		&& pickedDist6 >= 0.5 && pickedDist7 >= 0.5 && pickedDist8 >= 0.5 && pickedDist9 >= 0.5 && pickedDist10 >= 0.5)
+	if (keyboardState[DIK_S] & 0x80 )
 	{
 		//moveBackForward -= speed;
 		mCam.setMoveBackForward(mCam.getMoveBackForward() - speed);
@@ -1099,7 +1102,7 @@ void SeniorPro::DetectInput(double time)
 		if (PlayerWep.getMagSize() <= 0){
 			reloadBro = true;
 		}
-		else if (flip == false){
+		else{
 			PlayerWep.setMagSize(PlayerWep.getMagSize() - 1);
 
 			//start consuming audio in the source voice
@@ -1114,49 +1117,59 @@ void SeniorPro::DetectInput(double time)
 			//play the sound
 			g_sourceGun->SubmitSourceBuffer(buffer2.xaBuffer());
 			//}
-			flip = true;
-		}
-		//Picking bottles
-		if (isShoot == false)
-		{
-			POINT mousePos;
-
-			GetCursorPos(&mousePos);
-			ScreenToClient(hwnd, &mousePos);
-
-			int mousex = mousePos.x;
-			int mousey = mousePos.y;
-
-			float tempDist;
-			float closestDist = FLT_MAX;
-			int hitIndex;
-
-			XMVECTOR prwsPos, prwsDir;
-			pickRayVector(mousex, mousey, prwsPos, prwsDir);
-
-			for (int i = 0; i < numBottles; i++)
+			
+			//Picking bottles
+			if (isShoot == false)
 			{
-				if (bottleHit[i] == 0) //No need to check bottles already hit
+				POINT mousePos;
+
+				GetCursorPos(&mousePos);
+				ScreenToClient(hwnd, &mousePos);
+
+				int mousex = mousePos.x;
+				int mousey = mousePos.y;
+
+				float tempDist;
+				float closestDist = FLT_MAX;
+				int hitIndex;
+
+				XMVECTOR prwsPos, prwsDir;
+				pickRayVector(Width/2, Height/2, prwsPos, prwsDir);
+
+				for (int i = 0; i < numBottles; i++)
 				{
-					tempDist = pick(prwsPos, prwsDir, bottleArray[i].vertPosArray, bottleArray[i].vertIndexArray, bottleArray[i].meshWorld);
-					if (tempDist < closestDist)
+					if (bottleHit[i] == 0) //No need to check bottles already hit
 					{
-						closestDist = tempDist;
-						hitIndex = i;
+						tempDist = pick(prwsPos, prwsDir, bottleArray[i].vertPosArray, bottleArray[i].vertIndexArray, bottleArray[i].meshWorld);
+						if (tempDist < closestDist)
+						{
+							closestDist = tempDist;
+							hitIndex = i;
+						}
 					}
 				}
-			}
 
-			if (closestDist < FLT_MAX)
-			{
-				bottleHit[hitIndex] = 1;
-				pickedDist = closestDist;
-				score++;
-			}
+				if (closestDist < FLT_MAX)
+				{
+					hitMe = hitIndex;
+					//Reduce that enemies health
+					enemyStats[hitIndex].setHealth(enemyStats[hitIndex].getHealth() - 20);
+					//If their health is less then 0 they are dead. remove them.
+					if (enemyStats[hitIndex].getHealth() <= 0){
+						enemies[hitIndex].setDeath(true);
+						
+						bottleHit[hitIndex] = 1;
+						pickedDist = closestDist;
+						score++;
+					}
+				}
 
-			isShoot = true;
+				isShoot = true;
+			}
+			//CHECK HERE
+
 		}
-		//CHECK HERE
+		
 	}
 	//CHECK HERE
 	if (!mouseCurrState.rgbButtons[0])
