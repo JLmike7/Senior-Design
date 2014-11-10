@@ -662,19 +662,19 @@ void SeniorPro::UpdateScene(double time)
 		{
 			//Set temp pick distances for camera vs building
 			tempDist = pick(prwsPos, prwsDir, bottleArray[i].vertPosArray, bottleArray[i].vertIndexArray, bottleArray[i].meshWorld);
-			tempDist2 = pick(prwsPos, prwsDir, bottleArray[i].vertPosArray, bottleArray[i].vertIndexArray, bottleArray[i].meshWorld);
-			tempDist3 = pick(prwsPos, prwsDir, bottleArray[i].vertPosArray, bottleArray[i].vertIndexArray, bottleArray[i].meshWorld);
-			tempDist4 = pick(prwsPos, prwsDir, bottleArray[i].vertPosArray, bottleArray[i].vertIndexArray, bottleArray[i].meshWorld);
-			tempDist5 = pick(prwsPos, prwsDir, bottleArray[i].vertPosArray, bottleArray[i].vertIndexArray, bottleArray[i].meshWorld);
+			tempDist2 = pick(prwsPos2, prwsDir2, bottleArray[i].vertPosArray, bottleArray[i].vertIndexArray, bottleArray[i].meshWorld);
+			tempDist3 = pick(prwsPos3, prwsDir3, bottleArray[i].vertPosArray, bottleArray[i].vertIndexArray, bottleArray[i].meshWorld);
+			tempDist4 = pick(prwsPos4, prwsDir4, bottleArray[i].vertPosArray, bottleArray[i].vertIndexArray, bottleArray[i].meshWorld);
+			tempDist5 = pick(prwsPos5, prwsDir5, bottleArray[i].vertPosArray, bottleArray[i].vertIndexArray, bottleArray[i].meshWorld);
 		}
 	}
 
 	//Set temp pick distances for camera vs building
 	tempDist6 = pick(prwsPos, prwsDir, meshArray[1].vertPosArray, meshArray[1].vertIndexArray, meshArray[1].meshWorld);
-	tempDist7 = pick(prwsPos, prwsDir, meshArray[1].vertPosArray, meshArray[1].vertIndexArray, meshArray[1].meshWorld);
-	tempDist8 = pick(prwsPos, prwsDir, meshArray[1].vertPosArray, meshArray[1].vertIndexArray, meshArray[1].meshWorld);
-	tempDist9 = pick(prwsPos, prwsDir, meshArray[1].vertPosArray, meshArray[1].vertIndexArray, meshArray[1].meshWorld);
-	tempDist10 = pick(prwsPos, prwsDir, meshArray[1].vertPosArray, meshArray[1].vertIndexArray, meshArray[1].meshWorld);
+	tempDist7 = pick(prwsPos2, prwsDir2, meshArray[1].vertPosArray, meshArray[1].vertIndexArray, meshArray[1].meshWorld);
+	tempDist8 = pick(prwsPos3, prwsDir3, meshArray[1].vertPosArray, meshArray[1].vertIndexArray, meshArray[1].meshWorld);
+	tempDist9 = pick(prwsPos4, prwsDir4, meshArray[1].vertPosArray, meshArray[1].vertIndexArray, meshArray[1].meshWorld);
+	tempDist10 = pick(prwsPos5, prwsDir5, meshArray[1].vertPosArray, meshArray[1].vertIndexArray, meshArray[1].meshWorld);
 
 	//Set the pick distances for each object
 	pickedDist = tempDist;
@@ -1041,26 +1041,26 @@ void SeniorPro::DetectInput(double time)
 		//}
 	}
 	//Check for collision and then allow for user to  move
-	if (keyboardState[DIK_A] & 0x80 && pickedDist >= 2.0 && pickedDist2 >= 2.0 && pickedDist3 >= 2.0 && pickedDist4 >= 2.0 && pickedDist5 >= 2.0
-		&& pickedDist6 >= 2.0 && pickedDist7 >= 2.0 && pickedDist8 >= 2.0 && pickedDist9 >= 2.0 && pickedDist10 >= 2.0)
+	if (keyboardState[DIK_A] & 0x80 && pickedDist >= 0.5 && pickedDist2 >= 0.5 && pickedDist3 >= 0.5 && pickedDist4 >= 0.5 && pickedDist5 >= 0.5
+		&& pickedDist6 >= 0.5 && pickedDist7 >= 0.5 && pickedDist8 >= 0.5 && pickedDist9 >= 0.5 && pickedDist10 >= 0.5)
 	{
 		//moveLeftRight -= speed;
 		mCam.setMoveLeftRight(mCam.getMoveLeftRight() - speed);
 	}
-	if (keyboardState[DIK_D] & 0x80 && pickedDist >= 2.0 && pickedDist2 >= 2.0 && pickedDist3 >= 2.0 && pickedDist4 >= 2.0 && pickedDist5 >= 2.0
-		&& pickedDist6 >= 2.0 && pickedDist7 >= 2.0 && pickedDist8 >= 2.0 && pickedDist9 >= 2.0 && pickedDist10 >= 2.0)
+	if (keyboardState[DIK_D] & 0x80 && pickedDist >= 0.5 && pickedDist2 >= 0.5 && pickedDist3 >= 0.5 && pickedDist4 >= 0.5 && pickedDist5 >= 0.5
+		&& pickedDist6 >= 0.5 && pickedDist7 >= 0.5 && pickedDist8 >= 0.5 && pickedDist9 >= 0.5 && pickedDist10 >= 0.5)
 	{
 		//moveLeftRight += speed;
 		mCam.setMoveLeftRight(mCam.getMoveLeftRight() + speed);
 	}
-	if (keyboardState[DIK_W] & 0x80 && pickedDist >= 2.0 && pickedDist2 >= 2.0 && pickedDist3 >= 2.0 && pickedDist4 >= 2.0 && pickedDist5 >= 2.0
-		&& pickedDist6 >= 2.0 && pickedDist7 >= 2.0 && pickedDist8 >= 2.0 && pickedDist9 >= 2.0 && pickedDist10 >= 2.0)
+	if (keyboardState[DIK_W] & 0x80 && pickedDist >= 0.5 && pickedDist2 >= 0.5 && pickedDist3 >= 0.5 && pickedDist4 >= 0.5 && pickedDist5 >= 0.5
+		&& pickedDist6 >= 0.5 && pickedDist7 >= 0.5 && pickedDist8 >= 0.5 && pickedDist9 >= 0.5 && pickedDist10 >= 0.5)
 	{
 		//moveBackForward += speed;
 		mCam.setMoveBackForward(mCam.getMoveBackForward() + speed);
 	}
-	if (keyboardState[DIK_S] & 0x80 && pickedDist >= 2.0 && pickedDist2 >= 2.0 && pickedDist3 >= 2.0 && pickedDist4 >= 2.0 && pickedDist5 >= 2.0
-		&& pickedDist6 >= 2.0 && pickedDist7 >= 2.0 && pickedDist8 >= 2.0 && pickedDist9 >= 2.0 && pickedDist10 >= 2.0)
+	if (keyboardState[DIK_S] & 0x80 && pickedDist >= 0.5 && pickedDist2 >= 0.5 && pickedDist3 >= 0.5 && pickedDist4 >= 0.5 && pickedDist5 >= 0.5
+		&& pickedDist6 >= 0.5 && pickedDist7 >= 0.5 && pickedDist8 >= 0.5 && pickedDist9 >= 0.5 && pickedDist10 >= 0.5)
 	{
 		//moveBackForward -= speed;
 		mCam.setMoveBackForward(mCam.getMoveBackForward() - speed);

@@ -41,8 +41,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(IncludePath);$(DXSDK_DIR)Include;C:\Users\choward8\Documents\Visual Studio 2013\3DGameProgramming\Common;$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSDK_IncludePath);$(FrameworkSDKDir)\include</IncludePath>
-    <LibraryPath>$(LibraryPath);$(DXSDK_DIR)Lib\x86;C:\Users\choward8\Documents\Visual Studio 2013\3DGameProgramming\Common;$(VCInstallDir)lib;$(VCInstallDir)atlmfc\lib;$(WindowsSDK_LibraryPath_x86);$(FrameworkSDKDir)\lib;C:\Program Files %28x86%29\Windows Kits\8.0\Lib\win8\um\x86;C:\Program Files %28x86%29\Windows Kits\8.0\Lib\win8\um\x64</LibraryPath>
+    <IncludePath>$(IncludePath);$(DXSDK_DIR)Include;C:\Users\Aaron\Documents\Visual Studio 2013\3DGameProgramming\Common;$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSDK_IncludePath);$(FrameworkSDKDir)\include</IncludePath>
+    <LibraryPath>$(LibraryPath);$(DXSDK_DIR)Lib\x86;C:\Users\Aaron\Documents\Visual Studio 2013\3DGameProgramming\Common;$(VCInstallDir)lib;$(VCInstallDir)atlmfc\lib;$(WindowsSDK_LibraryPath_x86);$(FrameworkSDKDir)\lib;C:\Program Files %28x86%29\Windows Kits\8.0\Lib\win8\um\x86;C:\Program Files %28x86%29\Windows Kits\8.0\Lib\win8\um\x64</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -91,16 +91,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\Camera.cpp" />
-    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\d3dApp.cpp" />
-    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\d3dUtil.cpp" />
-    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\GameTimer.cpp" />
-    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\GeometryGenerator.cpp" />
-    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\LightHelper.cpp" />
-    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\MathHelper.cpp" />
-    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\TextureMgr.cpp" />
-    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\Waves.cpp" />
-    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\xnacollision.cpp" />
+    <ClCompile Include="..\..\..\..\3DGameProgramming\Common\Camera.cpp" />
+    <ClCompile Include="..\..\..\..\3DGameProgramming\Common\d3dUtil.cpp" />
+    <ClCompile Include="..\..\..\..\3DGameProgramming\Common\GameTimer.cpp" />
+    <ClCompile Include="..\..\..\..\3DGameProgramming\Common\GeometryGenerator.cpp" />
+    <ClCompile Include="..\..\..\..\3DGameProgramming\Common\LightHelper.cpp" />
+    <ClCompile Include="..\..\..\..\3DGameProgramming\Common\MathHelper.cpp" />
+    <ClCompile Include="..\..\..\..\3DGameProgramming\Common\TextureMgr.cpp" />
+    <ClCompile Include="..\..\..\..\3DGameProgramming\Common\Waves.cpp" />
+    <ClCompile Include="..\..\..\..\3DGameProgramming\Common\xnacollision.cpp" />
     <ClCompile Include="BasicModel.cpp" />
     <ClCompile Include="Biped.cpp" />
     <ClCompile Include="Box.cpp" />
@@ -138,17 +137,16 @@
     <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\Camera.h" />
-    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\d3dApp.h" />
-    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\d3dUtil.h" />
-    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\d3dx11effect.h" />
-    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\GameTimer.h" />
-    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\GeometryGenerator.h" />
-    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\LightHelper.h" />
-    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\MathHelper.h" />
-    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\TextureMgr.h" />
-    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\Waves.h" />
-    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\xnacollision.h" />
+    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\Camera.h" />
+    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\d3dUtil.h" />
+    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\d3dx11effect.h" />
+    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\GameTimer.h" />
+    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\GeometryGenerator.h" />
+    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\LightHelper.h" />
+    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\MathHelper.h" />
+    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\TextureMgr.h" />
+    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\Waves.h" />
+    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\xnacollision.h" />
     <ClInclude Include="BasicModel.h" />
     <ClInclude Include="Biped.h" />
     <ClInclude Include="Box.h" />
