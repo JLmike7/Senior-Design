@@ -635,6 +635,59 @@ bool SeniorPro::InitScene()
 
 void SeniorPro::UpdateScene(double time)
 {
+
+	float tempDist;
+	float tempDist2;
+	float tempDist3;
+	float tempDist4;
+	float tempDist5;
+	float tempDist6;
+	float tempDist7;
+	float tempDist8;
+	float tempDist9;
+	float tempDist10;
+
+	float closestDist = FLT_MAX;
+	int hitIndex;
+	//Get picking 
+	XMVECTOR prwsPos, prwsDir, prwsPos2, prwsDir2, prwsPos3, prwsDir3, prwsPos4, prwsDir4, prwsPos5, prwsDir5;
+	pickRayVector(0, 0, prwsPos, prwsDir);
+	pickRayVector((Width / 2 - 1), 0, prwsPos2, prwsDir2);
+	pickRayVector(((Width / -2) + 1), 0, prwsPos3, prwsDir3);
+	pickRayVector(0, (Height / 2 - 1), prwsPos4, prwsDir4);
+	pickRayVector(0, ((Height / -2) + 1), prwsPos5, prwsDir5);
+	for (int i = 0; i < numBottles; i++)
+	{
+		if (bottleHit[i] == 0) //No need to check bottles already hit
+		{
+			//Set temp pick distances for camera vs building
+			tempDist = pick(prwsPos, prwsDir, bottleArray[i].vertPosArray, bottleArray[i].vertIndexArray, bottleArray[i].meshWorld);
+			tempDist2 = pick(prwsPos, prwsDir, bottleArray[i].vertPosArray, bottleArray[i].vertIndexArray, bottleArray[i].meshWorld);
+			tempDist3 = pick(prwsPos, prwsDir, bottleArray[i].vertPosArray, bottleArray[i].vertIndexArray, bottleArray[i].meshWorld);
+			tempDist4 = pick(prwsPos, prwsDir, bottleArray[i].vertPosArray, bottleArray[i].vertIndexArray, bottleArray[i].meshWorld);
+			tempDist5 = pick(prwsPos, prwsDir, bottleArray[i].vertPosArray, bottleArray[i].vertIndexArray, bottleArray[i].meshWorld);
+		}
+	}
+
+	//Set temp pick distances for camera vs building
+	tempDist6 = pick(prwsPos, prwsDir, meshArray[1].vertPosArray, meshArray[1].vertIndexArray, meshArray[1].meshWorld);
+	tempDist7 = pick(prwsPos, prwsDir, meshArray[1].vertPosArray, meshArray[1].vertIndexArray, meshArray[1].meshWorld);
+	tempDist8 = pick(prwsPos, prwsDir, meshArray[1].vertPosArray, meshArray[1].vertIndexArray, meshArray[1].meshWorld);
+	tempDist9 = pick(prwsPos, prwsDir, meshArray[1].vertPosArray, meshArray[1].vertIndexArray, meshArray[1].meshWorld);
+	tempDist10 = pick(prwsPos, prwsDir, meshArray[1].vertPosArray, meshArray[1].vertIndexArray, meshArray[1].meshWorld);
+
+	//Set the pick distances for each object
+	pickedDist = tempDist;
+	pickedDist2 = tempDist2;
+	pickedDist3 = tempDist3;
+	pickedDist4 = tempDist4;
+	pickedDist5 = tempDist5;
+	pickedDist6 = tempDist6;
+	pickedDist7 = tempDist7;
+	pickedDist8 = tempDist8;
+	pickedDist9 = tempDist9;
+	pickedDist10 = tempDist10;
+
 	if (Player1.getHealth() == 0)
 	{
 		Player1.setHealth(100);
@@ -765,16 +818,25 @@ void SeniorPro::RenderText(std::wstring text, int inInt)
 
 	//Create our string
 	std::wostringstream printString;
-	printString << text << inInt << L"\n"
-		<< L"Score: " << score << L"\n"
-		<< L"Picked Dist: " << pickedDist << L"\n";
+		
 
 	if (thePlayer.getDeath() == false)
 	{
 		printString <<
 			L"Health: " << Player1.getHealth() << "\n"
 			<< L"Ammo: " << PlayerWep.getMagSize() << "\n"
-			<< L"Lives: " << Player1.getLives() << "\n";
+			<< L"Lives: " << Player1.getLives() << "\n"
+			<< L"Score: " << score << L"\n"
+			<< L"Picked Dist: " << pickedDist << "\n"
+			<< L"Picked Dist: " << pickedDist2 << "\n"
+			<< L"Picked Dist: " << pickedDist3 << "\n"
+			<< L"Picked Dist: " << pickedDist4 << "\n"
+			<< L"Picked Dist: " << pickedDist5 << "\n"
+			<< L"Picked Dist: " << pickedDist6 << "\n"
+			<< L"Picked Dist: " << pickedDist7 << "\n"
+			<< L"Picked Dist: " << pickedDist8 << "\n"
+			<< L"Picked Dist: " << pickedDist9 << "\n"
+			<< L"Picked Dist: " << pickedDist10 << "\n";
 		printText = printString.str();
 		if (reloadBro == true)
 		{
@@ -978,22 +1040,27 @@ void SeniorPro::DetectInput(double time)
 		g_source->SubmitSourceBuffer(buffer.xaBuffer());
 		//}
 	}
-	if (keyboardState[DIK_A] & 0x80)
+	//Check for collision and then allow for user to  move
+	if (keyboardState[DIK_A] & 0x80 && pickedDist >= 2.0 && pickedDist2 >= 2.0 && pickedDist3 >= 2.0 && pickedDist4 >= 2.0 && pickedDist5 >= 2.0
+		&& pickedDist6 >= 2.0 && pickedDist7 >= 2.0 && pickedDist8 >= 2.0 && pickedDist9 >= 2.0 && pickedDist10 >= 2.0)
 	{
 		//moveLeftRight -= speed;
 		mCam.setMoveLeftRight(mCam.getMoveLeftRight() - speed);
 	}
-	if (keyboardState[DIK_D] & 0x80)
+	if (keyboardState[DIK_D] & 0x80 && pickedDist >= 2.0 && pickedDist2 >= 2.0 && pickedDist3 >= 2.0 && pickedDist4 >= 2.0 && pickedDist5 >= 2.0
+		&& pickedDist6 >= 2.0 && pickedDist7 >= 2.0 && pickedDist8 >= 2.0 && pickedDist9 >= 2.0 && pickedDist10 >= 2.0)
 	{
 		//moveLeftRight += speed;
 		mCam.setMoveLeftRight(mCam.getMoveLeftRight() + speed);
 	}
-	if (keyboardState[DIK_W] & 0x80)
+	if (keyboardState[DIK_W] & 0x80 && pickedDist >= 2.0 && pickedDist2 >= 2.0 && pickedDist3 >= 2.0 && pickedDist4 >= 2.0 && pickedDist5 >= 2.0
+		&& pickedDist6 >= 2.0 && pickedDist7 >= 2.0 && pickedDist8 >= 2.0 && pickedDist9 >= 2.0 && pickedDist10 >= 2.0)
 	{
 		//moveBackForward += speed;
 		mCam.setMoveBackForward(mCam.getMoveBackForward() + speed);
 	}
-	if (keyboardState[DIK_S] & 0x80)
+	if (keyboardState[DIK_S] & 0x80 && pickedDist >= 2.0 && pickedDist2 >= 2.0 && pickedDist3 >= 2.0 && pickedDist4 >= 2.0 && pickedDist5 >= 2.0
+		&& pickedDist6 >= 2.0 && pickedDist7 >= 2.0 && pickedDist8 >= 2.0 && pickedDist9 >= 2.0 && pickedDist10 >= 2.0)
 	{
 		//moveBackForward -= speed;
 		mCam.setMoveBackForward(mCam.getMoveBackForward() - speed);
@@ -1022,7 +1089,7 @@ void SeniorPro::DetectInput(double time)
 	}
 	if (keyboardState[DIK_L] & 0x80)
 	{
-		thePlayer.setDeath(false);
+		thePlayer.setDeath(true);
 	}
 
 	if ((mouseCurrState.rgbButtons[0]))

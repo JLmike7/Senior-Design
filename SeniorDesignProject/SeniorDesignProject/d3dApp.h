@@ -79,6 +79,16 @@ protected:
 
 	int score;
 	float pickedDist;
+	float pickedDist2;
+	float pickedDist3;
+	float pickedDist4;
+	float pickedDist5;
+	float pickedDist6;
+	float pickedDist7;
+	float pickedDist8;
+	float pickedDist9;
+	float pickedDist10;
+	
 	///////////////**************new**************////////////////////
 
 	D3D11_VIEWPORT mScreenViewport;
