@@ -1,98 +1,169 @@
-#include "cubemap.h"
-#include "GeometryGenerator.h"
-#include "Camera.h"
-#include "Vertex.h"
-#include "Effects.h"
+#include "Cubemap.h"
+#include "CameraMain.h"
+#include "VertexMain.h"
 
-Cubemap::Cubemap(ID3D11Device* device, const std::wstring& cubemapFilename, float skySphereRadius)
+Cubemap::Cubemap(ID3D11Device* device)
 {
-	HR(D3DX11CreateShaderResourceViewFromFile(device, cubemapFilename.c_str(), 0, 0, &mCubeMapSRV, 0));
-
-	GeometryGenerator::MeshData sphere;
-	GeometryGenerator geoGen;
-	geoGen.CreateSphere(skySphereRadius, 30, 30, sphere);
-
-	std::vector<XMFLOAT3> vertices(sphere.Vertices.size());
-
-	for (size_t i = 0; i < sphere.Vertices.size(); ++i)
-	{
-		vertices[i] = sphere.Vertices[i].Position;
-	}
-
-	D3D11_BUFFER_DESC vbd;
-	vbd.Usage = D3D11_USAGE_IMMUTABLE;
-	vbd.ByteWidth = sizeof(XMFLOAT3)* vertices.size();
-	vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	vbd.CPUAccessFlags = 0;
-	vbd.MiscFlags = 0;
-	vbd.StructureByteStride = 0;
-
-	D3D11_SUBRESOURCE_DATA vinitData;
-	vinitData.pSysMem = &vertices[0];
-
-	HR(device->CreateBuffer(&vbd, &vinitData, &mVB));
-
-
-	mIndexCount = sphere.Indices.size();
-
-	D3D11_BUFFER_DESC ibd;
-	ibd.Usage = D3D11_USAGE_IMMUTABLE;
-	ibd.ByteWidth = sizeof(USHORT)* mIndexCount;
-	ibd.BindFlags = D3D11_BIND_INDEX_BUFFER;
-	ibd.CPUAccessFlags = 0;
-	ibd.StructureByteStride = 0;
-	ibd.MiscFlags = 0;
-
-	std::vector<USHORT> indices16;
-	indices16.assign(sphere.Indices.begin(), sphere.Indices.end());
-
-	D3D11_SUBRESOURCE_DATA iinitData;
-	iinitData.pSysMem = &indices16[0];
-
-	HR(device->CreateBuffer(&ibd, &iinitData, &mIB));
+	CreateSphere(10, 10, device);
 }
 
 Cubemap::~Cubemap()
 {
-	ReleaseCOM(mVB);
-	ReleaseCOM(mIB);
-	ReleaseCOM(mCubeMapSRV);
+	sphereVertBuffer->Release();
+	sphereIndexBuffer->Release();
+
+	SKYMAP_VS->Release();
+	SKYMAP_PS->Release();
+	SKYMAP_VS_Buffer->Release();
+	SKYMAP_PS_Buffer->Release();
+
+	smrv->Release();
 }
 
-ID3D11ShaderResourceView* Cubemap::CubeMapSRV()
+void Cubemap::CreateSphere(int LatLines, int LongLines, ID3D11Device* d3d11Device)
 {
-	return mCubeMapSRV;
-}
+	NumSphereVertices = ((LatLines - 2) * LongLines) + 2;
+	NumSphereFaces = ((LatLines - 3)*(LongLines)* 2) + (LongLines * 2);
 
-void Cubemap::Draw(ID3D11DeviceContext* dc, const Camera& camera)
-{
-	// center Sky about eye in world space
-	XMFLOAT3 eyePos = camera.GetPosition();
-	XMMATRIX T = XMMatrixTranslation(eyePos.x, eyePos.y, eyePos.z);
+	float sphereYaw = 0.0f;
+	float spherePitch = 0.0f;
 
+	XMMATRIX Rotationx;
+	XMMATRIX Rotationy;
+	XMMATRIX Rotationz;
 
-	XMMATRIX WVP = XMMatrixMultiply(T, camera.ViewProj());
+	std::vector<Vertex::Vertex> vertices(NumSphereVertices);
 
-	Effects::CubemapFX->SetWorldViewProj(WVP);
-	Effects::CubemapFX->SetCubeMap(mCubeMapSRV);
+	XMVECTOR currVertPos = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
 
+	vertices[0].pos.x = 0.0f;
+	vertices[0].pos.y = 0.0f;
+	vertices[0].pos.z = 1.0f;
 
-	UINT stride = sizeof(XMFLOAT3);
-	UINT offset = 0;
-	dc->IASetVertexBuffers(0, 1, &mVB, &stride, &offset);
-	dc->IASetIndexBuffer(mIB, DXGI_FORMAT_R16_UINT, 0);
-	dc->IASetInputLayout(InputLayouts::Pos);
-	dc->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-	D3DX11_TECHNIQUE_DESC techDesc;
-	Effects::CubemapFX->SkyTech->GetDesc(&techDesc);
-
-	for (UINT p = 0; p < techDesc.Passes; ++p)
+	for (DWORD i = 0; i < LatLines - 2; ++i)
 	{
-		ID3DX11EffectPass* pass = Effects::CubemapFX->SkyTech->GetPassByIndex(p);
-
-		pass->Apply(0, dc);
-
-		dc->DrawIndexed(mIndexCount, 0, 0);
+		spherePitch = (i + 1) * (3.14 / (LatLines - 1));
+		Rotationx = XMMatrixRotationX(spherePitch);
+		for (DWORD j = 0; j < LongLines; ++j)
+		{
+			sphereYaw = j * (6.28 / (LongLines));
+			Rotationy = XMMatrixRotationZ(sphereYaw);
+			currVertPos = XMVector3TransformNormal(XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f), (Rotationx * Rotationy));
+			currVertPos = XMVector3Normalize(currVertPos);
+			vertices[i*LongLines + j + 1].pos.x = XMVectorGetX(currVertPos);
+			vertices[i*LongLines + j + 1].pos.y = XMVectorGetY(currVertPos);
+			vertices[i*LongLines + j + 1].pos.z = XMVectorGetZ(currVertPos);
+		}
 	}
+
+	vertices[NumSphereVertices - 1].pos.x = 0.0f;
+	vertices[NumSphereVertices - 1].pos.y = 0.0f;
+	vertices[NumSphereVertices - 1].pos.z = -1.0f;
+
+
+	D3D11_BUFFER_DESC vertexBufferDesc;
+	ZeroMemory(&vertexBufferDesc, sizeof(vertexBufferDesc));
+
+	vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+	vertexBufferDesc.ByteWidth = sizeof(Vertex::Vertex) * NumSphereVertices;
+	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	vertexBufferDesc.CPUAccessFlags = 0;
+	vertexBufferDesc.MiscFlags = 0;
+
+	D3D11_SUBRESOURCE_DATA vertexBufferData;
+
+	ZeroMemory(&vertexBufferData, sizeof(vertexBufferData));
+	vertexBufferData.pSysMem = &vertices[0];
+	d3d11Device->CreateBuffer(&vertexBufferDesc, &vertexBufferData, &sphereVertBuffer);
+
+
+	std::vector<DWORD> indices(NumSphereFaces * 3);
+
+	int k = 0;
+	for (DWORD l = 0; l < LongLines - 1; ++l)
+	{
+		indices[k] = 0;
+		indices[k + 1] = l + 1;
+		indices[k + 2] = l + 2;
+		k += 3;
+	}
+
+	indices[k] = 0;
+	indices[k + 1] = LongLines;
+	indices[k + 2] = 1;
+	k += 3;
+
+	for (DWORD i = 0; i < LatLines - 3; ++i)
+	{
+		for (DWORD j = 0; j < LongLines - 1; ++j)
+		{
+			indices[k] = i*LongLines + j + 1;
+			indices[k + 1] = i*LongLines + j + 2;
+			indices[k + 2] = (i + 1)*LongLines + j + 1;
+
+			indices[k + 3] = (i + 1)*LongLines + j + 1;
+			indices[k + 4] = i*LongLines + j + 2;
+			indices[k + 5] = (i + 1)*LongLines + j + 2;
+
+			k += 6; // next quad
+		}
+
+		indices[k] = (i*LongLines) + LongLines;
+		indices[k + 1] = (i*LongLines) + 1;
+		indices[k + 2] = ((i + 1)*LongLines) + LongLines;
+
+		indices[k + 3] = ((i + 1)*LongLines) + LongLines;
+		indices[k + 4] = (i*LongLines) + 1;
+		indices[k + 5] = ((i + 1)*LongLines) + 1;
+
+		k += 6;
+	}
+
+	for (DWORD l = 0; l < LongLines - 1; ++l)
+	{
+		indices[k] = NumSphereVertices - 1;
+		indices[k + 1] = (NumSphereVertices - 1) - (l + 1);
+		indices[k + 2] = (NumSphereVertices - 1) - (l + 2);
+		k += 3;
+	}
+
+	indices[k] = NumSphereVertices - 1;
+	indices[k + 1] = (NumSphereVertices - 1) - LongLines;
+	indices[k + 2] = NumSphereVertices - 2;
+
+	D3D11_BUFFER_DESC indexBufferDesc;
+	ZeroMemory(&indexBufferDesc, sizeof(indexBufferDesc));
+
+	indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+	indexBufferDesc.ByteWidth = sizeof(DWORD) * NumSphereFaces * 3;
+	indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+	indexBufferDesc.CPUAccessFlags = 0;
+	indexBufferDesc.MiscFlags = 0;
+
+	D3D11_SUBRESOURCE_DATA iinitData;
+
+	iinitData.pSysMem = &indices[0];
+	d3d11Device->CreateBuffer(&indexBufferDesc, &iinitData, &sphereIndexBuffer);
+
 }
+
+void Cubemap::setNumSphereVertices(int a)
+{
+	NumSphereVertices = a;
+}
+
+int Cubemap::getNumSphereVertices()
+{
+	return NumSphereVertices;
+}
+
+void Cubemap::setNumSphereFaces(int a)
+{
+	NumSphereFaces = a;
+}
+
+int Cubemap::getNumSphereFaces()
+{
+	return NumSphereFaces;
+}
+

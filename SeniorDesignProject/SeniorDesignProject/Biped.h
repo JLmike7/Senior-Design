@@ -38,6 +38,8 @@ public:
 	void lookTo(Direction direction);
 	void lookAt(Point* point,bool tracking);
 	void walk(Direction direction,bool startStop);
+	bool getDeath();
+	void setDeath(bool isDead);
 
 	Biped(Settings* settings);
 	Biped();
@@ -54,4 +56,5 @@ protected:
 	Position*			position;
 //	Box*				hitbox;
 	WalkingStatus*		walkingStatus;
+	bool				death;
 };

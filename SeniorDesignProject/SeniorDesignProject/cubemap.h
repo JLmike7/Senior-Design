@@ -1,33 +1,40 @@
 #ifndef CUBEMAP_H
 #define CUBEMAP_H
 
-#include "d3dUtil.h"
+//#include "d3dUtil.h"
+#include "VertexMain.h"
+#include <d3d11.h>
+#include <string>
+#include <vector>
 
 class Camera;
 
 class Cubemap{
 public:
-	Cubemap(ID3D11Device* device, const std::wstring& cubemapFilename, float SphereRadius);
+	ID3D11Buffer* sphereVertBuffer;
+	ID3D11Buffer* sphereIndexBuffer;
+	ID3D11VertexShader* SKYMAP_VS;
+	ID3D11PixelShader* SKYMAP_PS;
+	ID3D10Blob* SKYMAP_VS_Buffer;
+	ID3D10Blob* SKYMAP_PS_Buffer;
+
+	ID3D11ShaderResourceView* smrv;
+
+	Cubemap(ID3D11Device* device);
 	~Cubemap();
 
-	// Cubemap's ShaderResourceViews
-	ID3D11ShaderResourceView* CubeMapSRV();										
+	void CreateSphere(int LatLines, int LongLines, ID3D11Device* d3d11Device);
 
-	void Draw(ID3D11DeviceContext* dc, const Camera& camera);
+	void setNumSphereVertices(int a);
+	int getNumSphereVertices();
+
+	void setNumSphereFaces(int a);
+	int getNumSphereFaces();
 
 private:
-	Cubemap(const Cubemap& rhs);
-	Cubemap& operator=(const Cubemap& rhs);
 
-private:
-	// vertex buffer
-	ID3D11Buffer* mVB;
-	// index buffer
-	ID3D11Buffer* mIB;
-	// Cubemap's ShaderResourceViews
-	ID3D11ShaderResourceView* mCubeMapSRV;
-
-	UINT mIndexCount;
+	int NumSphereVertices;
+	int NumSphereFaces;
 };
 
 #endif // CUBEMAP_H

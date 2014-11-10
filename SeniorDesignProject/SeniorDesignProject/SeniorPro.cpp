@@ -1,269 +1,87 @@
-//***************************************************************************************
-//Include and link appropriate libraries and headers//
-#pragma comment(lib, "d3d11.lib")
-#pragma comment(lib, "d3dx11.lib")
-#pragma comment(lib, "d3dx10.lib")
-#pragma comment (lib, "D3D10_1.lib")
-#pragma comment (lib, "DXGI.lib")
-#pragma comment (lib, "D2D1.lib")
-#pragma comment (lib, "dwrite.lib")
-#pragma comment (lib, "dinput8.lib")
-#pragma comment (lib, "dxguid.lib")
-
 #include "d3dApp.h"
-#include "d3dx11Effect.h"
-#include "GeometryGenerator.h"
-#include "MathHelper.h"
-#include "LightHelper.h"
-#include "Effects.h"
-#include "Vertex.h"
-#include "RenderStates.h"
-#include "Camera.h"
+#include "CameraMain.h"
+#include "VertexMain.h"
 #include "Cubemap.h"
-#include "Terrain.h"
-#include <windows.h>
-#include <sstream>
-#include <dwrite.h>
-#include <dinput.h>
-#include <vector>
-#include "Wave.h"
-#include <tchar.h>
-#include "Ssao.h"
-#include "SkinnedData.h"
-#include "SkinnedModel.h"
-#include "Point.h"
-#include "Direction.h"
-#include "Position.h"
-#include "ShadowMap.h"
-#include <memory>
-#include <d3d11.h>
-#include <d3dx11.h>
-#include <d3dx10.h>
-#include <xnamath.h>
-#include <D3D10_1.h>
-#include <DXGI.h>
-#include <D2D1.h>
+#include "Mesh.h"
 
-struct BoundingSphere
-{
-	BoundingSphere() : Center(0.0f, 0.0f, 0.0f), Radius(0.0f) {}
-	XMFLOAT3 Center;
-	float Radius;
-};
+
+#define MESHCOUNT 3
+
 class SeniorPro : public D3DApp
 {
 public:
-	SeniorPro(HINSTANCE hInstance);
+	SeniorPro(HINSTANCE);
 	~SeniorPro();
 
-	bool Init();
-	void OnResize();
-	void UpdateScene(float dt);
+	bool InitScene();
+	void UpdateScene(double time);
 	void DrawScene();
-
-	bool InitDirectInput(HINSTANCE hInstance);
-	void OnMouseDown(WPARAM btnState, int x, int y);
-	void OnMouseUp(WPARAM btnState, int x, int y);
-	void OnMouseMove(WPARAM btnState, int x, int y);
-
+	void RenderText(std::wstring text, int inInt);
+	void DetectInput(double time);
+	void drawModel(bool transparent);
 
 private:
-	
-	void DrawSceneToSsaoNormalDepthMap();
-	void DrawSceneToShadowMap();
-	void DrawScreenQuad(ID3D11ShaderResourceView* srv);
-	void BuildShadowTransform();
-	void BuildShapeGeometryBuffers();
-	void BuildSkullGeometryBuffers();
-	void BuildScreenQuadGeometryBuffers();
+	CameraMain mCam;
 
-private:
 	Cubemap* mCubemap;
-	Terrain mTerrain;
 
-	//DirectionalLight mDirLights[3];
+	//Mesh* spaceCompound;
 
-	
-	//Camera mCam;
+	//meshArray[0] = Mesh(L"spaceCompound.obj");
+	Mesh meshArray[MESHCOUNT];
 
-	float playerHeight;
-	//Camera Modes
-	bool flycam;
-	bool firstPerson;
-	bool thirdPerson;
+	XMMATRIX groundWorld;
+	XMMATRIX sphereWorld;
 
-	XMMATRIX modelScale;
-	XMMATRIX modelRot;
-	XMMATRIX modelOffset;
+	XMMATRIX Rotation;
+	XMMATRIX Scale;
+	XMMATRIX Translation;
+	float rot = 0.01f;
 
-	Position playerLoc;
-	float playerRotation;
-
-	//POINT mLastMousePos;
-
-	TextureMgr mTexMgr;
-
-	SkinnedModel* mCharacterModel;
-	SkinnedModelInstance mCharacterInstance1;
-	SkinnedModelInstance mCharacterInstance2;
-
-	ID3D11Buffer* mShapesVB;
-	ID3D11Buffer* mShapesIB;
-
-	ID3D11Buffer* mSkullVB;
-	ID3D11Buffer* mSkullIB;
-
-	ID3D11Buffer* mScreenQuadVB;
-	ID3D11Buffer* mScreenQuadIB;
-
-	ID3D11ShaderResourceView* mStoneTexSRV;
-	ID3D11ShaderResourceView* mBrickTexSRV;
-
-	ID3D11ShaderResourceView* mStoneNormalTexSRV;
-	ID3D11ShaderResourceView* mBrickNormalTexSRV;
-
-	BoundingSphere mSceneBounds;
-
-
-
-
-	static const int SMapSize = 2048;
-	ShadowMap* mSmap;
-	XMFLOAT4X4 mLightView;
-	XMFLOAT4X4 mLightProj;
-	XMFLOAT4X4 mShadowTransform;
-
-	Ssao* mSsao;
-
-	float mLightRotationAngle;
-	XMFLOAT3 mOriginalLightDir[3];
-	DirectionalLight mDirLights[3];
-	Material mGridMat;
-	Material mBoxMat;
-	Material mCylinderMat;
-	Material mSphereMat;
-	Material mSkullMat;
-
-	// Define transformations from local spaces to world space.
-	XMFLOAT4X4 mSphereWorld[10];
-	XMFLOAT4X4 mCylWorld[10];
-	XMFLOAT4X4 mBoxWorld;
-	XMFLOAT4X4 mGridWorld;
-	XMFLOAT4X4 mSkullWorld;
-
-	int mBoxVertexOffset;
-	int mGridVertexOffset;
-	int mSphereVertexOffset;
-	int mCylinderVertexOffset;
-
-	UINT mBoxIndexOffset;
-	UINT mGridIndexOffset;
-	UINT mSphereIndexOffset;
-	UINT mCylinderIndexOffset;
-
-	UINT mBoxIndexCount;
-	UINT mGridIndexCount;
-	UINT mSphereIndexCount;
-	UINT mCylinderIndexCount;
-
-	UINT mSkullIndexCount;
-
-	Camera mCam;
-	
-	POINT mLastMousePos;
-	
-
+	UINT stride = sizeof(Vertex::Vertex);
+	UINT offset = 0;
 
 };
-
-
-//Text Stuff
-ID3D11DeviceContext* d3d11DevCon;
-ID3D11RenderTargetView* renderTargetView;
-ID3D11Buffer* squareIndexBuffer;
-ID3D11DepthStencilView* depthStencilView;
-ID3D11Texture2D* depthStencilBuffer;
-ID3D11Buffer* squareVertBuffer;
-ID3D11VertexShader* VS;
-ID3D11PixelShader* PS;
-ID3D11PixelShader* D2D_PS;
-ID3D10Blob* D2D_PS_Buffer;
-ID3D10Blob* VS_Buffer;
-ID3D10Blob* PS_Buffer;
-ID3D11InputLayout* vertLayout;
-ID3D11Buffer* cbPerObjectBuffer;
-ID3D11BlendState* d2dTransparency;
-ID3D11RasterizerState* CCWcullMode;
-ID3D11RasterizerState* CWcullMode;
-ID3D11ShaderResourceView* CubesTexture;
-ID3D11SamplerState* CubesTexSamplerState;
-ID3D11Buffer* cbPerFrameBuffer;
-ID3D10Device1 *d3d101Device;
-IDXGIKeyedMutex *keyedMutex11;
-IDXGIKeyedMutex *keyedMutex10;
-ID2D1RenderTarget *D2DRenderTarget;
-ID2D1SolidColorBrush *Brush;
-ID3D11Texture2D *BackBuffer11;
-ID3D11Texture2D *sharedTex11;
-ID3D11Buffer *d2dVertBuffer;
-ID3D11Buffer *d2dIndexBuffer;
-ID3D11ShaderResourceView *d2dTexture;
-IDWriteFactory *DWriteFactory;
-IDWriteTextFormat *TextFormat;
-
-int Width = 800;
-int Height = 600;
-
-std::wstring printText;
-XMMATRIX WVP;
-
-struct cbPerObject
-{
-	XMMATRIX  WVP;
-	XMMATRIX World;
-
-	///////////////**************new**************////////////////////
-	//These will be used for the pixel shader
-	XMFLOAT4 difColor;
-	bool hasTexture;
-	///////////////**************new**************////////////////////
-};
-cbPerObject cbPerObj;
-
-
-D3D11_INPUT_ELEMENT_DESC layout[] =
-{
-	{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-	{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-	{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 20, D3D11_INPUT_PER_VERTEX_DATA, 0 }
-};
-
-struct Vertex2	//Overloaded Vertex Structure
-{
-	Vertex2(){}
-	Vertex2(float x, float y, float z,
-		float u, float v,
-		float nx, float ny, float nz)
-		: pos(x, y, z), texCoord(u, v), normal(nx, ny, nz){}
-
-	XMFLOAT3 pos;
-	XMFLOAT2 texCoord;
-	XMFLOAT3 normal;
-};
-
-LPDIRECTINPUT8 DirectInput;
-IDirectInputDevice8* DIKeyboard;
-IDirectInputDevice8* DIMouse;
-HRESULT hr;
-HWND hwnd = NULL;
-float camYaw = 0.0f;
-float camPitch = 0.0f;
-DIMOUSESTATE mouseLastState;
+//run initializemainwindow
+//Sound Init
+//Music
 IXAudio2* g_engine;
 IXAudio2SourceVoice* g_source;
 IXAudio2MasteringVoice* g_master;
-//Sounds 
-Wave buffer;
+
+//Gunshot
+IXAudio2* g_engineGun;
+IXAudio2SourceVoice* g_sourceGun;
+IXAudio2MasteringVoice* g_masterGun;
+
+//Dead
+IXAudio2* g_engineDead;
+IXAudio2SourceVoice* g_sourceDead;
+IXAudio2MasteringVoice* g_masterDead;
+
+//Revive
+IXAudio2* g_engineRevive;
+IXAudio2SourceVoice* g_sourceRevive;
+IXAudio2MasteringVoice* g_masterRevive;
+
+//Reload
+IXAudio2* g_engineReload;
+IXAudio2SourceVoice* g_sourceReload;
+IXAudio2MasteringVoice* g_masterReload;
+
+//Hit
+IXAudio2* g_engineHit;
+IXAudio2SourceVoice* g_sourceHit;
+IXAudio2MasteringVoice* g_masterHit;
+
+
+//Sound stuff
+Wave buffer; //Music
+Wave buffer2; //gunshot
+Wave buffer3; //dead
+Wave buffer4; //revive
+Wave buffer5; //reload
+Wave buffer6; //bullethit
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance,
 	PSTR cmdLine, int showCmd)
@@ -274,12 +92,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance,
 #endif
 
 	SeniorPro theApp(hInstance);
-
-	if (!theApp.Init()){
-		return 0;
-	}
-	WNDCLASSEX wndClass = { 0 };
-	wndClass.hCursor = LoadCursor(NULL, IDC_ARROW);
 
 	//must call this for COM
 	CoInitializeEx(NULL, COINIT_MULTITHREADED);
@@ -317,460 +129,598 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance,
 		CoUninitialize();
 		return -4;
 	}
+
+	//Gunshot
+
+	//create the engine
+	if (FAILED(XAudio2Create(&g_engineGun)))
+	{
+		CoUninitialize();
+		return -1;
+	}
+
+	//create the mastering voice
+	if (FAILED(g_engineGun->CreateMasteringVoice(&g_masterGun)))
+	{
+		g_engineGun->Release();
+		CoUninitialize();
+		return -2;
+	}
+
+	//load a wave file
+	if (!buffer2.load("Gunshot.wav"))
+	{
+		g_engineGun->Release();
+		CoUninitialize();
+	}
+
+	//create the source voice, based on loaded wave format
+	if (FAILED(g_engineGun->CreateSourceVoice(&g_sourceGun, buffer2.wf())))
+	{
+		g_engineGun->Release();
+		CoUninitialize();
+	}
+
+	//Dead
+
+	//create the engine
+	if (FAILED(XAudio2Create(&g_engineDead)))
+	{
+		CoUninitialize();
+		return -1;
+	}
+
+	//create the mastering voice
+	if (FAILED(g_engineDead->CreateMasteringVoice(&g_masterDead)))
+	{
+		g_engineDead->Release();
+		CoUninitialize();
+		return -2;
+	}
+
+	//load a wave file
+	if (!buffer3.load("Fatality.wav"))
+	{
+		g_engineDead->Release();
+		CoUninitialize();
+	}
+
+	//create the source voice, based on loaded wave format
+	if (FAILED(g_engineDead->CreateSourceVoice(&g_sourceDead, buffer3.wf())))
+	{
+		g_engineDead->Release();
+		CoUninitialize();
+	}
+
+
+	//revive
+
+	//create the engine
+	if (FAILED(XAudio2Create(&g_engineRevive)))
+	{
+		CoUninitialize();
+		return -1;
+	}
+
+	//create the mastering voice
+	if (FAILED(g_engineRevive->CreateMasteringVoice(&g_masterRevive)))
+	{
+		g_engineRevive->Release();
+		CoUninitialize();
+		return -2;
+	}
+
+	//load a wave file
+	if (!buffer4.load("Revive.wav"))
+	{
+		g_engineRevive->Release();
+		CoUninitialize();
+	}
+
+	//create the source voice, based on loaded wave format
+	if (FAILED(g_engineRevive->CreateSourceVoice(&g_sourceRevive, buffer4.wf())))
+	{
+		g_engineRevive->Release();
+		CoUninitialize();
+	}
+
+	//reload
+
+	//create the engine
+	if (FAILED(XAudio2Create(&g_engineReload)))
+	{
+		CoUninitialize();
+		return -1;
+	}
+
+	//create the mastering voice
+	if (FAILED(g_engineReload->CreateMasteringVoice(&g_masterReload)))
+	{
+		g_engineReload->Release();
+		CoUninitialize();
+		return -2;
+	}
+
+	//load a wave file
+	if (!buffer5.load("Reload.wav"))
+	{
+		g_engineGun->Release();
+		CoUninitialize();
+	}
+
+	//create the source voice, based on loaded wave format
+	if (FAILED(g_engineReload->CreateSourceVoice(&g_sourceReload, buffer5.wf())))
+	{
+		g_engineReload->Release();
+		CoUninitialize();
+	}
+
+	//bullethit
+	//create the engine
+	if (FAILED(XAudio2Create(&g_engineHit)))
+	{
+		CoUninitialize();
+		return -1;
+	}
+
+	//create the mastering voice
+	if (FAILED(g_engineHit->CreateMasteringVoice(&g_masterHit)))
+	{
+		g_engineHit->Release();
+		CoUninitialize();
+		return -2;
+	}
+
+	//load a wave file
+	if (!buffer6.load("BulletHitFlesh.wav"))
+	{
+		g_engineHit->Release();
+		CoUninitialize();
+	}
+
+	//create the source voice, based on loaded wave format
+	if (FAILED(g_engineHit->CreateSourceVoice(&g_sourceHit, buffer6.wf())))
+	{
+		g_engineHit->Release();
+		CoUninitialize();
+	}
+	if (!theApp.InitializeWindow())
+	{
+		MessageBox(0, L"Window Initialization - Failed",
+			L"Error", MB_OK);
+		return 0;
+	}
+	if (!theApp.InitializeDirect3d11App(hInstance))	//Initialize Direct3D
+	{
+		MessageBox(0, L"Direct3D Initialization - Failed",
+			L"Error", MB_OK);
+		return 0;
+	}
+
+	if (!theApp.InitScene())	//Initialize our scene
+	{
+		MessageBox(0, L"Scene Initialization - Failed",
+			L"Error", MB_OK);
+		return 0;
+	}
+
 	if (!theApp.InitDirectInput(hInstance))
 	{
 		MessageBox(0, L"Direct Input Initialization - Failed",
 			L"Error", MB_OK);
 		return 0;
 	}
-	
-	
-	return theApp.Run();
+
+
+	return theApp.messageloop();
 }
 
 SeniorPro::SeniorPro(HINSTANCE hInstance)
-	: D3DApp(hInstance), mCubemap(0), playerHeight(3.3f),
-	flycam(false), firstPerson(true), thirdPerson(false),
-	modelScale(XMMatrixScaling(0.0f, 0.0f, 0.0f)), modelRot(XMMatrixScaling(0.0f, 0.0f, 0.0f)),
-	modelOffset(XMMatrixScaling(0.0f, 0.0f, 0.0f)), playerRotation(0), //playerRotation(MathHelper::Pi*2),
-	mCharacterModel(0), mShapesVB(0), mShapesIB(0), mSkullVB(0), mSkullIB(0),
-	mScreenQuadVB(0), mScreenQuadIB(0),
-	mStoneTexSRV(0), mBrickTexSRV(0),
-	mStoneNormalTexSRV(0), mBrickNormalTexSRV(0),
-	mSkullIndexCount(0), mSmap(0), mSsao(0),
-	mLightRotationAngle(0.0f)
+	: D3DApp(hInstance)
 {
-	mMainWndCaption = L"SeniorPro";
-	mEnable4xMsaa = false;
+	//Camera information
+	mCam.setCamPosition(0.0f, 5.0f, -8.0f, 0.0f);
+	mCam.setCamTarget(0.0f, 0.0f, 0.0f, 0.0f);
+	mCam.setCamUp(0.0f, 1.0f, 0.0f, 0.0f);
 
-	/*mLastMousePos.x = 0;
-	mLastMousePos.y = 0;
+	//Set the View matrix
+	mCam.setCamView(mCam.getCamPosition(), mCam.getCamTarget(), mCam.getCamUp());
 
-	mCam.SetPosition(0.0f, 2.0f, 100.0f);
+	//Set the Projection matrix
+	mCam.setCamProjection(0.4f*3.14f, Width / Height, 1.0f, 1000.0f);
 
-	mDirLights[0].Ambient = XMFLOAT4(0.3f, 0.3f, 0.3f, 1.0f);
-	mDirLights[0].Diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-	mDirLights[0].Specular = XMFLOAT4(0.8f, 0.8f, 0.7f, 1.0f);
-	mDirLights[0].Direction = XMFLOAT3(0.707f, -0.707f, 0.0f);
+	mCam.setDefaultForward(0.0f, 0.0f, 1.0f, 0.0f);
+	mCam.setDefaultRight(1.0f, 0.0f, 0.0f, 0.0f);
+	mCam.setCamForward(0.0f, 0.0f, 1.0f, 0.0f);
+	mCam.setCamRight(1.0f, 0.0f, 0.0f, 0.0f);
 
-	mDirLights[1].Ambient = XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f);
-	mDirLights[1].Diffuse = XMFLOAT4(0.2f, 0.2f, 0.2f, 1.0f);
-	mDirLights[1].Specular = XMFLOAT4(0.2f, 0.2f, 0.2f, 1.0f);
-	mDirLights[1].Direction = XMFLOAT3(0.57735f, -0.57735f, 0.57735f);
+	mCam.setMoveLeftRight(0.0f);
+	mCam.setMoveBackForward(0.0f);
 
-	mDirLights[2].Ambient = XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f);
-	mDirLights[2].Diffuse = XMFLOAT4(0.2f, 0.2f, 0.2f, 1.0f);
-	mDirLights[2].Specular = XMFLOAT4(0.2f, 0.2f, 0.2f, 1.0f);
-	mDirLights[2].Direction = XMFLOAT3(-0.57735f, -0.57735f, -0.57735f);*/
+	mCam.setCamYaw(0.0f);
+	mCam.setCamPitch(0.0f);
 
-	mLastMousePos.x = 0;
-	mLastMousePos.y = 0;
-
-	mCam.SetPosition(0.0f, 2.0f, 85.0f);
-	mCam.setCameraHeight(playerHeight);
-
-	// Estimate the scene bounding sphere manually since we know how the scene was constructed.
-	// The grid is the "widest object" with a width of 20 and depth of 30.0f, and centered at
-	// the world space origin.  In general, you need to loop over every world space vertex
-	// position and compute the bounding sphere.
-	mSceneBounds.Center = XMFLOAT3(0.0f, 0.0f, 100.0f);
-	mSceneBounds.Radius = sqrtf(10.0f*10.0f + 15.0f*15.0f);
-
-	XMMATRIX I = XMMatrixIdentity();
-	//XMStoreFloat4x4(&mGridWorld, I);
-
-	XMMATRIX gridScale = XMMatrixScaling(1.0f, 1.0f, 1.0f);
-	XMMATRIX gridOffset = XMMatrixTranslation(0.0f, 0.0f, 1.0f);
-	//XMMATRIX gridOffset = XMMatrixTranslation(0.0f, 0.0f, 100.0f);
-	XMStoreFloat4x4(&mGridWorld, XMMatrixMultiply(gridScale, gridOffset));
-
-	XMMATRIX boxScale = XMMatrixScaling(3.0f, 1.0f, 3.0f);
-	XMMATRIX boxOffset = XMMatrixTranslation(0.0f, 0.5f, 100.0f);
-	XMStoreFloat4x4(&mBoxWorld, XMMatrixMultiply(boxScale, boxOffset));
-
-	XMMATRIX skullScale = XMMatrixScaling(0.5f, 0.5f, 0.5f);
-	XMMATRIX skullOffset = XMMatrixTranslation(0.0f, 1.0f, 100.0f);
-	XMStoreFloat4x4(&mSkullWorld, XMMatrixMultiply(skullScale, skullOffset));
-
-	for (int i = 0; i < 5; ++i)
-	{
-		XMStoreFloat4x4(&mCylWorld[i * 2 + 0], XMMatrixTranslation(-5.0f, 1.5f, 90.0f + i*5.0f));
-		XMStoreFloat4x4(&mCylWorld[i * 2 + 1], XMMatrixTranslation(+5.0f, 1.5f, 90.0f + i*5.0f));
-
-		XMStoreFloat4x4(&mSphereWorld[i * 2 + 0], XMMatrixTranslation(-5.0f, 3.5f, 90.0f + i*5.0f));
-		XMStoreFloat4x4(&mSphereWorld[i * 2 + 1], XMMatrixTranslation(+5.0f, 3.5f, 90.0f + i*5.0f));
-}
-
-	mDirLights[0].Ambient = XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f);
-	mDirLights[0].Diffuse = XMFLOAT4(1.0f, 0.9f, 0.9f, 1.0f);
-	mDirLights[0].Specular = XMFLOAT4(0.8f, 0.8f, 0.7f, 1.0f);
-	mDirLights[0].Direction = XMFLOAT3(-0.57735f, -0.57735f, 0.57735f);
-
-	// Shadow acne gets worse as we increase the slope of the polygon (from the
-	// perspective of the light).
-	//mDirLights[0].Direction = XMFLOAT3(5.0f/sqrtf(50.0f), -5.0f/sqrtf(50.0f), 0.0f);
-	//mDirLights[0].Direction = XMFLOAT3(10.0f/sqrtf(125.0f), -5.0f/sqrtf(125.0f), 0.0f);
-	//mDirLights[0].Direction = XMFLOAT3(10.0f/sqrtf(116.0f), -4.0f/sqrtf(116.0f), 0.0f);
-	//mDirLights[0].Direction = XMFLOAT3(10.0f/sqrtf(109.0f), -3.0f/sqrtf(109.0f), 0.0f);
-
-	mDirLights[1].Ambient = XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f);
-	mDirLights[1].Diffuse = XMFLOAT4(0.40f, 0.40f, 0.40f, 1.0f);
-	mDirLights[1].Specular = XMFLOAT4(0.2f, 0.2f, 0.2f, 1.0f);
-	mDirLights[1].Direction = XMFLOAT3(0.707f, -0.707f, 0.0f);
-
-	mDirLights[2].Ambient = XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f);
-	mDirLights[2].Diffuse = XMFLOAT4(0.4f, 0.4f, 0.4f, 1.0f);
-	mDirLights[2].Specular = XMFLOAT4(0.2f, 0.2f, 0.2f, 1.0f);
-	mDirLights[2].Direction = XMFLOAT3(0.0f, 0.0, -1.0f);
-
-	mOriginalLightDir[0] = mDirLights[0].Direction;
-	mOriginalLightDir[1] = mDirLights[1].Direction;
-	mOriginalLightDir[2] = mDirLights[2].Direction;
-
-	mGridMat.Ambient = XMFLOAT4(0.7f, 0.7f, 0.7f, 1.0f);
-	mGridMat.Diffuse = XMFLOAT4(0.6f, 0.6f, 0.6f, 1.0f);
-	mGridMat.Specular = XMFLOAT4(0.4f, 0.4f, 0.4f, 16.0f);
-	mGridMat.Reflect = XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f);
-
-	mCylinderMat.Ambient = XMFLOAT4(0.8f, 0.8f, 0.8f, 1.0f);
-	mCylinderMat.Diffuse = XMFLOAT4(0.4f, 0.4f, 0.4f, 1.0f);
-	mCylinderMat.Specular = XMFLOAT4(1.0f, 1.0f, 1.0f, 32.0f);
-	mCylinderMat.Reflect = XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f);
-
-	mSphereMat.Ambient = XMFLOAT4(0.3f, 0.4f, 0.5f, 1.0f);
-	mSphereMat.Diffuse = XMFLOAT4(0.2f, 0.3f, 0.4f, 1.0f);
-	mSphereMat.Specular = XMFLOAT4(0.9f, 0.9f, 0.9f, 16.0f);
-	mSphereMat.Reflect = XMFLOAT4(0.3f, 0.3f, 0.3f, 1.0f);
-
-	mBoxMat.Ambient = XMFLOAT4(0.8f, 0.8f, 0.8f, 1.0f);
-	mBoxMat.Diffuse = XMFLOAT4(0.4f, 0.4f, 0.4f, 1.0f);
-	mBoxMat.Specular = XMFLOAT4(0.8f, 0.8f, 0.8f, 16.0f);
-	mBoxMat.Reflect = XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f);
-
-	mSkullMat.Ambient = XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f);
-	mSkullMat.Diffuse = XMFLOAT4(0.2f, 0.2f, 0.2f, 1.0f);
-	mSkullMat.Specular = XMFLOAT4(0.5f, 0.5f, 0.5f, 16.0f);
-	mSkullMat.Reflect = XMFLOAT4(0.3f, 0.3f, 0.3f, 1.0f);
-}
+};
 
 SeniorPro::~SeniorPro()
-{
-	DIKeyboard->Unacquire();
-	DIMouse->Unacquire();
-	DirectInput->Release();
-	md3dImmediateContext->ClearState();
-
-	SafeDelete(mCubemap);
-	//release the engine, NOT the voices!
-
-	SafeDelete(mCharacterModel);
-
-	SafeDelete(mSmap);
-	SafeDelete(mSsao);
-
-	ReleaseCOM(mShapesVB);
-	ReleaseCOM(mShapesIB);
-	ReleaseCOM(mSkullVB);
-	ReleaseCOM(mSkullIB);
-	ReleaseCOM(mScreenQuadVB);
-	ReleaseCOM(mScreenQuadIB);
-
-	Effects::DestroyAll();
-	InputLayouts::DestroyAll();
-	RenderStates::DestroyAll();
-	//again, for COM
+{//again, for COM
 	CoUninitialize();
 	g_engine->Release();
-}
+	g_engineDead->Release();
+	g_engineGun->Release();
+	g_engineReload->Release();
+	g_engineRevive->Release();
+	g_engineHit->Release();
+};
 
-bool SeniorPro::Init()
+bool SeniorPro::InitScene()
 {
-	if (!D3DApp::Init())
+	InitD2DScreenTexture();
+
+	// Create cubemap
+	mCubemap = new Cubemap(d3d11Device);
+	//spaceCompound = new Mesh(L"spaceCompound.obj");
+	//meshArray[0] = Mesh(L"spaceCompound.obj");
+
+	///////////////**************new**************////////////////////
+	if (!meshArray[0].LoadObjModel(L"Enemy.obj", material, true, false, d3d11Device, SwapChain))
 		return false;
+	if (!meshArray[1].LoadObjModel(L"spaceCompound.obj", material, true, false, d3d11Device, SwapChain))
+		return false;
+	if (!meshArray[2].LoadObjModel(L"ground.obj", material, true, true, d3d11Device, SwapChain))
+		return false;
+	///////////////**************new**************////////////////////
 
-	// Must init Effects first since InputLayouts depend on shader signatures.
-	Effects::InitAll(md3dDevice);
-	InputLayouts::InitAll(md3dDevice);
-	RenderStates::InitAll(md3dDevice);
+	//Compile Shaders from shader file
+	hr = D3DX11CompileFromFile(L"Effects.fx", 0, 0, "VS", "vs_4_0", 0, 0, 0, &VS_Buffer, 0, 0);
+	hr = D3DX11CompileFromFile(L"Effects.fx", 0, 0, "PS", "ps_4_0", 0, 0, 0, &PS_Buffer, 0, 0);
+	hr = D3DX11CompileFromFile(L"Effects.fx", 0, 0, "D2D_PS", "ps_4_0", 0, 0, 0, &D2D_PS_Buffer, 0, 0);
+	hr = D3DX11CompileFromFile(L"Effects.fx", 0, 0, "SKYMAP_VS", "vs_4_0", 0, 0, 0, &mCubemap->SKYMAP_VS_Buffer, 0, 0);
+	hr = D3DX11CompileFromFile(L"Effects.fx", 0, 0, "SKYMAP_PS", "ps_4_0", 0, 0, 0, &mCubemap->SKYMAP_PS_Buffer, 0, 0);
 
-	Terrain::InitInfo tii;
-	tii.HeightMapFilename = L"Textures/terrain.raw";
-	tii.LayerMapFilename0 = L"Textures/grass.dds";
-	tii.LayerMapFilename1 = L"Textures/darkdirt.dds";
-	tii.LayerMapFilename2 = L"Textures/stone.dds";
-	tii.LayerMapFilename3 = L"Textures/lightdirt.dds";
-	tii.LayerMapFilename4 = L"Textures/snow.dds";
-	tii.BlendMapFilename = L"Textures/blend.dds";
-	tii.HeightScale = 100.0f;
-	tii.HeightmapWidth = 2049;
-	tii.HeightmapHeight = 2049;
-	tii.CellSpacing = 0.5f;
+	//Create the Shader Objects
+	hr = d3d11Device->CreateVertexShader(VS_Buffer->GetBufferPointer(), VS_Buffer->GetBufferSize(), NULL, &VS);
+	hr = d3d11Device->CreatePixelShader(PS_Buffer->GetBufferPointer(), PS_Buffer->GetBufferSize(), NULL, &PS);
+	hr = d3d11Device->CreatePixelShader(D2D_PS_Buffer->GetBufferPointer(), D2D_PS_Buffer->GetBufferSize(), NULL, &D2D_PS);
+	hr = d3d11Device->CreateVertexShader(mCubemap->SKYMAP_VS_Buffer->GetBufferPointer(), mCubemap->SKYMAP_VS_Buffer->GetBufferSize(), NULL, &mCubemap->SKYMAP_VS);
+	hr = d3d11Device->CreatePixelShader(mCubemap->SKYMAP_PS_Buffer->GetBufferPointer(), mCubemap->SKYMAP_PS_Buffer->GetBufferSize(), NULL, &mCubemap->SKYMAP_PS);
 
-	mTerrain.Init(md3dDevice, md3dImmediateContext, tii);
+	//Set Vertex and Pixel Shaders
+	d3d11DevCon->VSSetShader(VS, 0, 0);
+	d3d11DevCon->PSSetShader(PS, 0, 0);
 
-	mTexMgr.Init(md3dDevice);
+	light.pos = XMFLOAT3(0.0f, 1.0f, 0.0f);
+	light.dir = XMFLOAT3(0.0f, 0.0f, 1.0f);
+	light.range = 1000.0f;
+	light.cone = 20.0f;
+	light.att = XMFLOAT3(0.4f, 0.02f, 0.000f);
+	light.ambient = XMFLOAT4(0.2f, 0.2f, 0.2f, 1.0f);
+	light.diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 
-	mCubemap = new Cubemap(md3dDevice, L"Textures/snowcube1024.dds", 5000.0f);
-	mSmap = new ShadowMap(md3dDevice, SMapSize, SMapSize);
 
-	mCam.SetLens(0.25f*MathHelper::Pi, AspectRatio(), 1.0f, 1000.0f);
-	mSsao = new Ssao(md3dDevice, md3dImmediateContext, mClientWidth, mClientHeight, mCam.GetFovY(), mCam.GetFarZ());
+	//Create the vertex buffer
+	Vertex::Vertex v[] =
+	{
+		// Bottom Face
+		Vertex::Vertex(-1.0f, -1.0f, -1.0f, 100.0f, 100.0f, 0.0f, 1.0f, 0.0f),
+		Vertex::Vertex(1.0f, -1.0f, -1.0f, 0.0f, 100.0f, 0.0f, 1.0f, 0.0f),
+		Vertex::Vertex(1.0f, -1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f),
+		Vertex::Vertex(-1.0f, -1.0f, 1.0f, 100.0f, 0.0f, 0.0f, 1.0f, 0.0f),
+	};
 
-	mStoneTexSRV = mTexMgr.CreateTexture(L"Textures/floor.dds");
-	mBrickTexSRV = mTexMgr.CreateTexture(L"Textures/bricks.dds");
-	mStoneNormalTexSRV = mTexMgr.CreateTexture(L"Textures/floor_nmap.dds");
-	mBrickNormalTexSRV = mTexMgr.CreateTexture(L"Textures/bricks_nmap.dds");
+	DWORD indices[] = {
+		0, 1, 2,
+		0, 2, 3,
+	};
 
-	BuildShapeGeometryBuffers();
-	BuildSkullGeometryBuffers();
-	BuildScreenQuadGeometryBuffers();
+	D3D11_BUFFER_DESC indexBufferDesc;
+	ZeroMemory(&indexBufferDesc, sizeof(indexBufferDesc));
 
-	mCharacterModel = new SkinnedModel(md3dDevice, mTexMgr, "Models\\soldier.m3d", L"Textures\\");
-	mCharacterInstance1.Model = mCharacterModel;
-	mCharacterInstance2.Model = mCharacterModel;
-	mCharacterInstance1.TimePos = 0.0f;
-	mCharacterInstance2.TimePos = 0.0f;
-	mCharacterInstance1.ClipName = "Take1";
-	mCharacterInstance2.ClipName = "Take1";
-	mCharacterInstance1.FinalTransforms.resize(mCharacterModel->SkinnedData.BoneCount());
-	mCharacterInstance2.FinalTransforms.resize(mCharacterModel->SkinnedData.BoneCount());
+	indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+	indexBufferDesc.ByteWidth = sizeof(DWORD) * 2 * 3;
+	indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+	indexBufferDesc.CPUAccessFlags = 0;
+	indexBufferDesc.MiscFlags = 0;
 
-	// Reflect to change coordinate system from the RHS the data was exported out as.
-	// Biped Placements
-	modelScale = XMMatrixScaling(0.05f, 0.05f, -0.05f);
-	modelRot = XMMatrixRotationY(playerRotation);
-	modelOffset = XMMatrixTranslation(0.0f, 0.0f, 89.0f);
-	playerLoc.teleport(new Point(0.0f, 0.0f, 89.0f));
+	D3D11_SUBRESOURCE_DATA iinitData;
 
-	//Point* camPoint = new Point(mCam.GetLook().x, mCam.GetLook().y, mCam.GetLook().z );
+	iinitData.pSysMem = indices;
+	d3d11Device->CreateBuffer(&indexBufferDesc, &iinitData, &squareIndexBuffer);
 
-	//playerLoc.lookAt(camPoint, true);
-	XMStoreFloat4x4(&mCharacterInstance1.World, modelScale*modelRot*modelOffset);
+	D3D11_BUFFER_DESC vertexBufferDesc;
+	ZeroMemory(&vertexBufferDesc, sizeof(vertexBufferDesc));
 
-	modelOffset = XMMatrixTranslation(0.0f, 0.0f, 93.0f);
-	modelRot = XMMatrixRotationY(MathHelper::Pi);
-	XMStoreFloat4x4(&mCharacterInstance2.World, modelScale*modelRot*modelOffset);
+	vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
+	vertexBufferDesc.ByteWidth = sizeof(Vertex::Vertex) * 4;
+	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	vertexBufferDesc.CPUAccessFlags = 0;
+	vertexBufferDesc.MiscFlags = 0;
+
+	D3D11_SUBRESOURCE_DATA vertexBufferData;
+
+	ZeroMemory(&vertexBufferData, sizeof(vertexBufferData));
+	vertexBufferData.pSysMem = v;
+	hr = d3d11Device->CreateBuffer(&vertexBufferDesc, &vertexBufferData, &squareVertBuffer);
+
+	//Create the Input Layout
+	hr = d3d11Device->CreateInputLayout(InputLayoutDesc::layout, numElements, VS_Buffer->GetBufferPointer(),
+		VS_Buffer->GetBufferSize(), &vertLayout);
+
+	//Set the Input Layout
+	d3d11DevCon->IASetInputLayout(vertLayout);
+
+	//Set Primitive Topology
+	d3d11DevCon->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	//Create the Viewport
+	D3D11_VIEWPORT viewport;
+	ZeroMemory(&viewport, sizeof(D3D11_VIEWPORT));
+
+	viewport.TopLeftX = 0;
+	viewport.TopLeftY = 0;
+	viewport.Width = Width;
+	viewport.Height = Height;
+	viewport.MinDepth = 0.0f;
+	viewport.MaxDepth = 1.0f;
+
+	//Set the Viewport
+	d3d11DevCon->RSSetViewports(1, &viewport);
+
+	//Create the buffer to send to the cbuffer in effect file
+	D3D11_BUFFER_DESC cbbd;
+	ZeroMemory(&cbbd, sizeof(D3D11_BUFFER_DESC));
+
+	cbbd.Usage = D3D11_USAGE_DEFAULT;
+	cbbd.ByteWidth = sizeof(cbPerObj);
+	cbbd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	cbbd.CPUAccessFlags = 0;
+	cbbd.MiscFlags = 0;
+
+	hr = d3d11Device->CreateBuffer(&cbbd, NULL, &cbPerObjectBuffer);
+
+	//Create the buffer to send to the cbuffer per frame in effect file
+	ZeroMemory(&cbbd, sizeof(D3D11_BUFFER_DESC));
+
+	cbbd.Usage = D3D11_USAGE_DEFAULT;
+	cbbd.ByteWidth = sizeof(constbuffPerFrame);
+	cbbd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	cbbd.CPUAccessFlags = 0;
+	cbbd.MiscFlags = 0;
+
+	hr = d3d11Device->CreateBuffer(&cbbd, NULL, &cbPerFrameBuffer);
+
+	D3D11_BLEND_DESC blendDesc;
+	ZeroMemory(&blendDesc, sizeof(blendDesc));
+
+	D3D11_RENDER_TARGET_BLEND_DESC rtbd;
+	ZeroMemory(&rtbd, sizeof(rtbd));
+
+	rtbd.BlendEnable = true;
+	rtbd.SrcBlend = D3D11_BLEND_SRC_COLOR;
+	rtbd.DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+	rtbd.BlendOp = D3D11_BLEND_OP_ADD;
+	rtbd.SrcBlendAlpha = D3D11_BLEND_ONE;
+	rtbd.DestBlendAlpha = D3D11_BLEND_ZERO;
+	rtbd.BlendOpAlpha = D3D11_BLEND_OP_ADD;
+	rtbd.RenderTargetWriteMask = D3D10_COLOR_WRITE_ENABLE_ALL;
+
+	blendDesc.AlphaToCoverageEnable = false;
+	blendDesc.RenderTarget[0] = rtbd;
+
+	d3d11Device->CreateBlendState(&blendDesc, &d2dTransparency);
+
+	///////////////**************new**************////////////////////
+	ZeroMemory(&rtbd, sizeof(rtbd));
+
+	rtbd.BlendEnable = true;
+	rtbd.SrcBlend = D3D11_BLEND_INV_SRC_ALPHA;
+	rtbd.DestBlend = D3D11_BLEND_SRC_ALPHA;
+	rtbd.BlendOp = D3D11_BLEND_OP_ADD;
+	rtbd.SrcBlendAlpha = D3D11_BLEND_INV_SRC_ALPHA;
+	rtbd.DestBlendAlpha = D3D11_BLEND_SRC_ALPHA;
+	rtbd.BlendOpAlpha = D3D11_BLEND_OP_ADD;
+	rtbd.RenderTargetWriteMask = D3D10_COLOR_WRITE_ENABLE_ALL;
+
+	blendDesc.AlphaToCoverageEnable = false;
+	blendDesc.RenderTarget[0] = rtbd;
+
+	d3d11Device->CreateBlendState(&blendDesc, &Transparency);
+	///////////////**************new**************////////////////////
+
+	hr = D3DX11CreateShaderResourceViewFromFile(d3d11Device, L"Textures/grass.jpg",
+		NULL, NULL, &CubesTexture, NULL);
+
+	///Load Skymap's cube texture///
+	D3DX11_IMAGE_LOAD_INFO loadSMInfo;
+	loadSMInfo.MiscFlags = D3D11_RESOURCE_MISC_TEXTURECUBE;
+
+	ID3D11Texture2D* SMTexture = 0;
+	hr = D3DX11CreateTextureFromFile(d3d11Device, L"Textures/skymap.dds",
+		&loadSMInfo, 0, (ID3D11Resource**)&SMTexture, 0);
+
+	D3D11_TEXTURE2D_DESC SMTextureDesc;
+	SMTexture->GetDesc(&SMTextureDesc);
+
+	D3D11_SHADER_RESOURCE_VIEW_DESC SMViewDesc;
+	SMViewDesc.Format = SMTextureDesc.Format;
+	SMViewDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURECUBE;
+	SMViewDesc.TextureCube.MipLevels = SMTextureDesc.MipLevels;
+	SMViewDesc.TextureCube.MostDetailedMip = 0;
+
+	hr = d3d11Device->CreateShaderResourceView(SMTexture, &SMViewDesc, &mCubemap->smrv);
+
+	// Describe the Sample State
+	D3D11_SAMPLER_DESC sampDesc;
+	ZeroMemory(&sampDesc, sizeof(sampDesc));
+	sampDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+	sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+	sampDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+	sampDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+	sampDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
+	sampDesc.MinLOD = 0;
+	sampDesc.MaxLOD = D3D11_FLOAT32_MAX;
+
+	//Create the Sample State
+	hr = d3d11Device->CreateSamplerState(&sampDesc, &CubesTexSamplerState);
+
+	D3D11_RASTERIZER_DESC cmdesc;
+
+	ZeroMemory(&cmdesc, sizeof(D3D11_RASTERIZER_DESC));
+	cmdesc.FillMode = D3D11_FILL_SOLID;
+	cmdesc.CullMode = D3D11_CULL_BACK;
+	cmdesc.FrontCounterClockwise = true;
+	hr = d3d11Device->CreateRasterizerState(&cmdesc, &CCWcullMode);
+
+	cmdesc.FrontCounterClockwise = false;
+
+	hr = d3d11Device->CreateRasterizerState(&cmdesc, &CWcullMode);
+
+	cmdesc.CullMode = D3D11_CULL_NONE;
+	//cmdesc.FillMode = D3D11_FILL_WIREFRAME;
+	hr = d3d11Device->CreateRasterizerState(&cmdesc, &RSCullNone);
+
+	D3D11_DEPTH_STENCIL_DESC dssDesc;
+	ZeroMemory(&dssDesc, sizeof(D3D11_DEPTH_STENCIL_DESC));
+	dssDesc.DepthEnable = true;
+	dssDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+	dssDesc.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
+
+	d3d11Device->CreateDepthStencilState(&dssDesc, &DSLessEqual);
+
 	return true;
 }
 
-void SeniorPro::OnResize()
+void SeniorPro::UpdateScene(double time)
 {
-	D3DApp::OnResize();
-
-	//mCam.SetLens(0.25f*MathHelper::Pi, AspectRatio(), 1.0f, 3000.0f);
-	mCam.SetLens(0.25f*MathHelper::Pi, AspectRatio(), 1.0f, 1000.0f);
-
-	if (mSsao)
+	if (Player1.getHealth() == 0)
 	{
-		mSsao->OnSize(mClientWidth, mClientHeight, mCam.GetFovY(), mCam.GetFarZ());
-}
-}
-
-
-bool SeniorPro::InitDirectInput(HINSTANCE hInstance)
-{
-	hr = DirectInput8Create(hInstance,
-		DIRECTINPUT_VERSION,
-		IID_IDirectInput8,
-		(void**)&DirectInput,
-		NULL);
-
-	hr = DirectInput->CreateDevice(GUID_SysKeyboard,
-		&DIKeyboard,
-		NULL);
-
-	hr = DirectInput->CreateDevice(GUID_SysMouse,
-		&DIMouse,
-		NULL);
-
-	hr = DIKeyboard->SetDataFormat(&c_dfDIKeyboard);
-	hr = DIKeyboard->SetCooperativeLevel(hwnd, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE);
-
-	hr = DIMouse->SetDataFormat(&c_dfDIMouse);
-	hr = DIMouse->SetCooperativeLevel(hwnd, DISCL_EXCLUSIVE | DISCL_NOWINKEY | DISCL_FOREGROUND);
-
-	return true;
-}
-
-void SeniorPro::UpdateScene(float dt)
-{
-	//
-	// Control the camera.
-	//
-
-	/*
-	// Biped Placements
-	modelScale = XMMatrixScaling(0.05f, 0.05f, -0.05f);
-	modelRot = XMMatrixRotationY((MathHelper::Pi)*2);
-	modelOffset = XMMatrixTranslation(0.0f, 0.0f, 89.0f);
-	XMStoreFloat4x4(&mCharacterInstance1.World, modelScale*modelRot*modelOffset);*/
-
-	DIMOUSESTATE mouseCurrState;
-
-	BYTE keyboardState[256];
-
-	DIKeyboard->Acquire();
-
-	DIMouse->GetDeviceState(sizeof(DIMOUSESTATE), &mouseCurrState);
-	DIMouse->Acquire();
-
-
-	DIKeyboard->GetDeviceState(sizeof(keyboardState), (LPVOID)&keyboardState);
-
-
-
-	Point loc = *playerLoc.getLocation();
-
-	//If Escape is hit, let user escape
-	if (keyboardState[DIK_ESCAPE] & 0x80)
-		PostMessage(hwnd, WM_DESTROY, 0, 0);
-
-	if (keyboardState[DIK_W] & 0x80)
-	{
-		if (flycam)
-		{
-		mCam.Walk(10.0f*dt);
-		}
-		else
-		{
-			playerLoc.beginMove(Direction::FRONT, 0.001f);
-		}
-	}
-
-	if (keyboardState[DIK_M] & 0x80)
-	{
+		Player1.setHealth(100);
+		Player1.setLives(Player1.getLives() - 1);
 		//start consuming audio in the source voice
-		g_source->Start();
-
+		g_sourceRevive->Start();
 		//simple message loop
 		//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
 		//{
-		g_source->Stop();
-		g_source->FlushSourceBuffers();
-		g_source->Start();
+		g_sourceRevive->Stop();
+		g_sourceRevive->FlushSourceBuffers();
+		g_sourceRevive->Start();
 
 		//play the sound
-		g_source->SubmitSourceBuffer(buffer.xaBuffer());
+		g_sourceRevive->SubmitSourceBuffer(buffer4.xaBuffer());
+		//}
+	}
+	if (Player1.getLives() <= 0)
+	{
+		thePlayer.setDeath(true);
+		//start consuming audio in the source voice
+		g_sourceDead->Start();
+		//simple message loop
+		//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
+		//{
+		g_sourceDead->Stop();
+		g_sourceDead->FlushSourceBuffers();
+		g_sourceDead->Start();
+
+		//play the sound
+		g_sourceDead->SubmitSourceBuffer(buffer3.xaBuffer());
 		//}
 	}
 
-	if (keyboardState[DIK_S] & 0x80)
+	if (thePlayer.getDeath() == true)
 	{
-		if (flycam)
-		{
-		mCam.Walk(-10.0f*dt);
-		}
+		if (MessageBox(0, L"You have been killed, would you like to restart?", L"You are dead", MB_YESNO | MB_ICONQUESTION) == IDNO)
+			DestroyWindow(hwnd);
 		else
 		{
-			playerLoc.beginMove(Direction::BACK, 0.001f);
+			thePlayer.Init(_settings);
+			Player1.Init();
+			PlayerWep.Init();
 		}
 	}
+	//Reset cube1World
+	groundWorld = XMMatrixIdentity();
 
-	if (keyboardState[DIK_A] & 0x80)
+	//Define cube1's world space matrix
+	Scale = XMMatrixScaling(500.0f, 10.0f, 500.0f);
+	Translation = XMMatrixTranslation(0.0f, 10.0f, 0.0f);
+
+	//Set cube1's world space using the transformations
+	groundWorld = Scale * Translation;
+
+	//Reset sphereWorld
+	sphereWorld = XMMatrixIdentity();
+
+	//Define sphereWorld's world space matrix
+	Scale = XMMatrixScaling(5.0f, 5.0f, 5.0f);
+	//Make sure the sphere is always centered around camera
+	Translation = XMMatrixTranslation(XMVectorGetX(mCam.getCamPosition()), XMVectorGetY(mCam.getCamPosition()), XMVectorGetZ(mCam.getCamPosition()));
+
+	//Set sphereWorld's world space using the transformations
+	sphereWorld = Scale * Translation;
+
+	///////////////**************new**************////////////////////
+	// Will change to a forloop for every mesh in the mesh array
+	for (int i = 0; i < MESHCOUNT; i++)
 	{
-		if (flycam)
+		if (i == 0)
 		{
-		mCam.Strafe(-10.0f*dt);
+			meshArray[i].meshWorld = XMMatrixIdentity();
+
+			//Define cube1's world space matrix
+			Rotation = XMMatrixRotationY(3.14f);
+			Scale = XMMatrixScaling(0.25f, 0.25f, 0.25f);
+			Translation = XMMatrixTranslation(0.0f, 0.0f, 0.0f);
+
+			meshArray[i].meshWorld = Rotation * Scale * Translation;
 		}
-		else
+		if (i == 1)
 		{
-			playerLoc.beginMove(Direction::LEFT, 0.001f);
-		}
-	}
+			meshArray[i].meshWorld = XMMatrixIdentity();
 
-	if (keyboardState[DIK_D] & 0x80)
-	{
-		if (flycam)
+			//Define cube1's world space matrix
+			Rotation = XMMatrixRotationY(3.14f);
+			Scale = XMMatrixScaling(1.0f, 1.0f, 1.0f);
+			Translation = XMMatrixTranslation(0.0f, 0.0f, 0.0f);
+
+			meshArray[i].meshWorld = Rotation * Scale * Translation;
+		}
+		if (i == 2)
 		{
-		mCam.Strafe(10.0f*dt);
+			meshArray[i].meshWorld = XMMatrixIdentity();
+
+			//Define cube1's world space matrix
+			Rotation = XMMatrixRotationY(3.14f);
+			Scale = XMMatrixScaling(10.0f, 1.0f, 10.0f);
+			Translation = XMMatrixTranslation(0.0f, -0.02f, 0.0f);
+
+			meshArray[i].meshWorld = Rotation * Scale * Translation;
 		}
-		else
-		{
-			playerLoc.beginMove(Direction::RIGHT, 0.001f);
-		}
 	}
+	///////////////**************new**************////////////////////
 
-	if (keyboardState[DIK_R] & 0x80 && (flycam == true))
-		mCam.Raise(10.0f*dt);
+	///////////////**************new**************////////////////////
+	/*/ Will change to a forloop for every mesh in the mesh array
+	meshArray[0].meshWorld = XMMatrixIdentity();
 
-	if (keyboardState[DIK_F] & 0x80 && (flycam == true))
-		mCam.Raise(-10.0f*dt);
+	//Define cube1's world space matrix
+	Rotation = XMMatrixRotationY(3.14f);
+	Scale = XMMatrixScaling(1.0f, 1.0f, 1.0f);
+	Translation = XMMatrixTranslation(0.0f, 0.0f, 0.0f);
 
-	if (keyboardState[DIK_T] & 0x80)
-		flycam = true;
+	meshArray[0].meshWorld = Rotation * Scale * Translation;
+	///////////////**************new**************////////////////////
 
-	if (keyboardState[DIK_G] & 0x80)
-		flycam = false;
+	light.pos.x = XMVectorGetX(mCam.getCamPosition());
+	light.pos.y = XMVectorGetY(mCam.getCamPosition());
+	light.pos.z = XMVectorGetZ(mCam.getCamPosition());
 
-	//Remove Velocity, don't need player skating across apparent ice.
-	//playerLoc.setVelocity(Direction::UP);
-	//playerLoc.beginMove(Direction::LEFT, 0.0f);
-	//playerLoc.beginMove(Direction::UP, 0.0f);
-	//playerLoc.beginMove(Direction::DOWN, 0.0f);
-
-
-
-	// 
-	// Camera Controls
-	//
-
-	if (!flycam)
-	{
-		// Clamp camera to terrain surface in walk mode.
-		/*XMFLOAT3 camPos = mCam.GetPosition();
-	float y = mTerrain.GetHeight(camPos.x, camPos.z);
-		mCam.SetPosition(camPos.x, y + playerHeight, camPos.z);*/
-	}
-	else
-	{
-		playerLoc.halt();
-		XMFLOAT3 camPos = mCam.GetPosition();
-		//mCam.SetPosition(camPos.x, camPos.y, camPos.z);
-	}
-
-	//
-	// Move the player's character
-	// 
-	modelRot = XMMatrixRotationY(playerRotation);
-
-	loc = *playerLoc.getLocation();
-
-	float y = mTerrain.GetHeight(loc.getX(), loc.getZ());
-	//mCam.SetPosition(camPos.x, y + playerHeight, camPos.z);
-
-	modelOffset = XMMatrixTranslation(loc.getX(), y + loc.getY(), loc.getZ());
-	XMStoreFloat4x4(&mCharacterInstance1.World, modelScale*modelRot*modelOffset);
-	playerLoc.getLook()->setAzimuth(playerRotation);
-	playerLoc.applyTickMovement();
-
-	if (!flycam)
-	{
-		loc = *playerLoc.getLocation();
-		mCam.SetPosition(loc.getX(), loc.getY() + playerHeight + y, loc.getZ());
-	}
-
-
-	//
-	// Animate the character.
-	// 
-
-	mCharacterInstance1.Update(dt);
-	mCharacterInstance2.Update(dt);
-
-	//
-	// Animate the lights (and hence shadows).
-	//
-
-	BuildShadowTransform();
-
-	mCam.UpdateViewMatrix();
+	light.dir.x = XMVectorGetX(mCam.getCamTarget()) - light.pos.x;
+	light.dir.y = XMVectorGetY(mCam.getCamTarget()) - light.pos.y;
+	light.dir.z = XMVectorGetZ(mCam.getCamTarget()) - light.pos.z;
 }
 
-void RenderText(std::wstring text, int inInt)
+void SeniorPro::RenderText(std::wstring text, int inInt)
 {
-
-	d3d11DevCon->PSSetShader(D2D_PS, 0, 0);
-
 	//Release the D3D 11 Device
 	keyedMutex11->ReleaseSync(0);
 
@@ -785,13 +735,25 @@ void RenderText(std::wstring text, int inInt)
 
 	//Create our string
 	std::wostringstream printString;
-	printString << text << inInt << "\n"
-		<< L"Picked Dist: " << 0 << "\n"
-		<< L"Picked Dist: " << 0 << "\n"
-		<< L"Picked Dist: " << 0 << "\n"
-		<< L"Picked Dist: " << 0 << "\n"
-		<< L"Picked Dist: " << 0 << "\n";
-	printText = printString.str();
+	if (thePlayer.getDeath() == false)
+	{
+		printString <<
+			L"Health: " << Player1.getHealth() << "\n"
+			<< L"Ammo: " << PlayerWep.getMagSize() << "\n"
+			<< L"Lives: " << Player1.getLives() << "\n";
+		printText = printString.str();
+		if (reloadBro == true)
+		{
+			printString <<
+				L"OUTTA AMMO, RELOAD!!";
+			printText = printString.str();
+		}
+	}
+	else {
+		printString <<
+			L"YOU ARE DEAD! HA...HAHAHA!!: ";
+		printText = printString.str();
+	}
 
 	//Set the Font Color
 	D2D1_COLOR_F FontColor = D2D1::ColorF(1.0f, 1.0f, 1.0f, 1.0f);
@@ -828,1065 +790,327 @@ void RenderText(std::wstring text, int inInt)
 	//Set the blend state for D2D render target texture objects
 	d3d11DevCon->OMSetBlendState(d2dTransparency, NULL, 0xffffffff);
 
+	//Set d2d's pixel shader so lighting calculations are not done
+	d3d11DevCon->PSSetShader(D2D_PS, 0, 0);
+
 	//Set the d2d Index buffer
 	d3d11DevCon->IASetIndexBuffer(d2dIndexBuffer, DXGI_FORMAT_R32_UINT, 0);
 	//Set the d2d vertex buffer
-	UINT stride = sizeof(Vertex2);
-	UINT offset = 0;
 	d3d11DevCon->IASetVertexBuffers(0, 1, &d2dVertBuffer, &stride, &offset);
 
-	WVP = XMMatrixIdentity();
-	cbPerObj.WVP = XMMatrixTranspose(WVP);
+	//WVP = XMMatrixIdentity();
+	XMMATRIX temp = XMMatrixIdentity();
+	mCam.setWVP(temp, temp, temp);
+	cbPerObj.World = XMMatrixTranspose(mCam.getWVP());
+	cbPerObj.WVP = XMMatrixTranspose(mCam.getWVP());
 	d3d11DevCon->UpdateSubresource(cbPerObjectBuffer, 0, NULL, &cbPerObj, 0, 0);
 	d3d11DevCon->VSSetConstantBuffers(0, 1, &cbPerObjectBuffer);
 	d3d11DevCon->PSSetShaderResources(0, 1, &d2dTexture);
 	d3d11DevCon->PSSetSamplers(0, 1, &CubesTexSamplerState);
 
 	d3d11DevCon->RSSetState(CWcullMode);
+	//Draw the second cube
 	d3d11DevCon->DrawIndexed(6, 0, 0);
 }
+
 void SeniorPro::DrawScene()
 {
-	//
-	// Render the scene to the shadow map.
-	//
+	//Clear our render target and depth/stencil view
+	float bgColor[4] = { 0.1f, 0.1f, 0.1f, 1.0f };
+	d3d11DevCon->ClearRenderTargetView(renderTargetView, bgColor);
+	d3d11DevCon->ClearDepthStencilView(depthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
-	mSmap->BindDsvAndSetNullRenderTarget(md3dImmediateContext);
+	constbuffPerFrame.light = light;
+	d3d11DevCon->UpdateSubresource(cbPerFrameBuffer, 0, NULL, &constbuffPerFrame, 0, 0);
+	d3d11DevCon->PSSetConstantBuffers(0, 1, &cbPerFrameBuffer);
 
-	DrawSceneToShadowMap();
+	//Set our Render Target
+	d3d11DevCon->OMSetRenderTargets(1, &renderTargetView, depthStencilView);
 
-	md3dImmediateContext->RSSetState(0);
+	//Set the default blend state (no blending) for opaque objects
+	d3d11DevCon->OMSetBlendState(0, 0, 0xffffffff);
 
-	//
-	// Render the view space normals and depths.  This render target has the
-	// same dimensions as the back buffer, so we can use the screen viewport.
-	// This render pass is needed to compute the ambient occlusion.
-	// Notice that we use the main depth/stencil buffer in this pass.  
-	//
+	//Set Vertex and Pixel Shaders
+	d3d11DevCon->VSSetShader(VS, 0, 0);
+	d3d11DevCon->PSSetShader(PS, 0, 0);
 
-	md3dImmediateContext->ClearDepthStencilView(mDepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
-	md3dImmediateContext->RSSetViewports(1, &mScreenViewport);
-	mSsao->SetNormalDepthRenderTarget(mDepthStencilView);
-
-	DrawSceneToSsaoNormalDepthMap();
-
-	//
-	// Now compute the ambient occlusion.
-	//
-
-	mSsao->ComputeSsao(mCam);
-	mSsao->BlurAmbientMap(2);
-
-	//
-	// Restore the back and depth buffer and viewport to the OM stage.
-	//
-	ID3D11RenderTargetView* renderTargets[1] = { mRenderTargetView };
-	md3dImmediateContext->OMSetRenderTargets(1, renderTargets, mDepthStencilView);
-	md3dImmediateContext->RSSetViewports(1, &mScreenViewport);
-
-	md3dImmediateContext->ClearRenderTargetView(mRenderTargetView, reinterpret_cast<const float*>(&Colors::Silver));
-
-	// We already laid down scene depth to the depth buffer in the Normal/Depth map pass,
-	// so we can set the depth comparison test to “EQUALS.”  This prevents any overdraw
-	// in this rendering pass, as only the nearest visible pixels will pass this depth
-	// comparison test.
-
-	md3dImmediateContext->OMSetDepthStencilState(RenderStates::EqualsDSS, 0);
-
-	XMMATRIX view = mCam.View();
-	XMMATRIX proj = mCam.Proj();
-	XMMATRIX viewProj = mCam.ViewProj();
-
-	float blendFactor[] = { 0.0f, 0.0f, 0.0f, 0.0f };
-
-	// Set per frame constants.
-	Effects::BasicFX->SetDirLights(mDirLights);
-	Effects::BasicFX->SetEyePosW(mCam.GetPosition());
-	Effects::BasicFX->SetCubeMap(mCubemap->CubeMapSRV());
-	Effects::BasicFX->SetShadowMap(mSmap->DepthMapSRV());
-	Effects::BasicFX->SetSsaoMap(mSsao->AmbientSRV());
-
-	Effects::NormalMapFX->SetDirLights(mDirLights);
-	Effects::NormalMapFX->SetEyePosW(mCam.GetPosition());
-	Effects::NormalMapFX->SetCubeMap(mCubemap->CubeMapSRV());
-	Effects::NormalMapFX->SetShadowMap(mSmap->DepthMapSRV());
-	Effects::NormalMapFX->SetSsaoMap(mSsao->AmbientSRV());
-
-	// Figure out which technique to use for different geometry.
-	ID3DX11EffectTechnique* activeTech = Effects::NormalMapFX->Light3TexTech;
-	ID3DX11EffectTechnique* activeSphereTech = Effects::BasicFX->Light3ReflectTech;
-	ID3DX11EffectTechnique* activeSkullTech = Effects::BasicFX->Light3ReflectTech;
-	ID3DX11EffectTechnique* activeSkinnedTech = Effects::NormalMapFX->Light3TexSkinnedTech;
-
-	md3dImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-
-	XMMATRIX world;
-	XMMATRIX worldInvTranspose;
-	XMMATRIX worldViewProj;
-
-	// Transform NDC space [-1,+1]^2 to texture space [0,1]^2
-	XMMATRIX toTexSpace(
-		0.5f, 0.0f, 0.0f, 0.0f,
-		0.0f, -0.5f, 0.0f, 0.0f,
-		0.0f, 0.0f, 1.0f, 0.0f,
-		0.5f, 0.5f, 0.0f, 1.0f);
-
-	XMMATRIX shadowTransform = XMLoadFloat4x4(&mShadowTransform);
-
-	//
-	// Draw the grid, cylinders, and box without any cubemap reflection.
-	// 
-
-	UINT stride = sizeof(Vertex::PosNormalTexTan);
+	//Set the cubes index buffer
+	d3d11DevCon->IASetIndexBuffer(squareIndexBuffer, DXGI_FORMAT_R32_UINT, 0);
+	//Set the cubes vertex buffer
+	UINT stride = sizeof(Vertex::Vertex);
 	UINT offset = 0;
+	d3d11DevCon->IASetVertexBuffers(0, 1, &squareVertBuffer, &stride, &offset);
 
-	md3dImmediateContext->IASetInputLayout(InputLayouts::PosNormalTexTan);
-	md3dImmediateContext->IASetVertexBuffers(0, 1, &mShapesVB, &stride, &offset);
-	md3dImmediateContext->IASetIndexBuffer(mShapesIB, DXGI_FORMAT_R32_UINT, 0);
+	//Set the WVP matrix and send it to the constant buffer in effect file
+	mCam.setWVP(groundWorld, mCam.getCamView(), mCam.getCamProjection());
+	cbPerObj.WVP = XMMatrixTranspose(mCam.getWVP());
+	cbPerObj.World = XMMatrixTranspose(groundWorld);
+	d3d11DevCon->UpdateSubresource(cbPerObjectBuffer, 0, NULL, &cbPerObj, 0, 0);
+	d3d11DevCon->VSSetConstantBuffers(0, 1, &cbPerObjectBuffer);
+	d3d11DevCon->PSSetShaderResources(0, 1, &CubesTexture);
+	d3d11DevCon->PSSetSamplers(0, 1, &CubesTexSamplerState);
+	d3d11DevCon->RSSetState(CCWcullMode);
+	//d3d11DevCon->DrawIndexed( 6, 0, 0 );
 
-	if (GetAsyncKeyState('1') & 0x8000)
-		md3dImmediateContext->RSSetState(RenderStates::WireframeRS);
+	///////////////**************new**************////////////////////
+	//Draw our model's NON-transparent subsets
+	drawModel(false);
+	///////////////**************new**************////////////////////
 
-	D3DX11_TECHNIQUE_DESC techDesc;
-	activeTech->GetDesc(&techDesc);
-	for (UINT p = 0; p < techDesc.Passes; ++p)
-	{
-		// Draw the grid.
-		world = XMLoadFloat4x4(&mGridWorld);
-		worldInvTranspose = MathHelper::InverseTranspose(world);
-		worldViewProj = world*view*proj;
+	/////Draw the Sky's Sphere//////
+	//Set the spheres index buffer
+	d3d11DevCon->IASetIndexBuffer(mCubemap->sphereIndexBuffer, DXGI_FORMAT_R32_UINT, 0);
+	//Set the spheres vertex buffer
+	d3d11DevCon->IASetVertexBuffers(0, 1, &mCubemap->sphereVertBuffer, &stride, &offset);
 
-		Effects::NormalMapFX->SetWorld(world);
-		Effects::NormalMapFX->SetWorldInvTranspose(worldInvTranspose);
-		Effects::NormalMapFX->SetWorldViewProj(worldViewProj);
-		Effects::NormalMapFX->SetWorldViewProjTex(worldViewProj*toTexSpace);
-		Effects::NormalMapFX->SetShadowTransform(world*shadowTransform);
-		Effects::NormalMapFX->SetTexTransform(XMMatrixScaling(8.0f, 10.0f, 1.0f));
-		Effects::NormalMapFX->SetMaterial(mGridMat);
-		Effects::NormalMapFX->SetDiffuseMap(mStoneTexSRV);
-		Effects::NormalMapFX->SetNormalMap(mStoneNormalTexSRV);
+	//Set the WVP matrix and send it to the constant buffer in effect file
+	mCam.setWVP(sphereWorld, mCam.getCamView(), mCam.getCamProjection());
+	cbPerObj.WVP = XMMatrixTranspose(mCam.getWVP());
+	cbPerObj.World = XMMatrixTranspose(sphereWorld);
+	d3d11DevCon->UpdateSubresource(cbPerObjectBuffer, 0, NULL, &cbPerObj, 0, 0);
+	d3d11DevCon->VSSetConstantBuffers(0, 1, &cbPerObjectBuffer);
+	//Send our skymap resource view to pixel shader
+	d3d11DevCon->PSSetShaderResources(0, 1, &mCubemap->smrv);
+	d3d11DevCon->PSSetSamplers(0, 1, &CubesTexSamplerState);
 
-		activeTech->GetPassByIndex(p)->Apply(0, md3dImmediateContext);
-		md3dImmediateContext->DrawIndexed(mGridIndexCount, mGridIndexOffset, mGridVertexOffset);
+	//Set the new VS and PS shaders
+	d3d11DevCon->VSSetShader(mCubemap->SKYMAP_VS, 0, 0);
+	d3d11DevCon->PSSetShader(mCubemap->SKYMAP_PS, 0, 0);
+	//Set the new depth/stencil and RS states
+	d3d11DevCon->OMSetDepthStencilState(DSLessEqual, 0);
+	d3d11DevCon->RSSetState(RSCullNone);
+	d3d11DevCon->DrawIndexed(mCubemap->getNumSphereFaces() * 3, 0, 0);
 
-		// Draw the box.
-		world = XMLoadFloat4x4(&mBoxWorld);
-		worldInvTranspose = MathHelper::InverseTranspose(world);
-		worldViewProj = world*view*proj;
+	//Set the default VS, PS shaders and depth/stencil state
+	d3d11DevCon->VSSetShader(VS, 0, 0);
+	d3d11DevCon->PSSetShader(PS, 0, 0);
+	d3d11DevCon->OMSetDepthStencilState(NULL, 0);
 
-		Effects::NormalMapFX->SetWorld(world);
-		Effects::NormalMapFX->SetWorldInvTranspose(worldInvTranspose);
-		Effects::NormalMapFX->SetWorldViewProj(worldViewProj);
-		Effects::NormalMapFX->SetWorldViewProjTex(worldViewProj*toTexSpace);
-		Effects::NormalMapFX->SetShadowTransform(world*shadowTransform);
-		Effects::NormalMapFX->SetTexTransform(XMMatrixScaling(2.0f, 1.0f, 1.0f));
-		Effects::NormalMapFX->SetMaterial(mBoxMat);
-		Effects::NormalMapFX->SetDiffuseMap(mBrickTexSRV);
-		Effects::NormalMapFX->SetNormalMap(mBrickNormalTexSRV);
+	///////////////**************new**************////////////////////	
+	//Draw our model's TRANSPARENT subsets now
+	drawModel(true);
+	///////////////**************new**************////////////////////	
 
-		activeTech->GetPassByIndex(p)->Apply(0, md3dImmediateContext);
-		md3dImmediateContext->DrawIndexed(mBoxIndexCount, mBoxIndexOffset, mBoxVertexOffset);
+	RenderText(L"Health: ", Player1.getHealth());
+	RenderText(L"Lives: ", Player1.getLives());
+	RenderText(L"Health: ", PlayerWep.getMagSize());
 
-		// Draw the cylinders.
-		for (int i = 0; i < 10; ++i)
-		{
-			world = XMLoadFloat4x4(&mCylWorld[i]);
-			worldInvTranspose = MathHelper::InverseTranspose(world);
-			worldViewProj = world*view*proj;
-
-			Effects::NormalMapFX->SetWorld(world);
-			Effects::NormalMapFX->SetWorldInvTranspose(worldInvTranspose);
-			Effects::NormalMapFX->SetWorldViewProj(worldViewProj);
-			Effects::NormalMapFX->SetWorldViewProjTex(worldViewProj*toTexSpace);
-			Effects::NormalMapFX->SetShadowTransform(world*shadowTransform);
-			Effects::NormalMapFX->SetTexTransform(XMMatrixScaling(1.0f, 2.0f, 1.0f));
-			Effects::NormalMapFX->SetMaterial(mCylinderMat);
-			Effects::NormalMapFX->SetDiffuseMap(mBrickTexSRV);
-			Effects::NormalMapFX->SetNormalMap(mBrickNormalTexSRV);
-
-			activeTech->GetPassByIndex(p)->Apply(0, md3dImmediateContext);
-			md3dImmediateContext->DrawIndexed(mCylinderIndexCount, mCylinderIndexOffset, mCylinderVertexOffset);
-		}
-	}
-
-	//
-	// Draw the spheres with cubemap reflection.
-	//
-
-	md3dImmediateContext->IASetVertexBuffers(0, 1, &mShapesVB, &stride, &offset);
-	md3dImmediateContext->IASetIndexBuffer(mShapesIB, DXGI_FORMAT_R32_UINT, 0);
-
-	activeSphereTech->GetDesc(&techDesc);
-	for (UINT p = 0; p < techDesc.Passes; ++p)
-	{
-		// Draw the spheres.
-		for (int i = 0; i < 10; ++i)
-		{
-			world = XMLoadFloat4x4(&mSphereWorld[i]);
-			worldInvTranspose = MathHelper::InverseTranspose(world);
-			worldViewProj = world*view*proj;
-
-			Effects::BasicFX->SetWorld(world);
-			Effects::BasicFX->SetWorldInvTranspose(worldInvTranspose);
-			Effects::BasicFX->SetWorldViewProj(worldViewProj);
-			Effects::BasicFX->SetWorldViewProjTex(worldViewProj*toTexSpace);
-			Effects::BasicFX->SetShadowTransform(world*shadowTransform);
-			Effects::BasicFX->SetTexTransform(XMMatrixIdentity());
-			Effects::BasicFX->SetMaterial(mSphereMat);
-
-			activeSphereTech->GetPassByIndex(p)->Apply(0, md3dImmediateContext);
-			md3dImmediateContext->DrawIndexed(mSphereIndexCount, mSphereIndexOffset, mSphereVertexOffset);
-		}
-	}
-
-	stride = sizeof(Vertex::Basic32);
-	offset = 0;
-
-	md3dImmediateContext->IASetInputLayout(InputLayouts::Basic32);
-	md3dImmediateContext->IASetVertexBuffers(0, 1, &mSkullVB, &stride, &offset);
-	md3dImmediateContext->IASetIndexBuffer(mSkullIB, DXGI_FORMAT_R32_UINT, 0);
-
-	activeSkullTech->GetDesc(&techDesc);
-	for (UINT p = 0; p < techDesc.Passes; ++p)
-	{
-		// Draw the skull.
-		world = XMLoadFloat4x4(&mSkullWorld);
-		worldInvTranspose = MathHelper::InverseTranspose(world);
-		worldViewProj = world*view*proj;
-
-		Effects::BasicFX->SetWorld(world);
-		Effects::BasicFX->SetWorldInvTranspose(worldInvTranspose);
-		Effects::BasicFX->SetWorldViewProj(worldViewProj);
-		Effects::BasicFX->SetWorldViewProjTex(worldViewProj*toTexSpace);
-		Effects::BasicFX->SetMaterial(mSkullMat);
-		Effects::BasicFX->SetShadowTransform(world*shadowTransform);
-
-		activeSkullTech->GetPassByIndex(p)->Apply(0, md3dImmediateContext);
-		md3dImmediateContext->DrawIndexed(mSkullIndexCount, 0, 0);
-	}
-
-	//
-	// Draw the animated characters.
-	//
-
-	md3dImmediateContext->IASetInputLayout(InputLayouts::PosNormalTexTanSkinned);
-
-	activeSkinnedTech->GetDesc(&techDesc);
-	for (UINT p = 0; p < techDesc.Passes; ++p)
-	{
-		// Instance 1
-
-		world = XMLoadFloat4x4(&mCharacterInstance1.World);
-		worldInvTranspose = MathHelper::InverseTranspose(world);
-		worldViewProj = world*view*proj;
-
-		Effects::NormalMapFX->SetWorld(world);
-		Effects::NormalMapFX->SetWorldInvTranspose(worldInvTranspose);
-		Effects::NormalMapFX->SetWorldViewProj(worldViewProj);
-		Effects::NormalMapFX->SetWorldViewProjTex(worldViewProj*toTexSpace);
-		Effects::NormalMapFX->SetShadowTransform(world*shadowTransform);
-		Effects::NormalMapFX->SetTexTransform(XMMatrixScaling(1.0f, 1.0f, 1.0f));
-		Effects::NormalMapFX->SetBoneTransforms(
-			&mCharacterInstance1.FinalTransforms[0],
-			mCharacterInstance1.FinalTransforms.size());
-
-		for (UINT subset = 0; subset < mCharacterInstance1.Model->SubsetCount; ++subset)
-		{
-			Effects::NormalMapFX->SetMaterial(mCharacterInstance1.Model->Mat[subset]);
-			Effects::NormalMapFX->SetDiffuseMap(mCharacterInstance1.Model->DiffuseMapSRV[subset]);
-			Effects::NormalMapFX->SetNormalMap(mCharacterInstance1.Model->NormalMapSRV[subset]);
-
-			activeSkinnedTech->GetPassByIndex(p)->Apply(0, md3dImmediateContext);
-			mCharacterInstance1.Model->ModelMesh.Draw(md3dImmediateContext, subset);
-		}
-
-		// Instance 2
-
-		world = XMLoadFloat4x4(&mCharacterInstance2.World);
-		worldInvTranspose = MathHelper::InverseTranspose(world);
-		worldViewProj = world*view*proj;
-
-		Effects::NormalMapFX->SetWorld(world);
-		Effects::NormalMapFX->SetWorldInvTranspose(worldInvTranspose);
-		Effects::NormalMapFX->SetWorldViewProj(worldViewProj);
-		Effects::NormalMapFX->SetWorldViewProjTex(worldViewProj*toTexSpace);
-		Effects::NormalMapFX->SetShadowTransform(world*shadowTransform);
-		Effects::NormalMapFX->SetTexTransform(XMMatrixScaling(1.0f, 1.0f, 1.0f));
-
-		Effects::NormalMapFX->SetBoneTransforms(
-			&mCharacterInstance2.FinalTransforms[0],
-			mCharacterInstance2.FinalTransforms.size());
-
-		for (UINT subset = 0; subset < mCharacterInstance1.Model->SubsetCount; ++subset)
-		{
-			Effects::NormalMapFX->SetMaterial(mCharacterInstance2.Model->Mat[subset]);
-			Effects::NormalMapFX->SetDiffuseMap(mCharacterInstance2.Model->DiffuseMapSRV[subset]);
-			Effects::NormalMapFX->SetNormalMap(mCharacterInstance2.Model->NormalMapSRV[subset]);
-
-			activeSkinnedTech->GetPassByIndex(p)->Apply(0, md3dImmediateContext);
-			mCharacterInstance2.Model->ModelMesh.Draw(md3dImmediateContext, subset);
-		}
-	}
-
-	// Turn off wireframe.
-	md3dImmediateContext->RSSetState(0);
-
-	// Restore from RenderStates::EqualsDSS
-	md3dImmediateContext->OMSetDepthStencilState(0, 0);
-
-	// Debug view SSAO map.
-	//DrawScreenQuad(mSsao->AmbientSRV());
-
-	//
-	// Draw the terrain
-	//
-
-	mTerrain.Draw(md3dImmediateContext, mCam, mDirLights);
-
-	md3dImmediateContext->RSSetState(0);
-
-	mCubemap->Draw(md3dImmediateContext, mCam);
-
-	// restore default states, as the SkyFX changes them in the effect file.
-	md3dImmediateContext->RSSetState(0);
-	md3dImmediateContext->OMSetDepthStencilState(0, 0);
-
-	// Unbind shadow map and AmbientMap as a shader input because we are going to render
-	// to it next frame.  These textures can be at any slot, so clear all slots.
-	ID3D11ShaderResourceView* nullSRV[16] = { 0 };
-	md3dImmediateContext->PSSetShaderResources(0, 16, nullSRV);
-
-	HR(mSwapChain->Present(0, 0));
+	//Present the backbuffer to the screen
+	SwapChain->Present(0, 0);
 }
 
-void SeniorPro::OnMouseDown(WPARAM btnState, int x, int y)
+void SeniorPro::DetectInput(double time)
 {
-	mLastMousePos.x = x;
-	mLastMousePos.y = y;
-
-	SetCapture(mhMainWnd);
-}
-
-void SeniorPro::OnMouseUp(WPARAM btnState, int x, int y)
-{
-	ReleaseCapture();
-}
-
-void SeniorPro::OnMouseMove(WPARAM btnState, int x, int y)
-{
-	////if ((btnState & MK_LBUTTON) != 0)
-	////{
-	//	// Make each pixel correspond to a quarter of a degree.
-	//	float dx = XMConvertToRadians(0.25f*static_cast<float>(x - mLastMousePos.x));
-	//	float dy = XMConvertToRadians(0.25f*static_cast<float>(y - mLastMousePos.y));
-
-	//	mCam.Pitch(dy);
-	//	mCam.RotateY(dx);
-	//	playerRotation += dx;
-	////}
-
 	DIMOUSESTATE mouseCurrState;
 
-	DIMouse->GetDeviceState(sizeof(DIMOUSESTATE), &mouseCurrState);
+	BYTE keyboardState[256];
+
+	DIKeyboard->Acquire();
 	DIMouse->Acquire();
 
+	DIMouse->GetDeviceState(sizeof(DIMOUSESTATE), &mouseCurrState);
+
+	DIKeyboard->GetDeviceState(sizeof(keyboardState), (LPVOID)&keyboardState);
+	bool flip = false;
+	if (keyboardState[DIK_ESCAPE] & 0x80)
+		PostMessage(hwnd, WM_DESTROY, 0, 0);
+
+	float speed = 15.0f * time;
+	if (keyboardState[DIK_M] & 0x80)
+	{
+		//start consuming audio in the source voice
+		g_source->Start();
+
+		//simple message loop
+		//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
+		//{
+		g_source->Stop();
+		g_source->FlushSourceBuffers();
+		g_source->Start();
+
+		//play the sound
+		g_source->SubmitSourceBuffer(buffer.xaBuffer());
+		//}
+	}
+	if (keyboardState[DIK_A] & 0x80)
+	{
+		//moveLeftRight -= speed;
+		mCam.setMoveLeftRight(mCam.getMoveLeftRight() - speed);
+	}
+	if (keyboardState[DIK_D] & 0x80)
+	{
+		//moveLeftRight += speed;
+		mCam.setMoveLeftRight(mCam.getMoveLeftRight() + speed);
+	}
+	if (keyboardState[DIK_W] & 0x80)
+	{
+		//moveBackForward += speed;
+		mCam.setMoveBackForward(mCam.getMoveBackForward() + speed);
+	}
+	if (keyboardState[DIK_S] & 0x80)
+	{
+		//moveBackForward -= speed;
+		mCam.setMoveBackForward(mCam.getMoveBackForward() - speed);
+	}
+	if (keyboardState[DIK_R] & 0x80)
+	{
+
+		if (PlayerWep.getMagSize() < 8)
+		{
+			//start consuming audio in the source voice
+
+			//simple message loop
+			//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
+			//{
+			g_sourceReload->Stop();
+			g_sourceReload->FlushSourceBuffers();
+			g_sourceReload->Start();
+
+			//play the sound
+			g_sourceGun->SubmitSourceBuffer(buffer5.xaBuffer());
+			//}
+			PlayerWep.setMagSize(8);
+			reloadBro = false;
+		}
+
+	}
+	if (keyboardState[DIK_L] & 0x80)
+	{
+		thePlayer.setDeath(false);
+	}
+
+	if ((mouseCurrState.rgbButtons[0]))
+	{
+		if (PlayerWep.getMagSize() <= 0){
+			reloadBro = true;
+		}
+		else if (flip == false){
+			PlayerWep.setMagSize(PlayerWep.getMagSize() - 1);
+
+			//start consuming audio in the source voice
+			g_sourceGun->Start();
+			//simple message loop
+			//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
+			//{
+			g_sourceGun->Stop();
+			g_sourceGun->FlushSourceBuffers();
+			g_sourceGun->Start();
+
+			//play the sound
+			g_sourceGun->SubmitSourceBuffer(buffer2.xaBuffer());
+			//}
+			flip = true;
+		}
+	}
+	else { flip = false; }
+
+	if ((mouseCurrState.rgbButtons[1]))
+	{
+		Player1.setHealth(Player1.getHealth() - 2);
+		//start consuming audio in the source voice
+		g_sourceHit->Start();
+		//simple message loop
+		//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
+		//{
+		g_sourceHit->Stop();
+		g_sourceHit->FlushSourceBuffers();
+		g_sourceHit->Start();
+
+		//play the sound
+		g_sourceHit->SubmitSourceBuffer(buffer6.xaBuffer());
+		//}
+	}
 	if ((mouseCurrState.lX != mouseLastState.lX) || (mouseCurrState.lY != mouseLastState.lY))
 	{
-		// Make each pixel correspond to a quarter of a degree.
-		float dx = XMConvertToRadians(0.25f*static_cast<float>(x - mLastMousePos.x));
-		float dy = XMConvertToRadians(0.25f*static_cast<float>(y - mLastMousePos.y));
+		//camYaw += mouseLastState.lX * 0.001f;
+		mCam.setCamYaw(mCam.getCamYaw() + (mouseLastState.lX * 0.001f));
 
-		mCam.Pitch(dy);
-		mCam.RotateY(dx);
-		playerRotation += dx;
+		//camPitch += mouseCurrState.lY * 0.001f;
+		mCam.setCamPitch(mCam.getCamPitch() + (mouseLastState.lY * 0.001f));
+
+		mouseLastState = mouseCurrState;
 	}
-	mLastMousePos.x = x;
-	mLastMousePos.y = y;
+
+	mCam.UpdateCamera();
+
+	return;
 }
 
-void SeniorPro::DrawSceneToSsaoNormalDepthMap()
+void SeniorPro::drawModel(bool transparent)
 {
-	XMMATRIX view = mCam.View();
-	XMMATRIX proj = mCam.Proj();
-	XMMATRIX viewProj = XMMatrixMultiply(view, proj);
-
-	ID3DX11EffectTechnique* tech = Effects::SsaoNormalDepthFX->NormalDepthTech;
-	ID3DX11EffectTechnique* animatedTech = Effects::SsaoNormalDepthFX->NormalDepthSkinnedTech;
-
-	XMMATRIX world;
-	XMMATRIX worldInvTranspose;
-	XMMATRIX worldView;
-	XMMATRIX worldInvTransposeView;
-	XMMATRIX worldViewProj;
-
-	//
-	// Draw the grid, cylinders, spheres and box.
-
-	UINT stride = sizeof(Vertex::PosNormalTexTan);
-	UINT offset = 0;
-
-	md3dImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	md3dImmediateContext->IASetInputLayout(InputLayouts::PosNormalTexTan);
-	md3dImmediateContext->IASetVertexBuffers(0, 1, &mShapesVB, &stride, &offset);
-	md3dImmediateContext->IASetIndexBuffer(mShapesIB, DXGI_FORMAT_R32_UINT, 0);
-
-	if (GetAsyncKeyState('1') & 0x8000)
-		md3dImmediateContext->RSSetState(RenderStates::WireframeRS);
-
-	D3DX11_TECHNIQUE_DESC techDesc;
-	tech->GetDesc(&techDesc);
-	for (UINT p = 0; p < techDesc.Passes; ++p)
+	if (transparent)
 	{
-		// Draw the grid.
-		world = XMLoadFloat4x4(&mGridWorld);
-		worldInvTranspose = MathHelper::InverseTranspose(world);
-		worldView = world*view;
-		worldInvTransposeView = worldInvTranspose*view;
-		worldViewProj = world*view*proj;
+		///////////////**************new**************////////////////////	
+		//Draw our model's TRANSPARENT subsets now
 
-		Effects::SsaoNormalDepthFX->SetWorldView(worldView);
-		Effects::SsaoNormalDepthFX->SetWorldInvTransposeView(worldInvTransposeView);
-		Effects::SsaoNormalDepthFX->SetWorldViewProj(worldViewProj);
-		Effects::SsaoNormalDepthFX->SetTexTransform(XMMatrixScaling(8.0f, 10.0f, 1.0f));
+		//Set our blend state
 
-		tech->GetPassByIndex(p)->Apply(0, md3dImmediateContext);
-		md3dImmediateContext->DrawIndexed(mGridIndexCount, mGridIndexOffset, mGridVertexOffset);
+		d3d11DevCon->OMSetBlendState(Transparency, NULL, 0xffffffff);
 
-		// Draw the box.
-		world = XMLoadFloat4x4(&mBoxWorld);
-		worldInvTranspose = MathHelper::InverseTranspose(world);
-		worldView = world*view;
-		worldInvTransposeView = worldInvTranspose*view;
-		worldViewProj = world*view*proj;
+		for (int j = 0; j < MESHCOUNT; j++){
 
-		Effects::SsaoNormalDepthFX->SetWorldView(worldView);
-		Effects::SsaoNormalDepthFX->SetWorldInvTransposeView(worldInvTransposeView);
-		Effects::SsaoNormalDepthFX->SetWorldViewProj(worldViewProj);
-		Effects::SsaoNormalDepthFX->SetTexTransform(XMMatrixScaling(2.0f, 1.0f, 1.0f));
+			for (int i = 0; i < meshArray[j].subsetCount; ++i)
+			{
+				//Set the grounds index buffer
+				d3d11DevCon->IASetIndexBuffer(meshArray[j].indexBuff, DXGI_FORMAT_R32_UINT, 0);
+				//Set the grounds vertex buffer
+				d3d11DevCon->IASetVertexBuffers(0, 1, &meshArray[j].vertBuff, &stride, &offset);
 
-		tech->GetPassByIndex(p)->Apply(0, md3dImmediateContext);
-		md3dImmediateContext->DrawIndexed(mBoxIndexCount, mBoxIndexOffset, mBoxVertexOffset);
+				//Set the WVP matrix and send it to the constant buffer in effect file
+				mCam.setWVP(meshArray[j].meshWorld, mCam.getCamView(), mCam.getCamProjection());
+				cbPerObj.WVP = XMMatrixTranspose(mCam.getWVP());
+				cbPerObj.World = XMMatrixTranspose(meshArray[j].meshWorld);
+				cbPerObj.difColor = material[meshArray[j].subsetTexture[i]].difColor;
+				cbPerObj.hasTexture = material[meshArray[j].subsetTexture[i]].hasTexture;
+				d3d11DevCon->UpdateSubresource(cbPerObjectBuffer, 0, NULL, &cbPerObj, 0, 0);
+				d3d11DevCon->VSSetConstantBuffers(0, 1, &cbPerObjectBuffer);
+				d3d11DevCon->PSSetConstantBuffers(1, 1, &cbPerObjectBuffer);
+				if (material[meshArray[j].subsetTexture[i]].hasTexture)
+					d3d11DevCon->PSSetShaderResources(0, 1, &meshArray[j].meshSRV[material[meshArray[j].subsetTexture[i]].texArrayIndex]);
+				d3d11DevCon->PSSetSamplers(0, 1, &CubesTexSamplerState);
 
-		// Draw the cylinders.
-		for (int i = 0; i < 10; ++i)
-		{
-			world = XMLoadFloat4x4(&mCylWorld[i]);
-			worldInvTranspose = MathHelper::InverseTranspose(world);
-			worldView = world*view;
-			worldInvTransposeView = worldInvTranspose*view;
-			worldViewProj = world*view*proj;
-
-			Effects::SsaoNormalDepthFX->SetWorldView(worldView);
-			Effects::SsaoNormalDepthFX->SetWorldInvTransposeView(worldInvTransposeView);
-			Effects::SsaoNormalDepthFX->SetWorldViewProj(worldViewProj);
-			Effects::SsaoNormalDepthFX->SetTexTransform(XMMatrixScaling(1.0f, 2.0f, 1.0f));
-
-			tech->GetPassByIndex(p)->Apply(0, md3dImmediateContext);
-			md3dImmediateContext->DrawIndexed(mCylinderIndexCount, mCylinderIndexOffset, mCylinderVertexOffset);
+				d3d11DevCon->RSSetState(RSCullNone);
+				int indexStart = meshArray[j].subsetIndexStart[i];
+				int indexDrawAmount = meshArray[j].subsetIndexStart[i + 1] - meshArray[j].subsetIndexStart[i];
+				if (material[meshArray[j].subsetTexture[i]].transparent)
+					d3d11DevCon->DrawIndexed(indexDrawAmount, indexStart, 0);
+			}
 		}
-
-		// Draw the spheres.
-		for (int i = 0; i < 10; ++i)
-		{
-			world = XMLoadFloat4x4(&mSphereWorld[i]);
-			worldInvTranspose = MathHelper::InverseTranspose(world);
-			worldView = world*view;
-			worldInvTransposeView = worldInvTranspose*view;
-			worldViewProj = world*view*proj;
-
-			Effects::SsaoNormalDepthFX->SetWorldView(worldView);
-			Effects::SsaoNormalDepthFX->SetWorldInvTransposeView(worldInvTransposeView);
-			Effects::SsaoNormalDepthFX->SetWorldViewProj(worldViewProj);
-			Effects::SsaoNormalDepthFX->SetTexTransform(XMMatrixIdentity());
-
-			tech->GetPassByIndex(p)->Apply(0, md3dImmediateContext);
-			md3dImmediateContext->DrawIndexed(mSphereIndexCount, mSphereIndexOffset, mSphereVertexOffset);
-		}
+		///////////////**************new**************////////////////////	
 	}
-
-	//
-	// Draw the skull.
-	//
-
-	stride = sizeof(Vertex::Basic32);
-	offset = 0;
-
-	md3dImmediateContext->IASetInputLayout(InputLayouts::Basic32);
-	md3dImmediateContext->IASetVertexBuffers(0, 1, &mSkullVB, &stride, &offset);
-	md3dImmediateContext->IASetIndexBuffer(mSkullIB, DXGI_FORMAT_R32_UINT, 0);
-
-	for (UINT p = 0; p < techDesc.Passes; ++p)
+	else
 	{
-		world = XMLoadFloat4x4(&mSkullWorld);
-		worldInvTranspose = MathHelper::InverseTranspose(world);
-		worldView = world*view;
-		worldInvTransposeView = worldInvTranspose*view;
-		worldViewProj = world*view*proj;
+		///////////////**************new**************////////////////////
+		//Draw our model's NON-transparent subsets
+		for (int j = 0; j < MESHCOUNT; j++){
+			for (int i = 0; i < meshArray[j].subsetCount; ++i)
+			{
+				//Set the grounds index buffer
+				d3d11DevCon->IASetIndexBuffer(meshArray[j].indexBuff, DXGI_FORMAT_R32_UINT, 0);
+				//Set the grounds vertex buffer
+				d3d11DevCon->IASetVertexBuffers(0, 1, &meshArray[j].vertBuff, &stride, &offset);
 
-		Effects::SsaoNormalDepthFX->SetWorldView(worldView);
-		Effects::SsaoNormalDepthFX->SetWorldInvTransposeView(worldInvTransposeView);
-		Effects::SsaoNormalDepthFX->SetWorldViewProj(worldViewProj);
-		Effects::SsaoNormalDepthFX->SetTexTransform(XMMatrixIdentity());
+				//Set the WVP matrix and send it to the constant buffer in effect file
+				mCam.setWVP(meshArray[j].meshWorld, mCam.getCamView(), mCam.getCamProjection());
+				cbPerObj.WVP = XMMatrixTranspose(mCam.getWVP());
+				cbPerObj.World = XMMatrixTranspose(meshArray[j].meshWorld);
+				cbPerObj.difColor = material[meshArray[j].subsetTexture[i]].difColor;
+				cbPerObj.hasTexture = material[meshArray[j].subsetTexture[i]].hasTexture;
+				d3d11DevCon->UpdateSubresource(cbPerObjectBuffer, 0, NULL, &cbPerObj, 0, 0);
+				d3d11DevCon->VSSetConstantBuffers(0, 1, &cbPerObjectBuffer);
+				d3d11DevCon->PSSetConstantBuffers(1, 1, &cbPerObjectBuffer);
+				if (material[meshArray[j].subsetTexture[i]].hasTexture)
+					d3d11DevCon->PSSetShaderResources(0, 1, &meshArray[j].meshSRV[material[meshArray[j].subsetTexture[i]].texArrayIndex]);
+				d3d11DevCon->PSSetSamplers(0, 1, &CubesTexSamplerState);
 
-		tech->GetPassByIndex(p)->Apply(0, md3dImmediateContext);
-		md3dImmediateContext->DrawIndexed(mSkullIndexCount, 0, 0);
-	}
-
-	//
-	// Draw the animated characters.
-	//
-
-	md3dImmediateContext->IASetInputLayout(InputLayouts::PosNormalTexTanSkinned);
-
-	animatedTech->GetDesc(&techDesc);
-	for (UINT p = 0; p < techDesc.Passes; ++p)
-	{
-		// Instance 1
-
-		world = XMLoadFloat4x4(&mCharacterInstance1.World);
-		worldInvTranspose = MathHelper::InverseTranspose(world);
-		worldView = world*view;
-		worldInvTransposeView = worldInvTranspose*view;
-		worldViewProj = world*view*proj;
-
-		Effects::SsaoNormalDepthFX->SetWorldView(worldView);
-		Effects::SsaoNormalDepthFX->SetWorldInvTransposeView(worldInvTransposeView);
-		Effects::SsaoNormalDepthFX->SetWorldViewProj(worldViewProj);
-		Effects::SsaoNormalDepthFX->SetTexTransform(XMMatrixIdentity());
-		Effects::SsaoNormalDepthFX->SetBoneTransforms(
-			&mCharacterInstance1.FinalTransforms[0],
-			mCharacterInstance1.FinalTransforms.size());
-
-		animatedTech->GetPassByIndex(p)->Apply(0, md3dImmediateContext);
-
-		for (UINT subset = 0; subset < mCharacterInstance1.Model->SubsetCount; ++subset)
-		{
-			mCharacterInstance1.Model->ModelMesh.Draw(md3dImmediateContext, subset);
+				d3d11DevCon->RSSetState(RSCullNone);
+				int indexStart = meshArray[j].subsetIndexStart[i];
+				int indexDrawAmount = meshArray[j].subsetIndexStart[i + 1] - meshArray[j].subsetIndexStart[i];
+				if (!material[meshArray[j].subsetTexture[i]].transparent)
+					d3d11DevCon->DrawIndexed(indexDrawAmount, indexStart, 0);
+			}
 		}
-
-		// Instance 2
-
-		world = XMLoadFloat4x4(&mCharacterInstance2.World);
-		worldInvTranspose = MathHelper::InverseTranspose(world);
-		worldView = world*view;
-		worldInvTransposeView = worldInvTranspose*view;
-		worldViewProj = world*view*proj;
-
-		Effects::SsaoNormalDepthFX->SetWorldView(worldView);
-		Effects::SsaoNormalDepthFX->SetWorldInvTransposeView(worldInvTransposeView);
-		Effects::SsaoNormalDepthFX->SetWorldViewProj(worldViewProj);
-		Effects::SsaoNormalDepthFX->SetTexTransform(XMMatrixIdentity());
-		Effects::SsaoNormalDepthFX->SetBoneTransforms(
-			&mCharacterInstance2.FinalTransforms[0],
-			mCharacterInstance2.FinalTransforms.size());
-
-		animatedTech->GetPassByIndex(p)->Apply(0, md3dImmediateContext);
-
-		for (UINT subset = 0; subset < mCharacterInstance2.Model->SubsetCount; ++subset)
-		{
-			mCharacterInstance2.Model->ModelMesh.Draw(md3dImmediateContext, subset);
-		}
-	}
-
-
-	md3dImmediateContext->RSSetState(0);
-}
-
-void SeniorPro::DrawSceneToShadowMap()
-{
-	XMMATRIX view = XMLoadFloat4x4(&mLightView);
-	XMMATRIX proj = XMLoadFloat4x4(&mLightProj);
-	XMMATRIX viewProj = XMMatrixMultiply(view, proj);
-
-	Effects::BuildShadowMapFX->SetEyePosW(mCam.GetPosition());
-	Effects::BuildShadowMapFX->SetViewProj(viewProj);
-
-	// These properties could be set per object if needed.
-	Effects::BuildShadowMapFX->SetHeightScale(0.07f);
-	Effects::BuildShadowMapFX->SetMaxTessDistance(1.0f);
-	Effects::BuildShadowMapFX->SetMinTessDistance(25.0f);
-	Effects::BuildShadowMapFX->SetMinTessFactor(1.0f);
-	Effects::BuildShadowMapFX->SetMaxTessFactor(5.0f);
-
-	ID3DX11EffectTechnique* smapTech = Effects::BuildShadowMapFX->BuildShadowMapTech;
-	ID3DX11EffectTechnique* animatedSmapTech = Effects::BuildShadowMapFX->BuildShadowMapSkinnedTech;
-
-	md3dImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-	XMMATRIX world;
-	XMMATRIX worldInvTranspose;
-	XMMATRIX worldViewProj;
-
-	//
-	// Draw the grid, cylinders, spheres, and box.
-	// 
-
-	UINT stride = sizeof(Vertex::PosNormalTexTan);
-	UINT offset = 0;
-
-	md3dImmediateContext->IASetInputLayout(InputLayouts::PosNormalTexTan);
-	md3dImmediateContext->IASetVertexBuffers(0, 1, &mShapesVB, &stride, &offset);
-	md3dImmediateContext->IASetIndexBuffer(mShapesIB, DXGI_FORMAT_R32_UINT, 0);
-
-	if (GetAsyncKeyState('1') & 0x8000)
-		md3dImmediateContext->RSSetState(RenderStates::WireframeRS);
-
-	D3DX11_TECHNIQUE_DESC techDesc;
-	smapTech->GetDesc(&techDesc);
-	for (UINT p = 0; p < techDesc.Passes; ++p)
-	{
-		// Draw the grid.
-		world = XMLoadFloat4x4(&mGridWorld);
-		worldInvTranspose = MathHelper::InverseTranspose(world);
-		worldViewProj = world*view*proj;
-
-		Effects::BuildShadowMapFX->SetWorld(world);
-		Effects::BuildShadowMapFX->SetWorldInvTranspose(worldInvTranspose);
-		Effects::BuildShadowMapFX->SetWorldViewProj(worldViewProj);
-		Effects::BuildShadowMapFX->SetTexTransform(XMMatrixScaling(8.0f, 10.0f, 1.0f));
-
-		smapTech->GetPassByIndex(p)->Apply(0, md3dImmediateContext);
-		md3dImmediateContext->DrawIndexed(mGridIndexCount, mGridIndexOffset, mGridVertexOffset);
-
-		// Draw the box.
-		world = XMLoadFloat4x4(&mBoxWorld);
-		worldInvTranspose = MathHelper::InverseTranspose(world);
-		worldViewProj = world*view*proj;
-
-		Effects::BuildShadowMapFX->SetWorld(world);
-		Effects::BuildShadowMapFX->SetWorldInvTranspose(worldInvTranspose);
-		Effects::BuildShadowMapFX->SetWorldViewProj(worldViewProj);
-		Effects::BuildShadowMapFX->SetTexTransform(XMMatrixScaling(2.0f, 1.0f, 1.0f));
-
-		smapTech->GetPassByIndex(p)->Apply(0, md3dImmediateContext);
-		md3dImmediateContext->DrawIndexed(mBoxIndexCount, mBoxIndexOffset, mBoxVertexOffset);
-
-		// Draw the cylinders.
-		for (int i = 0; i < 10; ++i)
-		{
-			world = XMLoadFloat4x4(&mCylWorld[i]);
-			worldInvTranspose = MathHelper::InverseTranspose(world);
-			worldViewProj = world*view*proj;
-
-			Effects::BuildShadowMapFX->SetWorld(world);
-			Effects::BuildShadowMapFX->SetWorldInvTranspose(worldInvTranspose);
-			Effects::BuildShadowMapFX->SetWorldViewProj(worldViewProj);
-			Effects::BuildShadowMapFX->SetTexTransform(XMMatrixScaling(1.0f, 2.0f, 1.0f));
-
-			smapTech->GetPassByIndex(p)->Apply(0, md3dImmediateContext);
-			md3dImmediateContext->DrawIndexed(mCylinderIndexCount, mCylinderIndexOffset, mCylinderVertexOffset);
-		}
-
-		// Draw the spheres.
-		for (int i = 0; i < 10; ++i)
-		{
-			world = XMLoadFloat4x4(&mSphereWorld[i]);
-			worldInvTranspose = MathHelper::InverseTranspose(world);
-			worldViewProj = world*view*proj;
-
-			Effects::BuildShadowMapFX->SetWorld(world);
-			Effects::BuildShadowMapFX->SetWorldInvTranspose(worldInvTranspose);
-			Effects::BuildShadowMapFX->SetWorldViewProj(worldViewProj);
-			Effects::BuildShadowMapFX->SetTexTransform(XMMatrixIdentity());
-
-			smapTech->GetPassByIndex(p)->Apply(0, md3dImmediateContext);
-			md3dImmediateContext->DrawIndexed(mSphereIndexCount, mSphereIndexOffset, mSphereVertexOffset);
-		}
-	}
-
-	//
-	// Draw the skull.
-	//
-	stride = sizeof(Vertex::Basic32);
-	offset = 0;
-
-	md3dImmediateContext->IASetInputLayout(InputLayouts::Basic32);
-	md3dImmediateContext->IASetVertexBuffers(0, 1, &mSkullVB, &stride, &offset);
-	md3dImmediateContext->IASetIndexBuffer(mSkullIB, DXGI_FORMAT_R32_UINT, 0);
-
-	for (UINT p = 0; p < techDesc.Passes; ++p)
-	{
-		world = XMLoadFloat4x4(&mSkullWorld);
-		worldInvTranspose = MathHelper::InverseTranspose(world);
-		worldViewProj = world*view*proj;
-
-		Effects::BuildShadowMapFX->SetWorld(world);
-		Effects::BuildShadowMapFX->SetWorldInvTranspose(worldInvTranspose);
-		Effects::BuildShadowMapFX->SetWorldViewProj(worldViewProj);
-		Effects::BuildShadowMapFX->SetTexTransform(XMMatrixIdentity());
-
-		smapTech->GetPassByIndex(p)->Apply(0, md3dImmediateContext);
-		md3dImmediateContext->DrawIndexed(mSkullIndexCount, 0, 0);
-	}
-
-	//
-	// Draw the animated characters.
-	//
-
-	md3dImmediateContext->IASetInputLayout(InputLayouts::PosNormalTexTanSkinned);
-
-	animatedSmapTech->GetDesc(&techDesc);
-	for (UINT p = 0; p < techDesc.Passes; ++p)
-	{
-		// Instance 1
-
-		world = XMLoadFloat4x4(&mCharacterInstance1.World);
-		worldInvTranspose = MathHelper::InverseTranspose(world);
-		worldViewProj = world*view*proj;
-
-		Effects::BuildShadowMapFX->SetWorld(world);
-		Effects::BuildShadowMapFX->SetWorldInvTranspose(worldInvTranspose);
-		Effects::BuildShadowMapFX->SetWorldViewProj(worldViewProj);
-		Effects::BuildShadowMapFX->SetTexTransform(XMMatrixIdentity());
-		Effects::BuildShadowMapFX->SetBoneTransforms(
-			&mCharacterInstance1.FinalTransforms[0],
-			mCharacterInstance1.FinalTransforms.size());
-
-
-		animatedSmapTech->GetPassByIndex(p)->Apply(0, md3dImmediateContext);
-
-		for (UINT subset = 0; subset < mCharacterInstance1.Model->SubsetCount; ++subset)
-		{
-			mCharacterInstance1.Model->ModelMesh.Draw(md3dImmediateContext, subset);
-		}
-
-		// Instance 2
-
-		world = XMLoadFloat4x4(&mCharacterInstance2.World);
-		worldInvTranspose = MathHelper::InverseTranspose(world);
-		worldViewProj = world*view*proj;
-
-		Effects::BuildShadowMapFX->SetWorld(world);
-		Effects::BuildShadowMapFX->SetWorldInvTranspose(worldInvTranspose);
-		Effects::BuildShadowMapFX->SetWorldViewProj(worldViewProj);
-		Effects::BuildShadowMapFX->SetTexTransform(XMMatrixIdentity());
-		Effects::BuildShadowMapFX->SetBoneTransforms(
-			&mCharacterInstance2.FinalTransforms[0],
-			mCharacterInstance2.FinalTransforms.size());
-
-		animatedSmapTech->GetPassByIndex(p)->Apply(0, md3dImmediateContext);
-
-		for (UINT subset = 0; subset < mCharacterInstance1.Model->SubsetCount; ++subset)
-		{
-			mCharacterInstance2.Model->ModelMesh.Draw(md3dImmediateContext, subset);
-		}
-	}
-
-	md3dImmediateContext->RSSetState(0);
-
-	//
-	// Draw the terrain
-	//
-
-	mTerrain.Draw(md3dImmediateContext, mCam, mDirLights);
-
-	md3dImmediateContext->RSSetState(0);
-}
-
-void SeniorPro::DrawScreenQuad(ID3D11ShaderResourceView* srv)
-{
-	UINT stride = sizeof(Vertex::Basic32);
-	UINT offset = 0;
-
-	md3dImmediateContext->IASetInputLayout(InputLayouts::Basic32);
-	md3dImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	md3dImmediateContext->IASetVertexBuffers(0, 1, &mScreenQuadVB, &stride, &offset);
-	md3dImmediateContext->IASetIndexBuffer(mScreenQuadIB, DXGI_FORMAT_R32_UINT, 0);
-
-	// Scale and shift quad to lower-right corner.
-	XMMATRIX world(
-		0.5f, 0.0f, 0.0f, 0.0f,
-		0.0f, 0.5f, 0.0f, 0.0f,
-		0.0f, 0.0f, 1.0f, 0.0f,
-		0.5f, -0.5f, 0.0f, 1.0f);
-
-	ID3DX11EffectTechnique* tech = Effects::DebugTexFX->ViewRedTech;
-	D3DX11_TECHNIQUE_DESC techDesc;
-
-	tech->GetDesc(&techDesc);
-	for (UINT p = 0; p < techDesc.Passes; ++p)
-	{
-		Effects::DebugTexFX->SetWorldViewProj(world);
-		Effects::DebugTexFX->SetTexture(srv);
-
-		tech->GetPassByIndex(p)->Apply(0, md3dImmediateContext);
-		md3dImmediateContext->DrawIndexed(6, 0, 0);
+		///////////////**************new**************////////////////////
 	}
 }
 
-void SeniorPro::BuildShadowTransform()
-{
-	// Only the first "main" light casts a shadow.
-	XMVECTOR lightDir = XMLoadFloat3(&mDirLights[0].Direction);
-	XMVECTOR lightPos = -2.0f*mSceneBounds.Radius*lightDir;
-	XMVECTOR targetPos = XMLoadFloat3(&mSceneBounds.Center);
-	XMVECTOR up = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
-
-	XMMATRIX V = XMMatrixLookAtLH(lightPos, targetPos, up);
-
-	// Transform bounding sphere to light space.
-	XMFLOAT3 sphereCenterLS;
-	XMStoreFloat3(&sphereCenterLS, XMVector3TransformCoord(targetPos, V));
-
-	// Ortho frustum in light space encloses scene.
-	float l = sphereCenterLS.x - mSceneBounds.Radius;
-	float b = sphereCenterLS.y - mSceneBounds.Radius;
-	float n = sphereCenterLS.z - mSceneBounds.Radius;
-	float r = sphereCenterLS.x + mSceneBounds.Radius;
-	float t = sphereCenterLS.y + mSceneBounds.Radius;
-	float f = sphereCenterLS.z + mSceneBounds.Radius;
-	XMMATRIX P = XMMatrixOrthographicOffCenterLH(l, r, b, t, n, f);
-
-	// Transform NDC space [-1,+1]^2 to texture space [0,1]^2
-	XMMATRIX T(
-		0.5f, 0.0f, 0.0f, 0.0f,
-		0.0f, -0.5f, 0.0f, 0.0f,
-		0.0f, 0.0f, 1.0f, 0.0f,
-		0.5f, 0.5f, 0.0f, 1.0f);
-
-	XMMATRIX S = V*P*T;
-
-	XMStoreFloat4x4(&mLightView, V);
-	XMStoreFloat4x4(&mLightProj, P);
-	XMStoreFloat4x4(&mShadowTransform, S);
-}
-
-void SeniorPro::BuildShapeGeometryBuffers()
-{
-	GeometryGenerator::MeshData box;
-	GeometryGenerator::MeshData grid;
-	GeometryGenerator::MeshData sphere;
-	GeometryGenerator::MeshData cylinder;
-
-	GeometryGenerator geoGen;
-	geoGen.CreateBox(1.0f, 1.0f, 1.0f, box);
-	geoGen.CreateGrid(20.0f, 30.0f, 50, 40, grid);
-	geoGen.CreateSphere(0.5f, 20, 20, sphere);
-	geoGen.CreateCylinder(0.5f, 0.5f, 3.0f, 15, 15, cylinder);
-
-	// Cache the vertex offsets to each object in the concatenated vertex buffer.
-	mBoxVertexOffset = 0;
-	mGridVertexOffset = box.Vertices.size();
-	mSphereVertexOffset = mGridVertexOffset + grid.Vertices.size();
-	mCylinderVertexOffset = mSphereVertexOffset + sphere.Vertices.size();
-
-	// Cache the index count of each object.
-	mBoxIndexCount = box.Indices.size();
-	mGridIndexCount = grid.Indices.size();
-	mSphereIndexCount = sphere.Indices.size();
-	mCylinderIndexCount = cylinder.Indices.size();
-
-	// Cache the starting index for each object in the concatenated index buffer.
-	mBoxIndexOffset = 0;
-	mGridIndexOffset = mBoxIndexCount;
-	mSphereIndexOffset = mGridIndexOffset + mGridIndexCount;
-	mCylinderIndexOffset = mSphereIndexOffset + mSphereIndexCount;
-
-	UINT totalVertexCount =
-		box.Vertices.size() +
-		grid.Vertices.size() +
-		sphere.Vertices.size() +
-		cylinder.Vertices.size();
-
-	UINT totalIndexCount =
-		mBoxIndexCount +
-		mGridIndexCount +
-		mSphereIndexCount +
-		mCylinderIndexCount;
-
-	//
-	// Extract the vertex elements we are interested in and pack the
-	// vertices of all the meshes into one vertex buffer.
-	//
-
-	std::vector<Vertex::PosNormalTexTan> vertices(totalVertexCount);
-
-	UINT k = 0;
-	for (size_t i = 0; i < box.Vertices.size(); ++i, ++k)
-	{
-		vertices[k].Pos = box.Vertices[i].Position;
-		vertices[k].Normal = box.Vertices[i].Normal;
-		vertices[k].Tex = box.Vertices[i].TexC;
-		vertices[k].TangentU = XMFLOAT4(
-			box.Vertices[i].TangentU.x,
-			box.Vertices[i].TangentU.y,
-			box.Vertices[i].TangentU.z,
-			1.0f);
-	}
-
-	for (size_t i = 0; i < grid.Vertices.size(); ++i, ++k)
-	{
-		vertices[k].Pos = grid.Vertices[i].Position;
-		vertices[k].Normal = grid.Vertices[i].Normal;
-		vertices[k].Tex = grid.Vertices[i].TexC;
-		vertices[k].TangentU = XMFLOAT4(
-			grid.Vertices[i].TangentU.x,
-			grid.Vertices[i].TangentU.y,
-			grid.Vertices[i].TangentU.z,
-			1.0f);
-	}
-
-	for (size_t i = 0; i < sphere.Vertices.size(); ++i, ++k)
-	{
-		vertices[k].Pos = sphere.Vertices[i].Position;
-		vertices[k].Normal = sphere.Vertices[i].Normal;
-		vertices[k].Tex = sphere.Vertices[i].TexC;
-		vertices[k].TangentU = XMFLOAT4(
-			sphere.Vertices[i].TangentU.x,
-			sphere.Vertices[i].TangentU.y,
-			sphere.Vertices[i].TangentU.z,
-			1.0f);
-	}
-
-	for (size_t i = 0; i < cylinder.Vertices.size(); ++i, ++k)
-	{
-		vertices[k].Pos = cylinder.Vertices[i].Position;
-		vertices[k].Normal = cylinder.Vertices[i].Normal;
-		vertices[k].Tex = cylinder.Vertices[i].TexC;
-		vertices[k].TangentU = XMFLOAT4(
-			cylinder.Vertices[i].TangentU.x,
-			cylinder.Vertices[i].TangentU.y,
-			cylinder.Vertices[i].TangentU.z,
-			1.0f);
-	}
-
-	D3D11_BUFFER_DESC vbd;
-	vbd.Usage = D3D11_USAGE_IMMUTABLE;
-	vbd.ByteWidth = sizeof(Vertex::PosNormalTexTan) * totalVertexCount;
-	vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	vbd.CPUAccessFlags = 0;
-	vbd.MiscFlags = 0;
-	D3D11_SUBRESOURCE_DATA vinitData;
-	vinitData.pSysMem = &vertices[0];
-	HR(md3dDevice->CreateBuffer(&vbd, &vinitData, &mShapesVB));
-
-	//
-	// Pack the indices of all the meshes into one index buffer.
-	//
-
-	std::vector<UINT> indices;
-	indices.insert(indices.end(), box.Indices.begin(), box.Indices.end());
-	indices.insert(indices.end(), grid.Indices.begin(), grid.Indices.end());
-	indices.insert(indices.end(), sphere.Indices.begin(), sphere.Indices.end());
-	indices.insert(indices.end(), cylinder.Indices.begin(), cylinder.Indices.end());
-
-	D3D11_BUFFER_DESC ibd;
-	ibd.Usage = D3D11_USAGE_IMMUTABLE;
-	ibd.ByteWidth = sizeof(UINT) * totalIndexCount;
-	ibd.BindFlags = D3D11_BIND_INDEX_BUFFER;
-	ibd.CPUAccessFlags = 0;
-	ibd.MiscFlags = 0;
-	D3D11_SUBRESOURCE_DATA iinitData;
-	iinitData.pSysMem = &indices[0];
-	HR(md3dDevice->CreateBuffer(&ibd, &iinitData, &mShapesIB));
-}
-
-void SeniorPro::BuildSkullGeometryBuffers()
-{
-	std::ifstream fin("Models/skull.txt");
-
-	if (!fin)
-	{
-		MessageBox(0, L"Models/skull.txt not found.", 0, 0);
-		return;
-	}
-
-	UINT vcount = 0;
-	UINT tcount = 0;
-	std::string ignore;
-
-	fin >> ignore >> vcount;
-	fin >> ignore >> tcount;
-	fin >> ignore >> ignore >> ignore >> ignore;
-
-	std::vector<Vertex::Basic32> vertices(vcount);
-	for (UINT i = 0; i < vcount; ++i)
-	{
-		fin >> vertices[i].Pos.x >> vertices[i].Pos.y >> vertices[i].Pos.z;
-		fin >> vertices[i].Normal.x >> vertices[i].Normal.y >> vertices[i].Normal.z;
-	}
-
-	fin >> ignore;
-	fin >> ignore;
-	fin >> ignore;
-
-	mSkullIndexCount = 3 * tcount;
-	std::vector<UINT> indices(mSkullIndexCount);
-	for (UINT i = 0; i < tcount; ++i)
-	{
-		fin >> indices[i * 3 + 0] >> indices[i * 3 + 1] >> indices[i * 3 + 2];
-	}
-
-	fin.close();
-
-	D3D11_BUFFER_DESC vbd;
-	vbd.Usage = D3D11_USAGE_IMMUTABLE;
-	vbd.ByteWidth = sizeof(Vertex::Basic32) * vcount;
-	vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	vbd.CPUAccessFlags = 0;
-	vbd.MiscFlags = 0;
-	D3D11_SUBRESOURCE_DATA vinitData;
-	vinitData.pSysMem = &vertices[0];
-	HR(md3dDevice->CreateBuffer(&vbd, &vinitData, &mSkullVB));
-
-	//
-	// Pack the indices of all the meshes into one index buffer.
-	//
-
-	D3D11_BUFFER_DESC ibd;
-	ibd.Usage = D3D11_USAGE_IMMUTABLE;
-	ibd.ByteWidth = sizeof(UINT) * mSkullIndexCount;
-	ibd.BindFlags = D3D11_BIND_INDEX_BUFFER;
-	ibd.CPUAccessFlags = 0;
-	ibd.MiscFlags = 0;
-	D3D11_SUBRESOURCE_DATA iinitData;
-	iinitData.pSysMem = &indices[0];
-	HR(md3dDevice->CreateBuffer(&ibd, &iinitData, &mSkullIB));
-}
-
-void SeniorPro::BuildScreenQuadGeometryBuffers()
-{
-	GeometryGenerator::MeshData quad;
-
-	GeometryGenerator geoGen;
-	geoGen.CreateFullscreenQuad(quad);
-
-	//
-	// Extract the vertex elements we are interested in and pack the
-	// vertices of all the meshes into one vertex buffer.
-	//
-
-	std::vector<Vertex::Basic32> vertices(quad.Vertices.size());
-
-	for (UINT i = 0; i < quad.Vertices.size(); ++i)
-	{
-		vertices[i].Pos = quad.Vertices[i].Position;
-		vertices[i].Normal = quad.Vertices[i].Normal;
-		vertices[i].Tex = quad.Vertices[i].TexC;
-	}
-
-	D3D11_BUFFER_DESC vbd;
-	vbd.Usage = D3D11_USAGE_IMMUTABLE;
-	vbd.ByteWidth = sizeof(Vertex::Basic32) * quad.Vertices.size();
-	vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	vbd.CPUAccessFlags = 0;
-	vbd.MiscFlags = 0;
-	D3D11_SUBRESOURCE_DATA vinitData;
-	vinitData.pSysMem = &vertices[0];
-	HR(md3dDevice->CreateBuffer(&vbd, &vinitData, &mScreenQuadVB));
-
-	//
-	// Pack the indices of all the meshes into one index buffer.
-	//
-
-	D3D11_BUFFER_DESC ibd;
-	ibd.Usage = D3D11_USAGE_IMMUTABLE;
-	ibd.ByteWidth = sizeof(UINT) * quad.Indices.size();
-	ibd.BindFlags = D3D11_BIND_INDEX_BUFFER;
-	ibd.CPUAccessFlags = 0;
-	ibd.MiscFlags = 0;
-	D3D11_SUBRESOURCE_DATA iinitData;
-	iinitData.pSysMem = &quad.Indices[0];
-	HR(md3dDevice->CreateBuffer(&ibd, &iinitData, &mScreenQuadIB));
-}

@@ -2,14 +2,7 @@
 
 Weapon::Weapon()
 {
-	range = 10.0f; //Fire cone length
-	spread = 2.0f; //Fire cone radius
-	accuracy = 85.0f; //Fire cone random tilt
-	attack = 20.0f;
-	meleeAttack = 45.0f;
-	defend = 10.0f;
-	reloadTime = 2; //In milliseconds
-	magSize = 8; //Magazine capacity
+	Init();
 }
 
 
@@ -18,7 +11,14 @@ Weapon::~Weapon()
 }
 
 void Weapon::Init(){
-	
+	range = 10.0f; //Fire cone length
+	spread = 2.0f; //Fire cone radius
+	accuracy = 85.0f; //Fire cone random tilt
+	attack = 20.0f;
+	meleeAttack = 45.0f;
+	defend = 10.0f;
+	reloadTime = 2; //In milliseconds
+	magSize = 8; //Magazine capacity
 }
 float Weapon::getRange()
 {

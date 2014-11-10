@@ -21,6 +21,7 @@ void Biped::Init(Settings* _settings)
 	settings = _settings;
 	stance = WALK;
 	teamNumber = -1;
+	death = false;
 	//hitbox = new Box(position->getLocation(),HIT_BOX_WIDTH,HIT_BOX_HEIGHT,HIT_BOX_DEPTH);
 }
 Stance Biped::getStance()
@@ -118,4 +119,10 @@ void Biped::lookTo(Direction direction){
 }
 void Biped::lookAt(Point* point,bool tracking){
 	position->lookAt(point,tracking);
+}
+bool Biped::getDeath(){
+	return death;
+}
+void Biped::setDeath(bool isDead){
+	death = isDead;
 }
