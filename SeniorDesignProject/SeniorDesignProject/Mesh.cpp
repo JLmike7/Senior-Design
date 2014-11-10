@@ -1,12 +1,4 @@
 #include "Mesh.h"
-//#include "Camera.h"
-//#include "Vertex.h"
-
-/*Mesh::Mesh(std::wstring objFilename)
-{
-filename = objFilename;
-//CreateSphere(10, 10, device);
-}*/
 
 Mesh::Mesh()
 {
@@ -14,16 +6,10 @@ Mesh::Mesh()
 
 Mesh::~Mesh()
 {
-	///////////////**************new**************////////////////////
 	vertBuff->Release();
 	indexBuff->Release();
-	///////////////**************new**************////////////////////
 }
 
-//void Cubemap::CreateSphere(int LatLines, int LongLines, ID3D11Device* d3d11Device) { }
-
-
-///////////////**************new**************////////////////////
 bool Mesh::LoadObjModel(
 	std::wstring objFilename,
 	std::vector<Struct::SurfaceMaterial>& material,
@@ -645,6 +631,72 @@ bool Mesh::LoadObjModel(
 								//be using the alpha channel in the diffuse map
 								material[matCount - 1].transparent = true;
 							}
+
+							//map_bump - bump map (we're usinga normal map though)
+							else if (checkChar == 'b')
+							{
+								checkChar = fileIn.get();
+								if (checkChar == 'u')
+								{
+									checkChar = fileIn.get();
+									if (checkChar == 'm')
+									{
+										checkChar = fileIn.get();
+										if (checkChar == 'p')
+										{
+											std::wstring fileNamePath;
+
+											fileIn.get();	//Remove whitespace between map_bump and file
+
+											//Get the file path - We read the pathname char by char since
+											//pathnames can sometimes contain spaces, so we will read until
+											//we find the file extension
+											bool texFilePathEnd = false;
+											while (!texFilePathEnd)
+											{
+												checkChar = fileIn.get();
+
+												fileNamePath += checkChar;
+
+												if (checkChar == '.')
+												{
+													for (int i = 0; i < 3; ++i)
+														fileNamePath += fileIn.get();
+
+													texFilePathEnd = true;
+												}
+											}
+
+											//check if this texture has already been loaded
+											bool alreadyLoaded = false;
+											for (int i = 0; i < textureNameArray.size(); ++i)
+											{
+												if (fileNamePath == textureNameArray[i])
+												{
+													alreadyLoaded = true;
+													material[matCount - 1].normMapTexArrayIndex = i;
+													material[matCount - 1].hasNormMap = true;
+												}
+											}
+
+											//if the texture is not already loaded, load it now
+											if (!alreadyLoaded)
+											{
+												ID3D11ShaderResourceView* tempMeshSRV;
+												hr = D3DX11CreateShaderResourceViewFromFile(device, fileNamePath.c_str(),
+													NULL, NULL, &tempMeshSRV, NULL);
+												if (SUCCEEDED(hr))
+												{
+													textureNameArray.push_back(fileNamePath.c_str());
+													material[matCount - 1].normMapTexArrayIndex = meshSRV.size();
+													meshSRV.push_back(tempMeshSRV);
+													material[matCount - 1].hasNormMap = true;
+												}
+											}
+										}
+									}
+								}
+							}
 						}
 					}
 				}
@@ -675,6 +727,8 @@ bool Mesh::LoadObjModel(
 										fileIn >> material[matCount].matName;
 										material[matCount].transparent = false;
 										material[matCount].hasTexture = false;
+										material[matCount].hasNormMap = false;
+										material[matCount].normMapTexArrayIndex = 0;
 										material[matCount].texArrayIndex = 0;
 										matCount++;
 										kdset = false;
@@ -733,7 +787,17 @@ bool Mesh::LoadObjModel(
 		tempVert.texCoord = vertTexCoord[vertTCIndex[j]];
 
 		vertices.push_back(tempVert);
+
+		///////////////**************new**************////////////////////
+		//Copy just the vertex positions to the vector
+		vertPosArray.push_back(tempVert.pos);
+		///////////////**************new**************////////////////////
 	}
+
+	///////////////**************new**************////////////////////
+	//Copy the index list to the array
+	vertIndexArray = indices;
+	///////////////**************new**************////////////////////
 
 	//////////////////////Compute Normals///////////////////////////
 	//If computeNormals was set to true then we will create our own
@@ -744,6 +808,11 @@ bool Mesh::LoadObjModel(
 
 		//normalized and unnormalized normals
 		XMFLOAT3 unnormalized = XMFLOAT3(0.0f, 0.0f, 0.0f);
+
+		//tangent stuff
+		std::vector<XMFLOAT3> tempTangent;
+		XMFLOAT3 tangent = XMFLOAT3(0.0f, 0.0f, 0.0f);
+		float tcU1, tcV1, tcU2, tcV2;
 
 		//Used to get vectors (sides) from the position of the verts
 		float vecX, vecY, vecZ;
@@ -770,14 +839,28 @@ bool Mesh::LoadObjModel(
 			//Cross multiply the two edge vectors to get the un-normalized face normal
 			XMStoreFloat3(&unnormalized, XMVector3Cross(edge1, edge2));
 			tempNormal.push_back(unnormalized);			//Save unormalized normal (for normal averaging)
+
+			//Find first texture coordinate edge 2d vector
+			tcU1 = vertices[indices[(i * 3)]].texCoord.x - vertices[indices[(i * 3) + 2]].texCoord.x;
+			tcV1 = vertices[indices[(i * 3)]].texCoord.y - vertices[indices[(i * 3) + 2]].texCoord.y;
+
+			//Find second texture coordinate edge 2d vector
+			tcU2 = vertices[indices[(i * 3) + 2]].texCoord.x - vertices[indices[(i * 3) + 1]].texCoord.x;
+			tcV2 = vertices[indices[(i * 3) + 2]].texCoord.y - vertices[indices[(i * 3) + 1]].texCoord.y;
+
+			//Find tangent using both tex coord edges and position edges
+			tangent.x = (tcV1 * XMVectorGetX(edge1) - tcV2 * XMVectorGetX(edge2)) * (1.0f / (tcU1 * tcV2 - tcU2 * tcV1));
+			tangent.y = (tcV1 * XMVectorGetY(edge1) - tcV2 * XMVectorGetY(edge2)) * (1.0f / (tcU1 * tcV2 - tcU2 * tcV1));
+			tangent.z = (tcV1 * XMVectorGetZ(edge1) - tcV2 * XMVectorGetZ(edge2)) * (1.0f / (tcU1 * tcV2 - tcU2 * tcV1));
+
+			tempTangent.push_back(tangent);
 		}
 
 		//Compute vertex normals (normal Averaging)
 		XMVECTOR normalSum = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
+		XMVECTOR tangentSum = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
 		int facesUsing = 0;
-		float tX;
-		float tY;
-		float tZ;
+		float tX, tY, tZ;	//temp axis variables
 
 		//Go through each vertex
 		for (int i = 0; i < totalVerts; ++i)
@@ -794,23 +877,39 @@ bool Mesh::LoadObjModel(
 					tZ = XMVectorGetZ(normalSum) + tempNormal[j].z;
 
 					normalSum = XMVectorSet(tX, tY, tZ, 0.0f);	//If a face is using the vertex, add the unormalized face normal to the normalSum
+
+					//We can reuse tX, tY, tZ to sum up tangents
+					tX = XMVectorGetX(tangentSum) + tempTangent[j].x;
+					tY = XMVectorGetY(tangentSum) + tempTangent[j].y;
+					tZ = XMVectorGetZ(tangentSum) + tempTangent[j].z;
+
+					tangentSum = XMVectorSet(tX, tY, tZ, 0.0f); //sum up face tangents using this vertex
+
 					facesUsing++;
 				}
 			}
 
+
 			//Get the actual normal by dividing the normalSum by the number of faces sharing the vertex
 			normalSum = normalSum / facesUsing;
+			tangentSum = tangentSum / facesUsing;
 
-			//Normalize the normalSum vector
+			//Normalize the normalSum vector and tangent
 			normalSum = XMVector3Normalize(normalSum);
+			tangentSum = XMVector3Normalize(tangentSum);
 
-			//Store the normal in our current vertex
+			//Store the normal and tangent in our current vertex
 			vertices[i].normal.x = XMVectorGetX(normalSum);
 			vertices[i].normal.y = XMVectorGetY(normalSum);
 			vertices[i].normal.z = XMVectorGetZ(normalSum);
 
-			//Clear normalSum and facesUsing for next vertex
+			vertices[i].tangent.x = XMVectorGetX(tangentSum);
+			vertices[i].tangent.y = XMVectorGetY(tangentSum);
+			vertices[i].tangent.z = XMVectorGetZ(tangentSum);
+
+			//Clear normalSum, tangentSum and facesUsing for next vertex
 			normalSum = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
+			tangentSum = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
 			facesUsing = 0;
 
 		}
@@ -849,5 +948,4 @@ bool Mesh::LoadObjModel(
 
 	return true;
 }
-///////////////**************new**************////////////////////
 

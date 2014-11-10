@@ -31,8 +31,6 @@
 class D3DApp
 {
 protected:
-	
-
 	//Player Init
 	Stats Player1;
 	Weapon PlayerWep;
@@ -40,7 +38,6 @@ protected:
 	Biped enemies[20];
 	bool reloadBro = false;
 	Settings* _settings;
-
 
 	Position playerLoc;
 	LPCWSTR WndClassName;	//Define our window class name
@@ -73,7 +70,17 @@ protected:
 	double frameTime;
 
 	UINT numElements;
-	
+
+	///////////////**************new**************////////////////////
+	bool isShoot;
+
+	int ClientWidth;
+	int ClientHeight;
+
+	int score;
+	float pickedDist;
+	///////////////**************new**************////////////////////
+
 	D3D11_VIEWPORT mScreenViewport;
 	HINSTANCE		mhAppInst;
 
@@ -117,16 +124,11 @@ protected:
 	IDirectInputDevice8* DIMouse;
 
 	//Sounds 
-	
-
-	///////////////**************new**************////////////////////
 
 	ID3D11DepthStencilState* DSLessEqual;
 	ID3D11RasterizerState* RSCullNone;
 
 	ID3D11BlendState* Transparency;
-	///////////////**************new**************////////////////////
-
 
 	std::wstring printText;
 
@@ -146,21 +148,20 @@ public:
 	virtual void DetectInput(double time) = 0;
 
 	//Main windows function
-	int WINAPI WinMain(HINSTANCE hInstance,	 HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd);
+	int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd);
 
 	bool InitializeDirect3d11App(HINSTANCE hInstance);
 	virtual bool InitScene() = 0;
 	virtual void UpdateScene(double time) = 0;
 	virtual void DrawScene() = 0;
 	virtual void RenderText(std::wstring text, int inInt) = 0;
-	
+
 	bool InitD2D_D3D101_DWrite(IDXGIAdapter1 *Adapter);
 	void InitD2DScreenTexture();
 
 	void StartTimer();
 	double GetTime();
 	double GetFrameTime();
-
 };
 
 #endif // D3DAPP_H
