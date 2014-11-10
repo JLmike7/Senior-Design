@@ -4,7 +4,7 @@ RoundCollision::RoundCollision(){
 
 }
 
-RoundCollision::RoundCollision(Location _loc, float _height, float _raduis){
+RoundCollision::RoundCollision(Point _loc, float _height, float _raduis){
 	loc = _loc;
 	height = _height;
 	raduis = _raduis;
@@ -25,7 +25,7 @@ bool RoundCollision::checkAABBCollision(Collision other){
 	return false;
 }
 
-bool RoundCollision::checkPointCollision(Location other){
+bool RoundCollision::checkPointCollision(Point other){
 	if (loc.getX() + raduis >= other.getX() && loc.getX() - raduis <= other.getX()){
 		if (loc.getZ() + raduis >= other.getZ() && loc.getZ() - raduis <= other.getZ()){
 			if (loc.getY() + raduis >= other.getY() && loc.getY() - raduis <= other.getY()){
@@ -58,11 +58,11 @@ bool RoundCollision::checkTriCollision(TriangleCollision other){
 	return false;
 }
 
-Location RoundCollision::getLocation(){
+Point RoundCollision::getLocation(){
 	return loc;
 }
 
-void RoundCollision::setLocation(Location _loc){
+void RoundCollision::setLocation(Point _loc){
 	loc = _loc;
 }
 

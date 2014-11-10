@@ -4,7 +4,7 @@ Collision::Collision(){
 
 }
 
-Collision::Collision(Location _loc, float _height, float _width, float _length){
+Collision::Collision(Point _loc, float _height, float _width, float _length){
 	loc = _loc;
 	height = _height;
 	width = _width;
@@ -16,15 +16,15 @@ Collision::~Collision(){
 }
 
 
-Location Collision::newLocation(float height){
-	Location nloc;
+Point Collision::newLocation(float height){
+	Point nloc;
 	nloc.setX(loc.getX());
 	nloc.setY(loc.getY() + (height / 2));
 	nloc.setZ(loc.getZ());
 	return loc;
 }
 
-bool Collision::checkPointCollision(Location other){
+bool Collision::checkPointCollision(Point other){
 	if (loc.getX() + width >= other.getX() && loc.getX() - width <= other.getX()){
 		if (loc.getZ() + length >= other.getZ() && loc.getZ() - length <= other.getZ()){
 			if ((loc.getY() + (height) >= other.getY() && loc.getY() - (height) <= other.getY())){
@@ -68,11 +68,11 @@ bool Collision::checkTriCollision(TriangleCollision other){
 	return false;
 }
 
-Location Collision::getLocation(){
+Point Collision::getLocation(){
 	return loc;
 }
 
-void Collision::setLocation(Location _loc){
+void Collision::setLocation(Point _loc){
 	loc = _loc;
 }
 

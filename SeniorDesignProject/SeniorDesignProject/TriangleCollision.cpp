@@ -4,7 +4,7 @@ TriangleCollision::TriangleCollision(){
 
 }
 
-TriangleCollision::TriangleCollision(Location _loc, float _height, float _length, float _width){
+TriangleCollision::TriangleCollision(Point _loc, float _height, float _length, float _width){
 	loc = _loc;
 	height = _height;
 	length = _length;
@@ -18,7 +18,7 @@ TriangleCollision::~TriangleCollision(){
 
 }
 
-bool TriangleCollision::checkPointCollision(Location other) {
+bool TriangleCollision::checkPointCollision(Point other) {
 	if (loc.getX() + width >= other.getX() && loc.getX() - width <= other.getX()){
 		if (loc.getZ() + (length + other.getY() * cos(angle)) >= other.getZ() && loc.getZ() - (length + other.getY() * cos(angle)) <= other.getZ()){
 			if ((loc.getY() + (height + other.getZ() * sin(angle)) >= other.getY() && loc.getY() - (height + other.getZ() * sin(angle)) <= other.getY())){
@@ -94,10 +94,10 @@ void TriangleCollision::setwidth(float _width){
 	width = _width;
 }
 
-Location TriangleCollision::getLocation(){
+Point TriangleCollision::getLocation(){
 	return loc;
 }
 
-void TriangleCollision::setLocation(Location _loc){
+void TriangleCollision::setLocation(Point _loc){
 	loc = _loc;
 }

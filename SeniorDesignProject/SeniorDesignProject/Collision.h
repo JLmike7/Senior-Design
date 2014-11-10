@@ -1,7 +1,7 @@
 #ifndef COLLISION_H
 #define COLLISION_H
 
-#include "Location.h"
+#include "Point.h"
 #include <math.h>
 #include "Collisionwithroundobj.h"
 #include "TriangleCollision.h"
@@ -12,16 +12,16 @@ class RoundCollision;
 class Collision{
 public:
 	Collision();
-	Collision(Location _loc, float _height, float _length, float _width);
+	Collision(Point _loc, float _height, float _length, float _width);
 	~Collision();
 
-	bool checkPointCollision(Location other);
+	bool checkPointCollision(Point other);
 	bool checkAABBCollision(Collision other);
 	bool checkRoundCollision(RoundCollision other);
 	bool checkTriCollision(TriangleCollision other);
-	Location newLocation(float height);
-	Location getLocation();
-	void setLocation(Location _loc);
+	Point newLocation(float height);
+	Point getLocation();
+	void setLocation(Point _loc);
 	float getheight();
 	void setheight(float _height);
 	float getlength();
@@ -29,7 +29,7 @@ public:
 	float getwidth();
 	void setwidth(float _width);
 private:
-	Location loc;
+	Point loc;
 	float height;
 	float length;
 	float width;

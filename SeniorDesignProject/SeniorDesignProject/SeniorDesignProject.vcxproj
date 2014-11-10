@@ -202,7 +202,6 @@
     <FxCompile Include="FX\Terrain.fx" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Enemy.mtl" />
     <None Include="FX\Basic.fxo" />
     <None Include="FX\BuildShadowMap.fxo" />
     <None Include="FX\cubemap.fxo" />
@@ -257,9 +256,6 @@
   </ItemGroup>
   <ItemGroup>
     <Media Include="Music.mp3" />
-  </ItemGroup>
-  <ItemGroup>
-    <Object Include="Enemy.obj" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
