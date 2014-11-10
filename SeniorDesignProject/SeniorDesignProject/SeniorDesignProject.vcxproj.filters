@@ -393,7 +393,6 @@
     <None Include="Textures\map1.raw" />
     <None Include="Textures\terrain.raw" />
     <None Include="Textures\terrain2.raw" />
-    <None Include="Enemy.mtl" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Models\car.txt" />
@@ -402,8 +401,5 @@
   </ItemGroup>
   <ItemGroup>
     <Media Include="Music.mp3" />
-  </ItemGroup>
-  <ItemGroup>
-    <Object Include="Enemy.obj" />
   </ItemGroup>
 </Project>
