@@ -2,6 +2,7 @@
 #include "CameraMain.h"
 #include "VertexMain.h"
 #include "Cubemap.h"
+#include "Collision.h"
 #include "Mesh.h"
 
 #define MESHCOUNT 2
@@ -30,6 +31,8 @@ public:
 private:
 	CameraMain mCam;
 
+	bool move;
+
 	Cubemap* mCubemap;
 
 	Mesh meshArray[MESHCOUNT];
@@ -48,6 +51,7 @@ private:
 	Mesh bottleArray[20];
 	int* bottleHit = new int[20];
 	int numBottles = 20;
+	Collision coll[20];
 
 };
 //run initializemainwindow
@@ -370,8 +374,8 @@ bool SeniorPro::InitScene()
 	//spaceCompound = new Mesh(L"spaceCompound.obj");
 	//meshArray[0] = Mesh(L"spaceCompound.obj");
 
-	if (!meshArray[0].LoadObjModel(L"ground.obj", material, true, true, d3d11Device, SwapChain))
-		return false;
+//	if (!meshArray[0].LoadObjModel(L"Enemy.obj", material, true, true, d3d11Device, SwapChain))
+	//	return false;
 	if (!meshArray[1].LoadObjModel(L"spaceCompound.obj", material, true, false, d3d11Device, SwapChain))
 		return false;
 	//if (!meshArray[2].LoadObjModel(L"Enemy.obj", material, true, false, d3d11Device, SwapChain))
@@ -379,7 +383,7 @@ bool SeniorPro::InitScene()
 	//	return false;
 	for (int i = 0; i < numBottles; i++)
 	{
-		if (!bottleArray[i].LoadObjModel(L"DoorLeft.obj", material, true, false, d3d11Device, SwapChain))
+		if (!bottleArray[i].LoadObjModel(L"Enemy.obj", material, true, false, d3d11Device, SwapChain))
 			return false;
 	}
 
@@ -626,7 +630,10 @@ bool SeniorPro::InitScene()
 		Rotation = XMMatrixRotationY(3.14f);
 		Scale = XMMatrixScaling(0.15f, 0.15f, 0.15f);
 		Translation = XMMatrixTranslation(bottleXPos + bxadd*10.0f, 2.0f, bottleZPos + bzadd*10.0f);
-
+		coll[i].setLocation(Point(bottleXPos + bxadd*10.0f, 2.0f, bottleZPos + bzadd*10.0f));
+		coll[i].setheight(3.0f);
+		coll[i].setlength(3.0f);
+		coll[i].setwidth(3.0f);
 		bottleArray[i].meshWorld = Rotation * Scale * Translation;
 	}
 
@@ -774,7 +781,10 @@ void SeniorPro::RenderText(std::wstring text, int inInt)
 		printString <<
 			L"Health: " << Player1.getHealth() << "\n"
 			<< L"Ammo: " << PlayerWep.getMagSize() << "\n"
-			<< L"Lives: " << Player1.getLives() << "\n";
+			<< L"Lives: " << Player1.getLives() << "\n"
+			<< L"Lives: " << XMVectorGetX(mCam.getCamPosition()) << "\n"
+			<< L"Lives: " << XMVectorGetY(mCam.getCamPosition()) << "\n"
+			<< L"Lives: " << XMVectorGetZ(mCam.getCamPosition()) << "\n"
 		printText = printString.str();
 		if (reloadBro == true)
 		{
@@ -978,22 +988,32 @@ void SeniorPro::DetectInput(double time)
 		g_source->SubmitSourceBuffer(buffer.xaBuffer());
 		//}
 	}
-	if (keyboardState[DIK_A] & 0x80)
+	for (int i = 0; i < 20; i++){
+		if (coll[i].checkPointCollision(Point(XMVectorGetX(mCam.getCamPosition()), XMVectorGetY(mCam.getCamPosition()), XMVectorGetZ(mCam.getCamPosition())))){
+			move = false;
+			break;
+		}
+		else{
+			move = true;
+		}
+	}
+
+	if (keyboardState[DIK_A] & 0x80 && move)
 	{
 		//moveLeftRight -= speed;
 		mCam.setMoveLeftRight(mCam.getMoveLeftRight() - speed);
 	}
-	if (keyboardState[DIK_D] & 0x80)
+	if (keyboardState[DIK_D] & 0x80 && move)
 	{
 		//moveLeftRight += speed;
 		mCam.setMoveLeftRight(mCam.getMoveLeftRight() + speed);
 	}
-	if (keyboardState[DIK_W] & 0x80)
+	if (keyboardState[DIK_W] & 0x80 && move)
 	{
 		//moveBackForward += speed;
 		mCam.setMoveBackForward(mCam.getMoveBackForward() + speed);
 	}
-	if (keyboardState[DIK_S] & 0x80)
+	if (keyboardState[DIK_S] & 0x80 && move)
 	{
 		//moveBackForward -= speed;
 		mCam.setMoveBackForward(mCam.getMoveBackForward() - speed);
@@ -1025,7 +1045,7 @@ void SeniorPro::DetectInput(double time)
 		thePlayer.setDeath(false);
 	}
 
-	if ((mouseCurrState.rgbButtons[0]))
+	if ((mouseCurrState.rgbButtons[0]) && PlayerWep.getMagSize() <= 0)
 	{
 		//CHECK HERE
 		//Gun

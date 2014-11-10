@@ -109,7 +109,6 @@
     <ClCompile Include="Collisionwithroundobj.cpp" />
     <ClCompile Include="Controller.cpp" />
     <ClCompile Include="cubemap.cpp" />
-    <ClCompile Include="d3dApp.cpp" />
     <ClCompile Include="Effects.cpp" />
     <ClCompile Include="LoadM3d.cpp" />
     <ClCompile Include="LookDirection.cpp" />
@@ -200,62 +199,6 @@
     <FxCompile Include="FX\SsaoBlur.fx" />
     <FxCompile Include="FX\SsaoNormalDepth.fx" />
     <FxCompile Include="FX\Terrain.fx" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="FX\Basic.fxo" />
-    <None Include="FX\BuildShadowMap.fxo" />
-    <None Include="FX\cubemap.fxo" />
-    <None Include="FX\DebugTexture.fxo" />
-    <None Include="FX\NormalMap.fxo" />
-    <None Include="FX\Sky.fxo" />
-    <None Include="FX\Ssao.fxo" />
-    <None Include="FX\SsaoBlur.fxo" />
-    <None Include="FX\SsaoNormalDepth.fxo" />
-    <None Include="FX\Terrain.fxo" />
-    <None Include="Models\soldier.m3d" />
-    <None Include="Models\tree.m3d" />
-    <None Include="Textures\map1.raw" />
-    <None Include="Textures\terrain.raw" />
-    <None Include="Textures\terrain2.raw" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="Library and Include Files.txt" />
-    <Text Include="Models\car.txt" />
-    <Text Include="Models\skull.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="Textures\blend.dds" />
-    <Image Include="Textures\bricks.dds" />
-    <Image Include="Textures\bricks_nmap.dds" />
-    <Image Include="Textures\darkdirt.dds" />
-    <Image Include="Textures\desertcube1024.dds" />
-    <Image Include="Textures\floor.dds" />
-    <Image Include="Textures\floor_nmap.dds" />
-    <Image Include="Textures\grass.dds" />
-    <Image Include="Textures\grasscube1024.dds" />
-    <Image Include="Textures\head_diff.dds" />
-    <Image Include="Textures\head_norm.dds" />
-    <Image Include="Textures\jacket_diff.dds" />
-    <Image Include="Textures\jacket_norm.dds" />
-    <Image Include="Textures\lightdirt.dds" />
-    <Image Include="Textures\pants_diff.dds" />
-    <Image Include="Textures\pants_norm.dds" />
-    <Image Include="Textures\snow.dds" />
-    <Image Include="Textures\snowcube1024.dds" />
-    <Image Include="Textures\stone.dds" />
-    <Image Include="Textures\stones.dds" />
-    <Image Include="Textures\stones_nmap.dds" />
-    <Image Include="Textures\sunsetcube1024.dds" />
-    <Image Include="Textures\terrain.dds" />
-    <Image Include="Textures\tree01-bark_diffuse.dds" />
-    <Image Include="Textures\tree01-bark_normal.dds" />
-    <Image Include="Textures\tree01-leaves_diffuse.dds" />
-    <Image Include="Textures\tree01-leaves_normal.dds" />
-    <Image Include="Textures\upBody_diff.dds" />
-    <Image Include="Textures\upbody_norm.dds" />
-  </ItemGroup>
-  <ItemGroup>
-    <Media Include="Music.mp3" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
