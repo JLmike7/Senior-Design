@@ -437,7 +437,8 @@ bool D3DApp::InitDirectInput(HINSTANCE hInstance)
 
 	hr = DIMouse->SetDataFormat(&c_dfDIMouse);
 	///////////////**************new**************////////////////////
-	hr = DIMouse->SetCooperativeLevel(hwnd, DISCL_NONEXCLUSIVE | DISCL_NOWINKEY | DISCL_FOREGROUND);
+	//THIS IS WHAT DISABLES MOUSE OUT OF BOUNDS
+	hr = DIMouse->SetCooperativeLevel(hwnd, DISCL_EXCLUSIVE | DISCL_NOWINKEY | DISCL_FOREGROUND);
 	///////////////**************new**************////////////////////
 
 	return true;

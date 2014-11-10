@@ -2,7 +2,6 @@
 #include "CameraMain.h"
 #include "VertexMain.h"
 #include "Cubemap.h"
-#include "Collision.h"
 #include "Mesh.h"
 
 #define MESHCOUNT 2
@@ -31,8 +30,6 @@ public:
 private:
 	CameraMain mCam;
 
-	bool move;
-
 	Cubemap* mCubemap;
 
 	Mesh meshArray[MESHCOUNT];
@@ -51,7 +48,6 @@ private:
 	Mesh bottleArray[20];
 	int* bottleHit = new int[20];
 	int numBottles = 20;
-	Collision coll[20];
 
 };
 //run initializemainwindow
@@ -367,6 +363,8 @@ SeniorPro::~SeniorPro()
 
 bool SeniorPro::InitScene()
 {
+	//Init hit person
+	hitMe = 1;
 	InitD2DScreenTexture();
 	
 	// Create cubemap
@@ -374,8 +372,8 @@ bool SeniorPro::InitScene()
 	//spaceCompound = new Mesh(L"spaceCompound.obj");
 	//meshArray[0] = Mesh(L"spaceCompound.obj");
 
-//	if (!meshArray[0].LoadObjModel(L"Enemy.obj", material, true, true, d3d11Device, SwapChain))
-	//	return false;
+	if (!meshArray[0].LoadObjModel(L"ground.obj", material, true, true, d3d11Device, SwapChain))
+		return false;
 	if (!meshArray[1].LoadObjModel(L"spaceCompound.obj", material, true, false, d3d11Device, SwapChain))
 		return false;
 	//if (!meshArray[2].LoadObjModel(L"Enemy.obj", material, true, false, d3d11Device, SwapChain))
@@ -383,7 +381,7 @@ bool SeniorPro::InitScene()
 	//	return false;
 	for (int i = 0; i < numBottles; i++)
 	{
-		if (!bottleArray[i].LoadObjModel(L"Enemy.obj", material, true, false, d3d11Device, SwapChain))
+		if (!bottleArray[i].LoadObjModel(L"EnemyTes.obj", material, true, false, d3d11Device, SwapChain))
 			return false;
 	}
 
@@ -630,10 +628,7 @@ bool SeniorPro::InitScene()
 		Rotation = XMMatrixRotationY(3.14f);
 		Scale = XMMatrixScaling(0.15f, 0.15f, 0.15f);
 		Translation = XMMatrixTranslation(bottleXPos + bxadd*10.0f, 2.0f, bottleZPos + bzadd*10.0f);
-		coll[i].setLocation(Point(bottleXPos + bxadd*10.0f, 2.0f, bottleZPos + bzadd*10.0f));
-		coll[i].setheight(3.0f);
-		coll[i].setlength(3.0f);
-		coll[i].setwidth(3.0f);
+
 		bottleArray[i].meshWorld = Rotation * Scale * Translation;
 	}
 
@@ -667,7 +662,7 @@ void SeniorPro::UpdateScene(double time)
 	{
 		if (bottleHit[i] == 0) //No need to check bottles already hit
 		{
-			//Set temp pick distances for camera vs building
+			//Set temp pick distances for camera vs objects
 			tempDist = pick(prwsPos, prwsDir, bottleArray[i].vertPosArray, bottleArray[i].vertIndexArray, bottleArray[i].meshWorld);
 			tempDist2 = pick(prwsPos2, prwsDir2, bottleArray[i].vertPosArray, bottleArray[i].vertIndexArray, bottleArray[i].meshWorld);
 			tempDist3 = pick(prwsPos3, prwsDir3, bottleArray[i].vertPosArray, bottleArray[i].vertIndexArray, bottleArray[i].meshWorld);
@@ -838,11 +833,13 @@ void SeniorPro::RenderText(std::wstring text, int inInt)
 			<< L"player z: " << XMVectorGetZ(mCam.getCamPosition()) << "\n"
 			<< L"Lives: " << Player1.getLives() << "\n"
 			<< L"Score: " << score << L"\n"
-			<< L"Picked Dist: " << pickedDist << "\n"
-			<< L"Picked Dist: " << pickedDist2 << "\n"
-			<< L"Picked Dist: " << pickedDist3 << "\n"
-			<< L"Picked Dist: " << pickedDist4 << "\n"
-			<< L"Picked Dist: " << pickedDist5 << "\n"
+			<< L"EnemyHeath: " << enemyStats[hitMe].getHealth() << L"\n"
+			<< L"Enemy Picked: " << hitMe << L"\n"
+			//<< L"Picked Dist: " << pickedDist << "\n"
+			//<< L"Picked Dist: " << pickedDist2 << "\n"
+			//<< L"Picked Dist: " << pickedDist3 << "\n"
+			//<< L"Picked Dist: " << pickedDist4 << "\n"
+			//<< L"Picked Dist: " << pickedDist5 << "\n"
 			<< L"Picked Dist: " << pickedDist6 << "\n"
 			<< L"Picked Dist: " << pickedDist7 << "\n"
 			<< L"Picked Dist: " << pickedDist8 << "\n"
@@ -1013,7 +1010,7 @@ void SeniorPro::DrawScene()
 	RenderText(L"Health: ", Player1.getHealth());
 	RenderText(L"Lives: ", Player1.getLives());
 	RenderText(L"Health: ", PlayerWep.getMagSize());
-
+	RenderText(L"Enemy Picked Health %d", enemyStats[hitMe].getHealth());
 	//Present the backbuffer to the screen
 	SwapChain->Present(0, 0);
 }
@@ -1051,16 +1048,6 @@ void SeniorPro::DetectInput(double time)
 		g_source->SubmitSourceBuffer(buffer.xaBuffer());
 		//}
 	}
-	for (int i = 0; i < 20; i++){
-		if (coll[i].checkPointCollision(Point(XMVectorGetX(mCam.getCamPosition()), XMVectorGetY(mCam.getCamPosition()), XMVectorGetZ(mCam.getCamPosition())))){
-			move = false;
-			break;
-		}
-		else{
-			move = true;
-		}
-	}
-
 	//Check for collision and then allow for user to  move
 	if (keyboardState[DIK_A] & 0x80 && pickedDist >= 0.5 && pickedDist2 >= 0.5 && pickedDist3 >= 0.5 && pickedDist4 >= 0.5 && pickedDist5 >= 0.5
 		&& pickedDist6 >= 0.5 && pickedDist7 >= 0.5 && pickedDist8 >= 0.5 && pickedDist9 >= 0.5 && pickedDist10 >= 0.5)
@@ -1069,19 +1056,18 @@ void SeniorPro::DetectInput(double time)
 		mCam.setMoveLeftRight(mCam.getMoveLeftRight() - speed);
 	}
 	if (keyboardState[DIK_D] & 0x80 && pickedDist >= 0.5 && pickedDist2 >= 0.5 && pickedDist3 >= 0.5 && pickedDist4 >= 0.5 && pickedDist5 >= 0.5
-		&& pickedDist6 >= 0.5 && pickedDist7 >= 0.5 && pickedDist8 >= 0.5 && pickedDist9 >= 0.5 && pickedDist10 >= 0.5 && move)
+		&& pickedDist6 >= 0.5 && pickedDist7 >= 0.5 && pickedDist8 >= 0.5 && pickedDist9 >= 0.5 && pickedDist10 >= 0.5)
 	{
 		//moveLeftRight += speed;
 		mCam.setMoveLeftRight(mCam.getMoveLeftRight() + speed);
 	}
 	if (keyboardState[DIK_W] & 0x80 && pickedDist >= 0.5 && pickedDist2 >= 0.5 && pickedDist3 >= 0.5 && pickedDist4 >= 0.5 && pickedDist5 >= 0.5
-		&& pickedDist6 >= 0.5 && pickedDist7 >= 0.5 && pickedDist8 >= 0.5 && pickedDist9 >= 0.5 && pickedDist10 >= 0.5 && move)
+		&& pickedDist6 >= 0.5 && pickedDist7 >= 0.5 && pickedDist8 >= 0.5 && pickedDist9 >= 0.5 && pickedDist10 >= 0.5)
 	{
 		//moveBackForward += speed;
 		mCam.setMoveBackForward(mCam.getMoveBackForward() + speed);
 	}
-	if (keyboardState[DIK_S] & 0x80 && pickedDist >= 0.5 && pickedDist2 >= 0.5 && pickedDist3 >= 0.5 && pickedDist4 >= 0.5 && pickedDist5 >= 0.5
-		&& pickedDist6 >= 0.5 && pickedDist7 >= 0.5 && pickedDist8 >= 0.5 && pickedDist9 >= 0.5 && pickedDist10 >= 0.5 && move)
+	if (keyboardState[DIK_S] & 0x80 )
 	{
 		//moveBackForward -= speed;
 		mCam.setMoveBackForward(mCam.getMoveBackForward() - speed);
@@ -1113,14 +1099,14 @@ void SeniorPro::DetectInput(double time)
 		thePlayer.setDeath(true);
 	}
 
-	if ((mouseCurrState.rgbButtons[0]) && PlayerWep.getMagSize() <= 0)
+	if ((mouseCurrState.rgbButtons[0]))
 	{
 		//CHECK HERE
 		//Gun
 		if (PlayerWep.getMagSize() <= 0){
 			reloadBro = true;
 		}
-		else if (flip == false){
+		else{
 			PlayerWep.setMagSize(PlayerWep.getMagSize() - 1);
 
 			//start consuming audio in the source voice
@@ -1135,8 +1121,7 @@ void SeniorPro::DetectInput(double time)
 			//play the sound
 			g_sourceGun->SubmitSourceBuffer(buffer2.xaBuffer());
 			//}
-			flip = true;
-		}
+			
 		//Picking bottles
 		if (isShoot == false)
 		{
@@ -1153,7 +1138,7 @@ void SeniorPro::DetectInput(double time)
 			int hitIndex;
 
 			XMVECTOR prwsPos, prwsDir;
-			pickRayVector(mousex, mousey, prwsPos, prwsDir);
+				pickRayVector(Width/2, Height/2, prwsPos, prwsDir);
 
 			for (int i = 0; i < numBottles; i++)
 			{
@@ -1170,14 +1155,25 @@ void SeniorPro::DetectInput(double time)
 
 			if (closestDist < FLT_MAX)
 			{
+					hitMe = hitIndex;
+					//Reduce that enemies health
+					enemyStats[hitIndex].setHealth(enemyStats[hitIndex].getHealth() - 20);
+					//If their health is less then 0 they are dead. remove them.
+					if (enemyStats[hitIndex].getHealth() <= 0){
+						enemies[hitIndex].setDeath(true);
+						
 				bottleHit[hitIndex] = 1;
 				pickedDist = closestDist;
 				score++;
 			}
+				}
 
 			isShoot = true;
 		}
 		//CHECK HERE
+
+		}
+		
 	}
 	//CHECK HERE
 	if (!mouseCurrState.rgbButtons[0])
