@@ -3,6 +3,7 @@
 #include "VertexMain.h"
 #include "Cubemap.h"
 #include "Mesh.h"
+#include "Collision.h"
 
 #define MESHCOUNT 2
 
@@ -29,6 +30,9 @@ public:
 
 private:
 	CameraMain mCam;
+
+	Collision coll[20];
+	bool move;
 
 	Cubemap* mCubemap;
 
@@ -372,8 +376,8 @@ bool SeniorPro::InitScene()
 	//spaceCompound = new Mesh(L"spaceCompound.obj");
 	//meshArray[0] = Mesh(L"spaceCompound.obj");
 
-	if (!meshArray[0].LoadObjModel(L"ground.obj", material, true, true, d3d11Device, SwapChain))
-		return false;
+	//if (!meshArray[0].LoadObjModel(L"ground.obj", material, true, true, d3d11Device, SwapChain))
+		//return false;
 	if (!meshArray[1].LoadObjModel(L"spaceCompound.obj", material, true, false, d3d11Device, SwapChain))
 		return false;
 	//if (!meshArray[2].LoadObjModel(L"Enemy.obj", material, true, false, d3d11Device, SwapChain))
@@ -381,7 +385,7 @@ bool SeniorPro::InitScene()
 	//	return false;
 	for (int i = 0; i < numBottles; i++)
 	{
-		if (!bottleArray[i].LoadObjModel(L"EnemyTes.obj", material, true, false, d3d11Device, SwapChain))
+		if (!bottleArray[i].LoadObjModel(L"Enemy.obj", material, true, false, d3d11Device, SwapChain))
 			return false;
 	}
 
@@ -628,7 +632,10 @@ bool SeniorPro::InitScene()
 		Rotation = XMMatrixRotationY(3.14f);
 		Scale = XMMatrixScaling(0.15f, 0.15f, 0.15f);
 		Translation = XMMatrixTranslation(bottleXPos + bxadd*10.0f, 2.0f, bottleZPos + bzadd*10.0f);
-
+		coll[i].setLocation(Point(bottleXPos + bxadd*10.0f, 2.0f, bottleZPos + bzadd*10.0f));
+		coll[i].setheight(3.0f);
+		coll[i].setlength(3.0f);
+		coll[i].setwidth(3.0f);
 		bottleArray[i].meshWorld = Rotation * Scale * Translation;
 	}
 
@@ -1048,26 +1055,37 @@ void SeniorPro::DetectInput(double time)
 		g_source->SubmitSourceBuffer(buffer.xaBuffer());
 		//}
 	}
+
+	for (int i = 0; i < 20; i++){
+		if (coll[i].checkPointCollision(Point(XMVectorGetX(mCam.getCamPosition()), XMVectorGetY(mCam.getCamPosition()), XMVectorGetZ(mCam.getCamPosition())))){
+			move = false;
+			break;
+		}
+		else{
+			move = true;
+		}
+	}
+
 	//Check for collision and then allow for user to  move
 	if (keyboardState[DIK_A] & 0x80 && pickedDist >= 0.5 && pickedDist2 >= 0.5 && pickedDist3 >= 0.5 && pickedDist4 >= 0.5 && pickedDist5 >= 0.5
-		&& pickedDist6 >= 0.5 && pickedDist7 >= 0.5 && pickedDist8 >= 0.5 && pickedDist9 >= 0.5 && pickedDist10 >= 0.5)
+		&& pickedDist6 >= 0.5 && pickedDist7 >= 0.5 && pickedDist8 >= 0.5 && pickedDist9 >= 0.5 && pickedDist10 >= 0.5 )
 	{
 		//moveLeftRight -= speed;
 		mCam.setMoveLeftRight(mCam.getMoveLeftRight() - speed);
 	}
 	if (keyboardState[DIK_D] & 0x80 && pickedDist >= 0.5 && pickedDist2 >= 0.5 && pickedDist3 >= 0.5 && pickedDist4 >= 0.5 && pickedDist5 >= 0.5
-		&& pickedDist6 >= 0.5 && pickedDist7 >= 0.5 && pickedDist8 >= 0.5 && pickedDist9 >= 0.5 && pickedDist10 >= 0.5)
+		&& pickedDist6 >= 0.5 && pickedDist7 >= 0.5 && pickedDist8 >= 0.5 && pickedDist9 >= 0.5 && pickedDist10 >= 0.5 && move)
 	{
 		//moveLeftRight += speed;
 		mCam.setMoveLeftRight(mCam.getMoveLeftRight() + speed);
 	}
 	if (keyboardState[DIK_W] & 0x80 && pickedDist >= 0.5 && pickedDist2 >= 0.5 && pickedDist3 >= 0.5 && pickedDist4 >= 0.5 && pickedDist5 >= 0.5
-		&& pickedDist6 >= 0.5 && pickedDist7 >= 0.5 && pickedDist8 >= 0.5 && pickedDist9 >= 0.5 && pickedDist10 >= 0.5)
+		&& pickedDist6 >= 0.5 && pickedDist7 >= 0.5 && pickedDist8 >= 0.5 && pickedDist9 >= 0.5 && pickedDist10 >= 0.5 && move)
 	{
 		//moveBackForward += speed;
 		mCam.setMoveBackForward(mCam.getMoveBackForward() + speed);
 	}
-	if (keyboardState[DIK_S] & 0x80 )
+	if (keyboardState[DIK_S] & 0x80 && move)
 	{
 		//moveBackForward -= speed;
 		mCam.setMoveBackForward(mCam.getMoveBackForward() - speed);
