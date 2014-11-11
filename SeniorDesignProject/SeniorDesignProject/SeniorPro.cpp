@@ -766,7 +766,7 @@ void SeniorPro::UpdateScene(double time)
 	// Will change to a forloop for every mesh in the mesh array
 	for (int i = 0; i < MESHCOUNT; i++)
 	{
-		if (i == 2)
+		/*if (i == 2)
 		{
 			meshArray[i].meshWorld = XMMatrixIdentity();
 
@@ -776,8 +776,8 @@ void SeniorPro::UpdateScene(double time)
 			Translation = XMMatrixTranslation(0.0f, 0.0f, 0.0f);
 
 			meshArray[i].meshWorld = Rotation * Scale * Translation;
-		}
-		if (i == 1)
+		}*/
+		if (meshArray[i].filename == L"spaceCompound.obj")
 		{
 			meshArray[i].meshWorld = XMMatrixIdentity();
 
@@ -788,7 +788,7 @@ void SeniorPro::UpdateScene(double time)
 
 			meshArray[i].meshWorld = Rotation * Scale * Translation;
 		}
-		if (i == 0)
+		if (meshArray[i].filename == L"ground.obj")
 		{
 			meshArray[i].meshWorld = XMMatrixIdentity();
 

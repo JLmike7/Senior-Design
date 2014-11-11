@@ -41,8 +41,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(IncludePath);$(DXSDK_DIR)Include;C:\Users\choward8\Documents\Visual Studio 2013\3DGameProgramming\Common;$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSDK_IncludePath);$(FrameworkSDKDir)\include</IncludePath>
-    <LibraryPath>$(LibraryPath);$(DXSDK_DIR)Lib\x86;C:\Users\choward8\Documents\Visual Studio 2013\3DGameProgramming\Common;$(VCInstallDir)lib;$(VCInstallDir)atlmfc\lib;$(WindowsSDK_LibraryPath_x86);$(FrameworkSDKDir)\lib;C:\Program Files %28x86%29\Windows Kits\8.0\Lib\win8\um\x86;C:\Program Files %28x86%29\Windows Kits\8.0\Lib\win8\um\x64</LibraryPath>
+    <IncludePath>$(IncludePath);$(DXSDK_DIR)Include;C:\Users\Nickolas\Documents\Visual Studio 2013\3DGameProgramming\Common;$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSDK_IncludePath);$(FrameworkSDKDir)\include</IncludePath>
+    <LibraryPath>$(LibraryPath);$(DXSDK_DIR)Lib\x86;C:\Users\Nickolas\Documents\Visual Studio 2013\3DGameProgramming\Common;$(VCInstallDir)lib;$(VCInstallDir)atlmfc\lib;$(WindowsSDK_LibraryPath_x86);$(FrameworkSDKDir)\lib;C:\Program Files %28x86%29\Windows Kits\8.0\Lib\win8\um\x86;C:\Program Files %28x86%29\Windows Kits\8.0\Lib\win8\um\x64</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -150,7 +150,6 @@
     <ClInclude Include="BasicModel.h" />
     <ClInclude Include="Biped.h" />
     <ClInclude Include="Box.h" />
-    <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraMain.h" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="Collisionwithroundobj.h" />
