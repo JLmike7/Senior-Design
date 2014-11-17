@@ -3,6 +3,7 @@
 #include "VertexMain.h"
 #include "Cubemap.h"
 #include "Mesh.h"
+#include "Collision.h"
 
 #define MESHCOUNT 2
 
@@ -29,9 +30,9 @@ public:
 
 private:
 	CameraMain mCam;
-
+	bool move;
 	Cubemap* mCubemap;
-
+	Collision coll[20];
 	Mesh meshArray[MESHCOUNT];
 
 	XMMATRIX groundWorld;
@@ -100,7 +101,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance,
 #endif
 
 	SeniorPro theApp(hInstance);
-
+	srand(time(NULL));
 	//must call this for COM
 	CoInitializeEx(NULL, COINIT_MULTITHREADED);
 
@@ -381,7 +382,7 @@ bool SeniorPro::InitScene()
 	//	return false;
 	for (int i = 0; i < numBottles; i++)
 	{
-		if (!bottleArray[i].LoadObjModel(L"EnemyTes.obj", material, true, false, d3d11Device, SwapChain))
+		if (!bottleArray[i].LoadObjModel(L"Enemy.obj", material, true, false, d3d11Device, SwapChain))
 			return false;
 	}
 
@@ -629,6 +630,11 @@ bool SeniorPro::InitScene()
 		Scale = XMMatrixScaling(0.15f, 0.15f, 0.15f);
 		Translation = XMMatrixTranslation(bottleXPos + bxadd*10.0f, 2.0f, bottleZPos + bzadd*10.0f);
 
+		coll[i].setLocation(Point(bottleXPos + bxadd*10.0f, 2.0f, bottleZPos + bzadd*10.0f));
+		coll[i].setheight(3.0f);
+		coll[i].setlength(3.0f);
+		coll[i].setwidth(3.0f);
+
 		bottleArray[i].meshWorld = Rotation * Scale * Translation;
 	}
 
@@ -759,21 +765,23 @@ void SeniorPro::UpdateScene(double time)
 	// Will change to a forloop for every mesh in the mesh array
 	for (int i = 0; i < MESHCOUNT; i++)
 	{
+		
 		if (i == 2)
 		{
 			meshArray[i].meshWorld = XMMatrixIdentity();
-
+			randX = rand() % 10;
+			randZ = rand() % 10;
 			//Define cube1's world space matrix
 			Rotation = XMMatrixRotationY(3.14f);
 			Scale = XMMatrixScaling(0.25f, 0.25f, 0.25f);
-			Translation = XMMatrixTranslation(0.0f, 0.0f, 0.0f);
+			Translation = XMMatrixTranslation(0.0f+ randX, 0.0f, 0.0f + randZ);
 
 			meshArray[i].meshWorld = Rotation * Scale * Translation;
 		}
 		if (i == 1)
 		{
 			meshArray[i].meshWorld = XMMatrixIdentity();
-
+			
 			//Define cube1's world space matrix
 			Rotation = XMMatrixRotationY(3.14f);
 			Scale = XMMatrixScaling(1.0f, 1.0f, 1.0f);
@@ -1044,26 +1052,43 @@ void SeniorPro::DetectInput(double time)
 		g_source->SubmitSourceBuffer(buffer.xaBuffer());
 		//}
 	}
+
+	for (int i = 0; i < 20; i++){
+		if (coll[i].checkPointCollision(Point(XMVectorGetX(mCam.getCamPosition()), XMVectorGetY(mCam.getCamPosition()), XMVectorGetZ(mCam.getCamPosition())))){
+			move = false;
+			break;
+			
+		}
+		else{
+			move = true;
+			
+		}
+		
+	}
+
 	//Check for collision and then allow for user to  move
-	if (keyboardState[DIK_A] & 0x80 && pickedDist >= 0.5 && pickedDist2 >= 0.5 && pickedDist3 >= 0.5 && pickedDist4 >= 0.5 && pickedDist5 >= 0.5
+	if (keyboardState[DIK_A] & 0x80 && move
+		&& pickedDist >= 0.5 && pickedDist2 >= 0.5 && pickedDist3 >= 0.5 && pickedDist4 >= 0.5 && pickedDist5 >= 0.5
 		&& pickedDist6 >= 0.5 && pickedDist7 >= 0.5 && pickedDist8 >= 0.5 && pickedDist9 >= 0.5 && pickedDist10 >= 0.5)
 	{
 		//moveLeftRight -= speed;
 		mCam.setMoveLeftRight(mCam.getMoveLeftRight() - speed);
 	}
-	if (keyboardState[DIK_D] & 0x80 && pickedDist >= 0.5 && pickedDist2 >= 0.5 && pickedDist3 >= 0.5 && pickedDist4 >= 0.5 && pickedDist5 >= 0.5
+	if (keyboardState[DIK_D] & 0x80 && move
+		&& pickedDist >= 0.5 && pickedDist2 >= 0.5 && pickedDist3 >= 0.5 && pickedDist4 >= 0.5 && pickedDist5 >= 0.5
 		&& pickedDist6 >= 0.5 && pickedDist7 >= 0.5 && pickedDist8 >= 0.5 && pickedDist9 >= 0.5 && pickedDist10 >= 0.5)
 	{
 		//moveLeftRight += speed;
 		mCam.setMoveLeftRight(mCam.getMoveLeftRight() + speed);
 	}
-	if (keyboardState[DIK_W] & 0x80 && pickedDist >= 0.5 && pickedDist2 >= 0.5 && pickedDist3 >= 0.5 && pickedDist4 >= 0.5 && pickedDist5 >= 0.5
+	if (keyboardState[DIK_W] & 0x80
+		&& pickedDist >= 0.5 && pickedDist2 >= 0.5 && pickedDist3 >= 0.5 && pickedDist4 >= 0.5 && pickedDist5 >= 0.5
 		&& pickedDist6 >= 0.5 && pickedDist7 >= 0.5 && pickedDist8 >= 0.5 && pickedDist9 >= 0.5 && pickedDist10 >= 0.5)
 	{
 		//moveBackForward += speed;
 		mCam.setMoveBackForward(mCam.getMoveBackForward() + speed);
 	}
-	if (keyboardState[DIK_S] & 0x80 )
+	if (keyboardState[DIK_S] & 0x80 && move)
 	{
 		//moveBackForward -= speed;
 		mCam.setMoveBackForward(mCam.getMoveBackForward() - speed);
@@ -1103,24 +1128,25 @@ void SeniorPro::DetectInput(double time)
 			reloadBro = true;
 		}
 		else{
-			PlayerWep.setMagSize(PlayerWep.getMagSize() - 1);
-
-			//start consuming audio in the source voice
-			g_sourceGun->Start();
-			//simple message loop
-			//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
-			//{
-			g_sourceGun->Stop();
-			g_sourceGun->FlushSourceBuffers();
-			g_sourceGun->Start();
-
-			//play the sound
-			g_sourceGun->SubmitSourceBuffer(buffer2.xaBuffer());
-			//}
 			
-			//Picking bottles
 			if (isShoot == false)
 			{
+				PlayerWep.setMagSize(PlayerWep.getMagSize() - 1);
+
+				//start consuming audio in the source voice
+				g_sourceGun->Start();
+				//simple message loop
+				//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
+				//{
+				g_sourceGun->Stop();
+				g_sourceGun->FlushSourceBuffers();
+				g_sourceGun->Start();
+
+				//play the sound
+				g_sourceGun->SubmitSourceBuffer(buffer2.xaBuffer());
+				//}
+
+				//Picking bottles
 				POINT mousePos;
 
 				GetCursorPos(&mousePos);
@@ -1157,8 +1183,8 @@ void SeniorPro::DetectInput(double time)
 					//If their health is less then 0 they are dead. remove them.
 					if (enemyStats[hitIndex].getHealth() <= 0){
 						enemies[hitIndex].setDeath(true);
-						
 						bottleHit[hitIndex] = 1;
+						//bottleHit[hitIndex] = NULL;
 						pickedDist = closestDist;
 						score++;
 					}

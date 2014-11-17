@@ -25,6 +25,10 @@
 #include "Biped.h"
 #include "Sounds.h"
 #include <string>
+#include <random>
+#include <time.h>
+#include <stdlib.h>
+#include <stdio.h>
 
 #include "Struct.h"
 
@@ -89,6 +93,11 @@ protected:
 	float pickedDist8;
 	float pickedDist9;
 	float pickedDist10;
+	
+
+	//Random number for AI
+	int randX;
+	int randZ;
 	
 	///////////////**************new**************////////////////////
 
