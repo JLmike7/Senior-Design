@@ -138,9 +138,6 @@
     <ClCompile Include="WalkingStatus.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\3DGameProgramming\Common\TextureMgr.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\..\Desktop\Common\d3dApp.cpp">
       <Filter>Common</Filter>
     </ClCompile>
@@ -169,6 +166,9 @@
       <Filter>Common</Filter>
     </ClCompile>
     <ClCompile Include="recordDatabase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -260,9 +260,6 @@
     <ClInclude Include="Stance.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Triangle.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="WalkingStatus.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -270,9 +267,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\3DGameProgramming\Common\GameTimer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\TextureMgr.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Quad.h">
@@ -312,6 +306,288 @@
       <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="recordDatabase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\myAPI.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\odbcAPI.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ora7API.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\oraAPI.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\pgAPI.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\samisc.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\sbAPI.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\sl3API.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\SQLAPI.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ss6API.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ssNcliAPI.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ssOleDbAPI.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\sybAPI.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\asa\poppk.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\asa\pshpk1.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\asa\pshpk2.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\asa\pshpk4.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\asa\sacapi.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\asa\sqlca.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\asa\sqlcallback.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\asa\sqlfuncs.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\asa\sqlos.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\db2_win\sql.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\db2_win\sqlca.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\db2_win\sqlcli.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\db2_win\sqlcli1.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\db2_win\sqlext.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\db2_win\sqlsystm.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ibase\ibase.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ibase\iberror.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ibase\ib_util.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\informix\infxcli.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\informix\infxsql.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\informix\sqlext.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\mysql\errmsg.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\mysql\mysql.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\mysql\mysql_com.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\mysql\mysql_time.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\mysql\mysql_version.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\mysql\my_alloc.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\mysql\my_list.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\mysql\typelib.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\odbc_win\sql.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\odbc_win\sqlext.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\odbc_win\sqltypes.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\odbc_win\sqlucode.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ora_win\nzerror.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ora_win\nzt.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ora_win\occi.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ora_win\occiAQ.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ora_win\occiCommon.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ora_win\occiControl.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ora_win\occiData.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ora_win\occiObjects.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ora_win\oci.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ora_win\oci1.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ora_win\oci8dp.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ora_win\ociap.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ora_win\ociapr.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ora_win\ocidef.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ora_win\ocidem.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ora_win\ocidfn.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ora_win\ociextp.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ora_win\ocikpr.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ora_win\ocixmldb.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ora_win\odci.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ora_win\oratypes.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ora_win\ori.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ora_win\orid.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ora_win\orl.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ora_win\oro.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ora_win\ort.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ora_win\xa.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\pgsql\libpq-fe.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\pgsql\libpq-fs.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\pgsql\postgres_ext.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\sqlbase\sql.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\sqlite\sqlite3.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ss_win\sqldb.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ss_win\sqlfront.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ss_win\sqlncli.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ss_win\sqloledb.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\sybase\bkpublic.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\sybase\csconfig.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\sybase\cspublic.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\sybase\cstypes.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\sybase\ctpublic.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\sybase\sqlca.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\sybase\sqlda.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\asaAPI.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\db2API.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ibAPI.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\infAPI.h">
+      <Filter>Header Files\sql</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
