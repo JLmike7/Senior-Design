@@ -21,24 +21,22 @@ public:
 	XMMATRIX getCamView();
 	void setCamView(XMVECTOR camPosition, XMVECTOR camTarget, XMVECTOR camUp);
 	XMMATRIX getCamProjection();
-	void setCamProjection(float a, float b, float c, float d);
+	void setCamProjection(float x, float y, float z, float w);
 
 	XMVECTOR getCamPosition();
-	void setCamPosition(float a, float b, float c, float d);
+	void setCamPosition(float x, float y, float z, float w);
 	XMVECTOR getCamTarget();
-	void setCamTarget(float a, float b, float c, float d);
+	void setCamTarget(float x, float y, float z, float w);
 	XMVECTOR getCamUp();
-	void setCamUp(float a, float b, float c, float d);
+	void setCamUp(float x, float y, float z, float w);
 
-	///////////////**************new**************////////////////////
-
-	void setDefaultForward(float a, float b, float c, float d);
+	void setDefaultForward(float x, float y, float z, float w);
 	XMVECTOR getDefaultForward();
-	void setDefaultRight(float a, float b, float c, float d);
+	void setDefaultRight(float x, float y, float z, float w);
 	XMVECTOR getDefaultRight();
-	void setCamForward(float a, float b, float c, float d);
+	void setCamForward(float x, float y, float z, float w);
 	XMVECTOR getCamForward();
-	void setCamRight(float a, float b, float c, float d);
+	void setCamRight(float x, float y, float z, float w);
 	XMVECTOR getCamRight();
 
 	void setMoveLeftRight(float a);
@@ -52,7 +50,6 @@ public:
 	float getCamPitch();
 
 	void UpdateCamera();
-	///////////////**************new**************////////////////////
 
 private:
 
@@ -64,7 +61,6 @@ private:
 	XMVECTOR camPosition;
 	XMVECTOR camTarget;
 	XMVECTOR camUp;
-	///////////////**************new**************////////////////////
 	XMVECTOR DefaultForward;
 	XMVECTOR DefaultRight;
 	XMVECTOR camForward;
@@ -77,7 +73,6 @@ private:
 
 	float camYaw;
 	float camPitch;
-	///////////////**************new**************////////////////////
 };
 
 #endif // CAMERA_H

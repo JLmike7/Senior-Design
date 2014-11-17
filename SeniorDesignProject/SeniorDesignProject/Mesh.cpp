@@ -2,13 +2,25 @@
 
 Mesh::Mesh()
 {
+	md5 = false;
 }
 
 Mesh::~Mesh()
 {
-	//MD5 will produce an error here, will debug later. I have an idea what it might be.
-	vertBuff->Release();
-	indexBuff->Release();
+	if (!md5)
+	{
+		vertBuff->Release();
+		indexBuff->Release();
+	}
+	else
+	{
+		//MD5 releasing
+		for (int i = 0; i < MD5Model.numSubsets; i++)
+		{
+			MD5Model.subsets[i].vertBuff->Release();
+			MD5Model.subsets[i].indexBuff->Release();
+		}
+	}
 }
 
 bool Mesh::LoadObjModel(
@@ -19,6 +31,8 @@ bool Mesh::LoadObjModel(
 	ID3D11Device* device,
 	IDXGISwapChain* SwapChain)
 {
+	md5 = false;
+
 	filename = objFilename;
 	HRESULT hr = 0;
 
@@ -946,11 +960,12 @@ bool Mesh::LoadObjModel(
 	return true;
 }
 
-///////////////**************new**************////////////////////
 bool Mesh::LoadMD5Model(std::wstring filename,
 	ID3D11Device* device,
 	IDXGISwapChain* SwapChain)
 {
+	md5 = true;
+
 	HRESULT hr = 0;
 
 	std::wifstream fileIn(filename.c_str());		// Open file
@@ -1325,7 +1340,6 @@ bool Mesh::LoadMD5Model(std::wstring filename,
 					subset.vertices[i].normal.y = -XMVectorGetY(normalSum);
 					subset.vertices[i].normal.z = -XMVectorGetZ(normalSum);
 
-					///////////////**************new**************////////////////////
 					// Create the joint space normal for easy normal calculations in animation
 					Vertex::Vertex tempVert = subset.vertices[i];						// Get the current vertex
 					subset.jointSpaceNormals.push_back(XMFLOAT3(0, 0, 0));		// Push back a blank normal
@@ -1341,7 +1355,6 @@ bool Mesh::LoadMD5Model(std::wstring filename,
 
 						XMStoreFloat3(&subset.weights[tempVert.StartWeight + k].normal, XMVector3Normalize(normal));			// Store the normalized quaternion into our weights normal
 					}
-					///////////////**************new**************////////////////////
 
 					//Clear normalSum, facesUsing for next vertex
 					normalSum = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
@@ -1400,9 +1413,7 @@ bool Mesh::LoadMD5Model(std::wstring filename,
 
 	return true;
 }
-///////////////**************new**************////////////////////
 
-///////////////**************new**************////////////////////
 bool Mesh::LoadMD5Anim(std::wstring filename, IDXGISwapChain* SwapChain)
 {
 	Struct::ModelAnimation tempAnim;						// Temp animation to later store in our model's animation array
@@ -1784,4 +1795,3 @@ void Mesh::UpdateMD5Model(float deltaTime, int animation, ID3D11DeviceContext* d
 		//d3d11DevCon->UpdateSubresource( MD5Model.subsets[k].vertBuff, 0, NULL, &MD5Model.subsets[k].vertices[0], 0, 0 );
 	}
 }
-///////////////**************new**************////////////////////

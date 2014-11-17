@@ -47,10 +47,9 @@ XMMATRIX CameraMain::getCamProjection()
 	return camProjection;
 }
 
-void CameraMain::setCamProjection(float a, float b, float c, float d)
+void CameraMain::setCamProjection(float x, float y, float z, float w)
 {
-	//camProjection = XMMatrixPerspectiveFovLH( 0.4f*3.14f, Width/Height, 1.0f, 1000.0f);
-	camProjection = XMMatrixPerspectiveFovLH(a, b, c, d);
+	camProjection = XMMatrixPerspectiveFovLH(x, y, z, w);
 }
 
 
@@ -59,10 +58,9 @@ XMVECTOR CameraMain::getCamPosition()
 	return camPosition;
 }
 
-void CameraMain::setCamPosition(float a, float b, float c, float d)
+void CameraMain::setCamPosition(float x, float y, float z, float w)
 {
-	//camPosition = XMVectorSet( 0.0f, 0.0f, -0.5f, 0.0f );
-	camPosition = XMVectorSet(a, b, c, d);
+	camPosition = XMVectorSet(x, y, z, w);
 }
 
 XMVECTOR CameraMain::getCamTarget()
@@ -70,10 +68,9 @@ XMVECTOR CameraMain::getCamTarget()
 	return camTarget;
 }
 
-void CameraMain::setCamTarget(float a, float b, float c, float d)
+void CameraMain::setCamTarget(float x, float y, float z, float w)
 {
-	//camTarget = XMVectorSet( 0.0f, 0.0f, 0.0f, 0.0f );
-	camTarget = XMVectorSet(a, b, c, d);
+	camTarget = XMVectorSet(x, y, z, w);
 }
 
 XMVECTOR CameraMain::getCamUp()
@@ -81,17 +78,14 @@ XMVECTOR CameraMain::getCamUp()
 	return camUp;
 }
 
-void CameraMain::setCamUp(float a, float b, float c, float d)
+void CameraMain::setCamUp(float x, float y, float z, float w)
 {
-	//camUp = XMVectorSet( 0.0f, 1.0f, 0.0f, 0.0f );
-	camUp = XMVectorSet(a, b, c, d);
+	camUp = XMVectorSet(x, y, z, w);
 }
 
-///////////////**************new**************////////////////////
-void CameraMain::setDefaultForward(float a, float b, float c, float d)
+void CameraMain::setDefaultForward(float x, float y, float z, float w)
 {
-	//DefaultForward = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
-	DefaultForward = XMVectorSet(a, b, c, d);
+	DefaultForward = XMVectorSet(x, y, z, w);
 }
 
 XMVECTOR CameraMain::getDefaultForward()
@@ -99,10 +93,9 @@ XMVECTOR CameraMain::getDefaultForward()
 	return DefaultForward;
 }
 
-void CameraMain::setDefaultRight(float a, float b, float c, float d)
+void CameraMain::setDefaultRight(float x, float y, float z, float w)
 {
-	//DefaultRight = XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f);
-	DefaultRight = XMVectorSet(a, b, c, d);
+	DefaultRight = XMVectorSet(x, y, z, w);
 }
 
 XMVECTOR CameraMain::getDefaultRight()
@@ -110,10 +103,9 @@ XMVECTOR CameraMain::getDefaultRight()
 	return DefaultRight;
 }
 
-void CameraMain::setCamForward(float a, float b, float c, float d)
+void CameraMain::setCamForward(float x, float y, float z, float w)
 {
-	//camForward = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
-	camForward = XMVectorSet(a, b, c, d);
+	camForward = XMVectorSet(x, y, z, w);
 }
 
 XMVECTOR CameraMain::getCamForward()
@@ -121,10 +113,9 @@ XMVECTOR CameraMain::getCamForward()
 	return camForward;
 }
 
-void CameraMain::setCamRight(float a, float b, float c, float d)
+void CameraMain::setCamRight(float x, float y, float z, float w)
 {
-	//camRight = XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f);
-	camRight = XMVectorSet(a, b, c, d);
+	camRight = XMVectorSet(x, y, z, w);
 }
 
 XMVECTOR CameraMain::getCamRight()
@@ -195,4 +186,3 @@ void CameraMain::UpdateCamera()
 
 	camView = XMMatrixLookAtLH(camPosition, camTarget, camUp);
 }
-///////////////**************new**************////////////////////

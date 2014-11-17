@@ -1,10 +1,6 @@
 #ifndef STRUCT_H
 #define STRUCT_H
 
-//#include <windows.h>
-//#include <d3d11.h>
-//#include <d3dx11.h>
-//#include <d3dx10.h>
 #include <xnamath.h>
 #include "VertexMain.h"
 
@@ -45,7 +41,6 @@ namespace Struct
 		Light  light;
 	};
 
-	//Create material structure
 	struct SurfaceMaterial
 	{
 		std::wstring matName;
@@ -55,7 +50,8 @@ namespace Struct
 		bool hasNormMap;
 		bool hasTexture;
 		bool transparent;
-	};///////////////**************new**************////////////////////
+	};
+
 	struct Joint
 	{
 		std::wstring name;
@@ -65,7 +61,6 @@ namespace Struct
 		XMFLOAT4 orientation;
 	};
 
-	///////////////**************new**************////////////////////
 	struct BoundingBox
 	{
 		XMFLOAT3 min;
@@ -103,16 +98,13 @@ namespace Struct
 		std::vector<FrameData>	frameData;
 		std::vector<std::vector<Joint>> frameSkeleton;
 	};
-	///////////////**************new**************////////////////////
 
 	struct Weight
 	{
 		int jointID;
 		float bias;
 		XMFLOAT3 pos;
-		///////////////**************new**************////////////////////
 		XMFLOAT3 normal;
-		///////////////**************new**************////////////////////
 	};
 
 	struct ModelSubset
@@ -139,11 +131,8 @@ namespace Struct
 		std::vector<Joint> joints;
 		std::vector<ModelSubset> subsets;
 
-		///////////////**************new**************////////////////////
 		std::vector<ModelAnimation> animations;
-		///////////////**************new**************////////////////////
 	};
-	///////////////**************new**************////////////////////
 }
 
 #endif // STRUCT_H

@@ -38,17 +38,7 @@ private:
 
 	Mesh meshArray[MESHCOUNT];
 
-	Mesh smiley;
-
-	///////////////**************new**************////////////////////
-	//XMMATRIX smilesWorld;
-	//Struct::Model3D NewMD5Model;
-
-	//Textures and material variables, used for all mesh's loaded
-	//CHANGE to using MESH class, make it MD5 compatible
-	//std::vector<ID3D11ShaderResourceView*> meshSRV;
-	//std::vector<std::wstring> textureNameArray;
-	///////////////**************new**************////////////////////
+	Mesh smileyMan;
 
 	XMMATRIX groundWorld;
 	XMMATRIX sphereWorld;
@@ -375,15 +365,6 @@ SeniorPro::~SeniorPro()
 	g_engineReload->Release();
 	g_engineRevive->Release();
 	g_engineHit->Release();
-
-	//MD5 releasing, will be in Mesh class later
-	///////////////**************new**************////////////////////
-	for (int i = 0; i < smiley.MD5Model.numSubsets; i++)
-	{
-		smiley.MD5Model.subsets[i].indexBuff->Release();
-		smiley.MD5Model.subsets[i].vertBuff->Release();
-	}
-	///////////////**************new**************////////////////////
 };
 
 bool SeniorPro::InitScene()
@@ -407,15 +388,11 @@ bool SeniorPro::InitScene()
 			return false;
 	}
 
-	///////////////**************new**************////////////////////
-	if (!smiley.LoadMD5Model(L"boy.md5mesh", d3d11Device, SwapChain))
+	if (!smileyMan.LoadMD5Model(L"boy.md5mesh", d3d11Device, SwapChain))
 		return false;
-	///////////////**************new**************////////////////////
 
-	///////////////**************new**************////////////////////	
-	if (!smiley.LoadMD5Anim(L"boy.md5anim", SwapChain))
+	if (!smileyMan.LoadMD5Anim(L"boy.md5anim", SwapChain))
 		return false;
-	///////////////**************new**************////////////////////
 
 	//Compile Shaders from shader file
 	hr = D3DX11CompileFromFile(L"Effects.fx", 0, 0, "VS", "vs_4_0", 0, 0, 0, &VS_Buffer, 0, 0);
@@ -815,11 +792,9 @@ void SeniorPro::UpdateScene(double time)
 		}
 	}
 
-	///////////////**************new**************////////////////////
 	Scale = XMMatrixScaling(0.04f, 0.04f, 0.04f);			// The model is a bit too large for our scene, so make it smaller
 	Translation = XMMatrixTranslation(0.0f, 3.0f, 0.0f);
-	smiley.meshWorld = Scale * Translation;
-	///////////////**************new**************////////////////////
+	smileyMan.meshWorld = Scale * Translation;
 
 	//Spotlight stuff
 	/*light.pos.x = XMVectorGetX(mCam.getCamPosition());
@@ -983,31 +958,29 @@ void SeniorPro::DrawScene()
 	d3d11DevCon->RSSetState(CCWcullMode);
 	//d3d11DevCon->DrawIndexed( 6, 0, 0 );
 	
-	///////////////**************new**************////////////////////
 	///***Draw MD5 Model***///
-	for (int i = 0; i < smiley.MD5Model.numSubsets; i++)
+	for (int i = 0; i < smileyMan.MD5Model.numSubsets; i++)
 	{
 		//Set the grounds index buffer
-		d3d11DevCon->IASetIndexBuffer(smiley.MD5Model.subsets[i].indexBuff, DXGI_FORMAT_R32_UINT, 0);
+		d3d11DevCon->IASetIndexBuffer(smileyMan.MD5Model.subsets[i].indexBuff, DXGI_FORMAT_R32_UINT, 0);
 		//Set the grounds vertex buffer
-		d3d11DevCon->IASetVertexBuffers(0, 1, &smiley.MD5Model.subsets[i].vertBuff, &stride, &offset);
+		d3d11DevCon->IASetVertexBuffers(0, 1, &smileyMan.MD5Model.subsets[i].vertBuff, &stride, &offset);
 
 		//Set the WVP matrix and send it to the constant buffer in effect file
-		mCam.setWVP(smiley.meshWorld, mCam.getCamView(), mCam.getCamProjection());
+		mCam.setWVP(smileyMan.meshWorld, mCam.getCamView(), mCam.getCamProjection());
 		cbPerObj.WVP = XMMatrixTranspose(mCam.getWVP());
-		cbPerObj.World = XMMatrixTranspose(smiley.meshWorld);
+		cbPerObj.World = XMMatrixTranspose(smileyMan.meshWorld);
 		cbPerObj.hasTexture = true;		// We'll assume all md5 subsets have textures
 		cbPerObj.hasNormMap = false;	// We'll also assume md5 models have no normal map (easy to change later though)
 		d3d11DevCon->UpdateSubresource(cbPerObjectBuffer, 0, NULL, &cbPerObj, 0, 0);
 		d3d11DevCon->VSSetConstantBuffers(0, 1, &cbPerObjectBuffer);
 		d3d11DevCon->PSSetConstantBuffers(1, 1, &cbPerObjectBuffer);
-		d3d11DevCon->PSSetShaderResources(0, 1, &smiley.meshSRV[smiley.MD5Model.subsets[i].texArrayIndex]);
+		d3d11DevCon->PSSetShaderResources(0, 1, &smileyMan.meshSRV[smileyMan.MD5Model.subsets[i].texArrayIndex]);
 		d3d11DevCon->PSSetSamplers(0, 1, &CubesTexSamplerState);
 
 		d3d11DevCon->RSSetState(RSCullNone);
-		d3d11DevCon->DrawIndexed(smiley.MD5Model.subsets[i].indices.size(), 0, 0);
+		d3d11DevCon->DrawIndexed(smileyMan.MD5Model.subsets[i].indices.size(), 0, 0);
 	}
-	///////////////**************new**************////////////////////
 
 	//Draw our model's NON-transparent subsets
 	for (int i = 0; i < MESHCOUNT; i++)
@@ -1163,13 +1136,11 @@ void SeniorPro::DetectInput(double time)
 		thePlayer.setDeath(true);
 	}
 
-	///////////////**************new**************////////////////////
 	if (keyboardState[DIK_Y] & 0X80)
 	{
 		float timeFactor = 1.0f;	// You can speed up or slow down time by changing this
-		smiley.UpdateMD5Model(time*timeFactor, 0, d3d11DevCon);
+		smileyMan.UpdateMD5Model(time*timeFactor, 0, d3d11DevCon);
 	}
-	///////////////**************new**************////////////////////
 
 	if ((mouseCurrState.rgbButtons[0]))
 	{
