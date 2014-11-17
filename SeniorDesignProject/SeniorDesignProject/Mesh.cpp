@@ -788,16 +788,12 @@ bool Mesh::LoadObjModel(
 
 		vertices.push_back(tempVert);
 
-		///////////////**************new**************////////////////////
 		//Copy just the vertex positions to the vector
 		vertPosArray.push_back(tempVert.pos);
-		///////////////**************new**************////////////////////
 	}
 
-	///////////////**************new**************////////////////////
 	//Copy the index list to the array
 	vertIndexArray = indices;
-	///////////////**************new**************////////////////////
 
 	//////////////////////Compute Normals///////////////////////////
 	//If computeNormals was set to true then we will create our own
