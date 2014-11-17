@@ -41,8 +41,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(IncludePath);$(DXSDK_DIR)Include;C:\Users\Nickolas\Documents\Visual Studio 2013\3DGameProgramming\Common;$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSDK_IncludePath);$(FrameworkSDKDir)\include</IncludePath>
-    <LibraryPath>$(LibraryPath);$(DXSDK_DIR)Lib\x86;C:\Users\Nickolas\Documents\Visual Studio 2013\3DGameProgramming\Common;$(VCInstallDir)lib;$(VCInstallDir)atlmfc\lib;$(WindowsSDK_LibraryPath_x86);$(FrameworkSDKDir)\lib;C:\Program Files %28x86%29\Windows Kits\8.0\Lib\win8\um\x86;C:\Program Files %28x86%29\Windows Kits\8.0\Lib\win8\um\x64</LibraryPath>
+    <IncludePath>$(IncludePath);$(DXSDK_DIR)Include;C:\Users\choward8\Documents\Visual Studio 2013\3DGameProgramming\Common;$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSDK_IncludePath);$(FrameworkSDKDir)\include</IncludePath>
+    <LibraryPath>$(LibraryPath);$(DXSDK_DIR)Lib\x86;C:\Users\choward8\Documents\Visual Studio 2013\3DGameProgramming\Common;$(VCInstallDir)lib;$(VCInstallDir)atlmfc\lib;$(WindowsSDK_LibraryPath_x86);$(FrameworkSDKDir)\lib;C:\Program Files %28x86%29\Windows Kits\8.0\Lib\win8\um\x86;C:\Program Files %28x86%29\Windows Kits\8.0\Lib\win8\um\x64</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -104,12 +104,12 @@
     <ClCompile Include="Biped.cpp" />
     <ClCompile Include="Box.cpp" />
     <ClCompile Include="CameraMain.cpp" />
-    <ClCompile Include="Collision.cpp" />
-    <ClCompile Include="Collisionwithroundobj.cpp" />
     <ClCompile Include="Controller.cpp" />
     <ClCompile Include="cubemap.cpp" />
     <ClCompile Include="d3dApp.cpp" />
     <ClCompile Include="Effects.cpp" />
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Friendly.cpp" />
     <ClCompile Include="LoadM3d.cpp" />
     <ClCompile Include="LookDirection.cpp" />
     <ClCompile Include="Menu.cpp" />
@@ -129,7 +129,6 @@
     <ClCompile Include="Stats.cpp" />
     <ClCompile Include="Team.cpp" />
     <ClCompile Include="Terrain.cpp" />
-    <ClCompile Include="TriangleCollision.cpp" />
     <ClCompile Include="Vertex.cpp" />
     <ClCompile Include="VertexMain.cpp" />
     <ClCompile Include="WalkingStatus.cpp" />
@@ -151,13 +150,14 @@
     <ClInclude Include="Biped.h" />
     <ClInclude Include="Box.h" />
     <ClInclude Include="CameraMain.h" />
-    <ClInclude Include="Collision.h" />
-    <ClInclude Include="Collisionwithroundobj.h" />
     <ClInclude Include="Controller.h" />
     <ClInclude Include="cubemap.h" />
     <ClInclude Include="d3dApp.h" />
+    <ClInclude Include="Definitions.h" />
     <ClInclude Include="Direction.h" />
     <ClInclude Include="Effects.h" />
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Friendly.h" />
     <ClInclude Include="LoadM3d.h" />
     <ClInclude Include="LookDirection.h" />
     <ClInclude Include="Menu.h" />
@@ -178,7 +178,6 @@
     <ClInclude Include="Struct.h" />
     <ClInclude Include="Team.h" />
     <ClInclude Include="Terrain.h" />
-    <ClInclude Include="TriangleCollision.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="VertexMain.h" />
     <ClInclude Include="WalkingStatus.h" />

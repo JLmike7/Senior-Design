@@ -10,13 +10,13 @@ Controller::~Controller()
 }
 
 void Controller::look(Direction direction){
-	biped->lookTo(direction);
+	//biped->lookTo(direction);
 }
 void Controller::fire(){
 	biped->fire();
 }
 void Controller::jump(){
-	biped->jump();
+	//biped->jump();
 }
 void Controller::nextWeapon(){
 	biped->nextWeapon();
@@ -26,7 +26,7 @@ void Controller::prevWeapon(){
 }
 
 void Controller::handleKey(char key){
-	if (key == 'w'){
+	/*if (key == 'w'){
 		biped->walk(Direction::FRONT, true);
 	}
 	else
@@ -82,5 +82,5 @@ void Controller::handleKey(char key){
 
 	default:
 		break;
-	}
+	}*/
 }

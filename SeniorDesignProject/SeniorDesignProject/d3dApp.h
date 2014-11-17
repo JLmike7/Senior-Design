@@ -22,6 +22,7 @@
 #include <vector>
 #include "Stats.h"
 #include "Weapon.h"
+#include "Object.h"
 #include "Biped.h"
 #include "Sounds.h"
 #include <string>
@@ -32,15 +33,14 @@ class D3DApp
 {
 protected:
 	//Player Init
-	Stats Player1;
+	//Stats Player1;
 	Weapon PlayerWep;
-	Biped thePlayer;
-	Biped enemies[20];
-	Stats enemyStats[20];
+
+	//Stats enemyStats[20];
 	bool reloadBro = false;
 	Settings* _settings;
 
-	Position playerLoc;
+	//Position playerLoc;
 	LPCWSTR WndClassName;	//Define our window class name
 	HWND hwnd;	//Sets our windows handle to NULL
 	HRESULT hr;

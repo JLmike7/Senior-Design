@@ -1,29 +1,20 @@
-#pragma once
+#ifndef OBJECTS_H
+#define OBJECTS_H
+
 #include "Position.h"
+#include "Stats.h"
 
-class Object
-{
+class Objects {
 public:
-	void Init();
-	bool getDeath();
-	void setDeath(bool isDead);
-	void setGravityEnabled(bool gravity);
-	bool isGravityEnabled();
-
-	Position* getPosition();
-	void  setPosition(Position *position);
-
-	Object();
-
-	~Object();
+	Objects(float x, float y, float z, Point lookat, float azimuth, float elevation, Point velocity, int health, int lives);
+	~Objects();
+	
+	//Position* getPosition();
+	//void  setPosition(Position *position);
 
 private:
-
-
-protected:
-	Position*	position;
-	bool		isDead;
-//	Box			hitbox;
-	bool		gravityEnabled;
+	//Position*	position;
 };
+
+#endif
 

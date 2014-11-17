@@ -25,9 +25,6 @@
     <Filter Include="Source Files\UI">
       <UniqueIdentifier>{79c6661d-8db5-4785-b9d7-70e8ae4217ce}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Problem Domain\Controller">
-      <UniqueIdentifier>{77165082-ec06-4d89-9a48-3ef0585a2162}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\UI">
       <UniqueIdentifier>{d7d8d146-b519-4cde-ae35-d80a8fd757a8}</UniqueIdentifier>
     </Filter>
@@ -46,15 +43,24 @@
     <Filter Include="Header Files\sql">
       <UniqueIdentifier>{0342e08d-1b41-42f7-ab17-ea5df9504c6c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Position">
+      <UniqueIdentifier>{f9e394b5-0386-4bea-bf3a-c490e3ec2c39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Players">
+      <UniqueIdentifier>{bc014a2c-0bda-409d-8b9f-918da7e3fc10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Problem Domain\Player">
+      <UniqueIdentifier>{79bde172-9d41-4a9a-b746-feebd58304ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Unused\Controller">
+      <UniqueIdentifier>{77165082-ec06-4d89-9a48-3ef0585a2162}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="World.cpp">
       <Filter>Source Files\Problem Domain</Filter>
     </ClCompile>
     <ClCompile Include="Weapon.cpp">
-      <Filter>Source Files\Problem Domain</Filter>
-    </ClCompile>
-    <ClCompile Include="Stats.cpp">
       <Filter>Source Files\Problem Domain</Filter>
     </ClCompile>
     <ClCompile Include="Physics.cpp">
@@ -67,16 +73,7 @@
       <Filter>Source Files\Menu</Filter>
     </ClCompile>
     <ClCompile Include="Controller.cpp">
-      <Filter>Source Files\Problem Domain\Controller</Filter>
-    </ClCompile>
-    <ClCompile Include="Object.cpp">
-      <Filter>Source Files\Problem Domain</Filter>
-    </ClCompile>
-    <ClCompile Include="Biped.cpp">
-      <Filter>Source Files\Problem Domain</Filter>
-    </ClCompile>
-    <ClCompile Include="point.cpp">
-      <Filter>Source Files\Problem Domain</Filter>
+      <Filter>Source Files\Unused\Controller</Filter>
     </ClCompile>
     <ClCompile Include="Team.cpp">
       <Filter>Source Files\Problem Domain</Filter>
@@ -101,9 +98,6 @@
     </ClCompile>
     <ClCompile Include="SeniorPro.cpp">
       <Filter>Source Files\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="Position.cpp">
-      <Filter>Source Files\Unused</Filter>
     </ClCompile>
     <ClCompile Include="BasicModel.cpp">
       <Filter>Source Files</Filter>
@@ -144,15 +138,6 @@
     <ClCompile Include="VertexMain.cpp">
       <Filter>Source Files\UI</Filter>
     </ClCompile>
-    <ClCompile Include="Collision.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Collisionwithroundobj.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TriangleCollision.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\Camera.cpp">
       <Filter>Common</Filter>
     </ClCompile>
@@ -183,6 +168,27 @@
     <ClCompile Include="d3dApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Biped.cpp">
+      <Filter>Source Files\Problem Domain\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Stats.cpp">
+      <Filter>Source Files\Problem Domain\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="point.cpp">
+      <Filter>Source Files\Problem Domain\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Position.cpp">
+      <Filter>Source Files\Problem Domain\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Object.cpp">
+      <Filter>Source Files\Unused</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Source Files\Problem Domain\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Friendly.cpp">
+      <Filter>Source Files\Problem Domain\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Menu.h">
@@ -209,9 +215,6 @@
     <ClInclude Include="Controller.h">
       <Filter>Header Files\Unused</Filter>
     </ClInclude>
-    <ClInclude Include="Position.h">
-      <Filter>Header Files\Unused</Filter>
-    </ClInclude>
     <ClInclude Include="BasicModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -219,9 +222,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="LoadM3d.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LookDirection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MeshGeometry.h">
@@ -251,43 +251,13 @@
     <ClInclude Include="VertexMain.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Biped.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CameraMain.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Collision.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Collisionwithroundobj.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Mesh.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Object.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Physics.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Point.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Stats.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Struct.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Team.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TriangleCollision.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Wave.h">
@@ -297,12 +267,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="World.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Biped.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Object.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\Camera.h">
@@ -337,6 +301,45 @@
     </ClInclude>
     <ClInclude Include="d3dApp.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Definitions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Position.h">
+      <Filter>Header Files\Position</Filter>
+    </ClInclude>
+    <ClInclude Include="Biped.h">
+      <Filter>Header Files\Players</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.h">
+      <Filter>Header Files\Players</Filter>
+    </ClInclude>
+    <ClInclude Include="Stats.h">
+      <Filter>Header Files\Players</Filter>
+    </ClInclude>
+    <ClInclude Include="Point.h">
+      <Filter>Header Files\Players</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.h">
+      <Filter>Header Files\Unused</Filter>
+    </ClInclude>
+    <ClInclude Include="LookDirection.h">
+      <Filter>Header Files\Unused</Filter>
+    </ClInclude>
+    <ClInclude Include="Biped.h">
+      <Filter>Header Files\Players</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraMain.h">
+      <Filter>Header Files\Players</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Header Files\Players</Filter>
+    </ClInclude>
+    <ClInclude Include="Friendly.h">
+      <Filter>Header Files\Players</Filter>
+    </ClInclude>
+    <ClInclude Include="Team.h">
+      <Filter>Header Files\Players</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

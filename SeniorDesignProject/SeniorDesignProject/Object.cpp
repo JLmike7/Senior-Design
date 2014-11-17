@@ -1,43 +1,13 @@
 #include "Object.h"
 
 
-Object::Object()
-{
-	Init();
+Objects::Objects(float x, float y, float z, Point lookat, float azimuth, float elevation, Point velocity, int health, int lives){
+
 }
 
-Object::~Object()
+Objects::~Objects()
 {
 }
 
-void Object::setGravityEnabled(bool gravity){
-	gravityEnabled = gravity;
-}
 
-bool Object::isGravityEnabled(){
-	return gravityEnabled;
-}
-
-void Object::Init()
-{
-	gravityEnabled = false;
-	isDead = false;
-}
-
-bool Object::getDeath()
-{
-	return isDead;
-}
-void Object::setDeath(bool isDead)
-{
-	Object::isDead = isDead;
-}
-
-Position* Object::getPosition()
-{
-	return position;
-}
-void Object::setPosition(Position *_position)
-{
-	position = position;
-}
+// spawn point

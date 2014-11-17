@@ -1,38 +1,28 @@
-#pragma once
-#include "Direction.h"
-#include "Point.h"
-#include "LookDirection.h"
-#include <ctime>
+#ifndef POSITION_H
+#define POSITION_H
 
-class Position
-{
+#include "Point.h"
+
+class Position {
 public:
-	void Init();
-	Point* getLocation();
-	LookDirection* getLook();
-	Point* getVelocity();
-	void setVelocity(Point* speed);
-	void addVelocity(Point* speed);
-	Point* getAccel();
-	void setAccel(Point* accel);
-	void addAccel(Point* accel);
-	void teleport(Point* coord);
-	void beginMove(Direction direction,float magnitude);
-	void lookTo(Direction direction,float magnitude);
-	void lookAt(Point* point,bool tracking);
-	bool isOnGround();
-	void halt();
-	void applyTickMovement();
-	Position();
+	Position(Point poss, Point look, Point Up);
 	~Position();
+
+	Point getpos();
+	Point getlook();
+	Point getup();
+	void setpos(Point poss);
+	void setlook(Point look);
+	void setup(Point Up);
+
+	void updatePos(Point poss, Point look, Point Up);
 	
 private:
-
-protected:
-	Point* location;
-	LookDirection* look;
-	Point* velocity;
-	Point* accel;
-	long double prevTickTime;
+	Point pos;
+	Point lookat;
+	Point up;
 };
+
+#endif
+
 

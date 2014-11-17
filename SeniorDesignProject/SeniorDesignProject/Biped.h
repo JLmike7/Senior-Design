@@ -9,52 +9,38 @@
 #include "Stance.h"
 #include "WalkingStatus.h"
 
-#define HIT_BOX_WIDTH 0.75f
-#define HIT_BOX_HEIGHT 2.0f
-#define HIT_BOX_DEPTH 0.75f
 
 
-class Biped :
-	public Object{
-
+class Biped : public Stats, Position{
 public:
-	void Init(Settings *settings);
+	Biped(Point pos, Point lookat, Point up, int health, int kills, int deaths);
+	~Biped();
+	
 	Stance getStance();
 	void setStance(Stance stance);
-//	void setHitbox(Box* box);
-//	Box* getHitbox();
 	Weapon* getWeapon();
 	void addWeapon(Weapon *newWeapon);
 	void nextWeapon();
 	void prevWeapon();
-	int getTeam();
-	void setTeam(int team);
-	void takeHit(int damage);
-	bool isDead();
-	void beginMove(Direction direction);
-	Position* getPosition();
 	void fire();
-	void jump();
-	void lookTo(Direction direction);
-	void lookAt(Point* point,bool tracking);
-	void walk(Direction direction,bool startStop);
-	bool getDeath();
-	void setDeath(bool isDead);
-
-	Biped(Settings* settings);
-	Biped();
-	~Biped();
+	
+	//void Init(Settings *settings);
+	//void takeHit(int damage);
+	//void beginMove(Direction direction);
+	//void jump();
+	//void lookTo(Direction direction);
+	//void lookAt(Point* point,bool tracking);
+	//void walk(Direction direction,bool startStop);
+	//void setDeath(bool isDead);
 
 private:
 
 protected:
-	Settings*			settings;
+	//Settings*			settings;
 	int					teamNumber;
 	Stance				stance;
-	Stats*				stats;
 	std::deque<Weapon>*	weapons;
-	Position*			position;
-//	Box*				hitbox;
 	WalkingStatus*		walkingStatus;
-	bool				death;
+
+	//Collision			box;
 };

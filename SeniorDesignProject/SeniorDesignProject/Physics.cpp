@@ -31,7 +31,7 @@ float Physics::getGroundHeight(){
 void Physics::setGroundHeight(float newHeight){
 	groundHeight = newHeight;
 }
-void Physics::enableGravity(Position* pos){
+/*void Physics::enableGravity(Position* pos){
 	pos->getAccel()->addY(-GRAVITY);
 }
 void Physics::applyGroundPushback(Position* pos){
@@ -39,4 +39,4 @@ void Physics::applyGroundPushback(Position* pos){
 	if (!(pos->isOnGround())){
 		pos->getVelocity()->addY(GRAVITY);
 	}
-}
+}*/
