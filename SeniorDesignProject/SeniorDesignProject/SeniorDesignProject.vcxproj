@@ -41,8 +41,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(IncludePath);$(DXSDK_DIR)Include;C:\Users\choward8\Documents\Visual Studio 2013\3DGameProgramming\Common;$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSDK_IncludePath);$(FrameworkSDKDir)\include</IncludePath>
-    <LibraryPath>$(LibraryPath);$(DXSDK_DIR)Lib\x86;C:\Users\choward8\Documents\Visual Studio 2013\3DGameProgramming\Common;$(VCInstallDir)lib;$(VCInstallDir)atlmfc\lib;$(WindowsSDK_LibraryPath_x86);$(FrameworkSDKDir)\lib;C:\Program Files %28x86%29\Windows Kits\8.0\Lib\win8\um\x86;C:\Program Files %28x86%29\Windows Kits\8.0\Lib\win8\um\x64</LibraryPath>
+    <IncludePath>$(IncludePath);$(DXSDK_DIR)Include;C:\Users\Michael Marsh\Desktop\Common;$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSDK_IncludePath);$(FrameworkSDKDir)\include</IncludePath>
+    <LibraryPath>$(LibraryPath);$(DXSDK_DIR)Lib\x86;C:\Users\Michael Marsh\Desktop\Common;$(VCInstallDir)lib;$(VCInstallDir)atlmfc\lib;$(WindowsSDK_LibraryPath_x86);$(FrameworkSDKDir)\lib;C:\Program Files %28x86%29\Windows Kits\8.0\Lib\win8\um\x86;C:\Program Files %28x86%29\Windows Kits\8.0\Lib\win8\um\x64</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -55,14 +55,13 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>
-      </AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Michael Marsh\Desktop\SQLAPI\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>d3d11.lib;d3dx11d.lib;D3DCompiler.lib;Effects11.lib;Effects11d.lib;dxerr.lib;dxguid.lib;dxgi.lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>d3d11.lib;d3dx11d.lib;D3DCompiler.lib;Effects11d.lib;Effects11.lib;dxerr.lib;dxgi.lib;dxguid.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;Xaudio2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>sqlapi.lib;sqlapisd.lib;sqlapis.lib;sqlapid.lib;d3d11.lib;d3dx11d.lib;D3DCompiler.lib;Effects11d.lib;Effects11.lib;dxerr.lib;dxgi.lib;dxguid.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;Xaudio2.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <FxCompile>
       <ShaderType>Effect</ShaderType>
@@ -91,34 +90,31 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\Camera.cpp" />
-    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\d3dUtil.cpp" />
-    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\GameTimer.cpp" />
-    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\GeometryGenerator.cpp" />
-    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\LightHelper.cpp" />
-    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\MathHelper.cpp" />
-    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\TextureMgr.cpp" />
-    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\Waves.cpp" />
-    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\xnacollision.cpp" />
+    <ClCompile Include="..\..\..\..\..\Desktop\Common\d3dApp.cpp" />
+    <ClCompile Include="..\..\..\..\..\Desktop\Common\d3dUtil.cpp" />
+    <ClCompile Include="..\..\..\..\..\Desktop\Common\GameTimer.cpp" />
+    <ClCompile Include="..\..\..\..\..\Desktop\Common\GeometryGenerator.cpp" />
+    <ClCompile Include="..\..\..\..\..\Desktop\Common\LightHelper.cpp" />
+    <ClCompile Include="..\..\..\..\..\Desktop\Common\MathHelper.cpp" />
+    <ClCompile Include="..\..\..\..\..\Desktop\Common\TextureMgr.cpp" />
+    <ClCompile Include="..\..\..\..\..\Desktop\Common\Waves.cpp" />
+    <ClCompile Include="..\..\..\..\..\Desktop\Common\xnacollision.cpp" />
     <ClCompile Include="BasicModel.cpp" />
     <ClCompile Include="Biped.cpp" />
     <ClCompile Include="Box.cpp" />
-    <ClCompile Include="CameraMain.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Controller.cpp" />
     <ClCompile Include="cubemap.cpp" />
-    <ClCompile Include="d3dApp.cpp" />
     <ClCompile Include="Effects.cpp" />
-    <ClCompile Include="Enemy.cpp" />
-    <ClCompile Include="Friendly.cpp" />
     <ClCompile Include="LoadM3d.cpp" />
     <ClCompile Include="LookDirection.cpp" />
     <ClCompile Include="Menu.cpp" />
-    <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshGeometry.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="point.cpp" />
     <ClCompile Include="Position.cpp" />
+    <ClCompile Include="recordDatabase.cpp" />
     <ClCompile Include="RenderStates.cpp" />
     <ClCompile Include="SeniorPro.cpp" />
     <ClCompile Include="Settings.cpp" />
@@ -130,43 +126,133 @@
     <ClCompile Include="Team.cpp" />
     <ClCompile Include="Terrain.cpp" />
     <ClCompile Include="Vertex.cpp" />
-    <ClCompile Include="VertexMain.cpp" />
     <ClCompile Include="WalkingStatus.cpp" />
     <ClCompile Include="Weapon.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\Camera.h" />
-    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\d3dUtil.h" />
-    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\d3dx11effect.h" />
-    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\GameTimer.h" />
-    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\GeometryGenerator.h" />
-    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\LightHelper.h" />
-    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\MathHelper.h" />
-    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\TextureMgr.h" />
-    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\Waves.h" />
-    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\xnacollision.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\Common\d3dApp.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\Common\d3dUtil.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\Common\d3dx11effect.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\Common\GameTimer.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\Common\GeometryGenerator.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\Common\LightHelper.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\Common\MathHelper.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\Common\TextureMgr.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\Common\Waves.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\Common\xnacollision.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\asaAPI.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\asa\poppk.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\asa\pshpk1.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\asa\pshpk2.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\asa\pshpk4.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\asa\sacapi.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\asa\sqlca.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\asa\sqlcallback.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\asa\sqlfuncs.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\asa\sqlos.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\db2API.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\db2_win\sql.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\db2_win\sqlca.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\db2_win\sqlcli.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\db2_win\sqlcli1.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\db2_win\sqlext.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\db2_win\sqlsystm.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ibAPI.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ibase\ibase.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ibase\iberror.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ibase\ib_util.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\infAPI.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\informix\infxcli.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\informix\infxsql.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\informix\sqlext.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\myAPI.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\mysql\errmsg.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\mysql\mysql.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\mysql\mysql_com.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\mysql\mysql_time.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\mysql\mysql_version.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\mysql\my_alloc.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\mysql\my_list.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\mysql\typelib.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\odbcAPI.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\odbc_win\sql.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\odbc_win\sqlext.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\odbc_win\sqltypes.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\odbc_win\sqlucode.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ora7API.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\oraAPI.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ora_win\nzerror.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ora_win\nzt.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ora_win\occi.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ora_win\occiAQ.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ora_win\occiCommon.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ora_win\occiControl.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ora_win\occiData.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ora_win\occiObjects.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ora_win\oci.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ora_win\oci1.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ora_win\oci8dp.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ora_win\ociap.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ora_win\ociapr.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ora_win\ocidef.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ora_win\ocidem.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ora_win\ocidfn.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ora_win\ociextp.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ora_win\ocikpr.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ora_win\ocixmldb.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ora_win\odci.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ora_win\oratypes.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ora_win\ori.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ora_win\orid.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ora_win\orl.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ora_win\oro.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ora_win\ort.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ora_win\xa.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\pgAPI.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\pgsql\libpq-fe.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\pgsql\libpq-fs.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\pgsql\postgres_ext.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\samisc.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\sbAPI.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\sl3API.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\SQLAPI.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\sqlbase\sql.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\sqlite\sqlite3.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ss6API.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ssNcliAPI.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ssOleDbAPI.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ss_win\sqldb.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ss_win\sqlfront.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ss_win\sqlncli.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\ss_win\sqloledb.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\sybAPI.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\sybase\bkpublic.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\sybase\csconfig.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\sybase\cspublic.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\sybase\cstypes.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\sybase\ctpublic.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\sybase\sqlca.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\sybase\sqlda.h" />
+    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\GameTimer.h" />
     <ClInclude Include="BasicModel.h" />
     <ClInclude Include="Biped.h" />
     <ClInclude Include="Box.h" />
-    <ClInclude Include="CameraMain.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="Controller.h" />
     <ClInclude Include="cubemap.h" />
-    <ClInclude Include="d3dApp.h" />
-    <ClInclude Include="Definitions.h" />
     <ClInclude Include="Direction.h" />
     <ClInclude Include="Effects.h" />
-    <ClInclude Include="Enemy.h" />
-    <ClInclude Include="Friendly.h" />
     <ClInclude Include="LoadM3d.h" />
     <ClInclude Include="LookDirection.h" />
     <ClInclude Include="Menu.h" />
-    <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshGeometry.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="Physics.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Position.h" />
+    <ClInclude Include="Quad.h" />
+    <ClInclude Include="recordDatabase.h" />
     <ClInclude Include="RenderStates.h" />
     <ClInclude Include="Settings.h" />
     <ClInclude Include="ShadowMap.h" />
@@ -175,11 +261,9 @@
     <ClInclude Include="Ssao.h" />
     <ClInclude Include="Stance.h" />
     <ClInclude Include="Stats.h" />
-    <ClInclude Include="Struct.h" />
     <ClInclude Include="Team.h" />
     <ClInclude Include="Terrain.h" />
     <ClInclude Include="Vertex.h" />
-    <ClInclude Include="VertexMain.h" />
     <ClInclude Include="WalkingStatus.h" />
     <ClInclude Include="Wave.h" />
     <ClInclude Include="Weapon.h" />
@@ -197,6 +281,62 @@
     <FxCompile Include="FX\SsaoBlur.fx" />
     <FxCompile Include="FX\SsaoNormalDepth.fx" />
     <FxCompile Include="FX\Terrain.fx" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FX\Basic.fxo" />
+    <None Include="FX\BuildShadowMap.fxo" />
+    <None Include="FX\cubemap.fxo" />
+    <None Include="FX\DebugTexture.fxo" />
+    <None Include="FX\NormalMap.fxo" />
+    <None Include="FX\Sky.fxo" />
+    <None Include="FX\Ssao.fxo" />
+    <None Include="FX\SsaoBlur.fxo" />
+    <None Include="FX\SsaoNormalDepth.fxo" />
+    <None Include="FX\Terrain.fxo" />
+    <None Include="Models\soldier.m3d" />
+    <None Include="Models\tree.m3d" />
+    <None Include="Textures\map1.raw" />
+    <None Include="Textures\terrain.raw" />
+    <None Include="Textures\terrain2.raw" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Library and Include Files.txt" />
+    <Text Include="Models\car.txt" />
+    <Text Include="Models\skull.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Textures\blend.dds" />
+    <Image Include="Textures\bricks.dds" />
+    <Image Include="Textures\bricks_nmap.dds" />
+    <Image Include="Textures\darkdirt.dds" />
+    <Image Include="Textures\desertcube1024.dds" />
+    <Image Include="Textures\floor.dds" />
+    <Image Include="Textures\floor_nmap.dds" />
+    <Image Include="Textures\grass.dds" />
+    <Image Include="Textures\grasscube1024.dds" />
+    <Image Include="Textures\head_diff.dds" />
+    <Image Include="Textures\head_norm.dds" />
+    <Image Include="Textures\jacket_diff.dds" />
+    <Image Include="Textures\jacket_norm.dds" />
+    <Image Include="Textures\lightdirt.dds" />
+    <Image Include="Textures\pants_diff.dds" />
+    <Image Include="Textures\pants_norm.dds" />
+    <Image Include="Textures\snow.dds" />
+    <Image Include="Textures\snowcube1024.dds" />
+    <Image Include="Textures\stone.dds" />
+    <Image Include="Textures\stones.dds" />
+    <Image Include="Textures\stones_nmap.dds" />
+    <Image Include="Textures\sunsetcube1024.dds" />
+    <Image Include="Textures\terrain.dds" />
+    <Image Include="Textures\tree01-bark_diffuse.dds" />
+    <Image Include="Textures\tree01-bark_normal.dds" />
+    <Image Include="Textures\tree01-leaves_diffuse.dds" />
+    <Image Include="Textures\tree01-leaves_normal.dds" />
+    <Image Include="Textures\upBody_diff.dds" />
+    <Image Include="Textures\upbody_norm.dds" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="Music.mp3" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
