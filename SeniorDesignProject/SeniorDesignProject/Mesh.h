@@ -18,13 +18,13 @@ public:
 	~Mesh();
 
 	//Mesh variables. Each loaded mesh will need its own set of these
+	bool md5;	//used to determine if this mesh is an MD5 model or a static OBJ model, OBJ as default
 	ID3D11Buffer* vertBuff;
 	ID3D11Buffer* indexBuff;
-	///////////////**************new**************////////////////////
 	std::vector<XMFLOAT3> vertPosArray;
 	std::vector<DWORD> vertIndexArray;
-	///////////////**************new**************////////////////////
 	XMMATRIX meshWorld;
+	Struct::Model3D MD5Model;
 	int subsetCount = 0;
 	std::vector<int> subsetIndexStart;
 	std::vector<int> subsetTexture;
@@ -44,6 +44,12 @@ public:
 		ID3D11Device* device,
 		IDXGISwapChain* SwapChain);
 
+	//LoadMD5Model() function prototype
+	bool LoadMD5Model(std::wstring filename, ID3D11Device* device, IDXGISwapChain* SwapChain);
+
+	bool LoadMD5Anim(std::wstring filename, IDXGISwapChain* SwapChain);
+
+	void UpdateMD5Model(float deltaTime, int animation, ID3D11DeviceContext* d3d11DevCon);
 
 private:
 };

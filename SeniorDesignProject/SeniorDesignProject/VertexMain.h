@@ -22,6 +22,10 @@ namespace Vertex
 		XMFLOAT3 normal;
 		XMFLOAT3 tangent;
 		XMFLOAT3 biTangent;
+
+		// Will not be sent to shader
+		int StartWeight;
+		int WeightCount;
 	};
 }
 

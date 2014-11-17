@@ -32,7 +32,6 @@ D3DApp::D3DApp(HINSTANCE hInstance)
 	// Set local pointer to this application for message handling
 	gd3dApp = this;
 
-	///////////////**************new**************////////////////////
 	isShoot = false;
 
 	ClientWidth = 0;
@@ -40,7 +39,6 @@ D3DApp::D3DApp(HINSTANCE hInstance)
 
 	score = 0;
 	pickedDist = 0.0f;
-	///////////////**************new**************////////////////////
 }
 
 D3DApp::~D3DApp()
@@ -241,13 +239,11 @@ LRESULT D3DApp::WndProc(HWND hwnd,	//Default windows procedure
 	case WM_DESTROY:	//if x button in top right was pressed
 		PostQuitMessage(0);
 		return 0;
-		///////////////**************new**************////////////////////
 	case WM_SIZE:
 		ClientWidth = LOWORD(lParam);
 		ClientHeight = HIWORD(lParam);
 		return 0;
 	}
-	///////////////**************new**************////////////////////
 	//return the message for windows to handle it
 	return DefWindowProc(hwnd,
 		msg,
@@ -436,10 +432,8 @@ bool D3DApp::InitDirectInput(HINSTANCE hInstance)
 	hr = DIKeyboard->SetCooperativeLevel(hwnd, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE);
 
 	hr = DIMouse->SetDataFormat(&c_dfDIMouse);
-	///////////////**************new**************////////////////////
 	//THIS IS WHAT DISABLES MOUSE OUT OF BOUNDS
 	hr = DIMouse->SetCooperativeLevel(hwnd, DISCL_EXCLUSIVE | DISCL_NOWINKEY | DISCL_FOREGROUND);
-	///////////////**************new**************////////////////////
 
 	return true;
 }
