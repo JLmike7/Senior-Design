@@ -72,7 +72,6 @@ protected:
 
 	UINT numElements;
 
-	///////////////**************new**************////////////////////
 	bool isShoot;
 
 	int ClientWidth;
@@ -90,7 +89,6 @@ protected:
 	float pickedDist9;
 	float pickedDist10;
 	
-	///////////////**************new**************////////////////////
 
 	D3D11_VIEWPORT mScreenViewport;
 	HINSTANCE		mhAppInst;

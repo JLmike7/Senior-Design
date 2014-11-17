@@ -20,10 +20,8 @@ public:
 	//Mesh variables. Each loaded mesh will need its own set of these
 	ID3D11Buffer* vertBuff;
 	ID3D11Buffer* indexBuff;
-	///////////////**************new**************////////////////////
 	std::vector<XMFLOAT3> vertPosArray;
 	std::vector<DWORD> vertIndexArray;
-	///////////////**************new**************////////////////////
 	XMMATRIX meshWorld;
 	int subsetCount = 0;
 	std::vector<int> subsetIndexStart;
