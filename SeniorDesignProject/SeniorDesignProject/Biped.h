@@ -11,9 +11,10 @@
 
 
 
-class Biped : public Stats, Position{
+class Biped : public Stats, public Position{
 public:
 	Biped(Point pos, Point lookat, Point up, int health, int kills, int deaths);
+	Biped(int health, int kills, int deaths);
 	~Biped();
 	
 	Stance getStance();

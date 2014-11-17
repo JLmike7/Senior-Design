@@ -63,7 +63,7 @@ Biped* World::getBiped(int index)
 
 //This method is inneficient.  Use sparingly.
 Team* World::getTeam(int teamNum, bool aliveOnly){
-	Team* team = new Team(teamNum);
+	Team* team = new Team(teamNum, teamNum);
 	//for each player, put them in the team object
 	/*for (int i = 0; i < TEAM_SIZE*NUMBER_TEAMS; i++){
 		if (!aliveOnly || !people[i]->getDeath()){
@@ -100,5 +100,5 @@ Team** World::getTeams(bool aliveOnly){
 }
 void World::convert(int BipedIndex)
 {
-	people[BipedIndex]->setTeam(FRIENDLY_TEAM);
+	//people[BipedIndex].setTeam(FRIENDLY_TEAM);
 }

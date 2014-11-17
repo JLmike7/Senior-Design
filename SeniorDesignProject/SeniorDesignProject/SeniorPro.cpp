@@ -3,6 +3,7 @@
 #include "VertexMain.h"
 #include "Cubemap.h"
 #include "Mesh.h"
+#include "Enemy.h"
 
 #define MESHCOUNT 2
 
@@ -33,7 +34,8 @@ private:
 	//Collision coll[20];
 	bool move;
 
-	Biped* Best;
+	Biped Best;
+	Enemy em;
 
 	Cubemap* mCubemap;
 
@@ -50,9 +52,9 @@ private:
 	UINT stride = sizeof(Vertex::Vertex);
 	UINT offset = 0;
 
-	Mesh bottleArray[20];
-	int* bottleHit = new int[20];
-	int numBottles = 20;
+	Mesh bottleArray;
+	int* bottleHit;
+	int numBottles = 1;
 
 };
 //run initializemainwindow
@@ -328,7 +330,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance,
 }
 
 SeniorPro::SeniorPro(HINSTANCE hInstance)
-	: D3DApp(hInstance)
+	: D3DApp(hInstance), Best(Biped(mCam.getsCamPosition(), mCam.getsCamTarget(), mCam.getsCamUp(), MAXHEALTH, STARTKILLS, STARTDEATHS)), em(Enemy(EnemyX, EnemyY, EnemyZ, MAXHEALTH, STARTKILLS, STARTDEATHS))
 {
 	//Camera information
 	mCam.setCamPosition(0.0f, 5.0f, -8.0f, 0.0f);
@@ -338,9 +340,7 @@ SeniorPro::SeniorPro(HINSTANCE hInstance)
 	//Set the View matrix
 	mCam.setCamView(mCam.getCamPosition(), mCam.getCamTarget(), mCam.getCamUp());
 
-	Best = new Biped(Point(XMVectorGetX(mCam.getCamPosition()), XMVectorGetY(mCam.getCamPosition()), XMVectorGetZ(mCam.getCamPosition())),
-		Point(XMVectorGetX(mCam.getCamTarget()), XMVectorGetY(mCam.getCamTarget()), XMVectorGetZ(mCam.getCamTarget())), Point(XMVectorGetX(mCam.getCamUp()), XMVectorGetY(mCam.getCamUp()), XMVectorGetZ(mCam.getCamUp())));
-
+	Best.updatePos(mCam.getsCamPosition(), mCam.getsCamTarget(), mCam.getsCamUp());
 	//Set the Projection matrix
 	mCam.setCamProjection(0.4f*3.14f, Width / Height, 1.0f, 1000.0f);
 
@@ -386,11 +386,8 @@ bool SeniorPro::InitScene()
 	//if (!meshArray[2].LoadObjModel(L"Enemy.obj", material, true, false, d3d11Device, SwapChain))
 	//if (!meshArray[2].LoadObjModel(L"DoorLeft.obj", material, true, false, d3d11Device, SwapChain))
 	//	return false;
-	for (int i = 0; i < numBottles; i++)
-	{
-		if (!bottleArray[i].LoadObjModel(L"Enemy.obj", material, true, false, d3d11Device, SwapChain))
-			return false;
-	}
+	if (!bottleArray.LoadObjModel(L"Enemy.obj", material, true, false, d3d11Device, SwapChain))
+		return false;
 
 
 	//Compile Shaders from shader file
@@ -613,7 +610,7 @@ bool SeniorPro::InitScene()
 
 	d3d11Device->CreateDepthStencilState(&dssDesc, &DSLessEqual);
 
-	float bottleXPos = -30.0f;
+	/*float bottleXPos = -30.0f;
 	float bottleZPos = 60.0f;
 	float bxadd = 0.0f;
 	float bzadd = 0.0f;
@@ -635,14 +632,23 @@ bool SeniorPro::InitScene()
 
 		Rotation = XMMatrixRotationY(3.14f);
 		Scale = XMMatrixScaling(0.15f, 0.15f, 0.15f);
-		Translation = XMMatrixTranslation(bottleXPos + bxadd*10.0f + Best->getpos().getX(), 2.0f, bottleZPos + bzadd*10.0f + Best->getpos().getZ());
+		Translation = XMMatrixTranslation(bottleXPos + bxadd*10.0f + Best.getpos().getX(), 2.0f, bottleZPos + bzadd*10.0f + Best.getpos().getZ());
 		//coll[i].setLocation(Point(bottleXPos + bxadd*10.0f, 2.0f, bottleZPos + bzadd*10.0f));
 		//coll[i].setheight(3.0f);
 		//coll[i].setlength(3.0f);
 		//coll[i].setwidth(3.0f);
 		bottleArray[i].meshWorld = Rotation * Scale * Translation;
-	}
+	}*/
 
+	bottleHit = 0;
+
+	//set the loaded bottles world space
+	bottleArray.meshWorld = XMMatrixIdentity();
+
+	Rotation = XMMatrixRotationY(3.14f);
+	Scale = XMMatrixScaling(0.15f, 0.15f, 0.15f);
+	Translation = XMMatrixTranslation(em.getpos().getX(), em.getpos().getY(), em.getpos().getZ());
+	bottleArray.meshWorld = Rotation * Scale * Translation;
 	return true;
 }
 
@@ -669,25 +675,17 @@ void SeniorPro::UpdateScene(double time)
 	pickRayVector(((Width / -2) + 1), 0, prwsPos3, prwsDir3);
 	pickRayVector(0, (Height / 2 - 1), prwsPos4, prwsDir4);
 	pickRayVector(0, ((Height / -2) + 1), prwsPos5, prwsDir5);
-	for (int i = 0; i < numBottles; i++)
+
+	if (bottleHit == 0) //No need to check bottles already hit
 	{
-		if (bottleHit[i] == 0) //No need to check bottles already hit
-		{
-			//Set temp pick distances for camera vs objects
-			tempDist = pick(prwsPos, prwsDir, bottleArray[i].vertPosArray, bottleArray[i].vertIndexArray, bottleArray[i].meshWorld);
-			tempDist2 = pick(prwsPos2, prwsDir2, bottleArray[i].vertPosArray, bottleArray[i].vertIndexArray, bottleArray[i].meshWorld);
-			tempDist3 = pick(prwsPos3, prwsDir3, bottleArray[i].vertPosArray, bottleArray[i].vertIndexArray, bottleArray[i].meshWorld);
-			tempDist4 = pick(prwsPos4, prwsDir4, bottleArray[i].vertPosArray, bottleArray[i].vertIndexArray, bottleArray[i].meshWorld);
-			tempDist5 = pick(prwsPos5, prwsDir5, bottleArray[i].vertPosArray, bottleArray[i].vertIndexArray, bottleArray[i].meshWorld);
-		}
+		//Set temp pick distances for camera vs objects
+		tempDist = pick(prwsPos, prwsDir, bottleArray.vertPosArray, bottleArray.vertIndexArray, bottleArray.meshWorld);
+		tempDist2 = pick(prwsPos2, prwsDir2, bottleArray.vertPosArray, bottleArray.vertIndexArray, bottleArray.meshWorld);
+		tempDist3 = pick(prwsPos3, prwsDir3, bottleArray.vertPosArray, bottleArray.vertIndexArray, bottleArray.meshWorld);
+		tempDist4 = pick(prwsPos4, prwsDir4, bottleArray.vertPosArray, bottleArray.vertIndexArray, bottleArray.meshWorld);
+		tempDist5 = pick(prwsPos5, prwsDir5, bottleArray.vertPosArray, bottleArray.vertIndexArray, bottleArray.meshWorld);
 	}
 
-	//Set temp pick distances for camera vs building
-	tempDist6 = pick(prwsPos, prwsDir, meshArray[1].vertPosArray, meshArray[1].vertIndexArray, meshArray[1].meshWorld);
-	tempDist7 = pick(prwsPos2, prwsDir2, meshArray[1].vertPosArray, meshArray[1].vertIndexArray, meshArray[1].meshWorld);
-	tempDist8 = pick(prwsPos3, prwsDir3, meshArray[1].vertPosArray, meshArray[1].vertIndexArray, meshArray[1].meshWorld);
-	tempDist9 = pick(prwsPos4, prwsDir4, meshArray[1].vertPosArray, meshArray[1].vertIndexArray, meshArray[1].meshWorld);
-	tempDist10 = pick(prwsPos5, prwsDir5, meshArray[1].vertPosArray, meshArray[1].vertIndexArray, meshArray[1].meshWorld);
 
 	//Set the pick distances for each object
 	pickedDist = tempDist;
@@ -695,11 +693,6 @@ void SeniorPro::UpdateScene(double time)
 	pickedDist3 = tempDist3;
 	pickedDist4 = tempDist4;
 	pickedDist5 = tempDist5;
-	pickedDist6 = tempDist6;
-	pickedDist7 = tempDist7;
-	pickedDist8 = tempDist8;
-	pickedDist9 = tempDist9;
-	pickedDist10 = tempDist10;
 	
 	/*////if (Best.isDead() && Best.getLives() > 0)
 	/{
@@ -804,7 +797,7 @@ void SeniorPro::UpdateScene(double time)
 		}
 	}
 
-	float bottleXPos = -30.0f;
+/*	float bottleXPos = -30.0f;
 	float bottleZPos = 60.0f;
 	float bxadd = 0.0f;
 	float bzadd = 0.0f;
@@ -824,7 +817,7 @@ void SeniorPro::UpdateScene(double time)
 
 		Rotation = XMMatrixRotationY(3.14f);
 		Scale = XMMatrixScaling(0.15f, 0.15f, 0.15f);
-		Translation = XMMatrixTranslation(bxadd*10.0f + Best->getpos().getX(), 2.0f, bzadd*10.0f + Best->getpos().getZ());
+		Translation = XMMatrixTranslation(bxadd*10.0f + Best.getpos().getX(), 2.0f, bzadd*10.0f + Best.getpos().getZ());
 		//coll[i].setLocation(Point(bottleXPos + bxadd*10.0f, 2.0f, bottleZPos + bzadd*10.0f));
 		//coll[i].setheight(3.0f);
 		//coll[i].setlength(3.0f);
@@ -840,6 +833,13 @@ void SeniorPro::UpdateScene(double time)
 	light.dir.x = XMVectorGetX(mCam.getCamTarget()) - light.pos.x;
 	light.dir.y = XMVectorGetY(mCam.getCamTarget()) - light.pos.y;
 	light.dir.z = XMVectorGetZ(mCam.getCamTarget()) - light.pos.z;*/
+
+	bottleArray.meshWorld = XMMatrixIdentity();
+
+	Rotation = XMMatrixRotationY(3.14f);
+	Scale = XMMatrixScaling(0.15f, 0.15f, 0.15f);
+	Translation = XMMatrixTranslation(em.getpos().getX()+ 0.0f, em.getpos().getY() + 0.0f, em.getpos().getY() + 0.0f);
+	bottleArray.meshWorld = Rotation * Scale * Translation;
 }
 
 void SeniorPro::RenderText(std::wstring text, int inInt)
@@ -861,15 +861,15 @@ void SeniorPro::RenderText(std::wstring text, int inInt)
 		
 
 		printString <<
-			L"Health: " << "\n"
+			L"Health: " << Best.getHealth() << "\n"
 			<< L"Ammo: " << PlayerWep.getMagSize() << "\n"
-			<< L"Lives: " << "\n"
-			<< L"player x: " << Best->getpos().getX() << " " << XMVectorGetX(mCam.getCamPosition()) << "\n"
-			<< L"player y: " << Best->getpos().getY() << " " << XMVectorGetY(mCam.getCamPosition()) << "\n"
-			<< L"player z: " << Best->getpos().getZ() << " " << XMVectorGetZ(mCam.getCamPosition()) << "\n"
-			<< L"Lives: " << "\n"
+			<< L"kills: " << Best.getkills() << "\n"
+			<< L"deaths: " << Best.getdeaths() << "\n"
+			<< L"player x: " << Best.getpos().getX() << em.getpos().getX()<< "\n"
+			<< L"player y: " << Best.getpos().getY() << em.getpos().getY() << "\n"
+			<< L"player z: " << Best.getpos().getZ() << em.getpos().getZ() << "\n"
 			<< L"Score: " << score << L"\n"
-			//<< L"EnemyHeath: " << enemyStats[hitMe].getHealth() << L"\n"
+			<< L"EnemyHeath: " << em.getHealth() << L"\n"
 			<< L"Enemy Picked: " << hitMe << L"\n"
 			//<< L"Picked Dist: " << pickedDist << "\n"
 			//<< L"Picked Dist: " << pickedDist2 << "\n"
@@ -996,11 +996,9 @@ void SeniorPro::DrawScene()
 	{
 		drawModel(&meshArray[i], false);
 	}
-	for (int i = 0; i < numBottles; i++)
-	{
-		if (!bottleHit[i])
-			drawModel(&bottleArray[i], false);
-	}
+
+	if (!bottleHit)
+		drawModel(&bottleArray, false);
 
 	/////Draw the Sky's Sphere//////
 	//Set the spheres index buffer
@@ -1036,11 +1034,8 @@ void SeniorPro::DrawScene()
 	{
 		drawModel(&meshArray[i], true);
 	}
-	for (int i = 0; i < numBottles; i++)
-	{
-		if (!bottleHit[i])
-			drawModel(&bottleArray[i], true);
-	}
+	drawModel(&bottleArray, true);
+
 
 	//RenderText(L"Health: ", Best.getHealth());
 	//RenderText(L"Lives: ", Best.getLives());
@@ -1095,21 +1090,21 @@ void SeniorPro::DetectInput(double time)
 	}*/
 
 	//Check for collision and then allow for user to  move
-	if (keyboardState[DIK_A] & 0x80 && pickedDist >= 0.5 && pickedDist2 >= 0.5 && pickedDist3 >= 0.5 && pickedDist4 >= 0.5 && pickedDist5 >= 0.5
-		&& pickedDist6 >= 0.5 && pickedDist7 >= 0.5 && pickedDist8 >= 0.5 && pickedDist9 >= 0.5 && pickedDist10 >= 0.5 )
+	if (keyboardState[DIK_A] & 0x80)// && pickedDist >= 0.5 && pickedDist2 >= 0.5 && pickedDist3 >= 0.5 && pickedDist4 >= 0.5 && pickedDist5 >= 0.5
+		//&& pickedDist6 >= 0.5 && pickedDist7 >= 0.5 && pickedDist8 >= 0.5 && pickedDist9 >= 0.5 && pickedDist10 >= 0.5 )
 	{
 		//moveLeftRight -= speed;
 		mCam.setMoveLeftRight(mCam.getMoveLeftRight() - speed);
 		
 	}
-	if (keyboardState[DIK_D] & 0x80 && pickedDist >= 0.5 && pickedDist2 >= 0.5 && pickedDist3 >= 0.5 && pickedDist4 >= 0.5 && pickedDist5 >= 0.5
-		&& pickedDist6 >= 0.5 && pickedDist7 >= 0.5 && pickedDist8 >= 0.5 && pickedDist9 >= 0.5 && pickedDist10 >= 0.5)
+	if (keyboardState[DIK_D] & 0x80) //&& pickedDist >= 0.5 && pickedDist2 >= 0.5 && pickedDist3 >= 0.5 && pickedDist4 >= 0.5 && pickedDist5 >= 0.5
+		//&& pickedDist6 >= 0.5 && pickedDist7 >= 0.5 && pickedDist8 >= 0.5 && pickedDist9 >= 0.5 && pickedDist10 >= 0.5)
 	{
 		//moveLeftRight += speed;
 		mCam.setMoveLeftRight(mCam.getMoveLeftRight() + speed);
 	}
-	if (keyboardState[DIK_W] & 0x80 && pickedDist >= 0.5 && pickedDist2 >= 0.5 && pickedDist3 >= 0.5 && pickedDist4 >= 0.5 && pickedDist5 >= 0.5
-		&& pickedDist6 >= 0.5 && pickedDist7 >= 0.5 && pickedDist8 >= 0.5 && pickedDist9 >= 0.5 && pickedDist10 >= 0.5)
+	if (keyboardState[DIK_W] & 0x80) //&& pickedDist >= 0.5 && pickedDist2 >= 0.5 && pickedDist3 >= 0.5 && pickedDist4 >= 0.5 && pickedDist5 >= 0.5
+		//&& pickedDist6 >= 0.5 && pickedDist7 >= 0.5 && pickedDist8 >= 0.5 && pickedDist9 >= 0.5 && pickedDist10 >= 0.5)
 	{
 		//moveBackForward += speed;
 		mCam.setMoveBackForward(mCam.getMoveBackForward() + speed);
@@ -1187,29 +1182,24 @@ void SeniorPro::DetectInput(double time)
 			XMVECTOR prwsPos, prwsDir;
 				pickRayVector(Width/2, Height/2, prwsPos, prwsDir);
 
-			for (int i = 0; i < numBottles; i++)
+			if (bottleHit == 0) //No need to check bottles already hit
 			{
-				if (bottleHit[i] == 0) //No need to check bottles already hit
+				tempDist = pick(prwsPos, prwsDir, bottleArray.vertPosArray, bottleArray.vertIndexArray, bottleArray.meshWorld);
+				if (tempDist < closestDist)
 				{
-					tempDist = pick(prwsPos, prwsDir, bottleArray[i].vertPosArray, bottleArray[i].vertIndexArray, bottleArray[i].meshWorld);
-					if (tempDist < closestDist)
-					{
-						closestDist = tempDist;
-						hitIndex = i;
-					}
+					closestDist = tempDist;
 				}
 			}
 
 			if (closestDist < FLT_MAX)
 			{
-					hitMe = hitIndex;
 					//Reduce that enemies health
 					//enemyStats[hitIndex].setHealth(enemyStats[hitIndex].getHealth() - 20);
 					//If their health is less then 0 they are dead. remove them.
 					//if (enemyStats[hitIndex].getHealth() <= 0){
 						
 						
-				bottleHit[hitIndex] = 1;
+				//bottleHit= 1;
 				pickedDist = closestDist;
 				score++;
 			}
@@ -1256,10 +1246,10 @@ void SeniorPro::DetectInput(double time)
 	}
 
 	mCam.UpdateCamera();
-	Best->updatePos(Point(XMVectorGetX(mCam.getCamPosition()), XMVectorGetY(mCam.getCamPosition()), XMVectorGetZ(mCam.getCamPosition())),
-		Point(XMVectorGetX(mCam.getCamTarget()), XMVectorGetY(mCam.getCamTarget()), XMVectorGetZ(mCam.getCamTarget())),
-		Point(XMVectorGetX(mCam.getCamUp()), XMVectorGetY(mCam.getCamUp()), XMVectorGetZ(mCam.getCamUp())));
+	Best.updatePos(mCam.getsCamPosition(), mCam.getsCamTarget(), mCam.getsCamUp());
 
+	// make a better following class
+	em.updatePos(Point(em.getpos().getX() - Best.getpos().getX(), em.getpos().getY(), 0.0f), Best.getpos(), em.getup());
 	return;
 }
 

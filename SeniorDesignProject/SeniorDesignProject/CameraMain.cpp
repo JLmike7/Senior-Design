@@ -4,8 +4,7 @@
 
 #include "CameraMain.h"
 
-CameraMain::CameraMain()
-{
+CameraMain::CameraMain(){
 }
 
 CameraMain::~CameraMain()
@@ -59,6 +58,11 @@ XMVECTOR CameraMain::getCamPosition()
 	return camPosition;
 }
 
+Point CameraMain::getsCamPosition(){
+	return Point(XMVectorGetX(camPosition), XMVectorGetY(camPosition), XMVectorGetZ(camPosition));
+}
+
+
 void CameraMain::setCamPosition(float a, float b, float c, float d)
 {
 	//camPosition = XMVectorSet( 0.0f, 0.0f, -0.5f, 0.0f );
@@ -68,6 +72,10 @@ void CameraMain::setCamPosition(float a, float b, float c, float d)
 XMVECTOR CameraMain::getCamTarget()
 {
 	return camTarget;
+}
+
+Point CameraMain::getsCamTarget(){
+	return Point(XMVectorGetX(camTarget), XMVectorGetY(camTarget), XMVectorGetZ(camTarget));
 }
 
 void CameraMain::setCamTarget(float a, float b, float c, float d)
@@ -85,6 +93,10 @@ void CameraMain::setCamUp(float a, float b, float c, float d)
 {
 	//camUp = XMVectorSet( 0.0f, 1.0f, 0.0f, 0.0f );
 	camUp = XMVectorSet(a, b, c, d);
+}
+
+Point CameraMain::getsCamUp(){
+	return Point(XMVectorGetX(camUp), XMVectorGetY(camUp), XMVectorGetZ(camUp));
 }
 
 ///////////////**************new**************////////////////////
@@ -195,4 +207,6 @@ void CameraMain::UpdateCamera()
 
 	camView = XMMatrixLookAtLH(camPosition, camTarget, camUp);
 }
-///////////////**************new**************////////////////////
+
+
+
