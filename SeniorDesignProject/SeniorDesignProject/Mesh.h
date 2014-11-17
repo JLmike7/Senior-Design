@@ -23,6 +23,7 @@ public:
 	std::vector<XMFLOAT3> vertPosArray;
 	std::vector<DWORD> vertIndexArray;
 	XMMATRIX meshWorld;
+	Struct::Model3D MD5Model;
 	int subsetCount = 0;
 	std::vector<int> subsetIndexStart;
 	std::vector<int> subsetTexture;
@@ -42,6 +43,18 @@ public:
 		ID3D11Device* device,
 		IDXGISwapChain* SwapChain);
 
+	///////////////**************new**************////////////////////
+	//LoadMD5Model() function prototype
+	bool LoadMD5Model(std::wstring filename,
+		ID3D11Device* device,
+		IDXGISwapChain* SwapChain);
+	///////////////**************new**************////////////////////
+
+	///////////////**************new**************////////////////////
+	bool LoadMD5Anim(std::wstring filename, IDXGISwapChain* SwapChain);
+
+	void UpdateMD5Model(float deltaTime, int animation, ID3D11DeviceContext* d3d11DevCon);
+	///////////////**************new**************////////////////////
 
 private:
 };
