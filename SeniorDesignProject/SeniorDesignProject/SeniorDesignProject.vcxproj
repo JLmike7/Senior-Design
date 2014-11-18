@@ -41,8 +41,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(IncludePath);$(DXSDK_DIR)Include;C:\Users\Michael Marsh\Desktop\Common;$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSDK_IncludePath);$(FrameworkSDKDir)\include</IncludePath>
-    <LibraryPath>$(LibraryPath);$(DXSDK_DIR)Lib\x86;C:\Users\Michael Marsh\Desktop\Common;$(VCInstallDir)lib;$(VCInstallDir)atlmfc\lib;$(WindowsSDK_LibraryPath_x86);$(FrameworkSDKDir)\lib;C:\Program Files %28x86%29\Windows Kits\8.0\Lib\win8\um\x86;C:\Program Files %28x86%29\Windows Kits\8.0\Lib\win8\um\x64</LibraryPath>
+    <IncludePath>$(IncludePath);$(DXSDK_DIR)Include;$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSDK_IncludePath);$(FrameworkSDKDir)\include</IncludePath>
+    <LibraryPath>$(LibraryPath);$(DXSDK_DIR)Lib\x86;C:\Users\Nickolas\Source\Repos\Senior-Design\SeniorDesignProject\SeniorDesignProject\Common;$(VCInstallDir)lib;$(VCInstallDir)atlmfc\lib;$(WindowsSDK_LibraryPath_x86);$(FrameworkSDKDir)\lib;C:\Program Files %28x86%29\Windows Kits\8.0\Lib\win8\um\x86;C:\Program Files %28x86%29\Windows Kits\8.0\Lib\win8\um\x64</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -61,7 +61,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>d3d11.lib;d3dx11d.lib;D3DCompiler.lib;Effects11.lib;Effects11d.lib;dxerr.lib;dxguid.lib;dxgi.lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>sqlapi.lib;sqlapisd.lib;sqlapis.lib;sqlapid.lib;d3d11.lib;d3dx11d.lib;D3DCompiler.lib;Effects11d.lib;Effects11.lib;dxerr.lib;dxgi.lib;dxguid.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;Xaudio2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d11.lib;d3dx11d.lib;D3DCompiler.lib;Effects11d.lib;Effects11.lib;dxerr.lib;dxgi.lib;dxguid.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;Xaudio2.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <FxCompile>
       <ShaderType>Effect</ShaderType>
@@ -90,26 +90,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\Desktop\Common\d3dApp.cpp" />
-    <ClCompile Include="..\..\..\..\..\Desktop\Common\d3dUtil.cpp" />
-    <ClCompile Include="..\..\..\..\..\Desktop\Common\GameTimer.cpp" />
-    <ClCompile Include="..\..\..\..\..\Desktop\Common\GeometryGenerator.cpp" />
-    <ClCompile Include="..\..\..\..\..\Desktop\Common\LightHelper.cpp" />
-    <ClCompile Include="..\..\..\..\..\Desktop\Common\MathHelper.cpp" />
-    <ClCompile Include="..\..\..\..\..\Desktop\Common\TextureMgr.cpp" />
-    <ClCompile Include="..\..\..\..\..\Desktop\Common\Waves.cpp" />
-    <ClCompile Include="..\..\..\..\..\Desktop\Common\xnacollision.cpp" />
     <ClCompile Include="BasicModel.cpp" />
     <ClCompile Include="Biped.cpp" />
     <ClCompile Include="Box.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CameraMain.cpp" />
     <ClCompile Include="Controller.cpp" />
     <ClCompile Include="cubemap.cpp" />
+    <ClCompile Include="d3dApp.cpp" />
+    <ClCompile Include="d3dUtil.cpp" />
     <ClCompile Include="Effects.cpp" />
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="GameTimer.cpp" />
+    <ClCompile Include="GeometryGenerator.cpp" />
+    <ClCompile Include="LightHelper.cpp" />
     <ClCompile Include="LoadM3d.cpp" />
     <ClCompile Include="LookDirection.cpp" />
+    <ClCompile Include="MathHelper.cpp" />
     <ClCompile Include="Menu.cpp" />
-    <ClCompile Include="MeshGeometry.cpp" />
+    <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="point.cpp" />
@@ -119,28 +118,20 @@
     <ClCompile Include="SeniorPro.cpp" />
     <ClCompile Include="Settings.cpp" />
     <ClCompile Include="ShadowMap.cpp" />
-    <ClCompile Include="SkinnedData.cpp" />
-    <ClCompile Include="SkinnedModel.cpp" />
     <ClCompile Include="Ssao.cpp" />
     <ClCompile Include="Stats.cpp" />
     <ClCompile Include="Team.cpp" />
     <ClCompile Include="Terrain.cpp" />
+    <ClCompile Include="TextureMgr.cpp" />
     <ClCompile Include="Vertex.cpp" />
+    <ClCompile Include="VertexMain.cpp" />
     <ClCompile Include="WalkingStatus.cpp" />
+    <ClCompile Include="Waves.cpp" />
     <ClCompile Include="Weapon.cpp" />
     <ClCompile Include="World.cpp" />
+    <ClCompile Include="xnacollision.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\..\Desktop\Common\d3dApp.h" />
-    <ClInclude Include="..\..\..\..\..\Desktop\Common\d3dUtil.h" />
-    <ClInclude Include="..\..\..\..\..\Desktop\Common\d3dx11effect.h" />
-    <ClInclude Include="..\..\..\..\..\Desktop\Common\GameTimer.h" />
-    <ClInclude Include="..\..\..\..\..\Desktop\Common\GeometryGenerator.h" />
-    <ClInclude Include="..\..\..\..\..\Desktop\Common\LightHelper.h" />
-    <ClInclude Include="..\..\..\..\..\Desktop\Common\MathHelper.h" />
-    <ClInclude Include="..\..\..\..\..\Desktop\Common\TextureMgr.h" />
-    <ClInclude Include="..\..\..\..\..\Desktop\Common\Waves.h" />
-    <ClInclude Include="..\..\..\..\..\Desktop\Common\xnacollision.h" />
     <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\asaAPI.h" />
     <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\asa\poppk.h" />
     <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\asa\pshpk1.h" />
@@ -239,14 +230,23 @@
     <ClInclude Include="Biped.h" />
     <ClInclude Include="Box.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="CameraMain.h" />
     <ClInclude Include="Controller.h" />
     <ClInclude Include="cubemap.h" />
+    <ClInclude Include="d3dApp.h" />
+    <ClInclude Include="d3dUtil.h" />
+    <ClInclude Include="d3dx11effect.h" />
     <ClInclude Include="Direction.h" />
     <ClInclude Include="Effects.h" />
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="GameTimer.h" />
+    <ClInclude Include="GeometryGenerator.h" />
+    <ClInclude Include="LightHelper.h" />
     <ClInclude Include="LoadM3d.h" />
     <ClInclude Include="LookDirection.h" />
+    <ClInclude Include="MathHelper.h" />
     <ClInclude Include="Menu.h" />
-    <ClInclude Include="MeshGeometry.h" />
+    <ClInclude Include="Mesh.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="Physics.h" />
     <ClInclude Include="Point.h" />
@@ -256,18 +256,20 @@
     <ClInclude Include="RenderStates.h" />
     <ClInclude Include="Settings.h" />
     <ClInclude Include="ShadowMap.h" />
-    <ClInclude Include="SkinnedData.h" />
-    <ClInclude Include="SkinnedModel.h" />
     <ClInclude Include="Ssao.h" />
     <ClInclude Include="Stance.h" />
     <ClInclude Include="Stats.h" />
+    <ClInclude Include="Struct.h" />
     <ClInclude Include="Team.h" />
     <ClInclude Include="Terrain.h" />
+    <ClInclude Include="TextureMgr.h" />
     <ClInclude Include="Vertex.h" />
+    <ClInclude Include="VertexMain.h" />
     <ClInclude Include="WalkingStatus.h" />
     <ClInclude Include="Wave.h" />
     <ClInclude Include="Weapon.h" />
     <ClInclude Include="World.h" />
+    <ClInclude Include="xnacollision.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="FX\Basic.fx" />

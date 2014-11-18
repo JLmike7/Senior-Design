@@ -1,5 +1,5 @@
 #pragma once
-#include <cstddef>
+/*#include <cstddef>
 #include <atlstr.h>
 #include <SQLAPI.h>
 
@@ -50,4 +50,4 @@ private:
 	bool rawQuery(CString q,databaseEntry *results[MAX_RESULT_SIZE][MAX_FIELDS]);
 	//Clears the results array.
 	void clearResults(databaseEntry *results[MAX_RESULT_SIZE][MAX_FIELDS]);
-};
+};*/

@@ -1,4 +1,4 @@
-#include "recordDatabase.h"
+/*#include "recordDatabase.h"
 #include <atlstr.h>
 #include <oledb.h>
 #include <windows.h>
@@ -204,4 +204,4 @@ void recordDatabase::clearResults(databaseEntry *results[MAX_RESULT_SIZE][MAX_FI
 			results[i][field]->gotten = false;
 		}
 	}
-}
+}*/
