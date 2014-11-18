@@ -90,7 +90,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="BasicModel.cpp" />
     <ClCompile Include="Biped.cpp" />
     <ClCompile Include="Box.cpp" />
     <ClCompile Include="Camera.cpp" />
@@ -104,7 +103,6 @@
     <ClCompile Include="GameTimer.cpp" />
     <ClCompile Include="GeometryGenerator.cpp" />
     <ClCompile Include="LightHelper.cpp" />
-    <ClCompile Include="LoadM3d.cpp" />
     <ClCompile Include="LookDirection.cpp" />
     <ClCompile Include="MathHelper.cpp" />
     <ClCompile Include="Menu.cpp" />
@@ -226,7 +224,6 @@
     <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\sybase\sqlca.h" />
     <ClInclude Include="..\..\..\..\..\Desktop\SQLAPI\include\sybase\sqlda.h" />
     <ClInclude Include="..\..\..\..\3DGameProgramming\Common\GameTimer.h" />
-    <ClInclude Include="BasicModel.h" />
     <ClInclude Include="Biped.h" />
     <ClInclude Include="Box.h" />
     <ClInclude Include="Camera.h" />
@@ -242,7 +239,6 @@
     <ClInclude Include="GameTimer.h" />
     <ClInclude Include="GeometryGenerator.h" />
     <ClInclude Include="LightHelper.h" />
-    <ClInclude Include="LoadM3d.h" />
     <ClInclude Include="LookDirection.h" />
     <ClInclude Include="MathHelper.h" />
     <ClInclude Include="Menu.h" />

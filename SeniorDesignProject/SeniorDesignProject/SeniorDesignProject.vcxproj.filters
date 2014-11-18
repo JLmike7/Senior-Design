@@ -111,13 +111,7 @@
     <ClCompile Include="Position.cpp">
       <Filter>Source Files\Unused</Filter>
     </ClCompile>
-    <ClCompile Include="BasicModel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Box.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="LoadM3d.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="LookDirection.cpp">
@@ -236,13 +230,7 @@
     <ClInclude Include="Position.h">
       <Filter>Header Files\Unused</Filter>
     </ClInclude>
-    <ClInclude Include="BasicModel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Box.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LoadM3d.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="LookDirection.h">
