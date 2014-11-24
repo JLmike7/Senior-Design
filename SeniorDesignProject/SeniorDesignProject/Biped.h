@@ -21,8 +21,8 @@ public:
 	void Init(Settings *settings);
 	Stance getStance();
 	void setStance(Stance stance);
-//	void setHitbox(Box* box);
-//	Box* getHitbox();
+	//	void setHitbox(Box* box);
+	//	Box* getHitbox();
 	Weapon* getWeapon();
 	void addWeapon(Weapon *newWeapon);
 	void nextWeapon();
@@ -36,8 +36,8 @@ public:
 	void fire();
 	void jump();
 	void lookTo(Direction direction);
-	void lookAt(Point* point,bool tracking);
-	void walk(Direction direction,bool startStop);
+	void lookAt(Point* point, bool tracking);
+	void walk(Direction direction, bool startStop);
 	bool getDeath();
 	void setDeath(bool isDead);
 
@@ -54,7 +54,7 @@ protected:
 	Stats*				stats;
 	std::deque<Weapon>*	weapons;
 	Position*			position;
-//	Box*				hitbox;
+	//	Box*				hitbox;
 	WalkingStatus*		walkingStatus;
 	bool				death;
 };

@@ -9,7 +9,7 @@ Point::Point(){
 }
 
 //Creates a point at the origin (0,0,0) by default.
-Point::Point(float _x,float _y,float _z){
+Point::Point(float _x, float _y, float _z){
 	x = _x;
 	y = _y;
 	z = _z;
@@ -25,7 +25,7 @@ Point::~Point(){
 }
 
 void Point::setX(float _x){
-	x=_x;
+	x = _x;
 }
 void Point::setY(float _y){
 	y = _y;
@@ -67,9 +67,9 @@ float* Point::getCoords(){
 
 float Point::distanceTo(Point* other){
 	return sqrt(
-		pow(other->getX() - getX(), 2) + 
-		pow(other->getY() - getY(), 2) + 
-		pow(other->getZ() - getZ(),2) );
+		pow(other->getX() - getX(), 2) +
+		pow(other->getY() - getY(), 2) +
+		pow(other->getZ() - getZ(), 2));
 }
 
 Point* Point::diff(Point* other){

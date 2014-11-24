@@ -1,6 +1,14 @@
-#pragma once
 #include "Team.h"
 
+Team::Team(int numfriendly, int numEnemy){
+	// this is where we will declare the two lists
+}
+
+Team::~Team(){
+
+}
+
+/*
 Team::Team(int teamNumber)
 {
 	Init({}, 0, teamNumber);
@@ -47,4 +55,4 @@ Biped* Team::getMember(int index){
 
 Biped** Team::getMembers(){
 	return members;
-}
+}*/

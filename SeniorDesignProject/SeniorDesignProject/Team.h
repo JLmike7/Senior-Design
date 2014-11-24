@@ -1,12 +1,29 @@
-#pragma once
+#ifndef TEAM_H
+#define TEAM_H
+
 #include "Biped.h"
+#include "Friendly.h"
+#include "Enemy.h"
+#include<stdio.h>
+#include<stdlib.h>
 
-#define MAX_MEMBERS 20
-
-class Team
-{
+class Team {
 public:
-	void Init(Biped* members[MAX_MEMBERS],int memberCount,int teamNumber);
+	Team(int numfriendly, int numEnemy);
+	~Team();
+
+private:
+	int numfriendly;
+	int numEnemy;
+
+	// which sorting algorithm will be best used for a short list maybe
+	// for about 10 or less in each list.
+	//Friendly fri;
+	//Enemy ene;
+
+
+
+	/*void Init(Biped* members[MAX_MEMBERS],int memberCount,int teamNumber);
 	void addMember(Biped* member,bool forceIntoTeam);
 	Biped* getMember(int index);
 	Biped** getMembers();
@@ -20,5 +37,7 @@ private:
 protected:
 	int teamNum;
 	int memberCount;
-	Biped* members[MAX_MEMBERS];
+	Biped* members[MAX_MEMBERS];*/
 };
+
+#endif

@@ -49,7 +49,7 @@ void Biped::beginMove(Direction direction){
 	}
 }
 //Makes the player walk at their max speed in a direction.  If startStop=false, makes the player stop walking in this direction.
-void Biped::walk(Direction direction,bool startStop){
+void Biped::walk(Direction direction, bool startStop){
 	if (walkingStatus->isWalking(direction)){
 		if (startStop == false){
 			walkingStatus->set(direction, false);
@@ -69,7 +69,7 @@ void Biped::walk(Direction direction,bool startStop){
 	}
 	else{
 		if (startStop == true){
-			walkingStatus->set(direction,true);
+			walkingStatus->set(direction, true);
 			beginMove(direction);
 		}
 	}
@@ -81,7 +81,7 @@ void Biped::walk(Direction direction,bool startStop){
 //	hitbox = box;
 //}
 Weapon* Biped::getWeapon(){
-	return & weapons->front();
+	return &weapons->front();
 }
 void Biped::addWeapon(Weapon *newWeapon){
 	weapons->push_front(*newWeapon);
@@ -101,7 +101,7 @@ void Biped::setTeam(int _team){
 	teamNumber = _team;
 }
 void Biped::takeHit(int damage){
-	stats->setHealth(stats->getHealth()-damage);
+	stats->setHealth(stats->getHealth() - damage);
 }
 void Biped::jump(){
 	if (position->isOnGround()){
@@ -115,10 +115,10 @@ bool Biped::isDead(){
 	return stats->isDead();
 }
 void Biped::lookTo(Direction direction){
-	position->lookTo(direction,(float)settings->getLookSensitivity());
+	position->lookTo(direction, (float)settings->getLookSensitivity());
 }
-void Biped::lookAt(Point* point,bool tracking){
-	position->lookAt(point,tracking);
+void Biped::lookAt(Point* point, bool tracking){
+	position->lookAt(point, tracking);
 }
 bool Biped::getDeath(){
 	return death;

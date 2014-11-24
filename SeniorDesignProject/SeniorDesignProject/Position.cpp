@@ -36,11 +36,11 @@ LookDirection* Position::getLook(){
 	return look;
 }
 
-void Position::lookTo(Direction direction,float magnitude){
-	look->lookTo(direction,magnitude);
+void Position::lookTo(Direction direction, float magnitude){
+	look->lookTo(direction, magnitude);
 }
 
-void Position::lookAt(Point* point,bool tracking){
+void Position::lookAt(Point* point, bool tracking){
 	look->lookAt(location, point, tracking);
 }
 
@@ -73,7 +73,7 @@ void Position::teleport(Point* coord){
 }
 
 //This is used to start all controlled movements.  It adds velocity in relation to the camera's direction.
-void Position::beginMove(Direction direction,float magnitude){
+void Position::beginMove(Direction direction, float magnitude){
 	float azimuth = look->getAzimuth();
 	if (direction == Direction::FRONT){
 		addVelocity(new Point(
@@ -121,11 +121,11 @@ void Position::applyTickMovement(){
 	//Calculate the velocity and acceleration for this tick.
 	float sec = elapsedMills / 1000;
 	Point* tickVel = new Point(velocity->getX()*sec,
-		velocity->getY()*sec,
-		velocity->getZ()*sec);
+	velocity->getY()*sec,
+	velocity->getZ()*sec);
 	Point* tickAccel = new Point(accel->getX()*sec,
-		accel->getY()*sec,
-		accel->getZ()*sec);
+	accel->getY()*sec,
+	accel->getZ()*sec);
 
 	//Note:  Flipping the order of these may break ground pushback.
 	//apply current velocity to the position

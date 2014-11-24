@@ -41,8 +41,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(IncludePath);$(DXSDK_DIR)Include;C:\Users\Aaron\Documents\Visual Studio 2013\3DGameProgramming\Common;$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSDK_IncludePath);$(FrameworkSDKDir)\include</IncludePath>
-    <LibraryPath>$(LibraryPath);$(DXSDK_DIR)Lib\x86;C:\Users\Aaron\Documents\Visual Studio 2013\3DGameProgramming\Common;$(VCInstallDir)lib;$(VCInstallDir)atlmfc\lib;$(WindowsSDK_LibraryPath_x86);$(FrameworkSDKDir)\lib;C:\Program Files %28x86%29\Windows Kits\8.0\Lib\win8\um\x86;C:\Program Files %28x86%29\Windows Kits\8.0\Lib\win8\um\x64</LibraryPath>
+    <IncludePath>$(IncludePath);$(DXSDK_DIR)Include;$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSDK_IncludePath);$(FrameworkSDKDir)\include</IncludePath>
+    <LibraryPath>$(LibraryPath);$(DXSDK_DIR)Lib\x86;$(VCInstallDir)lib;$(VCInstallDir)atlmfc\lib;$(WindowsSDK_LibraryPath_x86);$(FrameworkSDKDir)\lib;C:\Program Files %28x86%29\Windows Kits\8.0\Lib\win8\um\x86;C:\Program Files %28x86%29\Windows Kits\8.0\Lib\win8\um\x64</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -55,8 +55,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>
-      </AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Michael Marsh\Desktop\SQLAPI\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -91,45 +90,39 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\3DGameProgramming\Common\Camera.cpp" />
-    <ClCompile Include="..\..\..\..\3DGameProgramming\Common\d3dUtil.cpp" />
-    <ClCompile Include="..\..\..\..\3DGameProgramming\Common\GameTimer.cpp" />
-    <ClCompile Include="..\..\..\..\3DGameProgramming\Common\GeometryGenerator.cpp" />
-    <ClCompile Include="..\..\..\..\3DGameProgramming\Common\LightHelper.cpp" />
-    <ClCompile Include="..\..\..\..\3DGameProgramming\Common\MathHelper.cpp" />
-    <ClCompile Include="..\..\..\..\3DGameProgramming\Common\TextureMgr.cpp" />
-    <ClCompile Include="..\..\..\..\3DGameProgramming\Common\Waves.cpp" />
-    <ClCompile Include="..\..\..\..\3DGameProgramming\Common\xnacollision.cpp" />
+    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\Camera.cpp" />
+    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\d3dUtil.cpp" />
+    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\GameTimer.cpp" />
+    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\GeometryGenerator.cpp" />
+    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\LightHelper.cpp" />
+    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\MathHelper.cpp" />
+    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\TextureMgr.cpp" />
+    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\Waves.cpp" />
+    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\xnacollision.cpp" />
     <ClCompile Include="BasicModel.cpp" />
     <ClCompile Include="Biped.cpp" />
     <ClCompile Include="Box.cpp" />
     <ClCompile Include="CameraMain.cpp" />
-    <ClCompile Include="Collision.cpp" />
-    <ClCompile Include="Collisionwithroundobj.cpp" />
     <ClCompile Include="Controller.cpp" />
     <ClCompile Include="cubemap.cpp" />
     <ClCompile Include="d3dApp.cpp" />
     <ClCompile Include="Effects.cpp" />
-    <ClCompile Include="LoadM3d.cpp" />
     <ClCompile Include="LookDirection.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Mesh.cpp" />
-    <ClCompile Include="MeshGeometry.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="point.cpp" />
     <ClCompile Include="Position.cpp" />
+    <ClCompile Include="recordDatabase.cpp" />
     <ClCompile Include="RenderStates.cpp" />
     <ClCompile Include="SeniorPro.cpp" />
     <ClCompile Include="Settings.cpp" />
     <ClCompile Include="ShadowMap.cpp" />
-    <ClCompile Include="SkinnedData.cpp" />
-    <ClCompile Include="SkinnedModel.cpp" />
     <ClCompile Include="Ssao.cpp" />
     <ClCompile Include="Stats.cpp" />
     <ClCompile Include="Team.cpp" />
     <ClCompile Include="Terrain.cpp" />
-    <ClCompile Include="TriangleCollision.cpp" />
     <ClCompile Include="Vertex.cpp" />
     <ClCompile Include="VertexMain.cpp" />
     <ClCompile Include="WalkingStatus.cpp" />
@@ -137,49 +130,43 @@
     <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\Camera.h" />
-    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\d3dUtil.h" />
-    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\d3dx11effect.h" />
-    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\GameTimer.h" />
-    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\GeometryGenerator.h" />
-    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\LightHelper.h" />
-    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\MathHelper.h" />
-    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\TextureMgr.h" />
-    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\Waves.h" />
-    <ClInclude Include="..\..\..\..\3DGameProgramming\Common\xnacollision.h" />
+    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\Camera.h" />
+    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\d3dUtil.h" />
+    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\d3dx11effect.h" />
+    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\GameTimer.h" />
+    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\GeometryGenerator.h" />
+    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\LightHelper.h" />
+    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\MathHelper.h" />
+    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\TextureMgr.h" />
+    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\Waves.h" />
+    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\xnacollision.h" />
     <ClInclude Include="BasicModel.h" />
     <ClInclude Include="Biped.h" />
     <ClInclude Include="Box.h" />
-    <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraMain.h" />
-    <ClInclude Include="Collision.h" />
-    <ClInclude Include="Collisionwithroundobj.h" />
     <ClInclude Include="Controller.h" />
     <ClInclude Include="cubemap.h" />
     <ClInclude Include="d3dApp.h" />
     <ClInclude Include="Direction.h" />
     <ClInclude Include="Effects.h" />
-    <ClInclude Include="LoadM3d.h" />
     <ClInclude Include="LookDirection.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Mesh.h" />
-    <ClInclude Include="MeshGeometry.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="Physics.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Position.h" />
+    <ClInclude Include="Quad.h" />
+    <ClInclude Include="recordDatabase.h" />
     <ClInclude Include="RenderStates.h" />
     <ClInclude Include="Settings.h" />
     <ClInclude Include="ShadowMap.h" />
-    <ClInclude Include="SkinnedData.h" />
-    <ClInclude Include="SkinnedModel.h" />
     <ClInclude Include="Ssao.h" />
     <ClInclude Include="Stance.h" />
     <ClInclude Include="Stats.h" />
     <ClInclude Include="Struct.h" />
     <ClInclude Include="Team.h" />
     <ClInclude Include="Terrain.h" />
-    <ClInclude Include="TriangleCollision.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="VertexMain.h" />
     <ClInclude Include="WalkingStatus.h" />
@@ -199,6 +186,62 @@
     <FxCompile Include="FX\SsaoBlur.fx" />
     <FxCompile Include="FX\SsaoNormalDepth.fx" />
     <FxCompile Include="FX\Terrain.fx" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FX\Basic.fxo" />
+    <None Include="FX\BuildShadowMap.fxo" />
+    <None Include="FX\cubemap.fxo" />
+    <None Include="FX\DebugTexture.fxo" />
+    <None Include="FX\NormalMap.fxo" />
+    <None Include="FX\Sky.fxo" />
+    <None Include="FX\Ssao.fxo" />
+    <None Include="FX\SsaoBlur.fxo" />
+    <None Include="FX\SsaoNormalDepth.fxo" />
+    <None Include="FX\Terrain.fxo" />
+    <None Include="Models\soldier.m3d" />
+    <None Include="Models\tree.m3d" />
+    <None Include="Textures\map1.raw" />
+    <None Include="Textures\terrain.raw" />
+    <None Include="Textures\terrain2.raw" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Library and Include Files.txt" />
+    <Text Include="Models\car.txt" />
+    <Text Include="Models\skull.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Textures\blend.dds" />
+    <Image Include="Textures\bricks.dds" />
+    <Image Include="Textures\bricks_nmap.dds" />
+    <Image Include="Textures\darkdirt.dds" />
+    <Image Include="Textures\desertcube1024.dds" />
+    <Image Include="Textures\floor.dds" />
+    <Image Include="Textures\floor_nmap.dds" />
+    <Image Include="Textures\grass.dds" />
+    <Image Include="Textures\grasscube1024.dds" />
+    <Image Include="Textures\head_diff.dds" />
+    <Image Include="Textures\head_norm.dds" />
+    <Image Include="Textures\jacket_diff.dds" />
+    <Image Include="Textures\jacket_norm.dds" />
+    <Image Include="Textures\lightdirt.dds" />
+    <Image Include="Textures\pants_diff.dds" />
+    <Image Include="Textures\pants_norm.dds" />
+    <Image Include="Textures\snow.dds" />
+    <Image Include="Textures\snowcube1024.dds" />
+    <Image Include="Textures\stone.dds" />
+    <Image Include="Textures\stones.dds" />
+    <Image Include="Textures\stones_nmap.dds" />
+    <Image Include="Textures\sunsetcube1024.dds" />
+    <Image Include="Textures\terrain.dds" />
+    <Image Include="Textures\tree01-bark_diffuse.dds" />
+    <Image Include="Textures\tree01-bark_normal.dds" />
+    <Image Include="Textures\tree01-leaves_diffuse.dds" />
+    <Image Include="Textures\tree01-leaves_normal.dds" />
+    <Image Include="Textures\upBody_diff.dds" />
+    <Image Include="Textures\upbody_norm.dds" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="Music.mp3" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

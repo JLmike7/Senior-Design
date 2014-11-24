@@ -23,7 +23,7 @@ private:
 protected:
 	Position*	position;
 	bool		isDead;
-//	Box			hitbox;
+	//	Box			hitbox;
 	bool		gravityEnabled;
 };
 

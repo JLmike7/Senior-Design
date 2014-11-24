@@ -4,7 +4,7 @@ class Point
 public:
 	//Creates a point at the origin (0,0,0) by default.
 	Point();
-	Point(float x,float y,float z);
+	Point(float x, float y, float z);
 	Point(float coords[3]);
 	~Point();
 	float getX();

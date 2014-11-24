@@ -1,12 +1,9 @@
-
 #ifndef CAMERA_H
 #define CAMERA_H
 
-//#include <windows.h>
 #include <d3d11.h>
-//#include <d3dx11.h>
-//#include <d3dx10.h>
 #include <xnamath.h>
+#include "Point.h"
 
 class CameraMain
 {
@@ -24,10 +21,13 @@ public:
 	void setCamProjection(float a, float b, float c, float d);
 
 	XMVECTOR getCamPosition();
+	Point getsCamPosition();
 	void setCamPosition(float a, float b, float c, float d);
 	XMVECTOR getCamTarget();
+	Point getsCamTarget();
 	void setCamTarget(float a, float b, float c, float d);
 	XMVECTOR getCamUp();
+	Point getsCamUp();
 	void setCamUp(float a, float b, float c, float d);
 
 	///////////////**************new**************////////////////////
@@ -55,7 +55,6 @@ public:
 	///////////////**************new**************////////////////////
 
 private:
-
 	XMMATRIX WVP;
 	XMMATRIX World;
 	XMMATRIX camView;

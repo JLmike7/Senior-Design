@@ -32,6 +32,6 @@ protected:
 	int playerIndex;
 	Biped* people[TEAM_SIZE*NUMBER_TEAMS];
 	Physics* physics;
-	Object* objects[MAX_OBJECTS];
+	//Object* objects[MAX_OBJECTS];
 	Settings* settings;
 };
