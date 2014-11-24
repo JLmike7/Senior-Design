@@ -93,11 +93,17 @@ protected:
 	float pickedDist8;
 	float pickedDist9;
 	float pickedDist10;
-	
+	float enemyXPos[30]; //= -30.0f;
+	float enemyZPos[30];// = 60.0f;
+	float enemyRot[30];
+	float exadd[30];// = 0.0f;
+	float ezadd[30];// = 0.0f;
 
 	//Random number for AI
 	int randX;
 	int randZ;
+	int randRot; 
+	int randAttack;
 	
 	///////////////**************new**************////////////////////
 
