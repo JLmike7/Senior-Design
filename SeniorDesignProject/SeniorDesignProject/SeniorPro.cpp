@@ -5,7 +5,7 @@
 #include "Mesh.h"
 #include "Enemy.h"
 #include "Collision.h"
-
+#include "RecordDatabase.h"
 #define MESHCOUNT 2
 
 class SeniorPro : public D3DApp
@@ -43,7 +43,7 @@ private:
 
 	XMMATRIX groundWorld;
 	XMMATRIX sphereWorld;
-	
+
 	XMMATRIX Rotation;
 	XMMATRIX Scale;
 	XMMATRIX Translation;
@@ -226,7 +226,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance,
 
 	//load a wave file
 	if (!buffer4.load("Revive.wav"))
-	{
+{
 		g_engineRevive->Release();
 		CoUninitialize();
 	}
@@ -242,14 +242,14 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance,
 
 	//create the engine
 	if (FAILED(XAudio2Create(&g_engineReload)))
-	{
+{
 		CoUninitialize();
 		return -1;
 	}
 
 	//create the mastering voice
 	if (FAILED(g_engineReload->CreateMasteringVoice(&g_masterReload)))
-	{
+{
 		g_engineReload->Release();
 		CoUninitialize();
 		return -2;
@@ -257,7 +257,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance,
 
 	//load a wave file
 	if (!buffer5.load("Reload.wav"))
-	{
+{
 		g_engineGun->Release();
 		CoUninitialize();
 	}
@@ -324,8 +324,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance,
 			L"Error", MB_OK);
 		return 0;
 	}
-
-
+	
+	
 	return theApp.messageloop();
 }
 
@@ -372,7 +372,7 @@ bool SeniorPro::InitScene()
 	//Init hit person
 	hitMe = 1;
 	InitD2DScreenTexture();
-	
+
 	// Create cubemap
 	mCubemap = new Cubemap(d3d11Device);
 
@@ -625,7 +625,7 @@ bool SeniorPro::InitScene()
 			enemyXPos[i] = enemyXPos[i-1] + 10;
 			enemyZPos[i] += 0;
 		}
-		
+
 		enemyHit[i] = 0;
 
 		//set the loaded bottles world space
@@ -677,15 +677,15 @@ void SeniorPro::UpdateScene(double time)
 	for (int i = 0; i < numEnemies; i++)
 	{
 		if (enemyHit[i] == 0) //No need to check enemies already hit
-		{
+	{
 			//Set temp pick distances for camera vs objects
 			tempDist = pick(prwsPos, prwsDir, enemyArray[i].vertPosArray, enemyArray[i].vertIndexArray, enemyArray[i].meshWorld);
 			tempDist2 = pick(prwsPos2, prwsDir2, enemyArray[i].vertPosArray, enemyArray[i].vertIndexArray, enemyArray[i].meshWorld);
 			tempDist3 = pick(prwsPos3, prwsDir3, enemyArray[i].vertPosArray, enemyArray[i].vertIndexArray, enemyArray[i].meshWorld);
 			tempDist4 = pick(prwsPos4, prwsDir4, enemyArray[i].vertPosArray, enemyArray[i].vertIndexArray, enemyArray[i].meshWorld);
 			tempDist5 = pick(prwsPos5, prwsDir5, enemyArray[i].vertPosArray, enemyArray[i].vertIndexArray, enemyArray[i].meshWorld);
-		}
-	}
+}
+}
 
 	//Set temp pick distances for camera vs building
 	tempDist6 = pick(prwsPos, prwsDir, meshArray[1].vertPosArray, meshArray[1].vertIndexArray, meshArray[1].meshWorld);
@@ -706,7 +706,7 @@ void SeniorPro::UpdateScene(double time)
 	pickedDist9 = tempDist9;
 	pickedDist10 = tempDist10;
 
-	
+
 	//Reset cube1World
 	groundWorld = XMMatrixIdentity();
 
@@ -730,7 +730,7 @@ void SeniorPro::UpdateScene(double time)
 
 	// Mesh Array
 	for (int i = 0; i < MESHCOUNT; i++)
-	{
+{
 
 		for (int i = 0; i < numEnemies; i++)
 		{
@@ -806,7 +806,7 @@ void SeniorPro::UpdateScene(double time)
 
 						Translation = XMMatrixTranslation(enemyXPos[i] += .00, 2.0f, enemyZPos[i] += .00);
 						coll[i].setLocation(Point(enemyXPos[i] += .00, 2.0f, enemyZPos[i] += .00));
-						
+
 					}
 					else
 					{
@@ -847,18 +847,18 @@ void SeniorPro::UpdateScene(double time)
 				}
 				//If playerX > enemyX, increase enemyX, PlayerZ < enemyZ, decrease enemyZ
 				if (XMVectorGetX(mCam.getCamPosition()) >= enemyXPos[i] && XMVectorGetZ(mCam.getCamPosition()) < enemyZPos[i])
-				{
+	{
 					//Rotate enemy toward player
 					if ((mCam.getCamYaw() >= enemyRot[i]))
-					{
+		{
 						Rotation = XMMatrixRotationY(enemyRot[i] += 0.01f);
 						if (enemyRot[i] > 6.28f)
 							enemyRot[i] = 0.0f;
 						if (enemyRot[i] < 0.0f)
 							enemyRot[i] = 6.28f;
-					}
-					else
-					{
+		}
+		else
+		{
 						Rotation = XMMatrixRotationY(enemyRot[i] -= 0.01f);
 						if (enemyRot[i] > 6.28f)
 							enemyRot[i] = 0.0f;
@@ -899,17 +899,12 @@ void SeniorPro::UpdateScene(double time)
 							//play the sound
 							g_sourceHit->SubmitSourceBuffer(buffer6.xaBuffer());
 							//}
-						}
+		}
 						Translation = XMMatrixTranslation(enemyXPos[i] += .00, 2.0f, enemyZPos[i] -= .00);
 						coll[i].setLocation(Point(enemyXPos[i] += .00, 2.0f, enemyZPos[i] -= .00));
-					}
-					else{
-						//Attack on random (moving so less likely to hit)
-						if (randAttack % 77 == 0)
-						{
-							Player1.setHealth(Player1.getHealth() - 3);
+	}
 
-							//start consuming audio in the source voice
+		//start consuming audio in the source voice
 							g_sourceGun->Start();
 							//simple message loop
 							//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
@@ -924,17 +919,17 @@ void SeniorPro::UpdateScene(double time)
 
 							//start consuming audio in the source voice
 							g_sourceHit->Start();
-							//simple message loop
-							//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
-							//{
+		//simple message loop
+		//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
+		//{
 							g_sourceHit->Stop();
 							g_sourceHit->FlushSourceBuffers();
 							g_sourceHit->Start();
 
-							//play the sound
+		//play the sound
 							g_sourceHit->SubmitSourceBuffer(buffer6.xaBuffer());
-							//}
-						}
+		//}
+	}
 						Translation = XMMatrixTranslation(enemyXPos[i] += .01, 2.0f, enemyZPos[i] -= .01);
 						coll[i].setLocation(Point(enemyXPos[i] += .01, 2.0f, enemyZPos[i] -= .01));
 					}
@@ -942,31 +937,31 @@ void SeniorPro::UpdateScene(double time)
 				}
 				//If playerX < enemyX, decrease enemyX, PlayerZ > enemyZ, increase enemyZ
 				if (XMVectorGetX(mCam.getCamPosition()) < enemyXPos[i] && XMVectorGetZ(mCam.getCamPosition()) >= enemyZPos[i])
-				{
+	{
 					//Rotate enemy toward player
 					if ((mCam.getCamYaw() >= enemyRot[i]))
-					{
+		{
 						Rotation = XMMatrixRotationY(enemyRot[i] += 0.01f);
 						if (enemyRot[i] > 6.28f)
 							enemyRot[i] = 0.0f;
 						if (enemyRot[i] < 0.0f)
 							enemyRot[i] = 6.28f;
-					}
-					else
-					{
+		}
+		else
+		{
 						Rotation = XMMatrixRotationY(enemyRot[i] -= 0.01f);
 						if (enemyRot[i] > 6.28f)
 							enemyRot[i] = 0.0f;
 						if (enemyRot[i] < 0.0f)
 							enemyRot[i] = 6.28f;
-					}
+	}
 					//If enemy is close to player, stop!
 					if ((enemyXPos[i] - XMVectorGetX(mCam.getCamPosition()) <= 5 && enemyZPos[i] - XMVectorGetZ(mCam.getCamPosition()) <= 5)
 						&& (enemyXPos[i] - XMVectorGetX(mCam.getCamPosition()) >= -5 && enemyZPos[i] - XMVectorGetZ(mCam.getCamPosition()) >= -5))
-					{
+	{
 						//Attack on random
 						if (randAttack % 33 == 0)
-						{
+		{
 							Player1.setHealth(Player1.getHealth() - 3);
 
 							//start consuming audio in the source voice
@@ -998,11 +993,11 @@ void SeniorPro::UpdateScene(double time)
 
 						Translation = XMMatrixTranslation(enemyXPos[i] -= .00, 2.0f, enemyZPos[i] += .00);
 						coll[i].setLocation(Point(enemyXPos[i] -= .00, 2.0f, enemyZPos[i] += .00));
-					}
+		}
 					else{
 						//Attack on random (moving so less likely to hit)
 						if (randAttack % 77 == 0)
-						{
+		{
 							Player1.setHealth(Player1.getHealth() - 3);
 
 							//start consuming audio in the source voice
@@ -1030,26 +1025,26 @@ void SeniorPro::UpdateScene(double time)
 							//play the sound
 							g_sourceHit->SubmitSourceBuffer(buffer6.xaBuffer());
 							//}
-						}
+		}
 						Translation = XMMatrixTranslation(enemyXPos[i] -= .01, 2.0f, enemyZPos[i] += .01);
 						coll[i].setLocation(Point(enemyXPos[i] -= .01, 2.0f, enemyZPos[i] += .01));
-					}
+	}
 
 				}
 				//If playerX < enemyX, decrease enemyX, PlayerZ < enemyZ, decrease enemyZ
 				if (XMVectorGetX(mCam.getCamPosition()) < enemyXPos[i] && XMVectorGetZ(mCam.getCamPosition()) < enemyZPos[i])
-				{
+	{
 					//Rotate enemy toward player
 					if ((mCam.getCamYaw() >= enemyRot[i]))
-					{
+		{
 						Rotation = XMMatrixRotationY(enemyRot[i] += 0.01f);
 						if (enemyRot[i] > 6.28f)
 							enemyRot[i] = 0.0f;
 						if (enemyRot[i] < 0.0f)
 							enemyRot[i] = 6.28f;
-					}
-					else
-					{
+		}
+		else
+		{
 						Rotation = XMMatrixRotationY(enemyRot[i] -= 0.01f);
 						if (enemyRot[i] > 6.28f)
 							enemyRot[i] = 0.0f;
@@ -1089,10 +1084,10 @@ void SeniorPro::UpdateScene(double time)
 							//play the sound
 							g_sourceHit->SubmitSourceBuffer(buffer6.xaBuffer());
 							//}
-						}
+		}
 						Translation = XMMatrixTranslation(enemyXPos[i] -= .00, 2.0f, enemyZPos[i] -= .00);
 						coll[i].setLocation(Point(enemyXPos[i] -= .00, 2.0f, enemyZPos[i] -= .00));
-					}
+	}
 					else
 					{
 						//Attack on random (moving so less likely to hit)
@@ -1182,21 +1177,21 @@ void SeniorPro::UpdateScene(double time)
 				{
 					//Rotate enemy randomly
 					if (randRot > 500)
-					{
+	{
 						Rotation = XMMatrixRotationY(enemyRot[i] += 0.3f);
 						if (enemyRot[i] > 6.28f)
 							enemyRot[i] = 0.0f;
 						if (enemyRot[i] < 0.0f)
 							enemyRot[i] = 6.28f;
-					}
-					else
-					{
+	}
+	else
+	{
 						Rotation = XMMatrixRotationY(enemyRot[i] -= 0.3f);
 						if (enemyRot[i] > 6.28f)
 							enemyRot[i] = 0.0f;
 						if (enemyRot[i] < 0.0f)
 							enemyRot[i] = 6.28f;
-					}
+	}
 
 					Translation = XMMatrixTranslation(enemyXPos[i] += .04, 2.0f, enemyZPos[i] += .04);
 					coll[i].setLocation(Point(enemyXPos[i] += .04, 2.0f, enemyZPos[i] += .04));
@@ -1287,7 +1282,7 @@ void SeniorPro::UpdateScene(double time)
 			Translation = XMMatrixTranslation(0.0f, 0.0f, 0.0f );
 
 			meshArray[i].meshWorld = Rotation * Scale * Translation;
-		}
+	}
 		if (i == 1)
 		{
 			meshArray[i].meshWorld = XMMatrixIdentity();
@@ -1368,7 +1363,7 @@ void SeniorPro::RenderText(std::wstring text, int inInt)
 			<< L"Player Yaw: " << mCam.getCamYaw() << "\n"
 			<< L"Enemy Rot: " << enemyRot[1] << "\n"
 			<< L"Dist from enemy1: " << enemyXPos[1] - XMVectorGetX(mCam.getCamPosition()) << "\n";
-		printText = printString.str();
+	printText = printString.str();
 		if (reloadBro == true)
 		{
 			printString <<
@@ -1477,7 +1472,7 @@ void SeniorPro::DrawScene()
 	d3d11DevCon->PSSetSamplers(0, 1, &CubesTexSamplerState);
 	d3d11DevCon->RSSetState(CCWcullMode);
 	//d3d11DevCon->DrawIndexed( 6, 0, 0 );
-	
+
 	//Draw our model's NON-transparent subsets
 	for (int i = 0; i < MESHCOUNT; i++)
 	{
@@ -1520,9 +1515,9 @@ void SeniorPro::DrawScene()
 
 	//Draw our model's TRANSPARENT subsets now
 	for (int i = 0; i < MESHCOUNT; i++)
-	{
+		{
 		drawModel(&meshArray[i], true);
-	}
+		}
 	for (int i = 0; i < numEnemies; i++)
 	{
 		if (!enemyHit[i])
@@ -1538,7 +1533,7 @@ void SeniorPro::DrawScene()
 }
 
 void SeniorPro::DetectInput(double time)
-{
+	{
 	DIMOUSESTATE mouseCurrState;
 
 	BYTE keyboardState[256];
@@ -1552,6 +1547,23 @@ void SeniorPro::DetectInput(double time)
 	bool flip = false;
 	if (keyboardState[DIK_ESCAPE] & 0x80)
 		PostMessage(hwnd, WM_DESTROY, 0, 0);
+
+	//Database testing.  Remove later.
+	if (keyboardState[DIK_E] & 0x80){
+		//add user
+		db.addUser(_T("USER"), _T("PASS"));
+		//log in
+		db.logIn(_T("USER"), _T("PASS"));
+		//check log in
+		db.isLoggedIn();
+
+		//get how many headshots
+		DatabaseEntry *results[MAX_FIELDS];
+		Field fields[1] = { HEADSHOTS };
+		db.getRecord(fields, 1, results);
+
+	}
+	//End database testing
 
 	float speed = 15.0f * time;
 	if (keyboardState[DIK_M] & 0x80)
@@ -1575,11 +1587,11 @@ void SeniorPro::DetectInput(double time)
 		if (coll[i].checkPointCollision(Point(XMVectorGetX(mCam.getCamPosition()), XMVectorGetY(mCam.getCamPosition()), XMVectorGetZ(mCam.getCamPosition())))){
 			move = false;
 			break;
-			
+
 		}
 		else{
 			move = true;
-			
+
 		}
 	}
 
@@ -1589,20 +1601,20 @@ void SeniorPro::DetectInput(double time)
 	{
 		//moveLeftRight -= speed;
 		mCam.setMoveLeftRight(mCam.getMoveLeftRight() - speed);
-		
-	}
+
+}
 	if (keyboardState[DIK_D] & 0x80 && pickedDist >= 0.5 && pickedDist2 >= 0.5 && pickedDist3 >= 0.5 && pickedDist4 >= 0.5 && pickedDist5 >= 0.5
 		&& pickedDist6 >= 0.5 && pickedDist7 >= 0.5 && pickedDist8 >= 0.5 && pickedDist9 >= 0.5 && pickedDist10 >= 0.5)
-	{
+{
 		//moveLeftRight += speed;
 		mCam.setMoveLeftRight(mCam.getMoveLeftRight() + speed);
-	}
+}
 	if (keyboardState[DIK_W] & 0x80 && pickedDist >= 0.5 && pickedDist2 >= 0.5 && pickedDist3 >= 0.5 && pickedDist4 >= 0.5 && pickedDist5 >= 0.5
 		&& pickedDist6 >= 0.5 && pickedDist7 >= 0.5 && pickedDist8 >= 0.5 && pickedDist9 >= 0.5 && pickedDist10 >= 0.5)
-	{
+{
 		//moveBackForward += speed;
 		mCam.setMoveBackForward(mCam.getMoveBackForward() + speed);
-	}
+}
 	if (keyboardState[DIK_S] & 0x80)
 	{
 		//moveBackForward -= speed;
@@ -1612,7 +1624,7 @@ void SeniorPro::DetectInput(double time)
 	{
 
 		if (PlayerWep.getMagSize() < 8)
-		{
+{
 			//start consuming audio in the source voice
 
 			//simple message loop
@@ -1641,11 +1653,11 @@ void SeniorPro::DetectInput(double time)
 		//Gun
 		if (PlayerWep.getMagSize() <= 0){
 			reloadBro = true;
-		}
+	}
 		else{
-			
+
 			if (isShoot == false)
-			{
+{
 			PlayerWep.setMagSize(PlayerWep.getMagSize() - 1);
 
 			//start consuming audio in the source voice
@@ -1660,8 +1672,8 @@ void SeniorPro::DetectInput(double time)
 			//play the sound
 			g_sourceGun->SubmitSourceBuffer(buffer2.xaBuffer());
 			//}
-			
-			
+
+
 			POINT mousePos;
 
 			GetCursorPos(&mousePos);
@@ -1678,7 +1690,7 @@ void SeniorPro::DetectInput(double time)
 				pickRayVector(Width/2, Height/2, prwsPos, prwsDir);
 
 			for (int i = 0; i < numEnemies; i++)
-			{
+		{
 				if (enemyHit[i] == 0) //No need to check enemies already hit
 				{
 					tempDist = pick(prwsPos, prwsDir, enemyArray[i].vertPosArray, enemyArray[i].vertIndexArray, enemyArray[i].meshWorld);
@@ -1688,32 +1700,32 @@ void SeniorPro::DetectInput(double time)
 						hitIndex = i;
 					}
 				}
-			}
+		}
 
 			if (closestDist < FLT_MAX)
-			{
+		{
 					hitMe = hitIndex;
 					//Reduce that enemies health
 					enemyStats[hitIndex].setHealth(enemyStats[hitIndex].getHealth() - 20);
 					//If their health is less then 0 they are dead. remove them.
 					if (enemyStats[hitIndex].getHealth() <= 0){
 						enemies[hitIndex].setDeath(true);
-						
+
 				enemyHit[hitIndex] = 1;
 				pickedDist = closestDist;
 				score++;
-			}
-				}
+		}
+	}
 
 			isShoot = true;
-		}
+	}
 		//CHECK HERE
 
 		}
-		
+
 	//CHECK HERE
 	if (!mouseCurrState.rgbButtons[0])
-	{
+		{
 		isShoot = false;
 	}
 	//CHECK HERE
@@ -1733,9 +1745,9 @@ void SeniorPro::DetectInput(double time)
 		//play the sound
 		g_sourceHit->SubmitSourceBuffer(buffer6.xaBuffer());
 		//}
-	}
+}
 	if ((mouseCurrState.lX != mouseLastState.lX) || (mouseCurrState.lY != mouseLastState.lY))
-	{
+{
 		//camYaw += mouseLastState.lX * 0.001f;
 		mCam.setCamYaw(mCam.getCamYaw() + (mouseLastState.lX * 0.001f));
 
@@ -1758,9 +1770,9 @@ void SeniorPro::DetectInput(double time)
 }
 
 void SeniorPro::drawModel(Mesh* mesh, bool transparent)
-{
-	if (transparent)
 	{
+	if (transparent)
+		{
 		//Draw our model's TRANSPARENT subsets now
 
 		//Set our blend state
@@ -1801,7 +1813,7 @@ void SeniorPro::drawModel(Mesh* mesh, bool transparent)
 	{
 		//Draw our model's NON-transparent subsets
 		for (int i = 0; i < mesh->subsetCount; ++i)
-		{
+	{
 			//Set the grounds index buffer
 			d3d11DevCon->IASetIndexBuffer(mesh->indexBuff, DXGI_FORMAT_R32_UINT, 0);
 			//Set the grounds vertex buffer
@@ -1829,8 +1841,8 @@ void SeniorPro::drawModel(Mesh* mesh, bool transparent)
 			if (!material[mesh->subsetTexture[i]].transparent)
 				d3d11DevCon->DrawIndexed(indexDrawAmount, indexStart, 0);
 		}
+		}
 	}
-}
 
 void SeniorPro::pickRayVector(float mouseX, float mouseY, XMVECTOR& pickRayInWorldSpacePos, XMVECTOR& pickRayInWorldSpaceDir)
 {
@@ -1870,7 +1882,7 @@ float SeniorPro::pick(XMVECTOR pickRayInWorldSpacePos,
 {
 	//Loop through each triangle in the object
 	for (int i = 0; i < indexPosArray.size() / 3; i++)
-	{
+{
 		//Triangle's vertices V1, V2, V3
 		XMVECTOR tri1V1 = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
 		XMVECTOR tri1V2 = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
@@ -1928,7 +1940,7 @@ float SeniorPro::pick(XMVECTOR pickRayInWorldSpacePos,
 			t = -(ep1 + tri1D) / (ep2);
 
 		if (t > 0.0f)    //Make sure you don't pick objects behind the camera
-		{
+	{
 			//Get the point on the plane
 			planeIntersectX = XMVectorGetX(pickRayInWorldSpacePos) + XMVectorGetX(pickRayInWorldSpaceDir) * t;
 			planeIntersectY = XMVectorGetY(pickRayInWorldSpacePos) + XMVectorGetY(pickRayInWorldSpaceDir) * t;
@@ -1938,12 +1950,12 @@ float SeniorPro::pick(XMVECTOR pickRayInWorldSpacePos,
 
 			//Call function to check if point is in the triangle
 			if (PointInTriangle(tri1V1, tri1V2, tri1V3, pointInPlane))
-			{
+	{
 				//Return the distance to the hit, so you can check all the other pickable objects in your scene
 				//and choose whichever object is closest to the camera
 				return t / 2.0f;
-			}
-		}
+	}
+	}
 	}
 	//return the max float value (near infinity) if an object was not picked
 	return FLT_MAX;
@@ -1961,16 +1973,16 @@ bool SeniorPro::PointInTriangle(XMVECTOR& triV1, XMVECTOR& triV2, XMVECTOR& triV
 		cp1 = XMVector3Cross((triV3 - triV1), (point - triV1));
 		cp2 = XMVector3Cross((triV3 - triV1), (triV2 - triV1));
 		if (XMVectorGetX(XMVector3Dot(cp1, cp2)) >= 0)
-		{
+	{
 			cp1 = XMVector3Cross((triV2 - triV1), (point - triV1));
 			cp2 = XMVector3Cross((triV2 - triV1), (triV3 - triV1));
 			if (XMVectorGetX(XMVector3Dot(cp1, cp2)) >= 0)
-			{
+	{
 				return true;
-			}
+	}
 			else
 				return false;
-		}
+}
 		else
 			return false;
 	}
