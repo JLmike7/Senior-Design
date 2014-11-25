@@ -1,8 +1,4 @@
-#include "recordDatabase.h"
-#include <atlstr.h>
-#include <oledb.h>
-#include <windows.h>
-#include <atlbase.h>
+#include "RecordDatabase.h"
 
 
 
@@ -22,8 +18,8 @@ bool recordDatabase::logIn(CString name, CString pass){
 	try{
 		CString q = _T("");
 		q.Format(_T("SELECT %d FROM accounts WHERE username == '%s' AND password == '%s';"),dbFieldNames[ID],name,pass);
-		databaseEntry *results[MAX_RESULT_SIZE][MAX_FIELDS];
-		clearResults(results);
+		DatabaseEntry *results[MAX_RESULT_SIZE][MAX_FIELDS];
+		//clearResults(results);
 		rawQuery(q,results);
 		if (results[0][0]->gotten){
 			id = results[0][0]->intValue;
@@ -75,7 +71,7 @@ bool recordDatabase::removeUser(){
 	return false;
 }
 
-bool recordDatabase::getRecord(field fields[], int numFields, databaseEntry *result[MAX_FIELDS]){
+bool recordDatabase::getRecord(Field fields[], int numFields, DatabaseEntry *result[MAX_FIELDS]){
 	if (isLoggedIn()){
 		CString q = _T("");
 		CString fieldsStr = _T("");
@@ -84,7 +80,7 @@ bool recordDatabase::getRecord(field fields[], int numFields, databaseEntry *res
 		}
 		q.Format(_T("SELECT %s FROM accounts WHERE %s = %d"), fieldsStr, dbFieldNames[ID], id);
 
-		databaseEntry *results[MAX_RESULT_SIZE][MAX_FIELDS];
+		DatabaseEntry *results[MAX_RESULT_SIZE][MAX_FIELDS];
 		clearResults(results);
 		rawQuery(q,results);
 
@@ -93,9 +89,9 @@ bool recordDatabase::getRecord(field fields[], int numFields, databaseEntry *res
 	}
 	return false;
 }
-bool recordDatabase::updateRecord(field field, int value, bool onlyIfGreater){
+bool recordDatabase::updateRecord(Field field, int value, bool onlyIfGreater){
 	if (isLoggedIn()){
-		databaseEntry *prevValue[MAX_FIELDS];
+		DatabaseEntry *prevValue[MAX_FIELDS];
 		bool recordGotten = getRecord({ &field }, 1, prevValue);
 		if (recordGotten && (!onlyIfGreater || prevValue[0]->intValue < value)){
 			CString q = _T("");
@@ -105,9 +101,9 @@ bool recordDatabase::updateRecord(field field, int value, bool onlyIfGreater){
 	}
 	return false;
 }
-bool recordDatabase::addToRecord(field field, int valueToAdd){
+bool recordDatabase::addToRecord(Field field, int valueToAdd){
 	if (isLoggedIn()){
-		databaseEntry *prevValue[MAX_FIELDS];
+		DatabaseEntry *prevValue[MAX_FIELDS];
 		bool recordGotten = getRecord({ &field }, 1, prevValue);
 		if (recordGotten){
 			return updateRecord(field, prevValue[0]->intValue + valueToAdd, false);
@@ -115,7 +111,7 @@ bool recordDatabase::addToRecord(field field, int valueToAdd){
 	}
 	return false;
 }
-bool recordDatabase::rawQuery(CString q,databaseEntry *results[MAX_RESULT_SIZE][MAX_FIELDS]){
+bool recordDatabase::rawQuery(CString q,DatabaseEntry *results[MAX_RESULT_SIZE][MAX_FIELDS]){
 	//Create command object
 	SACommand cmd(&con, q.GetBuffer(MAX_STRING_SIZE));
 	try{
@@ -165,10 +161,10 @@ bool recordDatabase::connect(){
 		// but can also be Sybase, Informix, DB2
 		// SQLServer, InterBase, SQLBase and ODBC
 		con.Connect(
-			"mysql1.000webhost.com:a4148308_MBM",     // database name
-			"a4148308_MBM",   // user name
-			"ycpcs14",   // password
-			SA_Oracle_Client);
+			"mysql1.000webhost.com@a4148308_MBM",     // database name
+			"a4148308_MBM",								// user name
+			"ycpcs14",									// password
+			SA_MySQL_Client);
 
 		printf("We are connected!\n");
 
@@ -194,7 +190,7 @@ bool recordDatabase::connect(){
 		return false;
 	}
 }
-void recordDatabase::clearResults(databaseEntry *results[MAX_RESULT_SIZE][MAX_FIELDS]){
+void recordDatabase::clearResults(DatabaseEntry *results[MAX_RESULT_SIZE][MAX_FIELDS]){
 	for (int i = 0; i < MAX_RESULT_SIZE; i++){
 		for (int field = 0; field < MAX_FIELDS; field++){
 

@@ -43,6 +43,7 @@
 #include <D3D10_1.h>
 #include <DXGI.h>
 #include <D2D1.h>
+#include "RecordDatabase.h"
 
 struct BoundingSphere
 {
@@ -77,6 +78,7 @@ private:
 	void BuildShapeGeometryBuffers();
 	void BuildSkullGeometryBuffers();
 	void BuildScreenQuadGeometryBuffers();
+	recordDatabase db;
 
 private:
 	Cubemap* mCubemap;
@@ -635,7 +637,20 @@ void SeniorPro::UpdateScene(float dt)
 			playerLoc.beginMove(Direction::FRONT, 0.001f);
 		}
 	}
+	if (keyboardState[DIK_E] & 0x80){
+		//add user
+		db.addUser(_T("USER"), _T("PASS"));
+		//log in
+		db.logIn(_T("USER"), _T("PASS"));
+		//check log in
+		db.isLoggedIn();
+		
+		//get how many headshots
+		DatabaseEntry *results[MAX_FIELDS];
+		Field fields[1] = { HEADSHOTS };
+		db.getRecord(fields, 1, results);
 
+	}
 	if (keyboardState[DIK_M] & 0x80)
 	{
 		//start consuming audio in the source voice
