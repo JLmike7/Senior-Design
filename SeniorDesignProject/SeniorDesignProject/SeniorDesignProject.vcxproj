@@ -41,8 +41,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(IncludePath);$(DXSDK_DIR)Include;$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSDK_IncludePath);$(FrameworkSDKDir)\include</IncludePath>
-    <LibraryPath>$(LibraryPath);$(DXSDK_DIR)Lib\x86;$(VCInstallDir)lib;$(VCInstallDir)atlmfc\lib;$(WindowsSDK_LibraryPath_x86);$(FrameworkSDKDir)\lib;C:\Program Files %28x86%29\Windows Kits\8.0\Lib\win8\um\x86;C:\Program Files %28x86%29\Windows Kits\8.0\Lib\win8\um\x64</LibraryPath>
+    <IncludePath>$(IncludePath);$(DXSDK_DIR)Include;$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSDK_IncludePath);$(FrameworkSDKDir)\include;C:\Users\Michael Marsh\Desktop\Common</IncludePath>
+    <LibraryPath>C:\Users\Michael Marsh\Desktop\Common;$(LibraryPath);$(DXSDK_DIR)Lib\x86;$(VCInstallDir)lib;$(VCInstallDir)atlmfc\lib;$(WindowsSDK_LibraryPath_x86);$(FrameworkSDKDir)\lib;C:\Program Files %28x86%29\Windows Kits\8.0\Lib\win8\um\x86;C:\Program Files %28x86%29\Windows Kits\8.0\Lib\win8\um\x64</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -90,23 +90,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\Camera.cpp" />
-    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\d3dUtil.cpp" />
-    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\GameTimer.cpp" />
-    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\GeometryGenerator.cpp" />
-    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\LightHelper.cpp" />
-    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\MathHelper.cpp" />
-    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\TextureMgr.cpp" />
-    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\Waves.cpp" />
-    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\xnacollision.cpp" />
-    <ClCompile Include="BasicModel.cpp" />
+    <ClCompile Include="..\..\..\..\..\Desktop\Common\Camera.cpp" />
+    <ClCompile Include="..\..\..\..\..\Desktop\Common\d3dApp.cpp" />
+    <ClCompile Include="..\..\..\..\..\Desktop\Common\d3dUtil.cpp" />
+    <ClCompile Include="..\..\..\..\..\Desktop\Common\GameTimer.cpp" />
+    <ClCompile Include="..\..\..\..\..\Desktop\Common\GeometryGenerator.cpp" />
+    <ClCompile Include="..\..\..\..\..\Desktop\Common\LightHelper.cpp" />
+    <ClCompile Include="..\..\..\..\..\Desktop\Common\MathHelper.cpp" />
+    <ClCompile Include="..\..\..\..\..\Desktop\Common\TextureMgr.cpp" />
+    <ClCompile Include="..\..\..\..\..\Desktop\Common\Waves.cpp" />
+    <ClCompile Include="..\..\..\..\..\Desktop\Common\xnacollision.cpp" />
     <ClCompile Include="Biped.cpp" />
     <ClCompile Include="Box.cpp" />
     <ClCompile Include="CameraMain.cpp" />
     <ClCompile Include="Controller.cpp" />
     <ClCompile Include="cubemap.cpp" />
-    <ClCompile Include="d3dApp.cpp" />
     <ClCompile Include="Effects.cpp" />
+    <ClCompile Include="Friendly.cpp" />
     <ClCompile Include="LookDirection.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Mesh.cpp" />
@@ -130,17 +130,17 @@
     <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\Camera.h" />
-    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\d3dUtil.h" />
-    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\d3dx11effect.h" />
-    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\GameTimer.h" />
-    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\GeometryGenerator.h" />
-    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\LightHelper.h" />
-    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\MathHelper.h" />
-    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\TextureMgr.h" />
-    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\Waves.h" />
-    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\xnacollision.h" />
-    <ClInclude Include="BasicModel.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\Common\Camera.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\Common\d3dApp.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\Common\d3dUtil.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\Common\d3dx11effect.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\Common\GameTimer.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\Common\GeometryGenerator.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\Common\LightHelper.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\Common\MathHelper.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\Common\TextureMgr.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\Common\Waves.h" />
+    <ClInclude Include="..\..\..\..\..\Desktop\Common\xnacollision.h" />
     <ClInclude Include="Biped.h" />
     <ClInclude Include="Box.h" />
     <ClInclude Include="CameraMain.h" />
@@ -149,6 +149,7 @@
     <ClInclude Include="d3dApp.h" />
     <ClInclude Include="Direction.h" />
     <ClInclude Include="Effects.h" />
+    <ClInclude Include="Friendly.h" />
     <ClInclude Include="LookDirection.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Mesh.h" />
@@ -156,7 +157,6 @@
     <ClInclude Include="Physics.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Position.h" />
-    <ClInclude Include="Quad.h" />
     <ClInclude Include="RecordDatabase.h" />
     <ClInclude Include="RenderStates.h" />
     <ClInclude Include="Settings.h" />
@@ -188,6 +188,7 @@
     <FxCompile Include="FX\Terrain.fx" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Enemy.mtl" />
     <None Include="FX\Basic.fxo" />
     <None Include="FX\BuildShadowMap.fxo" />
     <None Include="FX\cubemap.fxo" />
@@ -241,7 +242,18 @@
     <Image Include="Textures\upbody_norm.dds" />
   </ItemGroup>
   <ItemGroup>
-    <Media Include="Music.mp3" />
+    <Media Include="Gunshot.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\..\..\..\..\Desktop\Common\Effects11.lib" />
+    <Library Include="..\..\..\..\..\Desktop\Common\Effects11d.lib" />
+    <Library Include="..\..\..\..\..\Desktop\Common\sqlapi.lib" />
+    <Library Include="..\..\..\..\..\Desktop\Common\sqlapid.lib" />
+    <Library Include="..\..\..\..\..\Desktop\Common\sqlapis.lib" />
+    <Library Include="..\..\..\..\..\Desktop\Common\sqlapisd.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <Object Include="Enemy.obj" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

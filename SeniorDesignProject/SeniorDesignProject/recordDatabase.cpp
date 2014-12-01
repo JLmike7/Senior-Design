@@ -161,8 +161,8 @@ bool recordDatabase::connect(){
 		// but can also be Sybase, Informix, DB2
 		// SQLServer, InterBase, SQLBase and ODBC
 		con.Connect(
-			"mysql1.000webhost.com@a4148308_MBM",     // database name
-			"a4148308_MBM",								// user name
+			"mbm_records",     // database name
+			"root",								// user name
 			"ycpcs14",									// password
 			SA_MySQL_Client);
 
