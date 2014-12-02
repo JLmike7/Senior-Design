@@ -432,9 +432,6 @@
     <Image Include="Textures\upbody_norm.dds">
       <Filter>DDS</Filter>
     </Image>
-    <Image Include="heightmap.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="Models\soldier.m3d" />
@@ -472,8 +469,6 @@
     <None Include="FX\Terrain.fxo">
       <Filter>FX</Filter>
     </None>
-    <None Include="shotgun.mtl" />
-    <None Include="shotgun2.mtl" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Models\car.txt" />
@@ -482,9 +477,5 @@
   </ItemGroup>
   <ItemGroup>
     <Media Include="Music.mp3" />
-  </ItemGroup>
-  <ItemGroup>
-    <Object Include="shotgun.obj" />
-    <Object Include="shotgun2.obj" />
   </ItemGroup>
 </Project>

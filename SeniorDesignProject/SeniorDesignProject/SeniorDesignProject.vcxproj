@@ -200,8 +200,6 @@
     <None Include="FX\Terrain.fxo" />
     <None Include="Models\soldier.m3d" />
     <None Include="Models\tree.m3d" />
-    <None Include="shotgun.mtl" />
-    <None Include="shotgun2.mtl" />
     <None Include="Textures\map1.raw" />
     <None Include="Textures\terrain.raw" />
     <None Include="Textures\terrain2.raw" />
@@ -212,7 +210,6 @@
     <Text Include="Models\skull.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="heightmap.bmp" />
     <Image Include="Textures\blend.dds" />
     <Image Include="Textures\bricks.dds" />
     <Image Include="Textures\bricks_nmap.dds" />
@@ -245,10 +242,6 @@
   </ItemGroup>
   <ItemGroup>
     <Media Include="Music.mp3" />
-  </ItemGroup>
-  <ItemGroup>
-    <Object Include="shotgun.obj" />
-    <Object Include="shotgun2.obj" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
