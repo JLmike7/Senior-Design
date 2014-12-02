@@ -90,24 +90,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\Camera.cpp" />
-    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\d3dUtil.cpp" />
-    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\GameTimer.cpp" />
-    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\GeometryGenerator.cpp" />
-    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\LightHelper.cpp" />
-    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\MathHelper.cpp" />
-    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\TextureMgr.cpp" />
-    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\Waves.cpp" />
-    <ClCompile Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\xnacollision.cpp" />
-    <ClCompile Include="BasicModel.cpp" />
     <ClCompile Include="Biped.cpp" />
     <ClCompile Include="Box.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraMain.cpp" />
+    <ClCompile Include="Collision.cpp" />
+    <ClCompile Include="Collisionwithroundobj.cpp" />
     <ClCompile Include="Controller.cpp" />
     <ClCompile Include="cubemap.cpp" />
     <ClCompile Include="d3dApp.cpp" />
+    <ClCompile Include="d3dUtil.cpp" />
     <ClCompile Include="Effects.cpp" />
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="GeometryGenerator.cpp" />
+    <ClCompile Include="LightHelper.cpp" />
     <ClCompile Include="LookDirection.cpp" />
+    <ClCompile Include="MathHelper.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Object.cpp" />
@@ -123,40 +121,39 @@
     <ClCompile Include="Stats.cpp" />
     <ClCompile Include="Team.cpp" />
     <ClCompile Include="Terrain.cpp" />
+    <ClCompile Include="TextureMgr.cpp" />
+    <ClCompile Include="TriangleCollision.cpp" />
     <ClCompile Include="Vertex.cpp" />
     <ClCompile Include="VertexMain.cpp" />
     <ClCompile Include="WalkingStatus.cpp" />
+    <ClCompile Include="Waves.cpp" />
     <ClCompile Include="Weapon.cpp" />
     <ClCompile Include="World.cpp" />
+    <ClCompile Include="xnacollision.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\Camera.h" />
-    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\d3dUtil.h" />
-    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\d3dx11effect.h" />
-    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\GameTimer.h" />
-    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\GeometryGenerator.h" />
-    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\LightHelper.h" />
-    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\MathHelper.h" />
-    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\TextureMgr.h" />
-    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\Waves.h" />
-    <ClInclude Include="..\..\..\..\..\Documents\Visual Studio 2013\3DGameProgramming\Common\xnacollision.h" />
     <ClInclude Include="BasicModel.h" />
     <ClInclude Include="Biped.h" />
     <ClInclude Include="Box.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraMain.h" />
     <ClInclude Include="Controller.h" />
     <ClInclude Include="cubemap.h" />
     <ClInclude Include="d3dApp.h" />
+    <ClInclude Include="d3dUtil.h" />
     <ClInclude Include="Direction.h" />
     <ClInclude Include="Effects.h" />
+    <ClInclude Include="GameTimer.h" />
+    <ClInclude Include="GeometryGenerator.h" />
+    <ClInclude Include="LightHelper.h" />
     <ClInclude Include="LookDirection.h" />
+    <ClInclude Include="MathHelper.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="Physics.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Position.h" />
-    <ClInclude Include="Quad.h" />
     <ClInclude Include="recordDatabase.h" />
     <ClInclude Include="RenderStates.h" />
     <ClInclude Include="Settings.h" />
@@ -167,12 +164,15 @@
     <ClInclude Include="Struct.h" />
     <ClInclude Include="Team.h" />
     <ClInclude Include="Terrain.h" />
+    <ClInclude Include="TextureMgr.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="VertexMain.h" />
     <ClInclude Include="WalkingStatus.h" />
     <ClInclude Include="Wave.h" />
+    <ClInclude Include="Waves.h" />
     <ClInclude Include="Weapon.h" />
     <ClInclude Include="World.h" />
+    <ClInclude Include="xnacollision.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="FX\Basic.fx" />

@@ -101,7 +101,10 @@ protected:
 	float enemyRot[30];
 	float exadd[30];// = 0.0f;
 	float ezadd[30];// = 0.0f;
-
+	float EMoveX[30];
+	float EMoveZ[30];
+	float ERot[30];
+	
 	//Random number for AI
 	int randX;
 	int randZ;
