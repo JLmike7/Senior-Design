@@ -133,6 +133,12 @@ namespace Struct
 
 		std::vector<ModelAnimation> animations;
 	};
+
+	struct HeightMapInfo{		// Heightmap structure
+		int terrainWidth;		// Width of heightmap
+		int terrainHeight;		// Height (Length) of heightmap
+		XMFLOAT3 *heightMap;	// Array to store terrain's vertex positions
+	};
 }
 
 #endif // STRUCT_H
