@@ -90,6 +90,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BipedTest.cpp" />
+    <ClCompile Include="RecordDatabaseTest.cpp" />
     <ClCompile Include="SettingsTest.cpp" />
     <ClCompile Include="StatsTest.cpp" />
     <ClCompile Include="stdafx.cpp">

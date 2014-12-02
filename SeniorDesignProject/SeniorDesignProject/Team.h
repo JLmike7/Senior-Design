@@ -3,7 +3,7 @@
 
 #include "Biped.h"
 #include "Friendly.h"
-#include "Enemy.h"
+//#include "Enemy.h"
 #include<stdio.h>
 #include<stdlib.h>
 

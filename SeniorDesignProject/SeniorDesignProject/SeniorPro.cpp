@@ -3,6 +3,7 @@
 #include "VertexMain.h"
 #include "Cubemap.h"
 #include "Mesh.h"
+//#include "Enemy.h"
 #include "Collision.h"
 
 #define MESHCOUNT 2
@@ -450,7 +451,7 @@ bool SeniorPro::InitScene()
 	ZeroMemory(&indexBufferDesc, sizeof(indexBufferDesc));
 
 	indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	indexBufferDesc.ByteWidth = sizeof(DWORD) * 2 * 3;
+		indexBufferDesc.ByteWidth = sizeof(DWORD)* 2 * 3;
 	indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	indexBufferDesc.CPUAccessFlags = 0;
 	indexBufferDesc.MiscFlags = 0;
@@ -632,7 +633,7 @@ bool SeniorPro::InitScene()
 		// Init enemy locations
 		for (int i = 0; i < numEnemies; i++)
 		{
-			enemyXPos[i] = enemyXPos[i-1] + 10;
+				enemyXPos[i] = enemyXPos[i - 1] + 10;
 			enemyZPos[i] += 0;
 		}
 		
@@ -1184,7 +1185,7 @@ void SeniorPro::UpdateScene(double time)
 			Player1.Init();
 			PlayerWep.Init();
 		}
-	}
+				}
 			}
 
 			else {
@@ -1195,21 +1196,21 @@ void SeniorPro::UpdateScene(double time)
 					EMoveX[i] *= -1.0f;
 				}
 				if (randZ % 300 == 0)
-				{
+					{
 					EMoveZ[i] *= -1.0f;
-				}
+					}
 				//Only change rotation if number is divisible by 275
 				if (randRot % 275 == 0)
-				{
+					{
 					ERot[i] *= -1.0f;
-				}
+					}
 
 				//Rotate enemy, don't let it go past full 360 degrees (2 pi)
 				Rotation = XMMatrixRotationY(enemyRot[i] += ERot[i]);
-				if (enemyRot[i] > 6.28f)
-					enemyRot[i] = 0.0f;
-				if (enemyRot[i] < 0.0f)
-					enemyRot[i] = 6.28f;
+						if (enemyRot[i] > 6.28f)
+							enemyRot[i] = 0.0f;
+						if (enemyRot[i] < 0.0f)
+							enemyRot[i] = 6.28f;
 
 				//Translate and update enemy and respective collision box
 				Translation = XMMatrixTranslation(enemyXPos[i] += EMoveX[i], 2.0f, enemyZPos[i] += EMoveZ[i]);
@@ -1226,7 +1227,7 @@ void SeniorPro::UpdateScene(double time)
 			meshArray[i].meshWorld = XMMatrixIdentity();
 			Rotation = XMMatrixRotationY(3.14f);
 			Scale = XMMatrixScaling(0.25f, 0.25f, 0.25f);
-			Translation = XMMatrixTranslation(0.0f, 0.0f, 0.0f );
+				Translation = XMMatrixTranslation(0.0f, 0.0f, 0.0f);
 
 			meshArray[i].meshWorld = Rotation * Scale * Translation;
 		}
@@ -1585,74 +1586,74 @@ void SeniorPro::DetectInput(double time)
 			reloadBro = true;
 		}
 		else{
-
+			
 			if (isShoot == false)
 			{
-				PlayerWep.setMagSize(PlayerWep.getMagSize() - 1);
+			PlayerWep.setMagSize(PlayerWep.getMagSize() - 1);
 
-				//start consuming audio in the source voice
-				g_sourceGun->Start();
-				//simple message loop
-				//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
-				//{
-				g_sourceGun->Stop();
-				g_sourceGun->FlushSourceBuffers();
-				g_sourceGun->Start();
+			//start consuming audio in the source voice
+			g_sourceGun->Start();
+			//simple message loop
+			//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
+			//{
+			g_sourceGun->Stop();
+			g_sourceGun->FlushSourceBuffers();
+			g_sourceGun->Start();
 
-				//play the sound
-				g_sourceGun->SubmitSourceBuffer(buffer2.xaBuffer());
-				//}
+			//play the sound
+			g_sourceGun->SubmitSourceBuffer(buffer2.xaBuffer());
+			//}
+			
+			
+			POINT mousePos;
 
+			GetCursorPos(&mousePos);
+			ScreenToClient(hwnd, &mousePos);
 
-				POINT mousePos;
+			int mousex = mousePos.x;
+			int mousey = mousePos.y;
 
-				GetCursorPos(&mousePos);
-				ScreenToClient(hwnd, &mousePos);
+			float tempDist;
+			float closestDist = FLT_MAX;
+			int hitIndex;
 
-				int mousex = mousePos.x;
-				int mousey = mousePos.y;
+			XMVECTOR prwsPos, prwsDir;
+					pickRayVector(Width / 2, Height / 2, prwsPos, prwsDir);
 
-				float tempDist;
-				float closestDist = FLT_MAX;
-				int hitIndex;
-
-				XMVECTOR prwsPos, prwsDir;
-				pickRayVector(Width / 2, Height / 2, prwsPos, prwsDir);
-
-				for (int i = 0; i < numEnemies; i++)
+			for (int i = 0; i < numEnemies; i++)
+			{
+				if (enemyHit[i] == 0) //No need to check enemies already hit
 				{
-					if (enemyHit[i] == 0) //No need to check enemies already hit
+					tempDist = pick(prwsPos, prwsDir, enemyArray[i].vertPosArray, enemyArray[i].vertIndexArray, enemyArray[i].meshWorld);
+					if (tempDist < closestDist)
 					{
-						tempDist = pick(prwsPos, prwsDir, enemyArray[i].vertPosArray, enemyArray[i].vertIndexArray, enemyArray[i].meshWorld);
-						if (tempDist < closestDist)
-						{
-							closestDist = tempDist;
-							hitIndex = i;
-						}
+						closestDist = tempDist;
+						hitIndex = i;
 					}
 				}
+			}
 
-				if (closestDist < FLT_MAX)
-				{
+			if (closestDist < FLT_MAX)
+			{
 					hitMe = hitIndex;
 					//Reduce that enemies health
 					enemyStats[hitIndex].setHealth(enemyStats[hitIndex].getHealth() - 20);
 					//If their health is less then 0 they are dead. remove them.
 					if (enemyStats[hitIndex].getHealth() <= 0){
 						enemies[hitIndex].setDeath(true);
-
-						enemyHit[hitIndex] = 1;
-						pickedDist = closestDist;
-						score++;
-					}
+						
+				enemyHit[hitIndex] = 1;
+				pickedDist = closestDist;
+				score++;
+			}
 				}
 
-				isShoot = true;
-			}
-			//CHECK HERE
+			isShoot = true;
+		}
+		//CHECK HERE
 		}
 	}
-		
+
 		
 	//CHECK HERE
 	if (!mouseCurrState.rgbButtons[0])

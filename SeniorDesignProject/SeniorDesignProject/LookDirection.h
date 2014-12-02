@@ -1,6 +1,6 @@
 #pragma once
-#include "Point.h"
 #include "Direction.h"
+#include "Point.h"
 
 class LookDirection
 {
@@ -14,9 +14,9 @@ public:
 	void setAzimuth(float azimuth);
 	float getElevation();
 	void setElevation(float elevation);
+	void lookTo(Direction direction, float magnitude);
 	void lookAt(Point* lookFrom, Point* lookAt, bool tracking);
 	void trackingTick();
-	void lookTo(Direction direction, float magnitude);
 	Point* getLookAtPoint();
 
 private:
@@ -30,4 +30,3 @@ protected:
 	Point* lookFromPoint;
 	bool tracking;
 };
-

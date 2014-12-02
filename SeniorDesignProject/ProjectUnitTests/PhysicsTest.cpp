@@ -8,7 +8,6 @@ namespace ProjectUnitTests
 {		
 	TEST_CLASS(PhysicsTest)
 	{
-
 	public:
 		
 		TEST_METHOD(TestGetGravity)
