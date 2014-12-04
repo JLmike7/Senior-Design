@@ -6,7 +6,7 @@
 //#include "Enemy.h"
 #include "Collision.h"
 
-#define MESHCOUNT 2
+#define MESHCOUNT 3
 
 class SeniorPro : public D3DApp
 {
@@ -391,6 +391,18 @@ bool SeniorPro::InitScene()
 		return false;
 	if (!meshArray[1].LoadObjModel(L"spaceCompound.obj", material, true, false, d3d11Device, SwapChain))
 		return false;
+	if (!meshArray[2].LoadObjModel(L"HUD3.obj", material, true, true, d3d11Device, SwapChain))
+		return false;
+	/*if (!meshArray[3].LoadObjModel(L"Tot.obj", material, true, true, d3d11Device, SwapChain))
+		return false;
+	if (!meshArray[4].LoadObjModel(L"DoorLeft.obj", material, true, true, d3d11Device, SwapChain))
+		return false;
+	if (!meshArray[5].LoadObjModel(L"DoorRight.obj", material, true, true, d3d11Device, SwapChain))
+		return false;
+	if (!meshArray[6].LoadObjModel(L"DoorLeft.obj", material, true, true, d3d11Device, SwapChain))
+		return false;
+	if (!meshArray[7].LoadObjModel(L"DoorRight.obj", material, true, true, d3d11Device, SwapChain))
+		return false;*/
 	//Enemy.obj, DoorLeft.obj, DoorRight.obj
 
 	for (int i = 0; i < numEnemies; i++)
@@ -675,6 +687,16 @@ void SeniorPro::UpdateScene(double time)
 	float tempDist9;
 	float tempDist10;
 
+	if (moveDoors == true)
+	{
+		if (moveLeft <7.8f && moveRight < 7.8f)
+			moveLeft += 0.01, moveRight += 0.01f;
+	}
+	else
+	{
+		if (moveLeft >= 0.0f && moveRight >= 0.0f)
+			moveLeft -= 0.01, moveRight -= 0.01f;
+	}
 
 	float closestDist = FLT_MAX;
 	int hitIndex;
@@ -738,6 +760,7 @@ void SeniorPro::UpdateScene(double time)
 
 	//Set sphereWorld's world space using the transformations
 	sphereWorld = Scale * Translation;
+
 
 	// Mesh Array
 	for (int i = 0; i < MESHCOUNT; i++)
@@ -1221,16 +1244,75 @@ void SeniorPro::UpdateScene(double time)
 
 			enemyArray[i].meshWorld = Rotation * Scale * Translation;
 		}
-
-		if (i == 2)
-	{
+		//HUD
+		if (meshArray[i].filename == L"HUD3.obj")
+		{
 			meshArray[i].meshWorld = XMMatrixIdentity();
-			Rotation = XMMatrixRotationY(3.14f);
-			Scale = XMMatrixScaling(0.25f, 0.25f, 0.25f);
-				Translation = XMMatrixTranslation(0.0f, 0.0f, 0.0f);
+
+			//Define cube1's world space matrix
+			Rotation = XMMatrixRotationRollPitchYaw(0.0f , mCam.getCamYaw(), 0.0f);
+			//Rotation = XMMatrixRotationRollPitchYaw(0.0f, 0.0f, 0.0f);
+			Scale = XMMatrixScaling(0.1f, 0.1f, 0.1f);
+			
+				Translation = XMMatrixTranslation(XMVectorGetX(mCam.getCamPosition()), XMVectorGetY(mCam.getCamPosition()) - 2.7, XMVectorGetZ(mCam.getCamPosition()));
+		
 
 			meshArray[i].meshWorld = Rotation * Scale * Translation;
 		}
+
+		/*
+		//Right Door
+		if (i == 7)
+		{
+			meshArray[i].meshWorld = XMMatrixIdentity();
+			Rotation = XMMatrixRotationY(0.0f);
+			Scale = XMMatrixScaling(0.50f, 0.633f, 0.25f);
+			Translation = XMMatrixTranslation(-20.08f + moveRight, -1.3f, 18.0f);
+
+			meshArray[i].meshWorld = Rotation * Scale * Translation;
+		}
+		//Left Door
+		if (i == 6)
+		{
+			meshArray[i].meshWorld = XMMatrixIdentity();
+			Rotation = XMMatrixRotationY(0.0f);
+			Scale = XMMatrixScaling(0.50f, 0.633f, 0.25f);
+			Translation = XMMatrixTranslation(20.08f - moveLeft, -1.3f, 18.0f);
+
+			meshArray[i].meshWorld = Rotation * Scale * Translation;
+		}
+
+		//Right Door
+		if (i == 5)
+		{
+			meshArray[i].meshWorld = XMMatrixIdentity();
+			Rotation = XMMatrixRotationY(0.0f);
+			Scale = XMMatrixScaling(0.50f, 0.633f, 0.25f);
+			Translation = XMMatrixTranslation(-20.08f + moveRight, -1.3f, 34.6f);
+
+			meshArray[i].meshWorld = Rotation * Scale * Translation;
+		}
+		//Left Door
+		if (i == 4)
+		{
+			meshArray[i].meshWorld = XMMatrixIdentity();
+			Rotation = XMMatrixRotationY(0.0f);
+			Scale = XMMatrixScaling(0.50f, 0.633f, 0.25f);
+			Translation = XMMatrixTranslation(20.08f - moveLeft, -1.3f, 34.6f);
+
+			meshArray[i].meshWorld = Rotation * Scale * Translation;
+		}
+		//Temple of Time
+		if (i == 3)
+		{
+			meshArray[i].meshWorld = XMMatrixIdentity();
+
+			Rotation = XMMatrixRotationY(0.0f);
+			Scale = XMMatrixScaling(0.4f, 0.4f, 0.4f);
+			Translation = XMMatrixTranslation(20.0f, 0.0f, -64.0f);
+
+			meshArray[i].meshWorld = Rotation * Scale * Translation;
+		}*/
 		if (i == 1)
 		{
 			meshArray[i].meshWorld = XMMatrixIdentity();
@@ -1289,17 +1371,17 @@ void SeniorPro::RenderText(std::wstring text, int inInt)
 	std::wostringstream printString;
 		
 
-		printString <<
-			L"Health: " << Player1.getHealth() << "\n"
-			<< L"Ammo: " << PlayerWep.getMagSize() << "\n"
-			<< L"Lives: " << Player1.getLives() << "\n"
-			<< L"player x: " << XMVectorGetX(mCam.getCamPosition()) << "\n"
-			<< L"player y: " << XMVectorGetY(mCam.getCamPosition()) << "\n"
-			<< L"player z: " << XMVectorGetZ(mCam.getCamPosition()) << "\n"
-			<< L"Lives: " << Player1.getLives() << "\n"
-			<< L"Score: " << score << L"\n"
-			<< L"EnemyHeath: " << enemyStats[hitMe].getHealth() << L"\n"
-			<< L"Enemy Picked: " << hitMe << L"\n"
+	printString <<
+		L"  Health: " << Player1.getHealth()
+		<< L"                                                                                                                                  Lives: " << Player1.getLives() << "\n\n"
+		<< L"  Ammo: " << PlayerWep.getMagSize()
+		<< L"                                                                                                                                     Score: " << score << L"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+		//<< L"player x: " << XMVectorGetX(mCam.getCamPosition()) << "\n"
+		//<< L"player y: " << XMVectorGetY(mCam.getCamPosition()) << "\n"
+		//<< L"player z: " << XMVectorGetZ(mCam.getCamPosition()) << "\n"
+
+		<< L"  EnemyHeath: " << enemyStats[hitMe].getHealth() << L"\n";
+			//<< L"Enemy Picked: " << hitMe << L"\n"
 			//<< L"Picked Dist: " << pickedDist << "\n"
 			//<< L"Picked Dist: " << pickedDist2 << "\n"
 			//<< L"Picked Dist: " << pickedDist3 << "\n"
@@ -1308,21 +1390,21 @@ void SeniorPro::RenderText(std::wstring text, int inInt)
 			//<< L"Picked Dist: " << pickedDist6 << "\n"
 			//<< L"Picked Dist: " << pickedDist7 << "\n"
 			//<< L"Picked Dist: " << pickedDist8 << "\n"
-			<< L"Player Yaw: " << mCam.getCamYaw() << "\n"
-			<< L"Enemy Rot: " << enemyRot[1] << "\n"
-			<< L"Dist from enemy1: " << enemyXPos[1] - XMVectorGetX(mCam.getCamPosition()) << "\n";
+			//<< L"Player Yaw: " << mCam.getCamYaw() << "\n"
+			//<< L"Enemy Rot: " << enemyRot[1] << "\n"
+			//<< L"Dist from enemy1: " << enemyXPos[1] - XMVectorGetX(mCam.getCamPosition()) << "\n";
 		printText = printString.str();
 		if (reloadBro == true)
 		{
 			printString <<
-				L"OUTTA AMMO, RELOAD!!";
+				L" OUTTA AMMO, RELOAD!!";
 			printText = printString.str();
 		}
-	else {
+	/*else {
 		printString <<
 			L"YOU ARE DEAD! HA...HAHAHA!!: ";
 		printText = printString.str();
-	}
+	}*/
 
 	//Set the Font Color
 	D2D1_COLOR_F FontColor = D2D1::ColorF(1.0f, 1.0f, 1.0f, 1.0f);
@@ -1573,6 +1655,11 @@ void SeniorPro::DetectInput(double time)
 		}
 
 	}
+	if (keyboardState[DIK_E] & 0x80)
+	{
+		moveDoors = !moveDoors;
+
+	}
 	if (keyboardState[DIK_L] & 0x80)
 	{
 		//thePlayer.setDeath(true);
@@ -1688,7 +1775,7 @@ void SeniorPro::DetectInput(double time)
 		if (mCam.getCamYaw() < 0.0f)
 			mCam.setCamYaw(6.28f);
 		//camPitch += mouseCurrState.lY * 0.001f;
-		mCam.setCamPitch(mCam.getCamPitch() + (mouseLastState.lY * 0.001f));
+		//mCam.setCamPitch(mCam.getCamPitch() + (mouseLastState.lY * 0.001f));
 
 		mouseLastState = mouseCurrState;
 	}

@@ -1,0 +1,148 @@
+# 3ds Max Wavefront OBJ Exporter v0.97b - (c)2007 guruware
+# File Created: 26.10.2014 15:57:43
+
+newmtl Window
+	Ns 100.0000
+	Ni 1.5000
+	d 0.2000
+	Tr 0.8000
+	Tf 0.2000 0.2000 0.2000 
+	illum 2
+	Ka 0.2745 0.4588 0.5843
+	Kd 0.2745 0.4588 0.5843
+	Ks 0.9000 0.9000 0.9000
+	Ke 0.0000 0.0000 0.0000
+
+newmtl Columns
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5882 0.5882 0.5882
+	Kd 0.5882 0.5882 0.5882
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka C:\Users\Aaron\Documents\Visual Studio 2013\Projects\d3d11loadobjmodels\d3d11loadobjmodels\maps\Columns.jpg
+	map_Kd C:\Users\Aaron\Documents\Visual Studio 2013\Projects\d3d11loadobjmodels\d3d11loadobjmodels\maps\Columns.jpg
+
+newmtl Pedestal
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.0510 0.0510 0.0510
+	Kd 0.0510 0.0510 0.0510
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+
+newmtl 07___Default
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 1.0000 0.8471 0.0000
+	Kd 1.0000 0.8471 0.0000
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+
+newmtl Sword
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5059 0.5059 0.5059
+	Kd 0.5059 0.5059 0.5059
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+
+newmtl Connector
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5882 0.5882 0.5882
+	Kd 0.5882 0.5882 0.5882
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka C:\Users\Aaron\Documents\Visual Studio 2013\Projects\d3d11loadobjmodels\d3d11loadobjmodels\maps\Hexagon.jpg
+	map_Kd C:\Users\Aaron\Documents\Visual Studio 2013\Projects\d3d11loadobjmodels\d3d11loadobjmodels\maps\Hexagon.jpg
+
+newmtl SwordRoom
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5882 0.5882 0.5882
+	Kd 0.5882 0.5882 0.5882
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka C:\Users\Aaron\Documents\Visual Studio 2013\Projects\d3d11loadobjmodels\d3d11loadobjmodels\maps\JP_Brick01_Bump.jpg
+	map_Kd C:\Users\Aaron\Documents\Visual Studio 2013\Projects\d3d11loadobjmodels\d3d11loadobjmodels\maps\JP_Brick01_Bump.jpg
+
+newmtl SideWalls
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5882 0.5882 0.5882
+	Kd 0.5882 0.5882 0.5882
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka C:\Users\Aaron\Documents\Visual Studio 2013\Projects\d3d11loadobjmodels\d3d11loadobjmodels\maps\SideWalls.jpg
+	map_Kd C:\Users\Aaron\Documents\Visual Studio 2013\Projects\d3d11loadobjmodels\d3d11loadobjmodels\maps\SideWalls.jpg
+
+newmtl Ceiling
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5882 0.5882 0.5882
+	Kd 0.5882 0.5882 0.5882
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka C:\Users\Aaron\Documents\Visual Studio 2013\Projects\d3d11loadobjmodels\d3d11loadobjmodels\maps\Ceiling.jpg
+	map_Kd C:\Users\Aaron\Documents\Visual Studio 2013\Projects\d3d11loadobjmodels\d3d11loadobjmodels\maps\Ceiling.jpg
+
+newmtl MainWalls
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5882 0.5882 0.5882
+	Kd 0.5882 0.5882 0.5882
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka C:\Users\Aaron\Documents\Visual Studio 2013\Projects\d3d11loadobjmodels\d3d11loadobjmodels\maps\FBWalls.jpg
+	map_Kd C:\Users\Aaron\Documents\Visual Studio 2013\Projects\d3d11loadobjmodels\d3d11loadobjmodels\maps\FBWalls.jpg
+
+newmtl Floor
+	Ns 10.0000
+	Ni 1.5000
+	d 1.0000
+	Tr 0.0000
+	Tf 1.0000 1.0000 1.0000 
+	illum 2
+	Ka 0.5882 0.5882 0.5882
+	Kd 0.5882 0.5882 0.5882
+	Ks 0.0000 0.0000 0.0000
+	Ke 0.0000 0.0000 0.0000
+	map_Ka C:\Users\Aaron\Documents\Visual Studio 2013\Projects\d3d11loadobjmodels\d3d11loadobjmodels\maps\ToTFloor.jpg
+	map_Kd C:\Users\Aaron\Documents\Visual Studio 2013\Projects\d3d11loadobjmodels\d3d11loadobjmodels\maps\ToTFloor.jpg

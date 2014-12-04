@@ -400,7 +400,7 @@ bool D3DApp::InitD2D_D3D101_DWrite(IDXGIAdapter1 *Adapter)
 		DWRITE_FONT_WEIGHT_REGULAR,
 		DWRITE_FONT_STYLE_NORMAL,
 		DWRITE_FONT_STRETCH_NORMAL,
-		24.0f,
+		40.0f,
 		L"en-us",
 		&TextFormat
 		);

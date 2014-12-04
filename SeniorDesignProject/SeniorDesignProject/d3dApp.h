@@ -111,6 +111,10 @@ protected:
 	int randRot; 
 	int randAttack;
 	
+	//ToT Stuff
+	bool moveDoors = false;
+	float moveLeft = 0.0f;
+	float moveRight = 0.0f;
 	///////////////**************new**************////////////////////
 
 	D3D11_VIEWPORT mScreenViewport;

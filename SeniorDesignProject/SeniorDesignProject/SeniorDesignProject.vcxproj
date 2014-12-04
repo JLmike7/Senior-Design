@@ -112,7 +112,6 @@
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="point.cpp" />
     <ClCompile Include="Position.cpp" />
-    <ClCompile Include="recordDatabase.cpp" />
     <ClCompile Include="RenderStates.cpp" />
     <ClCompile Include="SeniorPro.cpp" />
     <ClCompile Include="Settings.cpp" />
@@ -154,7 +153,6 @@
     <ClInclude Include="Physics.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Position.h" />
-    <ClInclude Include="recordDatabase.h" />
     <ClInclude Include="RenderStates.h" />
     <ClInclude Include="Settings.h" />
     <ClInclude Include="ShadowMap.h" />
