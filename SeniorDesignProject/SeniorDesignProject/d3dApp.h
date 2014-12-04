@@ -168,6 +168,10 @@ protected:
 
 	std::wstring printText;
 
+	//Terrain
+	int NumFaces;
+	int NumVertices;
+
 public:
 	D3DApp(HINSTANCE hInstance);
 	virtual ~D3DApp();
@@ -198,6 +202,8 @@ public:
 	void StartTimer();
 	double GetTime();
 	double GetFrameTime();
+
+	bool HeightMapLoad(char* filename, Struct::HeightMapInfo &hminfo);
 };
 
 #endif // D3DAPP_H

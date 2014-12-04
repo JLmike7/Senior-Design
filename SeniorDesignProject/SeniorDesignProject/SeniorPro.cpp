@@ -3,10 +3,10 @@
 #include "VertexMain.h"
 #include "Cubemap.h"
 #include "Mesh.h"
-//#include "Enemy.h"
 #include "Collision.h"
 
-#define MESHCOUNT 3
+#define MESHCOUNT 2
+#define ENEMYCOUNT 10
 
 class SeniorPro : public D3DApp
 {
@@ -20,6 +20,8 @@ public:
 	void RenderText(std::wstring text, int inInt);
 	void DetectInput(double time);
 	void drawModel(Mesh* mesh, bool transparent);
+	void drawMD5Model(Mesh* mesh);
+
 	void pickRayVector(float mouseX, float mouseY, XMVECTOR& pickRayInWorldSpacePos, XMVECTOR& pickRayInWorldSpaceDir);
 	float pick(XMVECTOR pickRayInWorldSpacePos,
 		XMVECTOR pickRayInWorldSpaceDir,
@@ -31,16 +33,14 @@ public:
 private:
 	CameraMain mCam;
 
-	Collision coll[20];
+	Collision coll[ENEMYCOUNT];
 	bool move;
-
-	//Biped Best;
-	//Enemy em;
 
 	Cubemap* mCubemap;
 
 	Mesh meshArray[MESHCOUNT];
 
+	Struct::HeightMapInfo hmInfo;
 	XMMATRIX groundWorld;
 	XMMATRIX sphereWorld;
 	
@@ -52,13 +52,14 @@ private:
 	UINT stride = sizeof(Vertex::Vertex);
 	UINT offset = 0;
 
-	Mesh enemyArray[20];
-	int* enemyHit = new int[20];
-	int numEnemies = 20;
+	Mesh enemyArray[ENEMYCOUNT];
+	int* enemyHit = new int[ENEMYCOUNT];
 
+	bool enemyBox = false; //used to switch between bipeds and boxes
 };
 //run initializemainwindow
-//Sound Init
+
+#pragma region Sound_Initialization
 //Music
 IXAudio2* g_engine;
 IXAudio2SourceVoice* g_source;
@@ -98,6 +99,8 @@ Wave buffer4; //revive
 Wave buffer5; //reload
 Wave buffer6; //bullethit
 
+#pragma endregion Sound_Initialization
+
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance,
 	PSTR cmdLine, int showCmd)
 {
@@ -127,6 +130,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance,
 	}
 
 	//helper class to load wave files; trust me, this makes it MUCH easier
+
 
 	//load a wave file
 	if (!buffer.load("Music2.wav"))
@@ -387,7 +391,7 @@ bool SeniorPro::InitScene()
 	// Create cubemap
 	mCubemap = new Cubemap(d3d11Device);
 
-	if (!meshArray[0].LoadObjModel(L"ground.obj", material, true, true, d3d11Device, SwapChain))
+	if (!meshArray[0].LoadObjModel(L"shotgun2.obj", material, true, false, d3d11Device, SwapChain))
 		return false;
 	if (!meshArray[1].LoadObjModel(L"spaceCompound.obj", material, true, false, d3d11Device, SwapChain))
 		return false;
@@ -405,10 +409,21 @@ bool SeniorPro::InitScene()
 		return false;*/
 	//Enemy.obj, DoorLeft.obj, DoorRight.obj
 
-	for (int i = 0; i < numEnemies; i++)
+	for (int i = 0; i < ENEMYCOUNT; i++)
 	{
+		if (enemyBox)
+		{
 		if (!enemyArray[i].LoadObjModel(L"Enemy.obj", material, true, false, d3d11Device, SwapChain))
 			return false;
+	}
+		else
+		{
+			if (!enemyArray[i].LoadMD5Model(L"boy.md5mesh", d3d11Device, SwapChain))
+				return false;
+
+			if (!enemyArray[i].LoadMD5Anim(L"boy.md5anim", SwapChain))
+				return false;
+		}
 	}
 
 	//Compile Shaders from shader file
@@ -443,8 +458,7 @@ bool SeniorPro::InitScene()
 	light.ambient = XMFLOAT4(0.2f, 0.2f, 0.2f, 1.0f);
 	light.diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);*/
 
-
-	//Create the vertex buffer
+	/*//Create the vertex buffer
 	Vertex::Vertex v[] =
 	{
 		// Bottom Face
@@ -457,27 +471,170 @@ bool SeniorPro::InitScene()
 	DWORD indices[] = {
 		0, 1, 2,
 		0, 2, 3,
-	};
+	};*/
+
+	#pragma region Terrain
+	HeightMapLoad("heightmap.bmp", hmInfo);		// Load the heightmap and store it into hmInfo
+
+	int cols = hmInfo.terrainWidth;
+	int rows = hmInfo.terrainHeight;
+
+	//Create the grid
+	NumVertices = rows * cols;
+	NumFaces = (rows - 1)*(cols - 1) * 2;
+
+	std::vector<Vertex::Vertex> v(NumVertices);
+
+	for (DWORD i = 0; i < rows; ++i)
+	{
+		for (DWORD j = 0; j < cols; ++j)
+		{
+			v[i*cols + j].pos = hmInfo.heightMap[i*cols + j];
+			v[i*cols + j].normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
+		}
+	}
+
+	std::vector<DWORD> indices(NumFaces * 3);
+
+	int k = 0;
+	int texUIndex = 0;
+	int texVIndex = 0;
+	for (DWORD i = 0; i < rows - 1; i++)
+	{
+		for (DWORD j = 0; j < cols - 1; j++)
+		{
+			indices[k] = i*cols + j;		// Bottom left of quad
+			v[i*cols + j].texCoord = XMFLOAT2(texUIndex + 0.0f, texVIndex + 1.0f);
+
+			indices[k + 1] = i*cols + j + 1;		// Bottom right of quad
+			v[i*cols + j + 1].texCoord = XMFLOAT2(texUIndex + 1.0f, texVIndex + 1.0f);
+
+			indices[k + 2] = (i + 1)*cols + j;	// Top left of quad
+			v[(i + 1)*cols + j].texCoord = XMFLOAT2(texUIndex + 0.0f, texVIndex + 0.0f);
+
+
+			indices[k + 3] = (i + 1)*cols + j;	// Top left of quad
+			v[(i + 1)*cols + j].texCoord = XMFLOAT2(texUIndex + 0.0f, texVIndex + 0.0f);
+
+			indices[k + 4] = i*cols + j + 1;		// Bottom right of quad
+			v[i*cols + j + 1].texCoord = XMFLOAT2(texUIndex + 1.0f, texVIndex + 1.0f);
+
+			indices[k + 5] = (i + 1)*cols + j + 1;	// Top right of quad
+			v[(i + 1)*cols + j + 1].texCoord = XMFLOAT2(texUIndex + 1.0f, texVIndex + 0.0f);
+
+			k += 6; // next quad
+
+			texUIndex++;
+		}
+		texUIndex = 0;
+		texVIndex++;
+	}
+
+	//////////////////////Compute Normals///////////////////////////
+	//Now we will compute the normals for each vertex using normal averaging
+	std::vector<XMFLOAT3> tempNormal;
+
+	//normalized and unnormalized normals
+	XMFLOAT3 unnormalized = XMFLOAT3(0.0f, 0.0f, 0.0f);
+
+	//Used to get vectors (sides) from the position of the verts
+	float vecX, vecY, vecZ;
+
+	//Two edges of our triangle
+	XMVECTOR edge1 = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
+	XMVECTOR edge2 = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
+
+	//Compute face normals
+	for (int i = 0; i < NumFaces; ++i)
+	{
+		//Get the vector describing one edge of our triangle (edge 0,2)
+		vecX = v[indices[(i * 3)]].pos.x - v[indices[(i * 3) + 2]].pos.x;
+		vecY = v[indices[(i * 3)]].pos.y - v[indices[(i * 3) + 2]].pos.y;
+		vecZ = v[indices[(i * 3)]].pos.z - v[indices[(i * 3) + 2]].pos.z;
+		edge1 = XMVectorSet(vecX, vecY, vecZ, 0.0f);	//Create our first edge
+
+		//Get the vector describing another edge of our triangle (edge 2,1)
+		vecX = v[indices[(i * 3) + 2]].pos.x - v[indices[(i * 3) + 1]].pos.x;
+		vecY = v[indices[(i * 3) + 2]].pos.y - v[indices[(i * 3) + 1]].pos.y;
+		vecZ = v[indices[(i * 3) + 2]].pos.z - v[indices[(i * 3) + 1]].pos.z;
+		edge2 = XMVectorSet(vecX, vecY, vecZ, 0.0f);	//Create our second edge
+
+		//Cross multiply the two edge vectors to get the un-normalized face normal
+		XMStoreFloat3(&unnormalized, XMVector3Cross(edge1, edge2));
+		tempNormal.push_back(unnormalized);			//Save unormalized normal (for normal averaging)
+	}
+
+	//Compute vertex normals (normal Averaging)
+	XMVECTOR normalSum = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
+	int facesUsing = 0;
+	float tX;
+	float tY;
+	float tZ;
+
+	//Go through each vertex
+	for (int i = 0; i < NumVertices; ++i)
+	{
+		//Check which triangles use this vertex
+		for (int j = 0; j < NumFaces; ++j)
+		{
+			if (indices[j * 3] == i ||
+				indices[(j * 3) + 1] == i ||
+				indices[(j * 3) + 2] == i)
+			{
+				tX = XMVectorGetX(normalSum) + tempNormal[j].x;
+				tY = XMVectorGetY(normalSum) + tempNormal[j].y;
+				tZ = XMVectorGetZ(normalSum) + tempNormal[j].z;
+
+				normalSum = XMVectorSet(tX, tY, tZ, 0.0f);	//If a face is using the vertex, add the unormalized face normal to the normalSum
+				facesUsing++;
+			}
+		}
+
+		//Get the actual normal by dividing the normalSum by the number of faces sharing the vertex
+		normalSum = normalSum / facesUsing;
+
+		//Normalize the normalSum vector
+		normalSum = XMVector3Normalize(normalSum);
+
+		//Store the normal in our current vertex
+		v[i].normal.x = XMVectorGetX(normalSum);
+		v[i].normal.y = XMVectorGetY(normalSum);
+		v[i].normal.z = XMVectorGetZ(normalSum);
+
+		//Clear normalSum and facesUsing for next vertex
+		normalSum = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
+		facesUsing = 0;
+	}
+	#pragma endregion Terrain
 
 	D3D11_BUFFER_DESC indexBufferDesc;
 	ZeroMemory(&indexBufferDesc, sizeof(indexBufferDesc));
 
 	indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-		indexBufferDesc.ByteWidth = sizeof(DWORD)* 2 * 3;
+	/************************************New Stuff****************************************************/
+	//indexBufferDesc.ByteWidth = sizeof(DWORD) * 2 * 3;
+	indexBufferDesc.ByteWidth = sizeof(DWORD) * NumFaces * 3;
+	/*************************************************************************************************/
 	indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	indexBufferDesc.CPUAccessFlags = 0;
 	indexBufferDesc.MiscFlags = 0;
 
 	D3D11_SUBRESOURCE_DATA iinitData;
 
-	iinitData.pSysMem = indices;
+	/************************************New Stuff****************************************************/
+	//iinitData.pSysMem = indices;
+	iinitData.pSysMem = &indices[0];
+	/*************************************************************************************************/
 	d3d11Device->CreateBuffer(&indexBufferDesc, &iinitData, &squareIndexBuffer);
 
 	D3D11_BUFFER_DESC vertexBufferDesc;
 	ZeroMemory(&vertexBufferDesc, sizeof(vertexBufferDesc));
 
 	vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	vertexBufferDesc.ByteWidth = sizeof(Vertex::Vertex) * 4;
+	/************************************New Stuff****************************************************/
+	//vertexBufferDesc.ByteWidth = sizeof(Vertex::Vertex) * 4;
+	vertexBufferDesc.ByteWidth = sizeof(Vertex::Vertex) * NumVertices;
+	/*************************************************************************************************/
 	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	vertexBufferDesc.CPUAccessFlags = 0;
 	vertexBufferDesc.MiscFlags = 0;
@@ -485,7 +642,10 @@ bool SeniorPro::InitScene()
 	D3D11_SUBRESOURCE_DATA vertexBufferData;
 
 	ZeroMemory(&vertexBufferData, sizeof(vertexBufferData));
-	vertexBufferData.pSysMem = v;
+	/************************************New Stuff****************************************************/
+	//vertexBufferData.pSysMem = v;
+	vertexBufferData.pSysMem = &v[0];
+	/*************************************************************************************************/
 	hr = d3d11Device->CreateBuffer(&vertexBufferDesc, &vertexBufferData, &squareVertBuffer);
 
 	//Create the Input Layout
@@ -631,9 +791,7 @@ bool SeniorPro::InitScene()
 
 	d3d11Device->CreateDepthStencilState(&dssDesc, &DSLessEqual);
 
-
-
-	for (int i = 0; i < numEnemies; i++)
+	for (int i = 0; i < ENEMYCOUNT; i++)
 	{
 		/*exadd[i] = 0.0f;
 		ezadd[i] = 0.0f;*/
@@ -643,7 +801,7 @@ bool SeniorPro::InitScene()
 		float startX = -30.0f;
 		float startZ = 60.0f;
 		// Init enemy locations
-		for (int i = 0; i < numEnemies; i++)
+		for (int i = 0; i < ENEMYCOUNT; i++)
 		{
 				enemyXPos[i] = enemyXPos[i - 1] + 10;
 			enemyZPos[i] += 0;
@@ -651,7 +809,8 @@ bool SeniorPro::InitScene()
 		
 		enemyHit[i] = 0;
 
-		//set the loaded bottles world space
+		//set the loaded enemy's world space
+		enemyArray[i].meshWorld = XMMatrixIdentity();
 
 		exadd[i]++;
 
@@ -670,12 +829,12 @@ bool SeniorPro::InitScene()
 		coll[i].setwidth(3.0f);
 		enemyArray[i].meshWorld = Rotation * Scale * Translation;
 	}
+
 	return true;
 }
 
 void SeniorPro::UpdateScene(double time)
 {
-
 	float tempDist;
 	float tempDist2;
 	float tempDist3;
@@ -707,7 +866,7 @@ void SeniorPro::UpdateScene(double time)
 	pickRayVector(((Width / -2) + 1), 0, prwsPos3, prwsDir3);
 	pickRayVector(0, (Height / 2 - 1), prwsPos4, prwsDir4);
 	pickRayVector(0, ((Height / -2) + 1), prwsPos5, prwsDir5);
-	for (int i = 0; i < numEnemies; i++)
+	for (int i = 0; i < ENEMYCOUNT; i++)
 	{
 		if (enemyHit[i] == 0) //No need to check enemies already hit
 		{
@@ -739,13 +898,18 @@ void SeniorPro::UpdateScene(double time)
 	pickedDist9 = tempDist9;
 	pickedDist10 = tempDist10;
 
-	
 	//Reset cube1World
 	groundWorld = XMMatrixIdentity();
 
-	//Define cube1's world space matrix
+	/************************************New Stuff****************************************************/
+	/*//Define cube1's world space matrix
 	Scale = XMMatrixScaling(500.0f, 10.0f, 500.0f);
-	Translation = XMMatrixTranslation(0.0f, 10.0f, 0.0f);
+	Translation = XMMatrixTranslation(0.0f, 10.0f, 0.0f);*/
+
+	//Define terrains's world space matrix
+	Scale = XMMatrixScaling(10.0f, 5.0f, 10.0f);
+	Translation = XMMatrixTranslation(-256.0f, -120.0f, -256.0f);
+	/************************************New Stuff****************************************************/
 
 	//Set cube1's world space using the transformations
 	groundWorld = Scale * Translation;
@@ -761,12 +925,11 @@ void SeniorPro::UpdateScene(double time)
 	//Set sphereWorld's world space using the transformations
 	sphereWorld = Scale * Translation;
 
-
-	// Mesh Array
 	for (int i = 0; i < MESHCOUNT; i++)
 	{
 
-		for (int i = 0; i < numEnemies; i++)
+#pragma region EnemyAI
+		for (int i = 0; i < ENEMYCOUNT; i++)
 		{
 			randX = rand() % 1000;
 			randZ = rand() % 1000;
@@ -775,7 +938,14 @@ void SeniorPro::UpdateScene(double time)
 			//set the loaded enemy's world space
 			enemyArray[i].meshWorld = XMMatrixIdentity();
 			//Rotation = XMMatrixRotationY(3.14f);
+			if (enemyBox)
+			{
 			Scale = XMMatrixScaling(0.15f, 0.15f, 0.15f);
+			}
+			else
+			{
+				Scale = XMMatrixScaling(0.04f, 0.04f, 0.04f);
+			}
 			//If distance is greater then 20, then randomly move
 			if ((enemyXPos[i] - XMVectorGetX(mCam.getCamPosition()) <= 15 && enemyZPos[i] - XMVectorGetZ(mCam.getCamPosition()) <= 15)
 				&& (enemyXPos[i] - XMVectorGetX(mCam.getCamPosition()) >= -15 && enemyZPos[i] - XMVectorGetZ(mCam.getCamPosition()) >= -15))
@@ -1294,7 +1464,7 @@ void SeniorPro::UpdateScene(double time)
 		}
 		//Left Door
 		if (i == 4)
-		{
+	{
 			meshArray[i].meshWorld = XMMatrixIdentity();
 			Rotation = XMMatrixRotationY(0.0f);
 			Scale = XMMatrixScaling(0.50f, 0.633f, 0.25f);
@@ -1317,30 +1487,38 @@ void SeniorPro::UpdateScene(double time)
 		{
 			meshArray[i].meshWorld = XMMatrixIdentity();
 
-			//Define cube1's world space matrix
 			Rotation = XMMatrixRotationY(3.14f);
 			Scale = XMMatrixScaling(1.0f, 1.0f, 1.0f);
 			Translation = XMMatrixTranslation(0.0f, 0.0f, 0.0f);
 
 			meshArray[i].meshWorld = Rotation * Scale * Translation;
 		}
-		if (meshArray[i].filename == L"ground.obj")
+		/*if (meshArray[i].filename == L"ground.obj")
 		{
 			meshArray[i].meshWorld = XMMatrixIdentity();
 
-			//Define cube1's world space matrix
 			Rotation = XMMatrixRotationY(3.14f);
 			Scale = XMMatrixScaling(10.0f, 1.0f, 10.0f);
 			Translation = XMMatrixTranslation(0.0f, -0.02f, 0.0f);
+
+			meshArray[i].meshWorld = Rotation * Scale * Translation;
+		}*/
+		if (meshArray[i].filename == L"shotgun2.obj")
+		{
+			meshArray[i].meshWorld = XMMatrixIdentity();
+
+			Rotation = XMMatrixRotationRollPitchYaw(mCam.getCamPitch(), mCam.getCamYaw(), 0);
+			Scale = XMMatrixScaling(0.1f, 0.1f, 0.1f);
+			Translation = XMMatrixTranslation(mCam.getsCamPosition().getX(), mCam.getsCamPosition().getY(), mCam.getsCamPosition().getZ());
 
 			meshArray[i].meshWorld = Rotation * Scale * Translation;
 		}
 	}
 
 	///////////////**************new**************////////////////////
-	//Scale = XMMatrixScaling(0.04f, 0.04f, 0.04f);			// The model is a bit too large for our scene, so make it smaller
-	//Translation = XMMatrixTranslation(0.0f, 3.0f, 0.0f);
-	//smilesWorld = Scale * Translation;
+	/*Scale = XMMatrixScaling(0.04f, 0.04f, 0.04f);			// The model is a bit too large for our scene, so make it smaller
+	Translation = XMMatrixTranslation(0.0f, 3.0f, 0.0f);
+	smilesWorld = Scale * Translation;*/
 	///////////////**************new**************////////////////////
 
 	//Spotlight stuff
@@ -1371,7 +1549,9 @@ void SeniorPro::RenderText(std::wstring text, int inInt)
 	std::wostringstream printString;
 		
 
-	printString <<
+	if (thePlayer.getDeath() == false)
+	{
+		printString <<
 		L"  Health: " << Player1.getHealth()
 		<< L"                                                                                                                                  Lives: " << Player1.getLives() << "\n\n"
 		<< L"  Ammo: " << PlayerWep.getMagSize()
@@ -1501,17 +1681,24 @@ void SeniorPro::DrawScene()
 	d3d11DevCon->PSSetShaderResources(0, 1, &CubesTexture);
 	d3d11DevCon->PSSetSamplers(0, 1, &CubesTexSamplerState);
 	d3d11DevCon->RSSetState(CCWcullMode);
-	//d3d11DevCon->DrawIndexed( 6, 0, 0 );
+	d3d11DevCon->DrawIndexed(NumFaces * 3, 0, 0);
 	
 	//Draw our model's NON-transparent subsets
 	for (int i = 0; i < MESHCOUNT; i++)
 	{
 		drawModel(&meshArray[i], false);
 	}
-	for (int i = 0; i < numEnemies; i++)
+	for (int i = 0; i < ENEMYCOUNT; i++)
 	{
 		if (!enemyHit[i])
+			if (enemyBox)
+			{
 			drawModel(&enemyArray[i], false);
+	}
+			else
+			{
+				drawMD5Model(&enemyArray[i]);
+			}
 	}
 
 	/////Draw the Sky's Sphere//////
@@ -1548,11 +1735,11 @@ void SeniorPro::DrawScene()
 	{
 		drawModel(&meshArray[i], true);
 	}
-	for (int i = 0; i < numEnemies; i++)
+	/*for (int i = 0; i < numEnemies; i++)
 	{
 		if (!enemyHit[i])
 			drawModel(&enemyArray[i], true);
-	}
+	}*/
 
 	RenderText(L"Health: ", Player1.getHealth());
 	RenderText(L"Lives: ", Player1.getLives());
@@ -1596,7 +1783,7 @@ void SeniorPro::DetectInput(double time)
 		//}
 	}
 
-	for (int i = 0; i < 20; i++){
+	for (int i = 0; i < ENEMYCOUNT; i++){
 		if (coll[i].checkPointCollision(Point(XMVectorGetX(mCam.getCamPosition()), XMVectorGetY(mCam.getCamPosition()), XMVectorGetZ(mCam.getCamPosition())))){
 			move = false;
 			break;
@@ -1665,6 +1852,14 @@ void SeniorPro::DetectInput(double time)
 		//thePlayer.setDeath(true);
 	}
 
+	///////////////**************new**************////////////////////
+	if (keyboardState[DIK_Y] & 0X80)
+	{
+		float timeFactor = 1.0f;	// You can speed up or slow down time by changing this
+		//UpdateMD5Model(NewMD5Model, time*timeFactor, 0);
+	}
+	///////////////**************new**************////////////////////
+
 	if ((mouseCurrState.rgbButtons[0]))
 	{
 		//CHECK HERE
@@ -1707,7 +1902,7 @@ void SeniorPro::DetectInput(double time)
 			XMVECTOR prwsPos, prwsDir;
 					pickRayVector(Width / 2, Height / 2, prwsPos, prwsDir);
 
-			for (int i = 0; i < numEnemies; i++)
+				for (int i = 0; i < ENEMYCOUNT; i++)
 			{
 				if (enemyHit[i] == 0) //No need to check enemies already hit
 				{
@@ -1862,6 +2057,34 @@ void SeniorPro::drawModel(Mesh* mesh, bool transparent)
 		}
 	}
 }
+
+void SeniorPro::drawMD5Model(Mesh* mesh)
+{
+	for (int i = 0; i < mesh->MD5Model.numSubsets; i++)
+	{
+		//Set the grounds index buffer
+		d3d11DevCon->IASetIndexBuffer(mesh->MD5Model.subsets[i].indexBuff, DXGI_FORMAT_R32_UINT, 0);
+		//Set the grounds vertex buffer
+		d3d11DevCon->IASetVertexBuffers(0, 1, &mesh->MD5Model.subsets[i].vertBuff, &stride, &offset);
+
+		//Set the WVP matrix and send it to the constant buffer in effect file
+		mCam.setWVP(mesh->meshWorld, mCam.getCamView(), mCam.getCamProjection());
+		cbPerObj.WVP = XMMatrixTranspose(mCam.getWVP());
+		cbPerObj.World = XMMatrixTranspose(mesh->meshWorld);
+		cbPerObj.hasTexture = true;		// We'll assume all md5 subsets have textures
+		cbPerObj.hasNormMap = false;	// We'll also assume md5 models have no normal map (easy to change later though)
+		d3d11DevCon->UpdateSubresource(cbPerObjectBuffer, 0, NULL, &cbPerObj, 0, 0);
+		d3d11DevCon->VSSetConstantBuffers(0, 1, &cbPerObjectBuffer);
+		d3d11DevCon->PSSetConstantBuffers(1, 1, &cbPerObjectBuffer);
+		d3d11DevCon->PSSetShaderResources(0, 1, &mesh->meshSRV[mesh->MD5Model.subsets[i].texArrayIndex]);
+		d3d11DevCon->PSSetSamplers(0, 1, &CubesTexSamplerState);
+
+		d3d11DevCon->RSSetState(RSCullNone);
+		d3d11DevCon->DrawIndexed(mesh->MD5Model.subsets[i].indices.size(), 0, 0);
+	}
+
+}
+
 
 void SeniorPro::pickRayVector(float mouseX, float mouseY, XMVECTOR& pickRayInWorldSpacePos, XMVECTOR& pickRayInWorldSpaceDir)
 {
