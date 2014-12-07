@@ -472,4 +472,8 @@
   <ItemGroup>
     <Media Include="Music.mp3" />
   </ItemGroup>
+  <ItemGroup>
+    <Object Include="ak47.obj" />
+    <Object Include="sa80.obj" />
+  </ItemGroup>
 </Project>

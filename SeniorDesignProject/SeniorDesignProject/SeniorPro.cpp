@@ -5,8 +5,8 @@
 #include "Mesh.h"
 #include "Collision.h"
 
-#define MESHCOUNT 2
-#define ENEMYCOUNT 10
+#define MESHCOUNT 4
+#define ENEMYCOUNT 5
 
 class SeniorPro : public D3DApp
 {
@@ -391,11 +391,13 @@ bool SeniorPro::InitScene()
 	// Create cubemap
 	mCubemap = new Cubemap(d3d11Device);
 
-	if (!meshArray[0].LoadObjModel(L"shotgun2.obj", material, true, false, d3d11Device, SwapChain))
+	if (!meshArray[0].LoadObjModel(L"HUD3.obj", material, true, true, d3d11Device, SwapChain))
 		return false;
-	if (!meshArray[1].LoadObjModel(L"spaceCompound.obj", material, true, false, d3d11Device, SwapChain))
+	if (!meshArray[1].LoadObjModel(L"ak47.obj", material, true, false, d3d11Device, SwapChain))
 		return false;
-	if (!meshArray[2].LoadObjModel(L"HUD3.obj", material, true, true, d3d11Device, SwapChain))
+	if (!meshArray[2].LoadObjModel(L"sa80.obj", material, true, false, d3d11Device, SwapChain))
+		return false;
+	if (!meshArray[3].LoadObjModel(L"spaceCompound.obj", material, true, false, d3d11Device, SwapChain))
 		return false;
 	/*if (!meshArray[3].LoadObjModel(L"Tot.obj", material, true, true, d3d11Device, SwapChain))
 		return false;
@@ -1420,14 +1422,23 @@ void SeniorPro::UpdateScene(double time)
 			meshArray[i].meshWorld = XMMatrixIdentity();
 
 			//Define cube1's world space matrix
-			Rotation = XMMatrixRotationRollPitchYaw(0.0f , mCam.getCamYaw(), 0.0f);
+			Rotation = XMMatrixRotationRollPitchYaw(mCam.getCamPitch(), mCam.getCamYaw(), 0.0f);
 			//Rotation = XMMatrixRotationRollPitchYaw(0.0f, 0.0f, 0.0f);
 			Scale = XMMatrixScaling(0.1f, 0.1f, 0.1f);
-			
-				Translation = XMMatrixTranslation(XMVectorGetX(mCam.getCamPosition()), XMVectorGetY(mCam.getCamPosition()) - 2.7, XMVectorGetZ(mCam.getCamPosition()));
+			Translation = XMMatrixTranslation(mCam.getsCamPosition().getX(), mCam.getsCamPosition().getY(), mCam.getsCamPosition().getZ());
+			//Translation = XMMatrixTranslation(XMVectorGetX(mCam.getCamPosition()), XMVectorGetY(mCam.getCamPosition()) - 2.7, XMVectorGetZ(mCam.getCamPosition()));
 		
 
 			meshArray[i].meshWorld = Rotation * Scale * Translation;
+
+			/*
+			meshArray[i].meshWorld = XMMatrixIdentity();
+
+			Rotation = XMMatrixRotationRollPitchYaw(mCam.getCamPitch(), mCam.getCamYaw(), 0);
+			Scale = XMMatrixScaling(0.1f, 0.1f, 0.1f);
+			Translation = XMMatrixTranslation(mCam.getsCamPosition().getX(), mCam.getsCamPosition().getY(), mCam.getsCamPosition().getZ());
+
+			meshArray[i].meshWorld = Rotation * Scale * Translation;*/
 		}
 
 		/*
@@ -1483,7 +1494,7 @@ void SeniorPro::UpdateScene(double time)
 
 			meshArray[i].meshWorld = Rotation * Scale * Translation;
 		}*/
-		if (i == 1)
+		if (meshArray[i].filename == L"spaceCompound.obj")
 		{
 			meshArray[i].meshWorld = XMMatrixIdentity();
 
@@ -1503,12 +1514,20 @@ void SeniorPro::UpdateScene(double time)
 
 			meshArray[i].meshWorld = Rotation * Scale * Translation;
 		}*/
-		if (meshArray[i].filename == L"shotgun2.obj")
+
+		if (meshArray[i].filename == L"sa80.obj" || meshArray[i].filename == L"ak47.obj")
 		{
 			meshArray[i].meshWorld = XMMatrixIdentity();
 
 			Rotation = XMMatrixRotationRollPitchYaw(mCam.getCamPitch(), mCam.getCamYaw(), 0);
-			Scale = XMMatrixScaling(0.1f, 0.1f, 0.1f);
+			if ((meshArray[i].filename == L"ak47.obj" && weaponSelect == 1) || (meshArray[i].filename == L"sa80.obj" && weaponSelect == 2))
+			{
+				Scale = XMMatrixScaling(0.1f, 0.1f, 0.1f);
+			}
+			else
+			{
+				Scale = XMMatrixScaling(0.0f, 0.0f, 0.0f);
+			}
 			Translation = XMMatrixTranslation(mCam.getsCamPosition().getX(), mCam.getsCamPosition().getY(), mCam.getsCamPosition().getZ());
 
 			meshArray[i].meshWorld = Rotation * Scale * Translation;
@@ -1552,27 +1571,27 @@ void SeniorPro::RenderText(std::wstring text, int inInt)
 	if (thePlayer.getDeath() == false)
 	{
 		printString <<
-		L"  Health: " << Player1.getHealth()
-		<< L"                                                                                                                                  Lives: " << Player1.getLives() << "\n\n"
-		<< L"  Ammo: " << PlayerWep.getMagSize()
-		<< L"                                                                                                                                     Score: " << score << L"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
-		//<< L"player x: " << XMVectorGetX(mCam.getCamPosition()) << "\n"
-		//<< L"player y: " << XMVectorGetY(mCam.getCamPosition()) << "\n"
-		//<< L"player z: " << XMVectorGetZ(mCam.getCamPosition()) << "\n"
+			L"  Health: " << Player1.getHealth()
+			<< L"                                                                                                                                  Lives: " << Player1.getLives() << "\n\n"
+			<< L"  Ammo: " << PlayerWep.getMagSize()
+			<< L"                                                                                                                                     Score: " << score << L"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+			//<< L"player x: " << XMVectorGetX(mCam.getCamPosition()) << "\n"
+			//<< L"player y: " << XMVectorGetY(mCam.getCamPosition()) << "\n"
+			//<< L"player z: " << XMVectorGetZ(mCam.getCamPosition()) << "\n"
 
-		<< L"  EnemyHeath: " << enemyStats[hitMe].getHealth() << L"\n";
-			//<< L"Enemy Picked: " << hitMe << L"\n"
-			//<< L"Picked Dist: " << pickedDist << "\n"
-			//<< L"Picked Dist: " << pickedDist2 << "\n"
-			//<< L"Picked Dist: " << pickedDist3 << "\n"
-			//<< L"Picked Dist: " << pickedDist4 << "\n"
-			//<< L"Picked Dist: " << pickedDist5 << "\n"
-			//<< L"Picked Dist: " << pickedDist6 << "\n"
-			//<< L"Picked Dist: " << pickedDist7 << "\n"
-			//<< L"Picked Dist: " << pickedDist8 << "\n"
-			//<< L"Player Yaw: " << mCam.getCamYaw() << "\n"
-			//<< L"Enemy Rot: " << enemyRot[1] << "\n"
-			//<< L"Dist from enemy1: " << enemyXPos[1] - XMVectorGetX(mCam.getCamPosition()) << "\n";
+			<< L"  EnemyHeath: " << enemyStats[hitMe].getHealth() << L"\n";
+		//<< L"Enemy Picked: " << hitMe << L"\n"
+		//<< L"Picked Dist: " << pickedDist << "\n"
+		//<< L"Picked Dist: " << pickedDist2 << "\n"
+		//<< L"Picked Dist: " << pickedDist3 << "\n"
+		//<< L"Picked Dist: " << pickedDist4 << "\n"
+		//<< L"Picked Dist: " << pickedDist5 << "\n"
+		//<< L"Picked Dist: " << pickedDist6 << "\n"
+		//<< L"Picked Dist: " << pickedDist7 << "\n"
+		//<< L"Picked Dist: " << pickedDist8 << "\n"
+		//<< L"Player Yaw: " << mCam.getCamYaw() << "\n"
+		//<< L"Enemy Rot: " << enemyRot[1] << "\n"
+		//<< L"Dist from enemy1: " << enemyXPos[1] - XMVectorGetX(mCam.getCamPosition()) << "\n";
 		printText = printString.str();
 		if (reloadBro == true)
 		{
@@ -1580,11 +1599,12 @@ void SeniorPro::RenderText(std::wstring text, int inInt)
 				L" OUTTA AMMO, RELOAD!!";
 			printText = printString.str();
 		}
-	/*else {
-		printString <<
+		/*else {
+			printString <<
 			L"YOU ARE DEAD! HA...HAHAHA!!: ";
-		printText = printString.str();
-	}*/
+			printText = printString.str();
+			}*/
+	}
 
 	//Set the Font Color
 	D2D1_COLOR_F FontColor = D2D1::ColorF(1.0f, 1.0f, 1.0f, 1.0f);
@@ -1853,10 +1873,23 @@ void SeniorPro::DetectInput(double time)
 	}
 
 	///////////////**************new**************////////////////////
+	if (keyboardState[DIK_1] & 0X80)
+	{
+		weaponSelect = 1;
+	}
+
+	if (keyboardState[DIK_2] & 0X80)
+	{
+		weaponSelect = 2;
+	}
+
 	if (keyboardState[DIK_Y] & 0X80)
 	{
-		float timeFactor = 1.0f;	// You can speed up or slow down time by changing this
-		//UpdateMD5Model(NewMD5Model, time*timeFactor, 0);
+		float timeFactor = 0.75f;	// You can speed up or slow down time by changing this
+		for (int i = 0; i < ENEMYCOUNT; i++)
+		{
+			enemyArray[i].UpdateMD5Model(time*timeFactor, 0, d3d11DevCon);
+		}
 	}
 	///////////////**************new**************////////////////////
 
@@ -1970,7 +2003,7 @@ void SeniorPro::DetectInput(double time)
 		if (mCam.getCamYaw() < 0.0f)
 			mCam.setCamYaw(6.28f);
 		//camPitch += mouseCurrState.lY * 0.001f;
-		//mCam.setCamPitch(mCam.getCamPitch() + (mouseLastState.lY * 0.001f));
+		mCam.setCamPitch(mCam.getCamPitch() + (mouseLastState.lY * 0.001f));
 
 		mouseLastState = mouseCurrState;
 	}
