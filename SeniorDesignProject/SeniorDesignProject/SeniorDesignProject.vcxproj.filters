@@ -472,4 +472,10 @@
   <ItemGroup>
     <Media Include="Music.mp3" />
   </ItemGroup>
+  <ItemGroup>
+    <Object Include="ammo.obj" />
+    <Object Include="eclipse.obj" />
+    <Object Include="HUD3.obj" />
+    <Object Include="win.obj" />
+  </ItemGroup>
 </Project>

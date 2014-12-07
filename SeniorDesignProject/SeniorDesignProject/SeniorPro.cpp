@@ -6,7 +6,7 @@
 #include "Collision.h"
 
 #define MESHCOUNT 4
-#define ENEMYCOUNT 10
+#define ENEMYCOUNT 5
 #define ITEMCOUNT 30
 #define AMMOCOUNT 30
 
@@ -401,10 +401,11 @@ bool SeniorPro::InitScene()
 		return false;
 	if (!meshArray[1].LoadObjModel(L"ak47.obj", material, true, false, d3d11Device, SwapChain))
 		return false;
-	if (!meshArray[2].LoadObjModel(L"HUD3.obj", material, true, false, d3d11Device, SwapChain))
+	if (!meshArray[2].LoadObjModel(L"sa80.obj", material, true, false, d3d11Device, SwapChain))
 		return false;
-	if (!meshArray[3].LoadObjModel(L"eclipse.obj", material, true, false, d3d11Device, SwapChain))
+	if (!meshArray[3].LoadObjModel(L"spaceCompound.obj", material, true, false, d3d11Device, SwapChain))
 		return false;
+
 	/*//if (!meshArray[3].LoadObjModel(L"ToT.obj", material, true, true, d3d11Device, SwapChain))
 		return false;
 	if (!meshArray[4].LoadObjModel(L"DoorLeft.obj", material, true, true, d3d11Device, SwapChain))
@@ -1547,7 +1548,7 @@ void SeniorPro::UpdateScene(double time)
 			meshArray[i].meshWorld = Rotation * Scale * Translation;
 		} */
 		//Temple of Time
-		if (meshArray[i].filename == L"ToT.obj")
+		/*if (meshArray[i].filename == L"ToT.obj")
 		{
 			meshArray[i].meshWorld = XMMatrixIdentity();
 
