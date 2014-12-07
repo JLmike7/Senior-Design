@@ -398,13 +398,13 @@ bool SeniorPro::InitScene()
 	// Create cubemap
 	mCubemap = new Cubemap(d3d11Device);
 
-	if (!meshArray[0].LoadObjModel(L"shotgun2.obj", material, true, false, d3d11Device, SwapChain))
+	if (!meshArray[0].LoadObjModel(L"HUD3.obj", material, true, true, d3d11Device, SwapChain))
 		return false;
-	if (!meshArray[1].LoadObjModel(L"spaceCompound.obj", material, true, false, d3d11Device, SwapChain))
+	if (!meshArray[1].LoadObjModel(L"ak47.obj", material, true, false, d3d11Device, SwapChain))
 		return false;
-	if (!meshArray[2].LoadObjModel(L"HUD3.obj", material, true, false, d3d11Device, SwapChain))
+	if (!meshArray[2].LoadObjModel(L"sa80.obj", material, true, false, d3d11Device, SwapChain))
 		return false;
-	if (!meshArray[3].LoadObjModel(L"eclipse.obj", material, true, false, d3d11Device, SwapChain))
+	if (!meshArray[3].LoadObjModel(L"spaceCompound.obj", material, true, false, d3d11Device, SwapChain))
 		return false;
 	if (!meshArray[4].LoadObjModel(L"win.obj", material, true, false, d3d11Device, SwapChain))
 		return false;
@@ -900,7 +900,7 @@ bool SeniorPro::InitScene()
 	//Initial win item location 
 	winX = rand() % 500;
 	winZ = rand() % 500;
-	
+
 	return true;
 }
 
@@ -1491,14 +1491,23 @@ void SeniorPro::UpdateScene(double time)
 			meshArray[i].meshWorld = XMMatrixIdentity();
 
 			//Define cube1's world space matrix
-			Rotation = XMMatrixRotationRollPitchYaw(0.0f, mCam.getCamYaw(), 0.0f);
+			Rotation = XMMatrixRotationRollPitchYaw(mCam.getCamPitch(), mCam.getCamYaw(), 0.0f);
 			//Rotation = XMMatrixRotationRollPitchYaw(0.0f, 0.0f, 0.0f);
 			Scale = XMMatrixScaling(0.1f, 0.1f, 0.1f);
-
-			Translation = XMMatrixTranslation(XMVectorGetX(mCam.getCamPosition()), XMVectorGetY(mCam.getCamPosition()) - 2.7, XMVectorGetZ(mCam.getCamPosition()));
+			Translation = XMMatrixTranslation(mCam.getsCamPosition().getX(), mCam.getsCamPosition().getY(), mCam.getsCamPosition().getZ());
+			//Translation = XMMatrixTranslation(XMVectorGetX(mCam.getCamPosition()), XMVectorGetY(mCam.getCamPosition()) - 2.7, XMVectorGetZ(mCam.getCamPosition()));
 
 
 			meshArray[i].meshWorld = Rotation * Scale * Translation;
+
+			/*
+			meshArray[i].meshWorld = XMMatrixIdentity();
+
+			Rotation = XMMatrixRotationRollPitchYaw(mCam.getCamPitch(), mCam.getCamYaw(), 0);
+			Scale = XMMatrixScaling(0.1f, 0.1f, 0.1f);
+			Translation = XMMatrixTranslation(mCam.getsCamPosition().getX(), mCam.getsCamPosition().getY(), mCam.getsCamPosition().getZ());
+
+			meshArray[i].meshWorld = Rotation * Scale * Translation;*/
 		}
 
 		/*
@@ -1544,7 +1553,7 @@ void SeniorPro::UpdateScene(double time)
 		meshArray[i].meshWorld = Rotation * Scale * Translation;
 		} */
 		//Temple of Time
-		if (meshArray[i].filename == L"ToT.obj")
+		/*if (meshArray[i].filename == L"ToT.obj")
 		{
 			meshArray[i].meshWorld = XMMatrixIdentity();
 
@@ -1584,12 +1593,20 @@ void SeniorPro::UpdateScene(double time)
 
 		meshArray[i].meshWorld = Rotation * Scale * Translation;
 		}*/
-		if (meshArray[i].filename == L"shotgun2.obj")
+
+		if (meshArray[i].filename == L"sa80.obj" || meshArray[i].filename == L"ak47.obj")
 		{
 			meshArray[i].meshWorld = XMMatrixIdentity();
 
 			Rotation = XMMatrixRotationRollPitchYaw(mCam.getCamPitch(), mCam.getCamYaw(), 0);
+			if ((meshArray[i].filename == L"ak47.obj" && weaponSelect == 1) || (meshArray[i].filename == L"sa80.obj" && weaponSelect == 2))
+			{
 			Scale = XMMatrixScaling(0.1f, 0.1f, 0.1f);
+			}
+			else
+			{
+				Scale = XMMatrixScaling(0.0f, 0.0f, 0.0f);
+			}
 			Translation = XMMatrixTranslation(mCam.getsCamPosition().getX(), mCam.getsCamPosition().getY(), mCam.getsCamPosition().getZ());
 
 			meshArray[i].meshWorld = Rotation * Scale * Translation;
@@ -2023,10 +2040,23 @@ void SeniorPro::DetectInput(double time)
 	}
 
 	///////////////**************new**************////////////////////
+	if (keyboardState[DIK_1] & 0X80)
+	{
+		weaponSelect = 1;
+	}
+
+	if (keyboardState[DIK_2] & 0X80)
+	{
+		weaponSelect = 2;
+	}
+
 	if (keyboardState[DIK_Y] & 0X80)
 	{
-		float timeFactor = 1.0f;	// You can speed up or slow down time by changing this
-		//UpdateMD5Model(NewMD5Model, time*timeFactor, 0);
+		float timeFactor = 0.75f;	// You can speed up or slow down time by changing this
+		for (int i = 0; i < ENEMYCOUNT; i++)
+		{
+			enemyArray[i].UpdateMD5Model(time*timeFactor, 0, d3d11DevCon);
+		}
 	}
 	///////////////**************new**************////////////////////
 
@@ -2140,7 +2170,7 @@ void SeniorPro::DetectInput(double time)
 		if (mCam.getCamYaw() < 0.0f)
 			mCam.setCamYaw(6.28f);
 		//camPitch += mouseCurrState.lY * 0.001f;
-		//mCam.setCamPitch(mCam.getCamPitch() + (mouseLastState.lY * 0.001f));
+		mCam.setCamPitch(mCam.getCamPitch() + (mouseLastState.lY * 0.001f));
 
 		mouseLastState = mouseCurrState;
 	}

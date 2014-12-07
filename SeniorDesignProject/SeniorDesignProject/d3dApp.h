@@ -93,6 +93,7 @@ protected:
 
 	///////////////**************new**************////////////////////
 	bool isShoot;
+	int weaponSelect;
 
 	int ClientWidth;
 	int ClientHeight;
