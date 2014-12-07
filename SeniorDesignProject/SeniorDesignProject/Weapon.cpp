@@ -19,6 +19,7 @@ void Weapon::Init(){
 	defend = 10.0f;
 	reloadTime = 2; //In milliseconds
 	magSize = 8; //Magazine capacity
+	extraMags = 3;
 }
 float Weapon::getRange()
 {
@@ -63,9 +64,23 @@ int Weapon::getReloadTime(){
 void Weapon::setReloadTime(int ReloadTime){
 	reloadTime = ReloadTime;
 }
+void Weapon::setExtraClips(int clips)
+{
+	extraMags += clips;
+}
+int Weapon::getExtraClips(){
+	return extraMags;
+}
 int Weapon::getMagSize(){
 	return magSize;
 }
 void Weapon::setMagSize(int MagSize){
 	magSize = MagSize;
+}
+void Weapon::reload()
+{
+	if (getExtraClips() > 0)
+	{
+		setMagSize(8);
+	}
 }

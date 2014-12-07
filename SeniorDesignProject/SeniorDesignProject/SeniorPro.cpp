@@ -5,8 +5,10 @@
 #include "Mesh.h"
 #include "Collision.h"
 
-#define MESHCOUNT 2
+#define MESHCOUNT 4
 #define ENEMYCOUNT 10
+#define ITEMCOUNT 30
+#define AMMOCOUNT 30
 
 class SeniorPro : public D3DApp
 {
@@ -34,6 +36,8 @@ private:
 	CameraMain mCam;
 
 	Collision coll[ENEMYCOUNT];
+	Collision itemColl[ITEMCOUNT];
+	Collision ammoColl[AMMOCOUNT];
 	bool move;
 
 	Cubemap* mCubemap;
@@ -53,6 +57,8 @@ private:
 	UINT offset = 0;
 
 	Mesh enemyArray[ENEMYCOUNT];
+	Mesh itemArray[ITEMCOUNT];
+	Mesh ammoArray[AMMOCOUNT];
 	int* enemyHit = new int[ENEMYCOUNT];
 
 	bool enemyBox = false; //used to switch between bipeds and boxes
@@ -395,9 +401,11 @@ bool SeniorPro::InitScene()
 		return false;
 	if (!meshArray[1].LoadObjModel(L"spaceCompound.obj", material, true, false, d3d11Device, SwapChain))
 		return false;
-	if (!meshArray[2].LoadObjModel(L"HUD3.obj", material, true, true, d3d11Device, SwapChain))
+	if (!meshArray[2].LoadObjModel(L"HUD3.obj", material, true, false, d3d11Device, SwapChain))
 		return false;
-	/*if (!meshArray[3].LoadObjModel(L"Tot.obj", material, true, true, d3d11Device, SwapChain))
+	if (!meshArray[3].LoadObjModel(L"eclipse.obj", material, true, false, d3d11Device, SwapChain))
+		return false;
+	/*//if (!meshArray[3].LoadObjModel(L"ToT.obj", material, true, true, d3d11Device, SwapChain))
 		return false;
 	if (!meshArray[4].LoadObjModel(L"DoorLeft.obj", material, true, true, d3d11Device, SwapChain))
 		return false;
@@ -409,6 +417,21 @@ bool SeniorPro::InitScene()
 		return false;*/
 	//Enemy.obj, DoorLeft.obj, DoorRight.obj
 
+	//Items
+	for (int i = 0; i < ITEMCOUNT; i++)
+	{
+		if (!itemArray[i].LoadObjModel(L"eclipse.obj", material, true, false, d3d11Device, SwapChain))
+			return false;
+	}
+	//Ammo
+	for (int i = 0; i < ITEMCOUNT; i++)
+	{
+		if (!ammoArray[i].LoadObjModel(L"ammo.obj", material, true, false, d3d11Device, SwapChain))
+			return false;
+	}
+
+
+	//Enemies
 	for (int i = 0; i < ENEMYCOUNT; i++)
 	{
 		if (enemyBox)
@@ -425,7 +448,7 @@ bool SeniorPro::InitScene()
 				return false;
 		}
 	}
-
+	
 	//Compile Shaders from shader file
 	hr = D3DX11CompileFromFile(L"Effects.fx", 0, 0, "VS", "vs_4_0", 0, 0, 0, &VS_Buffer, 0, 0);
 	hr = D3DX11CompileFromFile(L"Effects.fx", 0, 0, "PS", "ps_4_0", 0, 0, 0, &PS_Buffer, 0, 0);
@@ -830,6 +853,48 @@ bool SeniorPro::InitScene()
 		enemyArray[i].meshWorld = Rotation * Scale * Translation;
 	}
 
+	//Draw Initial items
+	for (int i = 0; i < ITEMCOUNT; i++)
+	{
+		randItemX = rand() % 500;
+		randItemZ = rand() % 500;
+
+		itemX[i] = randItemX - 250;
+		itemZ[i] = randItemZ - 250;
+
+		itemArray[i].meshWorld = XMMatrixIdentity();
+
+		Rotation = XMMatrixRotationY(ItemRot);
+		Scale = XMMatrixScaling(0.05f, 0.05f, 0.05f);
+		Translation = XMMatrixTranslation(itemX[i], 2.0f, itemZ[i]);
+		itemColl[i].setLocation(Point(itemX[i], 2.0f, itemZ[i]));
+		itemColl[i].setheight(3.0f);
+		itemColl[i].setlength(3.0f);
+		itemColl[i].setwidth(3.0f);
+		itemArray[i].meshWorld = Rotation * Scale * Translation;
+	}
+
+	//Draw Initial items
+	for (int i = 0; i < AMMOCOUNT; i++)
+	{
+		randAmmoX = rand() % 500;
+		randAmmoZ = rand() % 500;
+
+		ammoX[i] = randAmmoX - 250;
+		ammoZ[i] = randAmmoZ - 250;
+
+		ammoArray[i].meshWorld = XMMatrixIdentity();
+
+		Rotation = XMMatrixRotationY(ammoRot);
+		Scale = XMMatrixScaling(0.05f, 0.05f, 0.05f);
+		Translation = XMMatrixTranslation(ammoX[i], 2.0f, ammoZ[i]);
+		ammoColl[i].setLocation(Point(ammoX[i], 2.0f, ammoZ[i]));
+		ammoColl[i].setheight(3.0f);
+		ammoColl[i].setlength(3.0f);
+		ammoColl[i].setwidth(3.0f);
+		ammoArray[i].meshWorld = Rotation * Scale * Translation;
+	}
+
 	return true;
 }
 
@@ -940,7 +1005,7 @@ void SeniorPro::UpdateScene(double time)
 			//Rotation = XMMatrixRotationY(3.14f);
 			if (enemyBox)
 			{
-			Scale = XMMatrixScaling(0.15f, 0.15f, 0.15f);
+				Scale = XMMatrixScaling(0.15f, 0.15f, 0.15f);
 			}
 			else
 			{
@@ -1010,7 +1075,7 @@ void SeniorPro::UpdateScene(double time)
 
 						Translation = XMMatrixTranslation(enemyXPos[i] += .00, 2.0f, enemyZPos[i] += .00);
 						coll[i].setLocation(Point(enemyXPos[i] += .00, 2.0f, enemyZPos[i] += .00));
-						
+
 					}
 					else
 					{
@@ -1338,49 +1403,49 @@ void SeniorPro::UpdateScene(double time)
 				{
 					Player1.setHealth(100);
 					Player1.setLives(Player1.getLives() - 1);
-		//start consuming audio in the source voice
-		g_sourceRevive->Start();
-		//simple message loop
-		//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
-		//{
-		g_sourceRevive->Stop();
-		g_sourceRevive->FlushSourceBuffers();
-		g_sourceRevive->Start();
+					//start consuming audio in the source voice
+					g_sourceRevive->Start();
+					//simple message loop
+					//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
+					//{
+					g_sourceRevive->Stop();
+					g_sourceRevive->FlushSourceBuffers();
+					g_sourceRevive->Start();
 
-		//play the sound
-		g_sourceRevive->SubmitSourceBuffer(buffer4.xaBuffer());
-		//}
-	}
-	if (Player1.getLives() <= 0)
-	{
-		thePlayer.setDeath(true);
-		//start consuming audio in the source voice
-		g_sourceDead->Start();
-		//simple message loop
-		//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
-		//{
-		g_sourceDead->Stop();
-		g_sourceDead->FlushSourceBuffers();
-		g_sourceDead->Start();
+					//play the sound
+					g_sourceRevive->SubmitSourceBuffer(buffer4.xaBuffer());
+					//}
+				}
+				if (Player1.getLives() <= 0)
+				{
+					thePlayer.setDeath(true);
+					//start consuming audio in the source voice
+					g_sourceDead->Start();
+					//simple message loop
+					//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
+					//{
+					g_sourceDead->Stop();
+					g_sourceDead->FlushSourceBuffers();
+					g_sourceDead->Start();
 
-		//play the sound
-		g_sourceDead->SubmitSourceBuffer(buffer3.xaBuffer());
-		//}
-	}
+					//play the sound
+					g_sourceDead->SubmitSourceBuffer(buffer3.xaBuffer());
+					//}
+				}
 
-	if (thePlayer.getDeath() == true)
-	{
-		if (MessageBox(0, L"You have been killed, would you like to restart?", L"You are dead", MB_YESNO | MB_ICONQUESTION) == IDNO)
-			DestroyWindow(hwnd);
-		else
-		{
-			thePlayer.Init(_settings);
-			Player1.Init();
-			PlayerWep.Init();
-		}
+				if (thePlayer.getDeath() == true)
+				{
+					if (MessageBox(0, L"You have been killed, would you like to restart?", L"You are dead", MB_YESNO | MB_ICONQUESTION) == IDNO)
+						DestroyWindow(hwnd);
+					else
+					{
+						thePlayer.Init(_settings);
+						Player1.Init();
+						PlayerWep.Init();
+					}
+
 				}
 			}
-
 			else {
 				//OPTIMIZED AI MOVEMENT/ROTATION
 				//Only change directions if number is divisible by 300
@@ -1389,26 +1454,26 @@ void SeniorPro::UpdateScene(double time)
 					EMoveX[i] *= -1.0f;
 				}
 				if (randZ % 300 == 0)
-					{
+				{
 					EMoveZ[i] *= -1.0f;
-					}
+				}
 				//Only change rotation if number is divisible by 275
 				if (randRot % 275 == 0)
-					{
+				{
 					ERot[i] *= -1.0f;
-					}
+				}
 
 				//Rotate enemy, don't let it go past full 360 degrees (2 pi)
 				Rotation = XMMatrixRotationY(enemyRot[i] += ERot[i]);
-						if (enemyRot[i] > 6.28f)
-							enemyRot[i] = 0.0f;
-						if (enemyRot[i] < 0.0f)
-							enemyRot[i] = 6.28f;
+				if (enemyRot[i] > 6.28f)
+					enemyRot[i] = 0.0f;
+				if (enemyRot[i] < 0.0f)
+					enemyRot[i] = 6.28f;
 
 				//Translate and update enemy and respective collision box
 				Translation = XMMatrixTranslation(enemyXPos[i] += EMoveX[i], 2.0f, enemyZPos[i] += EMoveZ[i]);
 				coll[i].setLocation(Point(enemyXPos[i] += EMoveX[i], 2.0f, enemyZPos[i] += EMoveZ[i]));
-				
+
 			}
 
 
@@ -1420,12 +1485,12 @@ void SeniorPro::UpdateScene(double time)
 			meshArray[i].meshWorld = XMMatrixIdentity();
 
 			//Define cube1's world space matrix
-			Rotation = XMMatrixRotationRollPitchYaw(0.0f , mCam.getCamYaw(), 0.0f);
+			Rotation = XMMatrixRotationRollPitchYaw(0.0f, mCam.getCamYaw(), 0.0f);
 			//Rotation = XMMatrixRotationRollPitchYaw(0.0f, 0.0f, 0.0f);
 			Scale = XMMatrixScaling(0.1f, 0.1f, 0.1f);
-			
-				Translation = XMMatrixTranslation(XMVectorGetX(mCam.getCamPosition()), XMVectorGetY(mCam.getCamPosition()) - 2.7, XMVectorGetZ(mCam.getCamPosition()));
-		
+
+			Translation = XMMatrixTranslation(XMVectorGetX(mCam.getCamPosition()), XMVectorGetY(mCam.getCamPosition()) - 2.7, XMVectorGetZ(mCam.getCamPosition()));
+
 
 			meshArray[i].meshWorld = Rotation * Scale * Translation;
 		}
@@ -1434,46 +1499,46 @@ void SeniorPro::UpdateScene(double time)
 		//Right Door
 		if (i == 7)
 		{
-			meshArray[i].meshWorld = XMMatrixIdentity();
-			Rotation = XMMatrixRotationY(0.0f);
-			Scale = XMMatrixScaling(0.50f, 0.633f, 0.25f);
-			Translation = XMMatrixTranslation(-20.08f + moveRight, -1.3f, 18.0f);
+		meshArray[i].meshWorld = XMMatrixIdentity();
+		Rotation = XMMatrixRotationY(0.0f);
+		Scale = XMMatrixScaling(0.50f, 0.633f, 0.25f);
+		Translation = XMMatrixTranslation(-20.08f + moveRight, -1.3f, 18.0f);
 
-			meshArray[i].meshWorld = Rotation * Scale * Translation;
+		meshArray[i].meshWorld = Rotation * Scale * Translation;
 		}
 		//Left Door
 		if (i == 6)
 		{
-			meshArray[i].meshWorld = XMMatrixIdentity();
-			Rotation = XMMatrixRotationY(0.0f);
-			Scale = XMMatrixScaling(0.50f, 0.633f, 0.25f);
-			Translation = XMMatrixTranslation(20.08f - moveLeft, -1.3f, 18.0f);
+		meshArray[i].meshWorld = XMMatrixIdentity();
+		Rotation = XMMatrixRotationY(0.0f);
+		Scale = XMMatrixScaling(0.50f, 0.633f, 0.25f);
+		Translation = XMMatrixTranslation(20.08f - moveLeft, -1.3f, 18.0f);
 
-			meshArray[i].meshWorld = Rotation * Scale * Translation;
+		meshArray[i].meshWorld = Rotation * Scale * Translation;
 		}
 
 		//Right Door
 		if (i == 5)
 		{
-			meshArray[i].meshWorld = XMMatrixIdentity();
-			Rotation = XMMatrixRotationY(0.0f);
-			Scale = XMMatrixScaling(0.50f, 0.633f, 0.25f);
-			Translation = XMMatrixTranslation(-20.08f + moveRight, -1.3f, 34.6f);
+		meshArray[i].meshWorld = XMMatrixIdentity();
+		Rotation = XMMatrixRotationY(0.0f);
+		Scale = XMMatrixScaling(0.50f, 0.633f, 0.25f);
+		Translation = XMMatrixTranslation(-20.08f + moveRight, -1.3f, 34.6f);
 
-			meshArray[i].meshWorld = Rotation * Scale * Translation;
+		meshArray[i].meshWorld = Rotation * Scale * Translation;
 		}
 		//Left Door
 		if (i == 4)
-	{
-			meshArray[i].meshWorld = XMMatrixIdentity();
-			Rotation = XMMatrixRotationY(0.0f);
-			Scale = XMMatrixScaling(0.50f, 0.633f, 0.25f);
-			Translation = XMMatrixTranslation(20.08f - moveLeft, -1.3f, 34.6f);
+		{
+		meshArray[i].meshWorld = XMMatrixIdentity();
+		Rotation = XMMatrixRotationY(0.0f);
+		Scale = XMMatrixScaling(0.50f, 0.633f, 0.25f);
+		Translation = XMMatrixTranslation(20.08f - moveLeft, -1.3f, 34.6f);
 
-			meshArray[i].meshWorld = Rotation * Scale * Translation;
-		}
+		meshArray[i].meshWorld = Rotation * Scale * Translation;
+		} */
 		//Temple of Time
-		if (i == 3)
+		if (meshArray[i].filename == L"ToT.obj")
 		{
 			meshArray[i].meshWorld = XMMatrixIdentity();
 
@@ -1482,7 +1547,7 @@ void SeniorPro::UpdateScene(double time)
 			Translation = XMMatrixTranslation(20.0f, 0.0f, -64.0f);
 
 			meshArray[i].meshWorld = Rotation * Scale * Translation;
-		}*/
+		}
 		if (i == 1)
 		{
 			meshArray[i].meshWorld = XMMatrixIdentity();
@@ -1495,13 +1560,13 @@ void SeniorPro::UpdateScene(double time)
 		}
 		/*if (meshArray[i].filename == L"ground.obj")
 		{
-			meshArray[i].meshWorld = XMMatrixIdentity();
+		meshArray[i].meshWorld = XMMatrixIdentity();
 
-			Rotation = XMMatrixRotationY(3.14f);
-			Scale = XMMatrixScaling(10.0f, 1.0f, 10.0f);
-			Translation = XMMatrixTranslation(0.0f, -0.02f, 0.0f);
+		Rotation = XMMatrixRotationY(3.14f);
+		Scale = XMMatrixScaling(10.0f, 1.0f, 10.0f);
+		Translation = XMMatrixTranslation(0.0f, -0.02f, 0.0f);
 
-			meshArray[i].meshWorld = Rotation * Scale * Translation;
+		meshArray[i].meshWorld = Rotation * Scale * Translation;
 		}*/
 		if (meshArray[i].filename == L"shotgun2.obj")
 		{
@@ -1513,7 +1578,39 @@ void SeniorPro::UpdateScene(double time)
 
 			meshArray[i].meshWorld = Rotation * Scale * Translation;
 		}
+		/*if (meshArray[i].filename == L"eclipse.obj")
+		{
+			Rotation = XMMatrixRotationY(ItemRot + 0.1f);
+			if (ItemRot >= 6.28)
+				ItemRot = 0;
+			Scale = XMMatrixScaling(0.15f, 0.15f, 0.15f);
+			Translation = XMMatrixTranslation(0.0f, 2.0f, 0.0f);
+			meshArray[i].meshWorld = Rotation * Scale * Translation;
+		}*/
+		//Draw game items
+		for (int j = 0; j < ITEMCOUNT; j++)
+		{
+
+			Rotation = XMMatrixRotationY(ItemRot += 0.001f);
+			if (ItemRot >= 6.28)
+				ItemRot = 0;
+			Scale = XMMatrixScaling(0.05f, 0.1f, 0.05f);
+			Translation = XMMatrixTranslation(itemX[j], 2.0f, itemZ[j]);
+			itemArray[j].meshWorld = Rotation * Scale * Translation;
+		}
+
+		for (int j = 0; j < AMMOCOUNT; j++)
+		{
+
+			Rotation = XMMatrixRotationY(ammoRot += 0.001f);
+			if (ammoRot >= 6.28)
+				ammoRot = 0;
+			Scale = XMMatrixScaling(0.05f, 0.05f, 0.05f);
+			Translation = XMMatrixTranslation(ammoX[j], 2.0f, ammoZ[j]);
+			ammoArray[j].meshWorld = Rotation * Scale * Translation;
+		}
 	}
+	
 
 	///////////////**************new**************////////////////////
 	/*Scale = XMMatrixScaling(0.04f, 0.04f, 0.04f);			// The model is a bit too large for our scene, so make it smaller
@@ -1552,27 +1649,28 @@ void SeniorPro::RenderText(std::wstring text, int inInt)
 	if (thePlayer.getDeath() == false)
 	{
 		printString <<
-		L"  Health: " << Player1.getHealth()
-		<< L"                                                                                                                                  Lives: " << Player1.getLives() << "\n\n"
-		<< L"  Ammo: " << PlayerWep.getMagSize()
-		<< L"                                                                                                                                     Score: " << score << L"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
-		//<< L"player x: " << XMVectorGetX(mCam.getCamPosition()) << "\n"
-		//<< L"player y: " << XMVectorGetY(mCam.getCamPosition()) << "\n"
-		//<< L"player z: " << XMVectorGetZ(mCam.getCamPosition()) << "\n"
+			L"  Health: " << Player1.getHealth()
+			<< L"                                                                                                                                  Lives: " << Player1.getLives() << "\n"
+			<< L"  Ammo: " << PlayerWep.getMagSize()
+			<< L"                                                                                                                                     Score: " << score << L"\n"
+			<< L"  Extra Mags: "<< PlayerWep.getExtraClips() << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+			//<< L"player x: " << XMVectorGetX(mCam.getCamPosition()) << "\n"
+			//<< L"player y: " << XMVectorGetY(mCam.getCamPosition()) << "\n"
+			//<< L"player z: " << XMVectorGetZ(mCam.getCamPosition()) << "\n"
 
-		<< L"  EnemyHeath: " << enemyStats[hitMe].getHealth() << L"\n";
-			//<< L"Enemy Picked: " << hitMe << L"\n"
-			//<< L"Picked Dist: " << pickedDist << "\n"
-			//<< L"Picked Dist: " << pickedDist2 << "\n"
-			//<< L"Picked Dist: " << pickedDist3 << "\n"
-			//<< L"Picked Dist: " << pickedDist4 << "\n"
-			//<< L"Picked Dist: " << pickedDist5 << "\n"
-			//<< L"Picked Dist: " << pickedDist6 << "\n"
-			//<< L"Picked Dist: " << pickedDist7 << "\n"
-			//<< L"Picked Dist: " << pickedDist8 << "\n"
-			//<< L"Player Yaw: " << mCam.getCamYaw() << "\n"
-			//<< L"Enemy Rot: " << enemyRot[1] << "\n"
-			//<< L"Dist from enemy1: " << enemyXPos[1] - XMVectorGetX(mCam.getCamPosition()) << "\n";
+			<< L"  EnemyHeath: " << enemyStats[hitMe].getHealth() << L"\n";
+		//<< L"Enemy Picked: " << hitMe << L"\n"
+		//<< L"Picked Dist: " << pickedDist << "\n"
+		//<< L"Picked Dist: " << pickedDist2 << "\n"
+		//<< L"Picked Dist: " << pickedDist3 << "\n"
+		//<< L"Picked Dist: " << pickedDist4 << "\n"
+		//<< L"Picked Dist: " << pickedDist5 << "\n"
+		//<< L"Picked Dist: " << pickedDist6 << "\n"
+		//<< L"Picked Dist: " << pickedDist7 << "\n"
+		//<< L"Picked Dist: " << pickedDist8 << "\n"
+		//<< L"Player Yaw: " << mCam.getCamYaw() << "\n"
+		//<< L"Enemy Rot: " << enemyRot[1] << "\n"
+		//<< L"Dist from enemy1: " << enemyXPos[1] - XMVectorGetX(mCam.getCamPosition()) << "\n";
 		printText = printString.str();
 		if (reloadBro == true)
 		{
@@ -1580,11 +1678,12 @@ void SeniorPro::RenderText(std::wstring text, int inInt)
 				L" OUTTA AMMO, RELOAD!!";
 			printText = printString.str();
 		}
-	/*else {
-		printString <<
+		/*else {
+			printString <<
 			L"YOU ARE DEAD! HA...HAHAHA!!: ";
-		printText = printString.str();
-	}*/
+			printText = printString.str();
+			}*/
+	}
 
 	//Set the Font Color
 	D2D1_COLOR_F FontColor = D2D1::ColorF(1.0f, 1.0f, 1.0f, 1.0f);
@@ -1700,6 +1799,14 @@ void SeniorPro::DrawScene()
 				drawMD5Model(&enemyArray[i]);
 			}
 	}
+	for (int i = 0; i < ITEMCOUNT; i++)
+	{
+		drawModel(&itemArray[i], false);
+	}
+	for (int i = 0; i < AMMOCOUNT; i++)
+	{
+		drawModel(&ammoArray[i], false);
+	}
 
 	/////Draw the Sky's Sphere//////
 	//Set the spheres index buffer
@@ -1740,7 +1847,15 @@ void SeniorPro::DrawScene()
 		if (!enemyHit[i])
 			drawModel(&enemyArray[i], true);
 	}*/
+	for (int i = 0; i < ITEMCOUNT; i++)
+	{
+		drawModel(&itemArray[i], true);
+	}
 
+	for (int i = 0; i < AMMOCOUNT; i++)
+	{
+		drawModel(&ammoArray[i], true);
+	}
 	RenderText(L"Health: ", Player1.getHealth());
 	RenderText(L"Lives: ", Player1.getLives());
 	RenderText(L"Health: ", PlayerWep.getMagSize());
@@ -1795,6 +1910,35 @@ void SeniorPro::DetectInput(double time)
 		}
 	}
 
+	for (int i = 0; i < ITEMCOUNT; i++){
+		if (itemColl[i].checkPointCollision(Point(XMVectorGetX(mCam.getCamPosition()), XMVectorGetY(mCam.getCamPosition()), XMVectorGetZ(mCam.getCamPosition())))){
+			score += 5;
+			itemX[i] = 10000;
+			itemZ[i] = 10000;
+			itemColl[i].setLocation(Point(10000, 2.0f, 10000));
+			break;
+
+		}
+		else{
+
+		}
+	}
+
+	for (int i = 0; i < AMMOCOUNT; i++){
+		if (ammoColl[i].checkPointCollision(Point(XMVectorGetX(mCam.getCamPosition()), XMVectorGetY(mCam.getCamPosition()), XMVectorGetZ(mCam.getCamPosition())))){
+			PlayerWep.setExtraClips(3);
+			ammoX[i] = 10000;
+			ammoZ[i] = 10000;
+			ammoColl[i].setLocation(Point(10000, 2.0f, 10000));
+			break;
+
+		}
+		else{
+			move = false;
+
+		}
+	}
+
 	//Check for collision and then allow for user to  move
 	if (keyboardState[DIK_A] & 0x80 && pickedDist >= 0.5 && pickedDist2 >= 0.5 && pickedDist3 >= 0.5 && pickedDist4 >= 0.5 && pickedDist5 >= 0.5
 		&& pickedDist6 >= 0.5 && pickedDist7 >= 0.5 && pickedDist8 >= 0.5 && pickedDist9 >= 0.5 && pickedDist10 >= 0.5)
@@ -1822,24 +1966,32 @@ void SeniorPro::DetectInput(double time)
 	}
 	if (keyboardState[DIK_R] & 0x80)
 	{
-
-		if (PlayerWep.getMagSize() < 8)
+		if (PlayerWep.getExtraClips() > 0)
 		{
-			//start consuming audio in the source voice
+			if (PlayerWep.getMagSize() < 8)
+			{
+				//start consuming audio in the source voice
 
-			//simple message loop
-			//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
-			//{
-			g_sourceReload->Stop();
-			g_sourceReload->FlushSourceBuffers();
-			g_sourceReload->Start();
+				//simple message loop
+				//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
+				//{
+				g_sourceReload->Stop();
+				g_sourceReload->FlushSourceBuffers();
+				g_sourceReload->Start();
 
-			//play the sound
-			g_sourceGun->SubmitSourceBuffer(buffer5.xaBuffer());
-			//}
-			PlayerWep.setMagSize(8);
-			reloadBro = false;
+				//play the sound
+				g_sourceGun->SubmitSourceBuffer(buffer5.xaBuffer());
+				//}
+				PlayerWep.reload();
+				PlayerWep.setExtraClips(-1);
+				reloadBro = false;
+			}
 		}
+
+	}
+	if (keyboardState[DIK_E] & 0x80)
+	{
+		moveDoors = !moveDoors;
 
 	}
 	if (keyboardState[DIK_E] & 0x80)
