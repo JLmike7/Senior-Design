@@ -19,6 +19,9 @@ public:
 	void setReloadTime(int reloadTime);
 	int getMagSize();
 	void setMagSize(int magSize);
+	void setExtraClips(int clips);
+	int getExtraClips();
+	void reload();
 	Weapon();
 	~Weapon();
 
@@ -33,5 +36,6 @@ protected:
 	float defend;
 	int reloadTime; //In milliseconds
 	int magSize; //Magazine capacity
+	int extraMags;
 };
 
