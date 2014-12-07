@@ -5,7 +5,7 @@
 #include "Mesh.h"
 #include "Collision.h"
 
-#define MESHCOUNT 4
+#define MESHCOUNT 5
 #define ENEMYCOUNT 10
 #define ITEMCOUNT 30
 #define AMMOCOUNT 30
@@ -38,6 +38,7 @@ private:
 	Collision coll[ENEMYCOUNT];
 	Collision itemColl[ITEMCOUNT];
 	Collision ammoColl[AMMOCOUNT];
+	Collision win;
 	bool move;
 
 	Cubemap* mCubemap;
@@ -404,6 +405,8 @@ bool SeniorPro::InitScene()
 	if (!meshArray[2].LoadObjModel(L"HUD3.obj", material, true, false, d3d11Device, SwapChain))
 		return false;
 	if (!meshArray[3].LoadObjModel(L"eclipse.obj", material, true, false, d3d11Device, SwapChain))
+		return false;
+	if (!meshArray[4].LoadObjModel(L"win.obj", material, true, false, d3d11Device, SwapChain))
 		return false;
 	/*//if (!meshArray[3].LoadObjModel(L"ToT.obj", material, true, true, d3d11Device, SwapChain))
 		return false;
@@ -894,7 +897,10 @@ bool SeniorPro::InitScene()
 		ammoColl[i].setwidth(3.0f);
 		ammoArray[i].meshWorld = Rotation * Scale * Translation;
 	}
-
+	//Initial win item location 
+	winX = rand() % 500;
+	winZ = rand() % 500;
+	
 	return true;
 }
 
@@ -1548,6 +1554,16 @@ void SeniorPro::UpdateScene(double time)
 
 			meshArray[i].meshWorld = Rotation * Scale * Translation;
 		}
+		//Win Object
+		if (i == 4)
+		{
+			meshArray[i].meshWorld = XMMatrixIdentity();
+			Rotation = XMMatrixRotationY(0.0f);
+			Scale = XMMatrixScaling(0.1f, 0.1f, 0.1f);
+			Translation = XMMatrixTranslation(winX - 125 , 4.0f, winZ - 125);
+			win.setLocation(Point(winX - 125, 4.0f, winZ - 125));
+			meshArray[i].meshWorld = Rotation * Scale * Translation;
+		} 
 		if (i == 1)
 		{
 			meshArray[i].meshWorld = XMMatrixIdentity();
@@ -1939,6 +1955,12 @@ void SeniorPro::DetectInput(double time)
 		}
 	}
 
+	//Check for win condition
+	if (win.checkPointCollision(Point(XMVectorGetX(mCam.getCamPosition()), XMVectorGetY(mCam.getCamPosition()), XMVectorGetZ(mCam.getCamPosition())))){
+		score += 9001;
+
+	}
+
 	//Check for collision and then allow for user to  move
 	if (keyboardState[DIK_A] & 0x80 && pickedDist >= 0.5 && pickedDist2 >= 0.5 && pickedDist3 >= 0.5 && pickedDist4 >= 0.5 && pickedDist5 >= 0.5
 		&& pickedDist6 >= 0.5 && pickedDist7 >= 0.5 && pickedDist8 >= 0.5 && pickedDist9 >= 0.5 && pickedDist10 >= 0.5)
@@ -1994,11 +2016,7 @@ void SeniorPro::DetectInput(double time)
 		moveDoors = !moveDoors;
 
 	}
-	if (keyboardState[DIK_E] & 0x80)
-	{
-		moveDoors = !moveDoors;
 
-	}
 	if (keyboardState[DIK_L] & 0x80)
 	{
 		//thePlayer.setDeath(true);

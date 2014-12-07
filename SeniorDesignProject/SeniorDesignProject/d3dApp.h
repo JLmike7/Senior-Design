@@ -70,6 +70,11 @@ protected:
 	int ammoZ[30];
 	float ammoRot = 0.00f;
 
+	int winX;
+	int winZ;
+	float winRot = 0.00f;
+
+
 	Struct::cbPerObject cbPerObj;
 	Struct::Light light;
 	Struct::cbPerFrame constbuffPerFrame;
@@ -121,6 +126,8 @@ protected:
 	int randItemZ;
 	int randAmmoX;
 	int randAmmoZ;
+	int randWinX;
+	int randWinZ;
 
 	//Bools
 	bool pickItem = false;
