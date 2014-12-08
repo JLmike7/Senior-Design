@@ -472,4 +472,7 @@
   <ItemGroup>
     <Media Include="Music.mp3" />
   </ItemGroup>
+  <ItemGroup>
+    <Object Include="Moon.obj" />
+  </ItemGroup>
 </Project>

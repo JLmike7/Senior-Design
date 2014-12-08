@@ -6,7 +6,7 @@
 #include "Collision.h"
 
 #define MESHCOUNT 6
-#define ENEMYCOUNT 10
+#define ENEMYCOUNT 5
 #define ITEMCOUNT 30
 #define AMMOCOUNT 30
 
@@ -445,12 +445,12 @@ bool SeniorPro::InitScene()
 		if (!enemyArray[i].LoadObjModel(L"Enemy.obj", material, true, false, d3d11Device, SwapChain))
 			return false;
 
-			if (!enemyArray[i].LoadMD5Model(L"boy.md5mesh", d3d11Device, SwapChain))
-				return false;
+		if (!enemyArray[i].LoadMD5Model(L"boy.md5mesh", d3d11Device, SwapChain))
+			return false;
 
-			if (!enemyArray[i].LoadMD5Anim(L"boy.md5anim", SwapChain))
-				return false;
-		}
+		if (!enemyArray[i].LoadMD5Anim(L"boy.md5anim", SwapChain))
+			return false;
+	}
 	
 	//Compile Shaders from shader file
 	hr = D3DX11CompileFromFile(L"Effects.fx", 0, 0, "VS", "vs_4_0", 0, 0, 0, &VS_Buffer, 0, 0);
@@ -829,7 +829,7 @@ bool SeniorPro::InitScene()
 		// Init enemy locations
 		for (int i = 0; i < ENEMYCOUNT; i++)
 		{
-				enemyXPos[i] = enemyXPos[i - 1] + 10;
+			enemyXPos[i] = enemyXPos[i - 1] + 10;
 			enemyZPos[i] += 0;
 		}
 		
@@ -999,7 +999,7 @@ void SeniorPro::UpdateScene(double time)
 	for (int i = 0; i < MESHCOUNT; i++)
 	{
 
-#pragma region EnemyAI
+	#pragma region EnemyAI
 		for (int i = 0; i < ENEMYCOUNT; i++)
 		{
 			randX = rand() % 1000;
@@ -1530,8 +1530,7 @@ void SeniorPro::UpdateScene(double time)
 
 		meshArray[i].meshWorld = Rotation * Scale * Translation;
 		}*/
-		//Moon
-		if (i == 5)
+		if (meshArray[i].filename == L"Moon.obj")
 		{
 			meshArray[i].meshWorld = XMMatrixIdentity();
 			Rotation = XMMatrixRotationY(0.0f);
@@ -1539,8 +1538,8 @@ void SeniorPro::UpdateScene(double time)
 			Translation = XMMatrixTranslation(5.0f, moonHeight -= 0.06f, 0.0f);
 			meshArray[i].meshWorld = Rotation * Scale * Translation;
 		}
-		//Win Object
-		if (i == 4)
+
+		if (meshArray[i].filename == L"win.obj")
 		{
 			meshArray[i].meshWorld = XMMatrixIdentity();
 			Rotation = XMMatrixRotationY(0.0f);
@@ -1549,13 +1548,14 @@ void SeniorPro::UpdateScene(double time)
 			win.setLocation(Point(winX - 125, 2.0f, winZ - 125));
 			meshArray[i].meshWorld = Rotation * Scale * Translation;
 		} 
-		if (i == 3)
+
+		if (meshArray[i].filename == L"spaceCompound.obj")
 		{
 			meshArray[i].meshWorld = XMMatrixIdentity();
 
 			Rotation = XMMatrixRotationY(3.14f);
-		Scale = XMMatrixScaling(10.0f, 1.0f, 10.0f);
-		Translation = XMMatrixTranslation(0.0f, -0.02f, 0.0f);
+			Scale = XMMatrixScaling(1.0f, 1.0f, 1.0f);
+			Translation = XMMatrixTranslation(0.0f, 0.0f, 0.0f);
 
 			meshArray[i].meshWorld = Rotation * Scale * Translation;
 		}
