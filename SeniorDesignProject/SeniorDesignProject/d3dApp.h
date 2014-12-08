@@ -74,6 +74,8 @@ protected:
 	int winZ;
 	float winRot = 0.00f;
 
+	float moonHeight = 144;
+
 
 	Struct::cbPerObject cbPerObj;
 	Struct::Light light;
@@ -93,7 +95,7 @@ protected:
 
 	///////////////**************new**************////////////////////
 	bool isShoot;
-	int weaponSelect;
+	int weaponSelect = 1;
 
 	int ClientWidth;
 	int ClientHeight;
