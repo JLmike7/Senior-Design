@@ -472,7 +472,4 @@
   <ItemGroup>
     <Media Include="Music.mp3" />
   </ItemGroup>
-  <ItemGroup>
-    <Object Include="Enemy.obj" />
-  </ItemGroup>
 </Project>
