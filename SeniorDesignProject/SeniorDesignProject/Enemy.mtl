@@ -1,7 +1,7 @@
 # 3ds Max Wavefront OBJ Exporter v0.97b - (c)2007 guruware
-# File Created: 09.11.2014 18:40:03
+# File Created: 07.12.2014 21:23:53
 
-newmtl 01___SMILELOL
+newmtl _Enemy01___SMILELOL
 	Ns 10.0000
 	Ni 1.5000
 	d 1.0000
@@ -12,5 +12,5 @@ newmtl 01___SMILELOL
 	Kd 0.5882 0.5882 0.5882
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka maps\awesome-face.png
-	map_Kd maps\awesome-face.png
+	map_Ka C:\Users\Nickolas\Source\Repos\Senior-Design\SeniorDesignProject\SeniorDesignProject\maps\awesome-face.png
+	map_Kd C:\Users\Nickolas\Source\Repos\Senior-Design\SeniorDesignProject\SeniorDesignProject\maps\awesome-face.png

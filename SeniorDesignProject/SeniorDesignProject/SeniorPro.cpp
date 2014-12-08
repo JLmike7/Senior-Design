@@ -6,7 +6,7 @@
 #include "Collision.h"
 
 #define MESHCOUNT 5
-#define ENEMYCOUNT 10
+#define ENEMYCOUNT 5
 #define ITEMCOUNT 30
 #define AMMOCOUNT 30
 
@@ -58,10 +58,11 @@ private:
 	UINT offset = 0;
 
 	Mesh enemyArray[ENEMYCOUNT];
+	//Mesh enemyCollisionBox[ENEMYCOUNT];
 	Mesh itemArray[ITEMCOUNT];
 	Mesh ammoArray[AMMOCOUNT];
 	int* enemyHit = new int[ENEMYCOUNT];
-
+	
 	bool enemyBox = false; //used to switch between bipeds and boxes
 };
 //run initializemainwindow
@@ -420,6 +421,8 @@ bool SeniorPro::InitScene()
 		return false;*/
 	//Enemy.obj, DoorLeft.obj, DoorRight.obj
 
+	weaponSelect = 1;
+
 	//Items
 	for (int i = 0; i < ITEMCOUNT; i++)
 	{
@@ -437,19 +440,14 @@ bool SeniorPro::InitScene()
 	//Enemies
 	for (int i = 0; i < ENEMYCOUNT; i++)
 	{
-		if (enemyBox)
-		{
 		if (!enemyArray[i].LoadObjModel(L"Enemy.obj", material, true, false, d3d11Device, SwapChain))
 			return false;
-	}
-		else
-		{
-			if (!enemyArray[i].LoadMD5Model(L"boy.md5mesh", d3d11Device, SwapChain))
-				return false;
 
-			if (!enemyArray[i].LoadMD5Anim(L"boy.md5anim", SwapChain))
-				return false;
-		}
+		if (!enemyArray[i].LoadMD5Model(L"boy.md5mesh", d3d11Device, SwapChain))
+			return false;
+
+		if (!enemyArray[i].LoadMD5Anim(L"boy.md5anim", SwapChain))
+			return false;
 	}
 	
 	//Compile Shaders from shader file
@@ -829,7 +827,7 @@ bool SeniorPro::InitScene()
 		// Init enemy locations
 		for (int i = 0; i < ENEMYCOUNT; i++)
 		{
-				enemyXPos[i] = enemyXPos[i - 1] + 10;
+			enemyXPos[i] = enemyXPos[i - 1] + 10;
 			enemyZPos[i] += 0;
 		}
 		
@@ -998,8 +996,8 @@ void SeniorPro::UpdateScene(double time)
 
 	for (int i = 0; i < MESHCOUNT; i++)
 	{
-
-#pragma region EnemyAI
+		
+	#pragma region EnemyAI
 		for (int i = 0; i < ENEMYCOUNT; i++)
 		{
 			randX = rand() % 1000;
@@ -1009,14 +1007,8 @@ void SeniorPro::UpdateScene(double time)
 			//set the loaded enemy's world space
 			enemyArray[i].meshWorld = XMMatrixIdentity();
 			//Rotation = XMMatrixRotationY(3.14f);
-			if (enemyBox)
-			{
-				Scale = XMMatrixScaling(0.15f, 0.15f, 0.15f);
-			}
-			else
-			{
-				Scale = XMMatrixScaling(0.04f, 0.04f, 0.04f);
-			}
+			Scale = XMMatrixScaling(0.04f, 0.04f, 0.04f);
+			
 			//If distance is greater then 20, then randomly move
 			if ((enemyXPos[i] - XMVectorGetX(mCam.getCamPosition()) <= 15 && enemyZPos[i] - XMVectorGetZ(mCam.getCamPosition()) <= 15)
 				&& (enemyXPos[i] - XMVectorGetX(mCam.getCamPosition()) >= -15 && enemyZPos[i] - XMVectorGetZ(mCam.getCamPosition()) >= -15))
@@ -1485,6 +1477,8 @@ void SeniorPro::UpdateScene(double time)
 
 			enemyArray[i].meshWorld = Rotation * Scale * Translation;
 		}
+
+	#pragma endregion EnemyAI
 		//HUD
 		if (meshArray[i].filename == L"HUD3.obj")
 		{
@@ -1573,16 +1567,6 @@ void SeniorPro::UpdateScene(double time)
 			win.setLocation(Point(winX - 125, 4.0f, winZ - 125));
 			meshArray[i].meshWorld = Rotation * Scale * Translation;
 		} 
-		if (i == 1)
-		{
-			meshArray[i].meshWorld = XMMatrixIdentity();
-
-			Rotation = XMMatrixRotationY(3.14f);
-			Scale = XMMatrixScaling(1.0f, 1.0f, 1.0f);
-			Translation = XMMatrixTranslation(0.0f, 0.0f, 0.0f);
-
-			meshArray[i].meshWorld = Rotation * Scale * Translation;
-		}
 		/*if (meshArray[i].filename == L"ground.obj")
 		{
 		meshArray[i].meshWorld = XMMatrixIdentity();
@@ -1594,20 +1578,41 @@ void SeniorPro::UpdateScene(double time)
 		meshArray[i].meshWorld = Rotation * Scale * Translation;
 		}*/
 
+		if (meshArray[i].filename == L"spaceCompound.obj")
+		{
+			meshArray[i].meshWorld = XMMatrixIdentity();
+
+			Rotation = XMMatrixRotationY(3.14f);
+			Scale = XMMatrixScaling(1.0f, 1.0f, 1.0f);
+			Translation = XMMatrixTranslation(0.0f, 0.0f, 0.0f);
+
+			meshArray[i].meshWorld = Rotation * Scale * Translation;
+		}
+		// Weapon Drawing
 		if (meshArray[i].filename == L"sa80.obj" || meshArray[i].filename == L"ak47.obj")
 		{
 			meshArray[i].meshWorld = XMMatrixIdentity();
 
-			Rotation = XMMatrixRotationRollPitchYaw(mCam.getCamPitch(), mCam.getCamYaw(), 0);
+			//kickback if shooted
+			if (isShoot)
+			{
+				Rotation = XMMatrixRotationRollPitchYaw(mCam.getCamPitch() - 0.025, mCam.getCamYaw(), 0);
+			}
+			else
+			{
+				Rotation = XMMatrixRotationRollPitchYaw(mCam.getCamPitch(), mCam.getCamYaw(), 0);
+			}
+
 			if ((meshArray[i].filename == L"ak47.obj" && weaponSelect == 1) || (meshArray[i].filename == L"sa80.obj" && weaponSelect == 2))
 			{
-			Scale = XMMatrixScaling(0.1f, 0.1f, 0.1f);
+				Scale = XMMatrixScaling(0.1f, 0.1f, 0.1f);
 			}
 			else
 			{
 				Scale = XMMatrixScaling(0.0f, 0.0f, 0.0f);
 			}
 			Translation = XMMatrixTranslation(mCam.getsCamPosition().getX(), mCam.getsCamPosition().getY(), mCam.getsCamPosition().getZ());
+
 
 			meshArray[i].meshWorld = Rotation * Scale * Translation;
 		}
@@ -1824,13 +1829,9 @@ void SeniorPro::DrawScene()
 	{
 		if (!enemyHit[i])
 			if (enemyBox)
-			{
-			drawModel(&enemyArray[i], false);
-	}
-			else
-			{
-				drawMD5Model(&enemyArray[i]);
-			}
+				drawModel(&enemyArray[i], false);
+
+			drawMD5Model(&enemyArray[i]);
 	}
 	for (int i = 0; i < ITEMCOUNT; i++)
 	{
@@ -2058,6 +2059,11 @@ void SeniorPro::DetectInput(double time)
 			enemyArray[i].UpdateMD5Model(time*timeFactor, 0, d3d11DevCon);
 		}
 	}
+
+	if (keyboardState[DIK_B] & 0X80)
+	{
+		enemyBox = !enemyBox;
+	}
 	///////////////**************new**************////////////////////
 
 	if ((mouseCurrState.rgbButtons[0]))
@@ -2100,12 +2106,19 @@ void SeniorPro::DetectInput(double time)
 			int hitIndex;
 
 			XMVECTOR prwsPos, prwsDir;
-					pickRayVector(Width / 2, Height / 2, prwsPos, prwsDir);
+			pickRayVector(Width / 2, Height / 2, prwsPos, prwsDir);
 
-				for (int i = 0; i < ENEMYCOUNT; i++)
+			for (int i = 0; i < ENEMYCOUNT; i++)
 			{
 				if (enemyHit[i] == 0) //No need to check enemies already hit
 				{
+					//tempDist = pick(prwsPos, prwsDir, enemyArray[i].vertPosArray, enemyArray[i].vertIndexArray, enemyArray[i].meshWorld);
+					/*for (int k = 0; k < MD5Model.numSubsets; k++)
+						{
+						for (int i = 0; i < MD5Model.subsets[k].vertices*/
+					/*XMVECTOR h = XMVectorSet(1, 1, 1, 1);
+					//XMVECTOR h = new XMVECTOR(enemyArray[i].MD5Model.subsets[0].vertices);
+					XMMATRIX test;*/
 					tempDist = pick(prwsPos, prwsDir, enemyArray[i].vertPosArray, enemyArray[i].vertIndexArray, enemyArray[i].meshWorld);
 					if (tempDist < closestDist)
 					{
@@ -2122,12 +2135,17 @@ void SeniorPro::DetectInput(double time)
 					enemyStats[hitIndex].setHealth(enemyStats[hitIndex].getHealth() - 20);
 					//If their health is less then 0 they are dead. remove them.
 					if (enemyStats[hitIndex].getHealth() <= 0){
+						// TRANSPORT
+
 						enemies[hitIndex].setDeath(true);
 						
-				enemyHit[hitIndex] = 1;
-				pickedDist = closestDist;
-				score++;
-			}
+						enemyHit[hitIndex] = 1;
+						pickedDist = closestDist;
+						score++;
+
+						enemyXPos[hitIndex] = 1000;
+						enemyZPos[hitIndex] = 1000;
+					}
 				}
 
 			isShoot = true;
