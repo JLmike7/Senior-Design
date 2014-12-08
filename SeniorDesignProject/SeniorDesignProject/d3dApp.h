@@ -54,6 +54,7 @@ protected:
 	int Width;	//window width
 	int Height;	//window height
 
+	int graphicsCase = 1;
 	DIMOUSESTATE mouseLastState;
 	LPDIRECTINPUT8 DirectInput;
 
