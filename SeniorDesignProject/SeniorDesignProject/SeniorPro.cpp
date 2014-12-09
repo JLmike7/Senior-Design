@@ -8,9 +8,8 @@
 #include "terrainclass.h"
 #include "terrainshaderclass.h"
 #include "textureclass.h"
-#include "Terrain.h"
 
-#define MESHCOUNT 2
+#define MESHCOUNT 7
 #define ENEMYCOUNT 10
 #define ITEMCOUNT 30
 #define AMMOCOUNT 30
@@ -40,8 +39,6 @@ public:
 private:
 	CameraMain mCam;
 
-	Terrain ter;
-
 	Collision coll[ENEMYCOUNT];
 	Collision itemColl[ITEMCOUNT];
 	Collision ammoColl[AMMOCOUNT];
@@ -55,7 +52,7 @@ private:
 	Struct::HeightMapInfo hmInfo;
 	XMMATRIX groundWorld;
 	XMMATRIX sphereWorld;
-	
+
 	XMMATRIX Rotation;
 	XMMATRIX Scale;
 	XMMATRIX Translation;
@@ -1022,7 +1019,7 @@ void SeniorPro::UpdateScene(double time)
 		Translation = XMMatrixTranslation(0.0f, 10.0f, 0.0f);*/
 
 		//Define terrains's world space matrix
-		Scale = XMMatrixScaling(10.0f, 5.0f, 10.0f);
+		Scale = XMMatrixScaling(1.0f, 0.75f, 1.0f);
 		Translation = XMMatrixTranslation(-256.0f, -120.0f, -256.0f);
 		/************************************New Stuff****************************************************/
 
