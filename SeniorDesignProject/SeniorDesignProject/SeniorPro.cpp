@@ -4,8 +4,13 @@
 #include "Cubemap.h"
 #include "Mesh.h"
 #include "Collision.h"
+#include "quadTreeClass.h"
+#include "terrainclass.h"
+#include "terrainshaderclass.h"
+#include "textureclass.h"
+#include "Terrain.h"
 
-#define MESHCOUNT 2
+#define MESHCOUNT 3
 #define ENEMYCOUNT 10
 
 class SeniorPro : public D3DApp
@@ -33,6 +38,8 @@ public:
 private:
 	CameraMain mCam;
 
+	Terrain ter;
+
 	Collision coll[ENEMYCOUNT];
 	bool move;
 
@@ -56,6 +63,11 @@ private:
 	int* enemyHit = new int[ENEMYCOUNT];
 
 	bool enemyBox = false; //used to switch between bipeds and boxes
+
+	TerrainClass* m_Terrain;
+	TerrainShaderClass* m_TerrainShader;
+	FrustumClass* m_Frustum;
+	QuadTreeClass* m_QuadTree;
 };
 //run initializemainwindow
 
@@ -369,6 +381,11 @@ SeniorPro::SeniorPro(HINSTANCE hInstance)
 		ERot[i] = 0.01f;
 	}
 
+	m_Terrain = 0;
+	m_TerrainShader = 0;
+	m_Frustum = 0;
+	m_QuadTree = 0;
+
 };
 
 SeniorPro::~SeniorPro()
@@ -380,6 +397,37 @@ SeniorPro::~SeniorPro()
 	g_engineReload->Release();
 	g_engineRevive->Release();
 	g_engineHit->Release();
+
+	// Release the quad tree object.
+	if (m_QuadTree)
+	{
+		m_QuadTree->Shutdown();
+		delete m_QuadTree;
+		m_QuadTree = 0;
+	}
+
+	// Release the frustum object.
+	if (m_Frustum)
+	{
+		delete m_Frustum;
+		m_Frustum = 0;
+	}
+
+	// Release the terrain shader object.
+	if (m_TerrainShader)
+	{
+		m_TerrainShader->Shutdown();
+		delete m_TerrainShader;
+		m_TerrainShader = 0;
+	}
+
+	// Release the terrain object.
+	if (m_Terrain)
+	{
+		m_Terrain->Shutdown();
+		delete m_Terrain;
+		m_Terrain = 0;
+	}
 };
 
 bool SeniorPro::InitScene()
@@ -395,11 +443,11 @@ bool SeniorPro::InitScene()
 		return false;
 	if (!meshArray[1].LoadObjModel(L"spaceCompound.obj", material, true, false, d3d11Device, SwapChain))
 		return false;
-	if (!meshArray[2].LoadObjModel(L"HUD3.obj", material, true, true, d3d11Device, SwapChain))
+	if (!meshArray[2].LoadObjModel(L"HUD3.obj", material, true, false, d3d11Device, SwapChain))
 		return false;
-	/*if (!meshArray[3].LoadObjModel(L"Tot.obj", material, true, true, d3d11Device, SwapChain))
-		return false;
-	if (!meshArray[4].LoadObjModel(L"DoorLeft.obj", material, true, true, d3d11Device, SwapChain))
+	//if (!meshArray[3].LoadObjModel(L"Tot.obj", material, true, true, d3d11Device, SwapChain))
+		//return false;
+	/*if (!meshArray[4].LoadObjModel(L"DoorLeft.obj", material, true, true, d3d11Device, SwapChain))
 		return false;
 	if (!meshArray[5].LoadObjModel(L"DoorRight.obj", material, true, true, d3d11Device, SwapChain))
 		return false;
@@ -415,7 +463,7 @@ bool SeniorPro::InitScene()
 		{
 		if (!enemyArray[i].LoadObjModel(L"Enemy.obj", material, true, false, d3d11Device, SwapChain))
 			return false;
-	}
+		}
 		else
 		{
 			if (!enemyArray[i].LoadMD5Model(L"boy.md5mesh", d3d11Device, SwapChain))
@@ -472,7 +520,7 @@ bool SeniorPro::InitScene()
 		0, 1, 2,
 		0, 2, 3,
 	};*/
-
+	
 	#pragma region Terrain
 	HeightMapLoad("heightmap.bmp", hmInfo);		// Load the heightmap and store it into hmInfo
 
@@ -607,6 +655,54 @@ bool SeniorPro::InitScene()
 	}
 	#pragma endregion Terrain
 
+	bool result;
+	// Create the terrain object.
+	m_Terrain = new TerrainClass;
+	if (!m_Terrain)
+	{
+		return false;
+	}
+
+	// Initialize the terrain object.
+	result = m_Terrain->Initialize(d3d11Device, "heightmap.bmp", L"dirt01.dds", "colorm01.bmp");
+	if (!result){
+		MessageBox(hwnd, L"Could not initialize the terrain object.", L"Error", MB_OK);
+		return false;
+	}
+
+	// Create the terrain shader object.
+	m_TerrainShader = new TerrainShaderClass;
+	if (!m_TerrainShader){
+		return false;
+	}
+
+	// Initialize the terrain shader object.
+	result = m_TerrainShader->Initialize(d3d11Device, hwnd);
+	if (!result){
+		MessageBox(hwnd, L"Could not initialize the terrain shader object.", L"Error", MB_OK);
+		return false;
+	}
+
+	// Create the frustum object.
+	m_Frustum = new FrustumClass;
+	if (!m_Frustum)
+	{
+		return false;
+	}
+
+	// Create the quad tree object.
+	m_QuadTree = new QuadTreeClass;
+	if (!m_QuadTree){
+		return false;
+	}
+
+	// Initialize the quad tree object.
+	result = m_QuadTree->Initialize(m_Terrain, d3d11Device);
+	if (!result){
+		MessageBox(hwnd, L"Could not initialize the quad tree object.", L"Error", MB_OK);
+		return false;
+	}
+
 	D3D11_BUFFER_DESC indexBufferDesc;
 	ZeroMemory(&indexBufferDesc, sizeof(indexBufferDesc));
 
@@ -614,27 +710,27 @@ bool SeniorPro::InitScene()
 	/************************************New Stuff****************************************************/
 	//indexBufferDesc.ByteWidth = sizeof(DWORD) * 2 * 3;
 	indexBufferDesc.ByteWidth = sizeof(DWORD) * NumFaces * 3;
-	/*************************************************************************************************/
+	/************************************************************************************************/
 	indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	indexBufferDesc.CPUAccessFlags = 0;
 	indexBufferDesc.MiscFlags = 0;
 
 	D3D11_SUBRESOURCE_DATA iinitData;
 
-	/************************************New Stuff****************************************************/
+	/************************************New Stuff***************************************************/
 	//iinitData.pSysMem = indices;
 	iinitData.pSysMem = &indices[0];
-	/*************************************************************************************************/
+	/************************************************************************************************/
 	d3d11Device->CreateBuffer(&indexBufferDesc, &iinitData, &squareIndexBuffer);
 
 	D3D11_BUFFER_DESC vertexBufferDesc;
 	ZeroMemory(&vertexBufferDesc, sizeof(vertexBufferDesc));
 
 	vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	/************************************New Stuff****************************************************/
+	/************************************New Stuff***************************************************/
 	//vertexBufferDesc.ByteWidth = sizeof(Vertex::Vertex) * 4;
 	vertexBufferDesc.ByteWidth = sizeof(Vertex::Vertex) * NumVertices;
-	/*************************************************************************************************/
+	/************************************************************************************************/
 	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	vertexBufferDesc.CPUAccessFlags = 0;
 	vertexBufferDesc.MiscFlags = 0;
@@ -642,10 +738,10 @@ bool SeniorPro::InitScene()
 	D3D11_SUBRESOURCE_DATA vertexBufferData;
 
 	ZeroMemory(&vertexBufferData, sizeof(vertexBufferData));
-	/************************************New Stuff****************************************************/
+	/************************************New Stuff***************************************************/
 	//vertexBufferData.pSysMem = v;
 	vertexBufferData.pSysMem = &v[0];
-	/*************************************************************************************************/
+	/************************************************************************************************/
 	hr = d3d11Device->CreateBuffer(&vertexBufferDesc, &vertexBufferData, &squareVertBuffer);
 
 	//Create the Input Layout
@@ -801,23 +897,22 @@ bool SeniorPro::InitScene()
 		float startX = -30.0f;
 		float startZ = 60.0f;
 		// Init enemy locations
-		for (int i = 0; i < ENEMYCOUNT; i++)
+		for (int y = 0; y < ENEMYCOUNT; y++)
 		{
-				enemyXPos[i] = enemyXPos[i - 1] + 10;
-			enemyZPos[i] += 0;
+			enemyXPos[y] = enemyXPos[y - 1] + 10.0f;
+			enemyZPos[y] += 0.0f;
 		}
 		
-		enemyHit[i] = 0;
+		enemyHit[i] = 0.0f;
 
 		//set the loaded enemy's world space
 		enemyArray[i].meshWorld = XMMatrixIdentity();
 
 		exadd[i]++;
 
-		if (exadd[i] == 10)
-		{
+		if (exadd[i] == 10.0f){
 			ezadd[i] -= 1.0f;
-			exadd[i] = 0;
+			exadd[i] = 0.0f;
 		}
 
 		Rotation = XMMatrixRotationY(enemyRot[i]);
@@ -849,12 +944,12 @@ void SeniorPro::UpdateScene(double time)
 	if (moveDoors == true)
 	{
 		if (moveLeft <7.8f && moveRight < 7.8f)
-			moveLeft += 0.01, moveRight += 0.01f;
+			moveLeft += 0.01f, moveRight += 0.01f;
 	}
 	else
 	{
 		if (moveLeft >= 0.0f && moveRight >= 0.0f)
-			moveLeft -= 0.01, moveRight -= 0.01f;
+			moveLeft -= 0.01f, moveRight -= 0.01f;
 	}
 
 	float closestDist = FLT_MAX;
@@ -907,8 +1002,8 @@ void SeniorPro::UpdateScene(double time)
 	Translation = XMMatrixTranslation(0.0f, 10.0f, 0.0f);*/
 
 	//Define terrains's world space matrix
-	Scale = XMMatrixScaling(10.0f, 5.0f, 10.0f);
-	Translation = XMMatrixTranslation(-256.0f, -120.0f, -256.0f);
+	Scale = XMMatrixScaling(1.0f, 0.75f, 1.0f);
+	Translation = XMMatrixTranslation(0.0f, -2.0f, 0.0f);
 	/************************************New Stuff****************************************************/
 
 	//Set cube1's world space using the transformations
@@ -1045,8 +1140,8 @@ void SeniorPro::UpdateScene(double time)
 							g_sourceHit->SubmitSourceBuffer(buffer6.xaBuffer());
 							//}
 						}
-						Translation = XMMatrixTranslation(enemyXPos[i] += .01, 2.0f, enemyZPos[i] += .01);
-						coll[i].setLocation(Point(enemyXPos[i] += .01, 2.0f, enemyZPos[i] += .01));
+						Translation = XMMatrixTranslation(enemyXPos[i] += .01f, 2.0f, enemyZPos[i] += .01f);
+						coll[i].setLocation(Point(enemyXPos[i] += .01f, 2.0f, enemyZPos[i] += .01f));
 					}
 				}
 				//If playerX > enemyX, increase enemyX, PlayerZ < enemyZ, decrease enemyZ
@@ -1139,8 +1234,8 @@ void SeniorPro::UpdateScene(double time)
 							g_sourceHit->SubmitSourceBuffer(buffer6.xaBuffer());
 							//}
 						}
-						Translation = XMMatrixTranslation(enemyXPos[i] += .01, 2.0f, enemyZPos[i] -= .01);
-						coll[i].setLocation(Point(enemyXPos[i] += .01, 2.0f, enemyZPos[i] -= .01));
+						Translation = XMMatrixTranslation(enemyXPos[i] += .01f, 2.0f, enemyZPos[i] -= .01f);
+						coll[i].setLocation(Point(enemyXPos[i] += .01f, 2.0f, enemyZPos[i] -= .01f));
 					}
 
 				}
@@ -1235,8 +1330,8 @@ void SeniorPro::UpdateScene(double time)
 							g_sourceHit->SubmitSourceBuffer(buffer6.xaBuffer());
 							//}
 						}
-						Translation = XMMatrixTranslation(enemyXPos[i] -= .01, 2.0f, enemyZPos[i] += .01);
-						coll[i].setLocation(Point(enemyXPos[i] -= .01, 2.0f, enemyZPos[i] += .01));
+						Translation = XMMatrixTranslation(enemyXPos[i] -= .01f, 2.0f, enemyZPos[i] += .01f);
+						coll[i].setLocation(Point(enemyXPos[i] -= .01f, 2.0f, enemyZPos[i] += .01f));
 					}
 
 				}
@@ -1330,8 +1425,8 @@ void SeniorPro::UpdateScene(double time)
 							g_sourceHit->SubmitSourceBuffer(buffer6.xaBuffer());
 							//}
 						}
-						Translation = XMMatrixTranslation(enemyXPos[i] -= .01, 2.0f, enemyZPos[i] -= .01);
-						coll[i].setLocation(Point(enemyXPos[i] -= .01, 2.0f, enemyZPos[i] -= .01));
+						Translation = XMMatrixTranslation(enemyXPos[i] -= .01f, 2.0f, enemyZPos[i] -= .01f);
+						coll[i].setLocation(Point(enemyXPos[i] -= .01f, 2.0f, enemyZPos[i] -= .01f));
 					}
 				}
 				if (Player1.getHealth() <= 0)
@@ -1552,27 +1647,11 @@ void SeniorPro::RenderText(std::wstring text, int inInt)
 	if (thePlayer.getDeath() == false)
 	{
 		printString <<
-		L"  Health: " << Player1.getHealth()
-		<< L"                                                                                                                                  Lives: " << Player1.getLives() << "\n\n"
-		<< L"  Ammo: " << PlayerWep.getMagSize()
-		<< L"                                                                                                                                     Score: " << score << L"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
-		//<< L"player x: " << XMVectorGetX(mCam.getCamPosition()) << "\n"
-		//<< L"player y: " << XMVectorGetY(mCam.getCamPosition()) << "\n"
-		//<< L"player z: " << XMVectorGetZ(mCam.getCamPosition()) << "\n"
-
-		<< L"  EnemyHeath: " << enemyStats[hitMe].getHealth() << L"\n";
-			//<< L"Enemy Picked: " << hitMe << L"\n"
-			//<< L"Picked Dist: " << pickedDist << "\n"
-			//<< L"Picked Dist: " << pickedDist2 << "\n"
-			//<< L"Picked Dist: " << pickedDist3 << "\n"
-			//<< L"Picked Dist: " << pickedDist4 << "\n"
-			//<< L"Picked Dist: " << pickedDist5 << "\n"
-			//<< L"Picked Dist: " << pickedDist6 << "\n"
-			//<< L"Picked Dist: " << pickedDist7 << "\n"
-			//<< L"Picked Dist: " << pickedDist8 << "\n"
-			//<< L"Player Yaw: " << mCam.getCamYaw() << "\n"
-			//<< L"Enemy Rot: " << enemyRot[1] << "\n"
-			//<< L"Dist from enemy1: " << enemyXPos[1] - XMVectorGetX(mCam.getCamPosition()) << "\n";
+			L"  Health: " << Player1.getHealth()
+			<< L"                                                                                                                                  Lives: " << Player1.getLives() << "\n\n"
+			<< L"  Ammo: " << PlayerWep.getMagSize()
+			<< L"                                                                                                                                     Score: " << score << L"\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+			<< L"  EnemyHeath: " << enemyStats[hitMe].getHealth() << L"\n";
 		printText = printString.str();
 		if (reloadBro == true)
 		{
@@ -1580,11 +1659,7 @@ void SeniorPro::RenderText(std::wstring text, int inInt)
 				L" OUTTA AMMO, RELOAD!!";
 			printText = printString.str();
 		}
-	/*else {
-		printString <<
-			L"YOU ARE DEAD! HA...HAHAHA!!: ";
-		printText = printString.str();
-	}*/
+	}
 
 	//Set the Font Color
 	D2D1_COLOR_F FontColor = D2D1::ColorF(1.0f, 1.0f, 1.0f, 1.0f);
@@ -1645,7 +1720,7 @@ void SeniorPro::RenderText(std::wstring text, int inInt)
 }
 
 void SeniorPro::DrawScene()
-{
+{		
 	//Clear our render target and depth/stencil view
 	float bgColor[4] = { 0.1f, 0.1f, 0.1f, 1.0f };
 	d3d11DevCon->ClearRenderTargetView(renderTargetView, bgColor);
@@ -1682,7 +1757,7 @@ void SeniorPro::DrawScene()
 	d3d11DevCon->PSSetSamplers(0, 1, &CubesTexSamplerState);
 	d3d11DevCon->RSSetState(CCWcullMode);
 	d3d11DevCon->DrawIndexed(NumFaces * 3, 0, 0);
-	
+
 	//Draw our model's NON-transparent subsets
 	for (int i = 0; i < MESHCOUNT; i++)
 	{
@@ -1700,6 +1775,18 @@ void SeniorPro::DrawScene()
 				drawMD5Model(&enemyArray[i]);
 			}
 	}
+
+	XMMATRIX view, proj, world;
+
+	// Construct the frustum.
+	m_Frustum->ConstructFrustum(100.0f, proj, view);//mCam.getCamProjection(), mCam.getCamView());
+
+	// Set the terrain shader parameters that it will use for rendering.
+	m_TerrainShader->SetShaderParameters(d3d11DevCon, world, view, proj,//mCam.getWorld(), mCam.getCamView(), mCam.getCamProjection(),
+		light.ambient, light.diffuse, light.dir, m_Terrain->GetTexture());
+
+	// Render the terrain using the quad tree and terrain shader.
+	m_QuadTree->Render(m_Frustum, d3d11DevCon, m_TerrainShader);
 
 	/////Draw the Sky's Sphere//////
 	//Set the spheres index buffer
@@ -1745,12 +1832,28 @@ void SeniorPro::DrawScene()
 	RenderText(L"Lives: ", Player1.getLives());
 	RenderText(L"Health: ", PlayerWep.getMagSize());
 	RenderText(L"Enemy Picked Health %d", enemyStats[hitMe].getHealth());
+
 	//Present the backbuffer to the screen
 	SwapChain->Present(0, 0);
 }
 
 void SeniorPro::DetectInput(double time)
 {
+	// collision for the heightmap
+	float height;
+	bool foundHeight;
+	
+	// Get the current position of the camera.
+	XMVECTOR position = mCam.getCamPosition();
+
+	// Get the height of the triangle that is directly underneath the given camera position.
+	foundHeight = m_QuadTree->GetHeightAtPosition(XMVectorGetX(position), XMVectorGetZ(position), height);
+	if (foundHeight)
+	{
+		// If there was a triangle under the camera then position the camera just above it by two units.
+		mCam.setCamPosition(XMVectorGetX(position), height + 4.0f, XMVectorGetZ(position), 0.0f);
+	}
+	
 	DIMOUSESTATE mouseCurrState;
 
 	BYTE keyboardState[256];
@@ -1974,6 +2077,8 @@ void SeniorPro::DetectInput(double time)
 
 		mouseLastState = mouseCurrState;
 	}
+
+
 
 	mCam.UpdateCamera();
 	//Best.updatePos(mCam.getsCamPosition(), mCam.getsCamTarget(), mCam.getsCamUp());
