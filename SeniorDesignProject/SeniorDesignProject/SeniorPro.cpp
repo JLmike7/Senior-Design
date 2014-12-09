@@ -9,7 +9,7 @@
 #include "terrainshaderclass.h"
 #include "textureclass.h"
 
-#define MESHCOUNT 7
+#define MESHCOUNT 8
 #define ENEMYCOUNT 10
 #define ITEMCOUNT 30
 #define AMMOCOUNT 30
@@ -107,6 +107,10 @@ IXAudio2* g_engineHit;
 IXAudio2SourceVoice* g_sourceHit;
 IXAudio2MasteringVoice* g_masterHit;
 
+//Blaster
+IXAudio2* g_engineBlaster;
+IXAudio2SourceVoice* g_sourceBlaster;
+IXAudio2MasteringVoice* g_masterBlaster;
 
 //Sound stuff
 Wave buffer; //Music
@@ -115,6 +119,7 @@ Wave buffer3; //dead
 Wave buffer4; //revive
 Wave buffer5; //reload
 Wave buffer6; //bullethit
+Wave buffer7; //blaster
 
 #pragma endregion Sound_Initialization
 
@@ -226,7 +231,36 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance,
 		g_engineDead->Release();
 		CoUninitialize();
 	}
+	//blaster
 
+	//create the engine
+	if (FAILED(XAudio2Create(&g_engineBlaster)))
+	{
+		CoUninitialize();
+		return -1;
+	}
+
+	//create the mastering voice
+	if (FAILED(g_engineBlaster->CreateMasteringVoice(&g_masterBlaster)))
+	{
+		g_engineBlaster->Release();
+		CoUninitialize();
+		return -2;
+	}
+
+	//load a wave file
+	if (!buffer7.load("blaster.wav"))
+	{
+		g_engineBlaster->Release();
+		CoUninitialize();
+	}
+
+	//create the source voice, based on loaded wave format
+	if (FAILED(g_engineBlaster->CreateSourceVoice(&g_sourceBlaster, buffer7.wf())))
+	{
+		g_engineBlaster->Release();
+		CoUninitialize();
+	}
 
 	//revive
 
@@ -456,7 +490,9 @@ bool SeniorPro::InitScene()
 		return false;
 	if (!meshArray[5].LoadObjModel(L"Moon.obj", material, true, true, d3d11Device, SwapChain))
 		return false;
-	if (!meshArray[6].LoadObjModel(L"Menu.obj", material, true, true, d3d11Device, SwapChain))
+	if (!meshArray[6].LoadObjModel(L"Menu.obj", material, true, false, d3d11Device, SwapChain))
+		return false;
+	if (!meshArray[7].LoadObjModel(L"ToT.obj", material, true, true, d3d11Device, SwapChain))
 		return false;
 	/*//if (!meshArray[3].LoadObjModel(L"ToT.obj", material, true, true, d3d11Device, SwapChain))
 		return false;
@@ -1026,6 +1062,10 @@ bool SeniorPro::InitScene()
 	//Initial win item location 
 	winX = rand() % 128;
 	winZ = rand() % 128;
+	win.setLocation(Point((winX), 2.0f, (winZ)));
+	win.setheight(3.0f);
+	win.setlength(3.0f);
+	win.setwidth(3.0f);
 	return true;
 }
 
@@ -1046,43 +1086,43 @@ void SeniorPro::UpdateScene(double time)
 	float height;
 	bool foundHeight;
 
-	//Reset cube1World
-	groundWorld = XMMatrixIdentity();
+		//Reset cube1World
+		groundWorld = XMMatrixIdentity();
 
-	/************************************New Stuff****************************************************/
-	/*//Define cube1's world space matrix
-	Scale = XMMatrixScaling(500.0f, 10.0f, 500.0f);
-	Translation = XMMatrixTranslation(0.0f, 10.0f, 0.0f);*/
+		/************************************New Stuff****************************************************/
+		/*//Define cube1's world space matrix
+		Scale = XMMatrixScaling(500.0f, 10.0f, 500.0f);
+		Translation = XMMatrixTranslation(0.0f, 10.0f, 0.0f);*/
 
-	//Define terrains's world space matrix
-	Scale = XMMatrixScaling(1.0f, 0.75f, 1.0f);
-	Translation = XMMatrixTranslation(0.0f, 0.0f, 0.0f);//-64.0f, -10.0f, -64.0f);
-	/************************************New Stuff****************************************************/
+		//Define terrains's world space matrix
+		Scale = XMMatrixScaling(1.0f, 0.75f, 1.0f);
+		Translation = XMMatrixTranslation(0.0f, 0.0f, 0.0f);//-64.0f, -10.0f, -64.0f);
+		/************************************New Stuff****************************************************/
 
-	//Set cube1's world space using the transformations
-	groundWorld = Scale * Translation;
+		//Set cube1's world space using the transformations
+		groundWorld = Scale * Translation;
 
-	//Reset sphereWorld
-	sphereWorld = XMMatrixIdentity();
+		//Reset sphereWorld
+		sphereWorld = XMMatrixIdentity();
 
-	//Define sphereWorld's world space matrix
-	Scale = XMMatrixScaling(5.0f, 5.0f, 5.0f);
-	//Make sure the sphere is always centered around camera
-	Translation = XMMatrixTranslation(XMVectorGetX(mCam.getCamPosition()), XMVectorGetY(mCam.getCamPosition()), XMVectorGetZ(mCam.getCamPosition()));
+		//Define sphereWorld's world space matrix
+		Scale = XMMatrixScaling(5.0f, 5.0f, 5.0f);
+		//Make sure the sphere is always centered around camera
+		Translation = XMMatrixTranslation(XMVectorGetX(mCam.getCamPosition()), XMVectorGetY(mCam.getCamPosition()), XMVectorGetZ(mCam.getCamPosition()));
 
-	//Set sphereWorld's world space using the transformations
-	sphereWorld = Scale * Translation;
+		//Set sphereWorld's world space using the transformations
+		sphereWorld = Scale * Translation;
 
-	if (graphicsCase == 1) {
+		if (graphicsCase == 1) {
 
-			meshArray[6].meshWorld = XMMatrixIdentity();
-			Rotation = XMMatrixRotationY(0.0f);
-			Scale = XMMatrixScaling(0.1f, 0.1f, 0.1f);
+				meshArray[6].meshWorld = XMMatrixIdentity();
+				Rotation = XMMatrixRotationY(0.0f);
+				Scale = XMMatrixScaling(0.1f, 0.1f, 0.1f);
 			Translation = XMMatrixTranslation(60.0f, 20.0f, 68.0f);
-			meshArray[6].meshWorld = Rotation * Scale * Translation;
+				meshArray[6].meshWorld = Rotation * Scale * Translation;
 
-	}
-	if (graphicsCase == 2){
+		}
+		if (graphicsCase == 2){
 
 
 
@@ -1199,16 +1239,16 @@ void SeniorPro::UpdateScene(double time)
 							Player1.setHealth(Player1.getHealth() - 3);
 
 							//start consuming audio in the source voice
-							g_sourceGun->Start();
+							g_sourceBlaster->Start();
 							//simple message loop
 							//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
 							//{
-							g_sourceGun->Stop();
-							g_sourceGun->FlushSourceBuffers();
-							g_sourceGun->Start();
+							g_sourceBlaster->Stop();
+							g_sourceBlaster->FlushSourceBuffers();
+							g_sourceBlaster->Start();
 
 							//play the sound
-							g_sourceGun->SubmitSourceBuffer(buffer2.xaBuffer());
+							g_sourceBlaster->SubmitSourceBuffer(buffer7.xaBuffer());
 							//}
 
 							//start consuming audio in the source voice
@@ -1237,16 +1277,16 @@ void SeniorPro::UpdateScene(double time)
 							Player1.setHealth(Player1.getHealth() - 3);
 
 							//start consuming audio in the source voice
-							g_sourceGun->Start();
+							g_sourceBlaster->Start();
 							//simple message loop
 							//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
 							//{
-							g_sourceGun->Stop();
-							g_sourceGun->FlushSourceBuffers();
-							g_sourceGun->Start();
+							g_sourceBlaster->Stop();
+							g_sourceBlaster->FlushSourceBuffers();
+							g_sourceBlaster->Start();
 
 							//play the sound
-							g_sourceGun->SubmitSourceBuffer(buffer2.xaBuffer());
+							g_sourceBlaster->SubmitSourceBuffer(buffer7.xaBuffer());
 							//}
 
 							//start consuming audio in the source voice
@@ -1296,16 +1336,16 @@ void SeniorPro::UpdateScene(double time)
 							Player1.setHealth(Player1.getHealth() - 3);
 
 							//start consuming audio in the source voice
-							g_sourceGun->Start();
+							g_sourceBlaster->Start();
 							//simple message loop
 							//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
 							//{
-							g_sourceGun->Stop();
-							g_sourceGun->FlushSourceBuffers();
-							g_sourceGun->Start();
+							g_sourceBlaster->Stop();
+							g_sourceBlaster->FlushSourceBuffers();
+							g_sourceBlaster->Start();
 
 							//play the sound
-							g_sourceGun->SubmitSourceBuffer(buffer2.xaBuffer());
+							g_sourceBlaster->SubmitSourceBuffer(buffer7.xaBuffer());
 							//}
 
 							//start consuming audio in the source voice
@@ -1331,16 +1371,16 @@ void SeniorPro::UpdateScene(double time)
 							Player1.setHealth(Player1.getHealth() - 3);
 
 							//start consuming audio in the source voice
-							g_sourceGun->Start();
+							g_sourceBlaster->Start();
 							//simple message loop
 							//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
 							//{
-							g_sourceGun->Stop();
-							g_sourceGun->FlushSourceBuffers();
-							g_sourceGun->Start();
+							g_sourceBlaster->Stop();
+							g_sourceBlaster->FlushSourceBuffers();
+							g_sourceBlaster->Start();
 
 							//play the sound
-							g_sourceGun->SubmitSourceBuffer(buffer2.xaBuffer());
+							g_sourceBlaster->SubmitSourceBuffer(buffer7.xaBuffer());
 							//}
 
 							//start consuming audio in the source voice
@@ -1391,16 +1431,16 @@ void SeniorPro::UpdateScene(double time)
 							Player1.setHealth(Player1.getHealth() - 3);
 
 							//start consuming audio in the source voice
-							g_sourceGun->Start();
+							g_sourceBlaster->Start();
 							//simple message loop
 							//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
 							//{
-							g_sourceGun->Stop();
-							g_sourceGun->FlushSourceBuffers();
-							g_sourceGun->Start();
+							g_sourceBlaster->Stop();
+							g_sourceBlaster->FlushSourceBuffers();
+							g_sourceBlaster->Start();
 
 							//play the sound
-							g_sourceGun->SubmitSourceBuffer(buffer2.xaBuffer());
+							g_sourceBlaster->SubmitSourceBuffer(buffer7.xaBuffer());
 							//}
 
 							//start consuming audio in the source voice
@@ -1427,16 +1467,16 @@ void SeniorPro::UpdateScene(double time)
 							Player1.setHealth(Player1.getHealth() - 3);
 
 							//start consuming audio in the source voice
-							g_sourceGun->Start();
+							g_sourceBlaster->Start();
 							//simple message loop
 							//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
 							//{
-							g_sourceGun->Stop();
-							g_sourceGun->FlushSourceBuffers();
-							g_sourceGun->Start();
+							g_sourceBlaster->Stop();
+							g_sourceBlaster->FlushSourceBuffers();
+							g_sourceBlaster->Start();
 
 							//play the sound
-							g_sourceGun->SubmitSourceBuffer(buffer2.xaBuffer());
+							g_sourceBlaster->SubmitSourceBuffer(buffer7.xaBuffer());
 							//}
 
 							//start consuming audio in the source voice
@@ -1486,16 +1526,16 @@ void SeniorPro::UpdateScene(double time)
 							Player1.setHealth(Player1.getHealth() - 3);
 
 							//start consuming audio in the source voice
-							g_sourceGun->Start();
+							g_sourceBlaster->Start();
 							//simple message loop
 							//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
 							//{
-							g_sourceGun->Stop();
-							g_sourceGun->FlushSourceBuffers();
-							g_sourceGun->Start();
+							g_sourceBlaster->Stop();
+							g_sourceBlaster->FlushSourceBuffers();
+							g_sourceBlaster->Start();
 
 							//play the sound
-							g_sourceGun->SubmitSourceBuffer(buffer2.xaBuffer());
+							g_sourceBlaster->SubmitSourceBuffer(buffer7.xaBuffer());
 							//}
 
 							//start consuming audio in the source voice
@@ -1522,16 +1562,16 @@ void SeniorPro::UpdateScene(double time)
 							Player1.setHealth(Player1.getHealth() - 3);
 
 							//start consuming audio in the source voice
-							g_sourceGun->Start();
+							g_sourceBlaster->Start();
 							//simple message loop
 							//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
 							//{
-							g_sourceGun->Stop();
-							g_sourceGun->FlushSourceBuffers();
-							g_sourceGun->Start();
+							g_sourceBlaster->Stop();
+							g_sourceBlaster->FlushSourceBuffers();
+							g_sourceBlaster->Start();
 
 							//play the sound
-							g_sourceGun->SubmitSourceBuffer(buffer2.xaBuffer());
+							g_sourceBlaster->SubmitSourceBuffer(buffer7.xaBuffer());
 							//}
 
 							//start consuming audio in the source voice
@@ -1658,18 +1698,19 @@ void SeniorPro::UpdateScene(double time)
 			meshArray[i].meshWorld = Rotation * Scale * Translation;*/
 		}
 
-
-		//Temple of Time
-		/*if (meshArray[i].filename == L"ToT.obj")
+		if (meshArray[i].filename == L"ToT.obj")
 		{
 			meshArray[i].meshWorld = XMMatrixIdentity();
 
 			Rotation = XMMatrixRotationY(0.0f);
 		Scale = XMMatrixScaling(0.4f, 0.4f, 0.4f);
-		Translation = XMMatrixTranslation(20.0f, 0.0f, -64.0f);
+			Translation = XMMatrixTranslation(80.0f, 0.0f, -80.0f);
 
 			meshArray[i].meshWorld = Rotation * Scale * Translation;
 		}
+
+		//Temple of Time
+		/*
 
 
 		/*if (meshArray[i].filename == L"ground.obj")
@@ -1686,7 +1727,7 @@ void SeniorPro::UpdateScene(double time)
 			//Menu
 			if (meshArray[i].filename == L"Menu.obj"){
 				meshArray[i].meshWorld = XMMatrixIdentity();
-				Rotation = XMMatrixRotationY(0.0f);
+			Rotation = XMMatrixRotationY(0.0f);
 				Scale = XMMatrixScaling(0.1f, 0.1f, 0.1f);
 				Translation = XMMatrixTranslation(10000.0f, 30000.0f, 10000.0f);
 			meshArray[i].meshWorld = Rotation * Scale * Translation;
@@ -1711,8 +1752,7 @@ void SeniorPro::UpdateScene(double time)
 			meshArray[i].meshWorld = Rotation * Scale * Translation;
 		}
 
-		if (meshArray[i].filename == L"spaceCompound.obj")
-		{
+		if (meshArray[i].filename == L"spaceCompound.obj") {
 			meshArray[i].meshWorld = XMMatrixIdentity();
 
 			Rotation = XMMatrixRotationY(3.14f);
@@ -1772,7 +1812,7 @@ void SeniorPro::UpdateScene(double time)
 
 		for (int j = 0; j < AMMOCOUNT; j++)
 		{
-			
+
 			Rotation = XMMatrixRotationY(ammoRot += 0.001f);
 			if (ammoRot >= 6.28)
 				ammoRot = 0;
@@ -1848,9 +1888,9 @@ void SeniorPro::RenderText(std::wstring text, int inInt)
 			<< L"  Ammo: " << PlayerWep.getMagSize() << L"          Extra Mags: " << PlayerWep.getExtraClips()
 			<< L"                                                                                                       Score: " << score << L"\n"
 			<< "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
-			//<< L"player x: " << XMVectorGetX(mCam.getCamPosition()) << "\n"
-			//<< L"player y: " << XMVectorGetY(mCam.getCamPosition()) << "\n"
-			//<< L"player z: " << XMVectorGetZ(mCam.getCamPosition()) << "\n"
+			//<< L"win x: " << winX - 125 << " win y  " << winZ - 125
+			//<< L" player y: " << XMVectorGetY(mCam.getCamPosition()) 
+			//<< L" player z: " << XMVectorGetZ(mCam.getCamPosition()) 
 
 			<< L"  EnemyHeath: " << enemyStats[hitMe].getHealth() << L"\n"
 			//144 = 72 hours, 96 = 48 hours, 48 = 24 hours
@@ -2194,7 +2234,8 @@ void SeniorPro::DetectInput(double time)
 	//Check for win condition
 	if (win.checkPointCollision(Point(XMVectorGetX(mCam.getCamPosition()), XMVectorGetY(mCam.getCamPosition()), XMVectorGetZ(mCam.getCamPosition())))){
 		score += 9001;
-
+		winX = 100000;
+		winZ = 100000;
 	}
 
 	//Check for collision and then allow for user to  move
