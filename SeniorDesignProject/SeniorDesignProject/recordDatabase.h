@@ -1,7 +1,7 @@
 #pragma once
 #include <cstddef>
 #include <atlstr.h>
-//#include <SQLAPI.h>
+#include <SQLAPI.h>
 #include <atlbase.h>
 
 #define MAX_STRING_SIZE 512
@@ -45,7 +45,7 @@ public:
 	bool disconnect();
 private:
 	int id;
-	//SAConnection con;
+	SAConnection con;
 
 	//Executes a raw query.
 	bool rawQuery(CString q,DatabaseEntry *results[MAX_RESULT_SIZE][MAX_FIELDS]);

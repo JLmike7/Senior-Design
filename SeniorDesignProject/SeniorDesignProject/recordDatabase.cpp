@@ -16,15 +16,16 @@ recordDatabase::~recordDatabase()
 
 bool recordDatabase::logIn(CString name, CString pass){
 	try{
-		CString q = _T("");
-		q.Format(_T("SELECT %d FROM accounts WHERE username == '%s' AND password == '%s';"),dbFieldNames[ID],name,pass);
-		DatabaseEntry *results[MAX_RESULT_SIZE][MAX_FIELDS];
-		//clearResults(results);
-		rawQuery(q,results);
-		if (results[0][0]->gotten){
-			id = results[0][0]->intValue;
+		if (con.isConnected() && con.isAlive()){
+			CString q = _T("");
+			q.Format(_T("SELECT %d FROM records WHERE username == '%s' AND password == '%s';"), dbFieldNames[ID], name, pass);
+			DatabaseEntry *results[MAX_RESULT_SIZE][MAX_FIELDS];
+			//clearResults(results);
+			rawQuery(q, results);
+			if (results[0][0]->gotten){
+				id = results[0][0]->intValue;
+			}
 		}
-
 		return isLoggedIn();
 	}
 	catch (int e){
@@ -41,12 +42,14 @@ bool recordDatabase::isLoggedIn(){
 }
 bool recordDatabase::addUser(CString name, CString pass){
 	try{
-		CString q = _T("");
-		q.Format(_T("INSERT INTO accounts (%s,%s) VALUES ('%s','%s');"), dbFieldNames[USERNAME], dbFieldNames[PASSWORD],name, pass);
-		rawQuery(q,NULL);
-		logIn(name, pass);
-		if (isLoggedIn()){
-			return true;
+		if (con.isConnected() && con.isAlive()){
+			CString q = _T("");
+			q.Format(_T("INSERT INTO records (%s,%s) VALUES ('%s','%s');"), dbFieldNames[USERNAME], dbFieldNames[PASSWORD], name, pass);
+			rawQuery(q, NULL);
+			logIn(name, pass);
+			if (isLoggedIn()){
+				return true;
+			}
 		}
 	}
 	catch (int e){
@@ -57,9 +60,12 @@ bool recordDatabase::addUser(CString name, CString pass){
 
 bool recordDatabase::removeUser(){
 	if (isLoggedIn()){
+		if (!con.isAlive()){
+			connect();
+		}
 		try{
 			CString q = _T("");
-			q.Format(_T("DELETE FROM accounts WHERE %s=%d"), dbFieldNames[ID],id);
+			q.Format(_T("DELETE FROM records WHERE %s=%d"), dbFieldNames[ID],id);
 			rawQuery(q,NULL);
 			logOut();
 			return true;
@@ -73,12 +79,15 @@ bool recordDatabase::removeUser(){
 
 bool recordDatabase::getRecord(Field fields[], int numFields, DatabaseEntry *result[MAX_FIELDS]){
 	if (isLoggedIn()){
+		if (!con.isAlive()){
+			connect();
+		}
 		CString q = _T("");
 		CString fieldsStr = _T("");
 		for (int i = 0; i < numFields; i++){
 			fieldsStr += fieldNames[fields[i]];
 		}
-		q.Format(_T("SELECT %s FROM accounts WHERE %s = %d"), fieldsStr, dbFieldNames[ID], id);
+		q.Format(_T("SELECT %s FROM records WHERE %s = %d"), fieldsStr, dbFieldNames[ID], id);
 
 		DatabaseEntry *results[MAX_RESULT_SIZE][MAX_FIELDS];
 		clearResults(results);
@@ -91,11 +100,14 @@ bool recordDatabase::getRecord(Field fields[], int numFields, DatabaseEntry *res
 }
 bool recordDatabase::updateRecord(Field field, int value, bool onlyIfGreater){
 	if (isLoggedIn()){
+		if (!con.isAlive()){
+			connect();
+		}
 		DatabaseEntry *prevValue[MAX_FIELDS];
 		bool recordGotten = getRecord({ &field }, 1, prevValue);
 		if (recordGotten && (!onlyIfGreater || prevValue[0]->intValue < value)){
 			CString q = _T("");
-			q.Format(_T("UPDATE accounts SET %s = %d WHERE %s = %d"), fieldNames[field], value, dbFieldNames[ID], id);
+			q.Format(_T("UPDATE records SET %s = %d WHERE %s = %d"), fieldNames[field], value, dbFieldNames[ID], id);
 			rawQuery(q,NULL);
 		}
 	}
@@ -103,6 +115,9 @@ bool recordDatabase::updateRecord(Field field, int value, bool onlyIfGreater){
 }
 bool recordDatabase::addToRecord(Field field, int valueToAdd){
 	if (isLoggedIn()){
+		if (!con.isAlive()){
+			connect();
+		}
 		DatabaseEntry *prevValue[MAX_FIELDS];
 		bool recordGotten = getRecord({ &field }, 1, prevValue);
 		if (recordGotten){
@@ -161,12 +176,15 @@ bool recordDatabase::connect(){
 		// but can also be Sybase, Informix, DB2
 		// SQLServer, InterBase, SQLBase and ODBC
 		con.Connect(
-			"mbm_records",     // database name
-			"root",								// user name
-			"ycpcs14",									// password
+			"",					// database name
+			"root",					// user name
+			"ycpcs14",				// password
 			SA_MySQL_Client);
 
-		printf("We are connected!\n");
+		if(con.isConnected())
+			printf("We are connected!\n");
+		else
+			printf("NO CONNECTION!\n");
 
 		return true;
 	}

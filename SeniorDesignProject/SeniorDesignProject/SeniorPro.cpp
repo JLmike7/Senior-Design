@@ -4,6 +4,7 @@
 #include "Cubemap.h"
 #include "Mesh.h"
 #include "Collision.h"
+#include "recordDatabase.h"
 
 #define MESHCOUNT 5
 #define ENEMYCOUNT 10
@@ -1912,6 +1913,15 @@ void SeniorPro::DetectInput(double time)
 	bool flip = false;
 	if (keyboardState[DIK_ESCAPE] & 0x80)
 		PostMessage(hwnd, WM_DESTROY, 0, 0);
+
+	//Test database
+	/*
+	if (keyboardState[DIK_O] & 0x80){
+		recordDatabase *db = new recordDatabase();
+		db->addUser(_T("USER"), _T("PASS"));
+		//db->logIn(_T("USER"), _T("PASS"));
+	}
+	*/
 
 	float speed = 15.0f * time;
 	if (keyboardState[DIK_M] & 0x80)
