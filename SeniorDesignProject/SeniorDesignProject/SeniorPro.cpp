@@ -354,7 +354,7 @@ SeniorPro::SeniorPro(HINSTANCE hInstance)
 	: D3DApp(hInstance)
 {
 	//Camera information
-	mCam.setCamPosition(0.0f, 5.0f, -8.0f, 0.0f);
+	mCam.setCamPosition(60.0f, 10.0f, 60.0f, 0.0f);
 	mCam.setCamTarget(0.0f, 0.0f, 0.0f, 0.0f);
 	mCam.setCamUp(0.0f, 1.0f, 0.0f, 0.0f);
 
@@ -914,6 +914,18 @@ bool SeniorPro::InitScene()
 	{
 		/*exadd[i] = 0.0f;
 		ezadd[i] = 0.0f;*/
+		// collision for the heightmap
+		float height;
+		bool foundHeight;
+
+		// Get the height of the triangle that is directly underneath the given camera position.
+		foundHeight = m_QuadTree->GetHeightAtPosition(enemyXPos[i], enemyZPos[i], height);
+		if (foundHeight)
+		{
+			// If there was a triangle under the camera then position the camera just above it by two units.
+			enemyYPos[i] = height + 4.0f;
+		}
+
 		enemyXPos[i] = -20;
 		enemyZPos[i] = 30;
 		enemyRot[i] = 0;
@@ -940,7 +952,7 @@ bool SeniorPro::InitScene()
 
 		Rotation = XMMatrixRotationY(enemyRot[i]);
 		Scale = XMMatrixScaling(0.15f, 0.15f, 0.15f);
-		Translation = XMMatrixTranslation(enemyXPos[i], 2.0f, enemyZPos[i]);
+		Translation = XMMatrixTranslation(enemyXPos[i], enemyYPos[i], enemyZPos[i]);
 		coll[i].setLocation(Point(enemyXPos[i], 2.0f, enemyZPos[i]));
 		coll[i].setheight(3.0f);
 		coll[i].setlength(3.0f);
@@ -951,18 +963,29 @@ bool SeniorPro::InitScene()
 	//Draw Initial items
 	for (int i = 0; i < ITEMCOUNT; i++)
 	{
-		randItemX = rand() % 500;
-		randItemZ = rand() % 500;
+		randItemX = rand() % 128;
+		randItemZ = rand() % 128;
 
-		itemX[i] = randItemX - 250;
-		itemZ[i] = randItemZ - 250;
+		itemX[i] = randItemX;
+		itemZ[i] = randItemZ;
+
+		float height;
+		bool foundHeight;
+
+		// Get the height of the triangle that is directly underneath the given camera position.
+		foundHeight = m_QuadTree->GetHeightAtPosition(enemyXPos[i], enemyZPos[i], height);
+		if (foundHeight)
+		{
+			// If there was a triangle under the camera then position the camera just above it by two units.
+			itemY[i] = height + 2.0f;
+		}
 
 		//itemArray[i].meshWorld = XMMatrixIdentity();
 
 		Rotation = XMMatrixRotationY(ItemRot);
 		Scale = XMMatrixScaling(0.05f, 0.05f, 0.05f);
-		Translation = XMMatrixTranslation(itemX[i], 2.0f, itemZ[i]);
-		itemColl[i].setLocation(Point(itemX[i], 2.0f, itemZ[i]));
+		Translation = XMMatrixTranslation(itemX[i], itemY[i], itemZ[i]);
+		itemColl[i].setLocation(Point(itemX[i], itemY[i], itemZ[i]));
 		itemColl[i].setheight(3.0f);
 		itemColl[i].setlength(3.0f);
 		itemColl[i].setwidth(3.0f);
@@ -972,33 +995,42 @@ bool SeniorPro::InitScene()
 	//Draw Initial items
 	for (int i = 0; i < AMMOCOUNT; i++)
 	{
-		randAmmoX = rand() % 500;
-		randAmmoZ = rand() % 500;
+		randAmmoX = rand() % 128;
+		randAmmoZ = rand() % 128;
 
-		ammoX[i] = randAmmoX - 250;
-		ammoZ[i] = randAmmoZ - 250;
+		ammoX[i] = randAmmoX;
+		ammoZ[i] = randAmmoZ;
+
+		float height;
+		bool foundHeight;
+
+		// Get the height of the triangle that is directly underneath the given camera position.
+		foundHeight = m_QuadTree->GetHeightAtPosition(enemyXPos[i], enemyZPos[i], height);
+		if (foundHeight)
+		{
+			// If there was a triangle under the camera then position the camera just above it by two units.
+			ammoY[i] = height + 2.0f;
+		}
 
 		//ammoArray[i].meshWorld = XMMatrixIdentity();
 
 		Rotation = XMMatrixRotationY(ammoRot);
 		Scale = XMMatrixScaling(0.05f, 0.05f, 0.05f);
-		Translation = XMMatrixTranslation(ammoX[i], 2.0f, ammoZ[i]);
-		ammoColl[i].setLocation(Point(ammoX[i], 2.0f, ammoZ[i]));
+		Translation = XMMatrixTranslation(ammoX[i], ammoY[i], ammoZ[i]);
+		ammoColl[i].setLocation(Point(ammoX[i], ammoY[i], ammoZ[i]));
 		ammoColl[i].setheight(3.0f);
 		ammoColl[i].setlength(3.0f);
 		ammoColl[i].setwidth(3.0f);
 		//ammoArray[i].meshWorld = Rotation * Scale * Translation;
 	}
 	//Initial win item location 
-	winX = rand() % 500;
-	winZ = rand() % 500;
+	winX = rand() % 128;
+	winZ = rand() % 128;
 	return true;
 }
 
 void SeniorPro::UpdateScene(double time)
 {
-
-
 	float tempDist = 0.0f;
 	float tempDist2 = 0.0f;
 	float tempDist3 = 0.0f;
@@ -1010,43 +1042,47 @@ void SeniorPro::UpdateScene(double time)
 	float tempDist9 = 0.0f;
 	float tempDist10 = 0.0f;
 
-		//Reset cube1World
-		groundWorld = XMMatrixIdentity();
+	// collision for the heightmap
+	float height;
+	bool foundHeight;
 
-		/************************************New Stuff****************************************************/
-		/*//Define cube1's world space matrix
-		Scale = XMMatrixScaling(500.0f, 10.0f, 500.0f);
-		Translation = XMMatrixTranslation(0.0f, 10.0f, 0.0f);*/
+	//Reset cube1World
+	groundWorld = XMMatrixIdentity();
 
-		//Define terrains's world space matrix
-		Scale = XMMatrixScaling(1.0f, 0.75f, 1.0f);
-		Translation = XMMatrixTranslation(-256.0f, -120.0f, -256.0f);
-		/************************************New Stuff****************************************************/
+	/************************************New Stuff****************************************************/
+	/*//Define cube1's world space matrix
+	Scale = XMMatrixScaling(500.0f, 10.0f, 500.0f);
+	Translation = XMMatrixTranslation(0.0f, 10.0f, 0.0f);*/
 
-		//Set cube1's world space using the transformations
-		groundWorld = Scale * Translation;
+	//Define terrains's world space matrix
+	Scale = XMMatrixScaling(1.0f, 0.75f, 1.0f);
+	Translation = XMMatrixTranslation(0.0f, 0.0f, 0.0f);//-64.0f, -10.0f, -64.0f);
+	/************************************New Stuff****************************************************/
 
-		//Reset sphereWorld
-		sphereWorld = XMMatrixIdentity();
+	//Set cube1's world space using the transformations
+	groundWorld = Scale * Translation;
 
-		//Define sphereWorld's world space matrix
-		Scale = XMMatrixScaling(5.0f, 5.0f, 5.0f);
-		//Make sure the sphere is always centered around camera
-		Translation = XMMatrixTranslation(XMVectorGetX(mCam.getCamPosition()), XMVectorGetY(mCam.getCamPosition()), XMVectorGetZ(mCam.getCamPosition()));
+	//Reset sphereWorld
+	sphereWorld = XMMatrixIdentity();
 
-		//Set sphereWorld's world space using the transformations
-		sphereWorld = Scale * Translation;
+	//Define sphereWorld's world space matrix
+	Scale = XMMatrixScaling(5.0f, 5.0f, 5.0f);
+	//Make sure the sphere is always centered around camera
+	Translation = XMMatrixTranslation(XMVectorGetX(mCam.getCamPosition()), XMVectorGetY(mCam.getCamPosition()), XMVectorGetZ(mCam.getCamPosition()));
 
-		if (graphicsCase == 1) {
+	//Set sphereWorld's world space using the transformations
+	sphereWorld = Scale * Translation;
 
-				meshArray[6].meshWorld = XMMatrixIdentity();
-				Rotation = XMMatrixRotationY(0.0f);
-				Scale = XMMatrixScaling(0.1f, 0.1f, 0.1f);
-				Translation = XMMatrixTranslation(0.0f, 2.0f, 5.0f);
-				meshArray[6].meshWorld = Rotation * Scale * Translation;
+	if (graphicsCase == 1) {
 
-		}
-		if (graphicsCase == 2){
+			meshArray[6].meshWorld = XMMatrixIdentity();
+			Rotation = XMMatrixRotationY(0.0f);
+			Scale = XMMatrixScaling(0.1f, 0.1f, 0.1f);
+			Translation = XMMatrixTranslation(60.0f, 20.0f, 68.0f);
+			meshArray[6].meshWorld = Rotation * Scale * Translation;
+
+	}
+	if (graphicsCase == 2){
 
 
 
@@ -1111,6 +1147,17 @@ void SeniorPro::UpdateScene(double time)
 			randZ = rand() % 1000;
 			randRot = rand() % 1000;
 			randAttack = rand() % 1000;
+
+
+
+			// Get the height of the triangle that is directly underneath the given camera position.
+			foundHeight = m_QuadTree->GetHeightAtPosition(enemyXPos[i], enemyZPos[i], height);
+			if (foundHeight)
+			{
+				// If there was a triangle under the camera then position the camera just above it by two units.
+				enemyYPos[i] = height + 2.0f;
+			}
+
 			//set the loaded enemy's world space
 			enemyArray[i].meshWorld = XMMatrixIdentity();
 			//Rotation = XMMatrixRotationY(3.14f);
@@ -1178,8 +1225,8 @@ void SeniorPro::UpdateScene(double time)
 							//}
 						}
 
-						Translation = XMMatrixTranslation(enemyXPos[i] += .00, 2.0f, enemyZPos[i] += .00);
-						coll[i].setLocation(Point(enemyXPos[i] += .00, 2.0f, enemyZPos[i] += .00));
+						Translation = XMMatrixTranslation(enemyXPos[i] += .00, enemyYPos[i], enemyZPos[i] += .00);
+						coll[i].setLocation(Point(enemyXPos[i] += .00, enemyYPos[i], enemyZPos[i] += .00));
 						
 					}
 					else
@@ -1215,8 +1262,8 @@ void SeniorPro::UpdateScene(double time)
 							g_sourceHit->SubmitSourceBuffer(buffer6.xaBuffer());
 							//}
 						}
-						Translation = XMMatrixTranslation(enemyXPos[i] += .01f, 2.0f, enemyZPos[i] += .01f);
-						coll[i].setLocation(Point(enemyXPos[i] += .01f, 2.0f, enemyZPos[i] += .01f));
+						Translation = XMMatrixTranslation(enemyXPos[i] += .01f, enemyYPos[i], enemyZPos[i] += .01f);
+						coll[i].setLocation(Point(enemyXPos[i] += .01f, enemyYPos[i], enemyZPos[i] += .01f));
 					}
 				}
 				//If playerX > enemyX, increase enemyX, PlayerZ < enemyZ, decrease enemyZ
@@ -1274,8 +1321,8 @@ void SeniorPro::UpdateScene(double time)
 							g_sourceHit->SubmitSourceBuffer(buffer6.xaBuffer());
 							//}
 						}
-						Translation = XMMatrixTranslation(enemyXPos[i] += .00, 2.0f, enemyZPos[i] -= .00);
-						coll[i].setLocation(Point(enemyXPos[i] += .00, 2.0f, enemyZPos[i] -= .00));
+						Translation = XMMatrixTranslation(enemyXPos[i] += .00, enemyYPos[i], enemyZPos[i] -= .00);
+						coll[i].setLocation(Point(enemyXPos[i] += .00, enemyYPos[i], enemyZPos[i] -= .00));
 					}
 					else{
 						//Attack on random (moving so less likely to hit)
@@ -1309,8 +1356,8 @@ void SeniorPro::UpdateScene(double time)
 							g_sourceHit->SubmitSourceBuffer(buffer6.xaBuffer());
 							//}
 						}
-						Translation = XMMatrixTranslation(enemyXPos[i] += .01f, 2.0f, enemyZPos[i] -= .01f);
-						coll[i].setLocation(Point(enemyXPos[i] += .01f, 2.0f, enemyZPos[i] -= .01f));
+						Translation = XMMatrixTranslation(enemyXPos[i] += .01f, enemyYPos[i], enemyZPos[i] -= .01f);
+						coll[i].setLocation(Point(enemyXPos[i] += .01f, enemyYPos[i], enemyZPos[i] -= .01f));
 					}
 
 				}
@@ -1370,8 +1417,8 @@ void SeniorPro::UpdateScene(double time)
 							//}
 						}
 
-						Translation = XMMatrixTranslation(enemyXPos[i] -= .00, 2.0f, enemyZPos[i] += .00);
-						coll[i].setLocation(Point(enemyXPos[i] -= .00, 2.0f, enemyZPos[i] += .00));
+						Translation = XMMatrixTranslation(enemyXPos[i] -= .00, enemyYPos[i], enemyZPos[i] += .00);
+						coll[i].setLocation(Point(enemyXPos[i] -= .00, enemyYPos[i], enemyZPos[i] += .00));
 					}
 					else{
 						//Attack on random (moving so less likely to hit)
@@ -1405,8 +1452,8 @@ void SeniorPro::UpdateScene(double time)
 							g_sourceHit->SubmitSourceBuffer(buffer6.xaBuffer());
 							//}
 						}
-						Translation = XMMatrixTranslation(enemyXPos[i] -= .01f, 2.0f, enemyZPos[i] += .01f);
-						coll[i].setLocation(Point(enemyXPos[i] -= .01f, 2.0f, enemyZPos[i] += .01f));
+						Translation = XMMatrixTranslation(enemyXPos[i] -= .01f, enemyYPos[i], enemyZPos[i] += .01f);
+						coll[i].setLocation(Point(enemyXPos[i] -= .01f, enemyYPos[i], enemyZPos[i] += .01f));
 					}
 
 				}
@@ -1464,8 +1511,8 @@ void SeniorPro::UpdateScene(double time)
 							g_sourceHit->SubmitSourceBuffer(buffer6.xaBuffer());
 							//}
 						}
-						Translation = XMMatrixTranslation(enemyXPos[i] -= .00, 2.0f, enemyZPos[i] -= .00);
-						coll[i].setLocation(Point(enemyXPos[i] -= .00, 2.0f, enemyZPos[i] -= .00));
+						Translation = XMMatrixTranslation(enemyXPos[i] -= .00, enemyYPos[i], enemyZPos[i] -= .00);
+						coll[i].setLocation(Point(enemyXPos[i] -= .00, enemyYPos[i], enemyZPos[i] -= .00));
 					}
 					else
 					{
@@ -1500,8 +1547,8 @@ void SeniorPro::UpdateScene(double time)
 							g_sourceHit->SubmitSourceBuffer(buffer6.xaBuffer());
 							//}
 						}
-						Translation = XMMatrixTranslation(enemyXPos[i] -= .01f, 2.0f, enemyZPos[i] -= .01f);
-						coll[i].setLocation(Point(enemyXPos[i] -= .01f, 2.0f, enemyZPos[i] -= .01f));
+						Translation = XMMatrixTranslation(enemyXPos[i] -= .01f, enemyYPos[i], enemyZPos[i] -= .01f);
+						coll[i].setLocation(Point(enemyXPos[i] -= .01f, enemyYPos[i], enemyZPos[i] -= .01f));
 					}
 				}
 				if (Player1.getHealth() <= 0)
@@ -1576,8 +1623,8 @@ void SeniorPro::UpdateScene(double time)
 							enemyRot[i] = 6.28f;
 
 				//Translate and update enemy and respective collision box
-				Translation = XMMatrixTranslation(enemyXPos[i] += EMoveX[i], 2.0f, enemyZPos[i] += EMoveZ[i]);
-				coll[i].setLocation(Point(enemyXPos[i] += EMoveX[i], 2.0f, enemyZPos[i] += EMoveZ[i]));
+				Translation = XMMatrixTranslation(enemyXPos[i] += EMoveX[i], enemyYPos[i], enemyZPos[i] += EMoveZ[i]);
+				coll[i].setLocation(Point(enemyXPos[i] += EMoveX[i], enemyYPos[i], enemyZPos[i] += EMoveZ[i]));
 				
 			}
 
@@ -1639,9 +1686,9 @@ void SeniorPro::UpdateScene(double time)
 			//Menu
 			if (meshArray[i].filename == L"Menu.obj"){
 				meshArray[i].meshWorld = XMMatrixIdentity();
-			Rotation = XMMatrixRotationY(0.0f);
+				Rotation = XMMatrixRotationY(0.0f);
 				Scale = XMMatrixScaling(0.1f, 0.1f, 0.1f);
-				Translation = XMMatrixTranslation(10000.0f, 10000.0f, 10000.0f);
+				Translation = XMMatrixTranslation(10000.0f, 30000.0f, 10000.0f);
 			meshArray[i].meshWorld = Rotation * Scale * Translation;
 		}
 			//Moon
@@ -1650,7 +1697,7 @@ void SeniorPro::UpdateScene(double time)
 			meshArray[i].meshWorld = XMMatrixIdentity();
 			Rotation = XMMatrixRotationY(0.0f);
 			Scale = XMMatrixScaling(1.5f, 1.5f, 1.5f);
-			Translation = XMMatrixTranslation(5.0f, moonHeight -= 0.06f, 0.0f);
+			Translation = XMMatrixTranslation(70.0f, moonHeight -= 0.06f, 60.0f);
 			meshArray[i].meshWorld = Rotation * Scale * Translation;
 		}
 
@@ -1659,8 +1706,8 @@ void SeniorPro::UpdateScene(double time)
 			meshArray[i].meshWorld = XMMatrixIdentity();
 			Rotation = XMMatrixRotationY(0.0f);
 			Scale = XMMatrixScaling(0.1f, 0.1f, 0.1f);
-			Translation = XMMatrixTranslation(winX - 125, 3.0f, winZ - 125);
-			win.setLocation(Point(winX - 125, 2.0f, winZ - 125));
+			Translation = XMMatrixTranslation(winX, 3.0f, winZ);
+			win.setLocation(Point(winX, 2.0f, winZ));
 			meshArray[i].meshWorld = Rotation * Scale * Translation;
 		}
 
@@ -1669,8 +1716,8 @@ void SeniorPro::UpdateScene(double time)
 			meshArray[i].meshWorld = XMMatrixIdentity();
 
 			Rotation = XMMatrixRotationY(3.14f);
-			Scale = XMMatrixScaling(1.0f, 1.0f, 1.0f);
-			Translation = XMMatrixTranslation(0.0f, 0.0f, 0.0f);
+			Scale = XMMatrixScaling(0.25f, 0.75f, 0.25f);
+			Translation = XMMatrixTranslation(62.0f, 17.0f, 60.0f);
 
 			meshArray[i].meshWorld = Rotation * Scale * Translation;
 		}
@@ -1719,18 +1766,18 @@ void SeniorPro::UpdateScene(double time)
 			if (ItemRot >= 6.28)
 				ItemRot = 0;
 			Scale = XMMatrixScaling(0.05f, 0.1f, 0.05f);
-			Translation = XMMatrixTranslation(itemX[j], 2.0f, itemZ[j]);
+			Translation = XMMatrixTranslation(itemX[j], itemY[j], itemZ[j]);
 			itemArray[j].meshWorld = Rotation * Scale * Translation;
 		}
 
 		for (int j = 0; j < AMMOCOUNT; j++)
 		{
-
+			
 			Rotation = XMMatrixRotationY(ammoRot += 0.001f);
 			if (ammoRot >= 6.28)
 				ammoRot = 0;
 			Scale = XMMatrixScaling(0.05f, 0.05f, 0.05f);
-			Translation = XMMatrixTranslation(ammoX[j], 2.0f, ammoZ[j]);
+			Translation = XMMatrixTranslation(ammoX[j], ammoY[j], ammoZ[j]);
 			ammoArray[j].meshWorld = Rotation * Scale * Translation;
 		}
 	}

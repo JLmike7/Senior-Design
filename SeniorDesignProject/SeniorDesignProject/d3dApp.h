@@ -64,10 +64,12 @@ protected:
 	float scaleY;
 
 	int itemX[30];
+	int itemY[30];
 	int itemZ[30];
 	float ItemRot = 0.00f;
 
 	int ammoX[30];
+	int ammoY[30];
 	int ammoZ[30];
 	float ammoRot = 0.00f;
 
@@ -113,6 +115,7 @@ protected:
 	float pickedDist9;
 	float pickedDist10;
 	float enemyXPos[30]; //= -30.0f;
+	float enemyYPos[30];// = 60.0f;
 	float enemyZPos[30];// = 60.0f;
 	float enemyRot[30];
 	float exadd[30];// = 0.0f;
