@@ -520,7 +520,4 @@
   <ItemGroup>
     <Media Include="Music.mp3" />
   </ItemGroup>
-  <ItemGroup>
-    <Object Include="ToT.obj" />
-  </ItemGroup>
 </Project>
