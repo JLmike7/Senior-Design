@@ -1646,7 +1646,7 @@ void SeniorPro::UpdateScene(double time)
 			DestroyWindow(hwnd);
 		else
 		{
-			thePlayer.Init(_settings);
+			thePlayer.Init();
 			Player1.Init();
 			PlayerWep.Init();
 		}
