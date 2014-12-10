@@ -17,24 +17,22 @@ class Biped {
 
 public:
 	void Init();
-	Stance getStance();
-	void setStance(Stance stance);
-	//	void setHitbox(Box* box);
-	//	Box* getHitbox();
-	Weapon* getWeapon();
-	void addWeapon(Weapon *newWeapon);
-	void nextWeapon();
-	void prevWeapon();
+	// Stance getStance();
+	// void setStance(Stance stance);
+	// void setHitbox(Box* box);
+	// Box* getHitbox();
+	// Weapon* getWeapon();
+	// void addWeapon(Weapon *newWeapon);
+	// void nextWeapon();
+	// void prevWeapon();
 	int getTeam();
 	void setTeam(int team);
-	void takeHit(int damage);
-	bool isDead();
-	void beginMove(Direction direction);
-	Position* getPosition();
-	void fire();
-	void jump();
-	void lookAt(Point* point, bool tracking);
-	void walk(Direction direction, bool startStop);
+	// void takeHit(int damage);
+	// void beginMove(Direction direction);
+	// Position* getPosition();
+	// void jump();
+	// void lookAt(Point* point, bool tracking);
+	// void walk(Direction direction, bool startStop);
 	bool getDeath();
 	void setDeath(bool isDead);
 
@@ -45,11 +43,11 @@ private:
 
 protected:
 	int					teamNumber;
-	Stance				stance;
+	// Stance				stance;
 	Stats*				stats;
-	std::deque<Weapon>*	weapons;
+	// std::deque<Weapon>*	weapons;
 	Position*			position;
 	//	Box*				hitbox;
-	WalkingStatus*		walkingStatus;
+	// WalkingStatus*		walkingStatus;
 	bool				death;
 };

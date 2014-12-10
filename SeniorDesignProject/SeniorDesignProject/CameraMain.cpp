@@ -1,6 +1,28 @@
 #include "CameraMain.h"
 
-CameraMain::CameraMain(){
+CameraMain::CameraMain()
+{
+	//Camera information
+	setCamPosition(0.0f, 0.0f, 0.0f, 0.0f);
+	setCamTarget(0.0f, 0.0f, 0.0f, 0.0f);
+	setCamUp(0.0f, 0.0f, 0.0f, 0.0f);
+
+	//Set the View matrix
+	setCamView(getCamPosition(), getCamTarget(), getCamUp());
+
+	//Set the Projection matrix
+	setCamProjection(0.0f, 0.0f, 0.0f, 0.0f);
+
+	setDefaultForward(0.0f, 0.0f, 0.0f, 0.0f);
+	setDefaultRight(0.0f, 0.0f, 0.0f, 0.0f);
+	setCamForward(0.0f, 0.0f, 0.0f, 0.0f);
+	setCamRight(0.0f, 0.0f, 0.0f, 0.0f);
+
+	setMoveLeftRight(0.0f);
+	setMoveBackForward(0.0f);
+
+	setCamYaw(0.0f);
+	setCamPitch(0.0f);
 }
 
 CameraMain::~CameraMain()

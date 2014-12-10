@@ -23,7 +23,6 @@ namespace ProjectUnitTests
 			Weapon myWeapon;
 			myWeapon.setRange(50.0f);
 			Assert::AreEqual(myWeapon.getRange(), 50.0f);
-
 		}
 
 		TEST_METHOD(TestGetSpread)
@@ -32,16 +31,14 @@ namespace ProjectUnitTests
 			// Test get spread
 			Weapon myWeapon;
 			Assert::AreEqual(myWeapon.getSpread(), spread);
-
 		}
 
-		TEST_METHOD(TestSetHealth)
+		TEST_METHOD(TestSetSpread)
 		{
 			// Test set spread
 			Weapon myWeapon;
-			myWeapon.setSpread(20.0f);
-			Assert::AreEqual(myWeapon.getSpread(), 20.0f);
-
+			myWeapon.setSpread(3.0f);
+			Assert::AreEqual(myWeapon.getSpread(), 3.0f);
 		}
 
 		TEST_METHOD(TestGetAccuracy)
@@ -70,7 +67,7 @@ namespace ProjectUnitTests
 
 		}
 
-		TEST_METHOD(TestSetLives)
+		TEST_METHOD(TestSetAttack)
 		{
 			// Test set attack
 			Weapon myWeapon;
@@ -121,6 +118,33 @@ namespace ProjectUnitTests
 			int magSize = 8;
 			Weapon myWeapon;
 			Assert::AreEqual(myWeapon.getMagSize(), magSize);
+
+		}
+
+		TEST_METHOD(TestSetMagSize)
+		{
+			// Test set reload
+			Weapon myWeapon;
+			myWeapon.setMagSize(12);
+			Assert::AreEqual(myWeapon.getMagSize(), 12);
+
+		}
+
+		TEST_METHOD(TestGetExtraClips)
+		{
+			// Test get mag size
+			int clips = 3;
+			Weapon myWeapon;
+			Assert::AreEqual(myWeapon.getExtraClips(), clips);
+
+		}
+
+		TEST_METHOD(TestSetExtraClips)
+		{
+			// Test set reload
+			Weapon myWeapon;
+			myWeapon.setExtraClips(12);
+			Assert::AreEqual(myWeapon.getExtraClips(), 12);
 
 		}
 
