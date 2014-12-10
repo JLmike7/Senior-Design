@@ -52,6 +52,12 @@
     <Filter Include="DDS">
       <UniqueIdentifier>{7237e144-7c52-4bea-b57e-4c8959c48581}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Terrain">
+      <UniqueIdentifier>{5cd725fe-f9bd-4084-a1b8-28f2c73baaed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Terrain">
+      <UniqueIdentifier>{d56ed83a-561a-46d2-bb7a-7f328fbf409d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="World.cpp">
@@ -97,9 +103,6 @@
       <Filter>Source Files\UI</Filter>
     </ClCompile>
     <ClCompile Include="RenderStates.cpp">
-      <Filter>Source Files\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="Terrain.cpp">
       <Filter>Source Files\UI</Filter>
     </ClCompile>
     <ClCompile Include="Vertex.cpp">
@@ -174,8 +177,26 @@
     <ClCompile Include="TriangleCollision.cpp">
       <Filter>Source Files\Problem Domain</Filter>
     </ClCompile>
-    <ClCompile Include="RecordDatabase.cpp">
+	<ClCompile Include="RecordDatabase.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="frustumclass.cpp">
+      <Filter>Header Files\Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="quadtreeclass.cpp">
+      <Filter>Header Files\Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="terrainclass.cpp">
+      <Filter>Header Files\Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="terrainshaderclass.cpp">
+      <Filter>Header Files\Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="textureclass.cpp">
+      <Filter>Header Files\Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="Terrain.cpp">
+      <Filter>Source Files\Terrain</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -222,9 +243,6 @@
       <Filter>Header Files\UI</Filter>
     </ClInclude>
     <ClInclude Include="RenderStates.h">
-      <Filter>Header Files\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="Terrain.h">
       <Filter>Header Files\UI</Filter>
     </ClInclude>
     <ClInclude Include="Vertex.h">
@@ -305,8 +323,26 @@
     <ClInclude Include="GeometryGenerator.h">
       <Filter>Header Files\Problem Domain</Filter>
     </ClInclude>
-    <ClInclude Include="recordDatabase.h">
+	    <ClInclude Include="recordDatabase.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="quadTreeClass.h">
+      <Filter>Header Files\Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="frustumclass.h">
+      <Filter>Header Files\Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="terrainclass.h">
+      <Filter>Header Files\Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="terrainshaderclass.h">
+      <Filter>Header Files\Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="textureclass.h">
+      <Filter>Header Files\Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="Terrain.h">
+      <Filter>Source Files\Terrain</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -467,6 +503,18 @@
       <Filter>FX</Filter>
     </None>
     <None Include="FX\Terrain.fxo">
+      <Filter>FX</Filter>
+    </None>
+    <None Include="terrain.ps">
+      <Filter>FX</Filter>
+    </None>
+    <None Include="terrain.vs">
+      <Filter>FX</Filter>
+    </None>
+    <None Include="texture.ps">
+      <Filter>FX</Filter>
+    </None>
+    <None Include="texture.vs">
       <Filter>FX</Filter>
     </None>
   </ItemGroup>

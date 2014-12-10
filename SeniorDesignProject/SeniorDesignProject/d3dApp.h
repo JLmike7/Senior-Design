@@ -54,6 +54,7 @@ protected:
 	int Width;	//window width
 	int Height;	//window height
 
+	int graphicsCase = 1;
 	DIMOUSESTATE mouseLastState;
 	LPDIRECTINPUT8 DirectInput;
 
@@ -63,16 +64,20 @@ protected:
 	float scaleY;
 
 	int itemX[30];
+	int itemY[30];
 	int itemZ[30];
 	float ItemRot = 0.00f;
 
 	int ammoX[30];
+	int ammoY[30];
 	int ammoZ[30];
 	float ammoRot = 0.00f;
 
 	int winX;
 	int winZ;
 	float winRot = 0.00f;
+
+	float moonHeight = 144;
 
 
 	Struct::cbPerObject cbPerObj;
@@ -93,7 +98,7 @@ protected:
 
 	///////////////**************new**************////////////////////
 	bool isShoot;
-	int weaponSelect;
+	int weaponSelect = 1;
 
 	int ClientWidth;
 	int ClientHeight;
@@ -110,6 +115,7 @@ protected:
 	float pickedDist9;
 	float pickedDist10;
 	float enemyXPos[30]; //= -30.0f;
+	float enemyYPos[30];// = 60.0f;
 	float enemyZPos[30];// = 60.0f;
 	float enemyRot[30];
 	float exadd[30];// = 0.0f;

@@ -1,7 +1,7 @@
 # 3ds Max Wavefront OBJ Exporter v0.97b - (c)2007 guruware
 # File Created: 04.12.2014 12:56:47
 
-newmtl Window
+newmtl Window2
 	Ns 100.0000
 	Ni 1.5000
 	d 0.2000
@@ -39,7 +39,7 @@ newmtl Pedestal
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
 
-newmtl OTHER
+newmtl Something
 	Ns 10.0000
 	Ni 1.5000
 	d 1.0000

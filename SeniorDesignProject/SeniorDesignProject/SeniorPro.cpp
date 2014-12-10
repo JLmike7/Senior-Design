@@ -4,9 +4,12 @@
 #include "Cubemap.h"
 #include "Mesh.h"
 #include "Collision.h"
-#include "recordDatabase.h"
+#include "quadTreeClass.h"
+#include "terrainclass.h"
+#include "terrainshaderclass.h"
+#include "textureclass.h"
 
-#define MESHCOUNT 5
+#define MESHCOUNT 8
 #define ENEMYCOUNT 10
 #define ITEMCOUNT 30
 #define AMMOCOUNT 30
@@ -59,11 +62,17 @@ private:
 	UINT offset = 0;
 
 	Mesh enemyArray[ENEMYCOUNT];
+	//Mesh enemyCollisionBox[ENEMYCOUNT];
 	Mesh itemArray[ITEMCOUNT];
 	Mesh ammoArray[AMMOCOUNT];
 	int* enemyHit = new int[ENEMYCOUNT];
 
 	bool enemyBox = false; //used to switch between bipeds and boxes
+
+	TerrainClass* m_Terrain;
+	TerrainShaderClass* m_TerrainShader;
+	FrustumClass* m_Frustum;
+	QuadTreeClass* m_QuadTree;
 };
 //run initializemainwindow
 
@@ -98,6 +107,10 @@ IXAudio2* g_engineHit;
 IXAudio2SourceVoice* g_sourceHit;
 IXAudio2MasteringVoice* g_masterHit;
 
+//Blaster
+IXAudio2* g_engineBlaster;
+IXAudio2SourceVoice* g_sourceBlaster;
+IXAudio2MasteringVoice* g_masterBlaster;
 
 //Sound stuff
 Wave buffer; //Music
@@ -106,6 +119,7 @@ Wave buffer3; //dead
 Wave buffer4; //revive
 Wave buffer5; //reload
 Wave buffer6; //bullethit
+Wave buffer7; //blaster
 
 #pragma endregion Sound_Initialization
 
@@ -217,7 +231,36 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance,
 		g_engineDead->Release();
 		CoUninitialize();
 	}
+	//blaster
 
+	//create the engine
+	if (FAILED(XAudio2Create(&g_engineBlaster)))
+	{
+		CoUninitialize();
+		return -1;
+	}
+
+	//create the mastering voice
+	if (FAILED(g_engineBlaster->CreateMasteringVoice(&g_masterBlaster)))
+	{
+		g_engineBlaster->Release();
+		CoUninitialize();
+		return -2;
+	}
+
+	//load a wave file
+	if (!buffer7.load("blaster.wav"))
+	{
+		g_engineBlaster->Release();
+		CoUninitialize();
+	}
+
+	//create the source voice, based on loaded wave format
+	if (FAILED(g_engineBlaster->CreateSourceVoice(&g_sourceBlaster, buffer7.wf())))
+	{
+		g_engineBlaster->Release();
+		CoUninitialize();
+	}
 
 	//revive
 
@@ -345,7 +388,7 @@ SeniorPro::SeniorPro(HINSTANCE hInstance)
 	: D3DApp(hInstance)
 {
 	//Camera information
-	mCam.setCamPosition(0.0f, 5.0f, -8.0f, 0.0f);
+	mCam.setCamPosition(60.0f, 10.0f, 60.0f, 0.0f);
 	mCam.setCamTarget(0.0f, 0.0f, 0.0f, 0.0f);
 	mCam.setCamUp(0.0f, 1.0f, 0.0f, 0.0f);
 
@@ -377,6 +420,11 @@ SeniorPro::SeniorPro(HINSTANCE hInstance)
 		ERot[i] = 0.01f;
 	}
 
+	m_Terrain = 0;
+	m_TerrainShader = 0;
+	m_Frustum = 0;
+	m_QuadTree = 0;
+
 };
 
 SeniorPro::~SeniorPro()
@@ -388,6 +436,37 @@ SeniorPro::~SeniorPro()
 	g_engineReload->Release();
 	g_engineRevive->Release();
 	g_engineHit->Release();
+
+	// Release the quad tree object.
+	if (m_QuadTree)
+	{
+		m_QuadTree->Shutdown();
+		delete m_QuadTree;
+		m_QuadTree = 0;
+	}
+
+	// Release the frustum object.
+	if (m_Frustum)
+	{
+		delete m_Frustum;
+		m_Frustum = 0;
+	}
+
+	// Release the terrain shader object.
+	if (m_TerrainShader)
+	{
+		m_TerrainShader->Shutdown();
+		delete m_TerrainShader;
+		m_TerrainShader = 0;
+	}
+
+	// Release the terrain object.
+	if (m_Terrain)
+	{
+		m_Terrain->Shutdown();
+		delete m_Terrain;
+		m_Terrain = 0;
+	}
 };
 
 bool SeniorPro::InitScene()
@@ -408,6 +487,12 @@ bool SeniorPro::InitScene()
 	if (!meshArray[3].LoadObjModel(L"spaceCompound.obj", material, true, false, d3d11Device, SwapChain))
 		return false;
 	if (!meshArray[4].LoadObjModel(L"win.obj", material, true, false, d3d11Device, SwapChain))
+		return false;
+	if (!meshArray[5].LoadObjModel(L"Moon.obj", material, true, true, d3d11Device, SwapChain))
+		return false;
+	if (!meshArray[6].LoadObjModel(L"Menu.obj", material, true, false, d3d11Device, SwapChain))
+		return false;
+	if (!meshArray[7].LoadObjModel(L"ToT.obj", material, true, true, d3d11Device, SwapChain))
 		return false;
 	/*//if (!meshArray[3].LoadObjModel(L"ToT.obj", material, true, true, d3d11Device, SwapChain))
 		return false;
@@ -438,20 +523,15 @@ bool SeniorPro::InitScene()
 	//Enemies
 	for (int i = 0; i < ENEMYCOUNT; i++)
 	{
-		if (enemyBox)
-		{
 		if (!enemyArray[i].LoadObjModel(L"Enemy.obj", material, true, false, d3d11Device, SwapChain))
 			return false;
-	}
-		else
-		{
+
 			if (!enemyArray[i].LoadMD5Model(L"boy.md5mesh", d3d11Device, SwapChain))
 				return false;
 
 			if (!enemyArray[i].LoadMD5Anim(L"boy.md5anim", SwapChain))
 				return false;
 		}
-	}
 	
 	//Compile Shaders from shader file
 	hr = D3DX11CompileFromFile(L"Effects.fx", 0, 0, "VS", "vs_4_0", 0, 0, 0, &VS_Buffer, 0, 0);
@@ -634,6 +714,54 @@ bool SeniorPro::InitScene()
 	}
 	#pragma endregion Terrain
 
+	bool result;
+	// Create the terrain object.
+	m_Terrain = new TerrainClass;
+	if (!m_Terrain)
+	{
+		return false;
+	}
+
+	// Initialize the terrain object.
+	result = m_Terrain->Initialize(d3d11Device, "heightmap.bmp", L"dirt01.dds", "colorm01.bmp");
+	if (!result){
+		MessageBox(hwnd, L"Could not initialize the terrain object.", L"Error", MB_OK);
+		return false;
+	}
+
+	// Create the terrain shader object.
+	m_TerrainShader = new TerrainShaderClass;
+	if (!m_TerrainShader){
+		return false;
+	}
+
+	// Initialize the terrain shader object.
+	result = m_TerrainShader->Initialize(d3d11Device, hwnd);
+	if (!result){
+		MessageBox(hwnd, L"Could not initialize the terrain shader object.", L"Error", MB_OK);
+		return false;
+	}
+
+	// Create the frustum object.
+	m_Frustum = new FrustumClass;
+	if (!m_Frustum)
+	{
+		return false;
+	}
+
+	// Create the quad tree object.
+	m_QuadTree = new QuadTreeClass;
+	if (!m_QuadTree){
+		return false;
+	}
+
+	// Initialize the quad tree object.
+	result = m_QuadTree->Initialize(m_Terrain, d3d11Device);
+	if (!result){
+		MessageBox(hwnd, L"Could not initialize the quad tree object.", L"Error", MB_OK);
+		return false;
+	}
+
 	D3D11_BUFFER_DESC indexBufferDesc;
 	ZeroMemory(&indexBufferDesc, sizeof(indexBufferDesc));
 
@@ -641,27 +769,27 @@ bool SeniorPro::InitScene()
 	/************************************New Stuff****************************************************/
 	//indexBufferDesc.ByteWidth = sizeof(DWORD) * 2 * 3;
 	indexBufferDesc.ByteWidth = sizeof(DWORD) * NumFaces * 3;
-	/*************************************************************************************************/
+	/************************************************************************************************/
 	indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	indexBufferDesc.CPUAccessFlags = 0;
 	indexBufferDesc.MiscFlags = 0;
 
 	D3D11_SUBRESOURCE_DATA iinitData;
 
-	/************************************New Stuff****************************************************/
+	/************************************New Stuff***************************************************/
 	//iinitData.pSysMem = indices;
 	iinitData.pSysMem = &indices[0];
-	/*************************************************************************************************/
+	/************************************************************************************************/
 	d3d11Device->CreateBuffer(&indexBufferDesc, &iinitData, &squareIndexBuffer);
 
 	D3D11_BUFFER_DESC vertexBufferDesc;
 	ZeroMemory(&vertexBufferDesc, sizeof(vertexBufferDesc));
 
 	vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	/************************************New Stuff****************************************************/
+	/************************************New Stuff***************************************************/
 	//vertexBufferDesc.ByteWidth = sizeof(Vertex::Vertex) * 4;
 	vertexBufferDesc.ByteWidth = sizeof(Vertex::Vertex) * NumVertices;
-	/*************************************************************************************************/
+	/************************************************************************************************/
 	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	vertexBufferDesc.CPUAccessFlags = 0;
 	vertexBufferDesc.MiscFlags = 0;
@@ -669,10 +797,10 @@ bool SeniorPro::InitScene()
 	D3D11_SUBRESOURCE_DATA vertexBufferData;
 
 	ZeroMemory(&vertexBufferData, sizeof(vertexBufferData));
-	/************************************New Stuff****************************************************/
+	/************************************New Stuff***************************************************/
 	//vertexBufferData.pSysMem = v;
 	vertexBufferData.pSysMem = &v[0];
-	/*************************************************************************************************/
+	/************************************************************************************************/
 	hr = d3d11Device->CreateBuffer(&vertexBufferDesc, &vertexBufferData, &squareVertBuffer);
 
 	//Create the Input Layout
@@ -822,111 +950,191 @@ bool SeniorPro::InitScene()
 	{
 		/*exadd[i] = 0.0f;
 		ezadd[i] = 0.0f;*/
+		// collision for the heightmap
+		float height;
+		bool foundHeight;
+
+		// Get the height of the triangle that is directly underneath the given camera position.
+		foundHeight = m_QuadTree->GetHeightAtPosition(enemyXPos[i], enemyZPos[i], height);
+		if (foundHeight)
+		{
+			// If there was a triangle under the camera then position the camera just above it by two units.
+			enemyYPos[i] = height + 4.0f;
+		}
+
 		enemyXPos[i] = -20;
 		enemyZPos[i] = 30;
 		enemyRot[i] = 0;
 		float startX = -30.0f;
 		float startZ = 60.0f;
 		// Init enemy locations
-		for (int i = 0; i < ENEMYCOUNT; i++)
+		for (int y = 0; y < ENEMYCOUNT; y++)
 		{
-				enemyXPos[i] = enemyXPos[i - 1] + 10;
-			enemyZPos[i] += 0;
+			enemyXPos[y] = enemyXPos[y - 1] + 10.0f;
+			enemyZPos[y] += 0.0f;
 		}
 		
-		enemyHit[i] = 0;
+		enemyHit[i] = 0.0f;
 
 		//set the loaded enemy's world space
-		enemyArray[i].meshWorld = XMMatrixIdentity();
+		//enemyArray[i].meshWorld = XMMatrixIdentity();
 
 		exadd[i]++;
 
-		if (exadd[i] == 10)
-		{
+		if (exadd[i] == 10.0f){
 			ezadd[i] -= 1.0f;
-			exadd[i] = 0;
+			exadd[i] = 0.0f;
 		}
 
 		Rotation = XMMatrixRotationY(enemyRot[i]);
 		Scale = XMMatrixScaling(0.15f, 0.15f, 0.15f);
-		Translation = XMMatrixTranslation(enemyXPos[i], 2.0f, enemyZPos[i]);
+		Translation = XMMatrixTranslation(enemyXPos[i], enemyYPos[i], enemyZPos[i]);
 		coll[i].setLocation(Point(enemyXPos[i], 2.0f, enemyZPos[i]));
 		coll[i].setheight(3.0f);
 		coll[i].setlength(3.0f);
 		coll[i].setwidth(3.0f);
-		enemyArray[i].meshWorld = Rotation * Scale * Translation;
+		//enemyArray[i].meshWorld = Rotation * Scale * Translation;
 	}
 
 	//Draw Initial items
 	for (int i = 0; i < ITEMCOUNT; i++)
 	{
-		randItemX = rand() % 500;
-		randItemZ = rand() % 500;
+		randItemX = rand() % 128;
+		randItemZ = rand() % 128;
 
-		itemX[i] = randItemX - 250;
-		itemZ[i] = randItemZ - 250;
+		itemX[i] = randItemX;
+		itemZ[i] = randItemZ;
 
-		itemArray[i].meshWorld = XMMatrixIdentity();
+		float height;
+		bool foundHeight;
+
+		// Get the height of the triangle that is directly underneath the given camera position.
+		foundHeight = m_QuadTree->GetHeightAtPosition(enemyXPos[i], enemyZPos[i], height);
+		if (foundHeight)
+		{
+			// If there was a triangle under the camera then position the camera just above it by two units.
+			itemY[i] = height + 2.0f;
+		}
+
+		//itemArray[i].meshWorld = XMMatrixIdentity();
 
 		Rotation = XMMatrixRotationY(ItemRot);
 		Scale = XMMatrixScaling(0.05f, 0.05f, 0.05f);
-		Translation = XMMatrixTranslation(itemX[i], 2.0f, itemZ[i]);
-		itemColl[i].setLocation(Point(itemX[i], 2.0f, itemZ[i]));
+		Translation = XMMatrixTranslation(itemX[i], itemY[i], itemZ[i]);
+		itemColl[i].setLocation(Point(itemX[i], itemY[i], itemZ[i]));
 		itemColl[i].setheight(3.0f);
 		itemColl[i].setlength(3.0f);
 		itemColl[i].setwidth(3.0f);
-		itemArray[i].meshWorld = Rotation * Scale * Translation;
+		//itemArray[i].meshWorld = Rotation * Scale * Translation;
 	}
 
 	//Draw Initial items
 	for (int i = 0; i < AMMOCOUNT; i++)
 	{
-		randAmmoX = rand() % 500;
-		randAmmoZ = rand() % 500;
+		randAmmoX = rand() % 128;
+		randAmmoZ = rand() % 128;
 
-		ammoX[i] = randAmmoX - 250;
-		ammoZ[i] = randAmmoZ - 250;
+		ammoX[i] = randAmmoX;
+		ammoZ[i] = randAmmoZ;
 
-		ammoArray[i].meshWorld = XMMatrixIdentity();
+		float height;
+		bool foundHeight;
+
+		// Get the height of the triangle that is directly underneath the given camera position.
+		foundHeight = m_QuadTree->GetHeightAtPosition(enemyXPos[i], enemyZPos[i], height);
+		if (foundHeight)
+		{
+			// If there was a triangle under the camera then position the camera just above it by two units.
+			ammoY[i] = height + 2.0f;
+		}
+
+		//ammoArray[i].meshWorld = XMMatrixIdentity();
 
 		Rotation = XMMatrixRotationY(ammoRot);
 		Scale = XMMatrixScaling(0.05f, 0.05f, 0.05f);
-		Translation = XMMatrixTranslation(ammoX[i], 2.0f, ammoZ[i]);
-		ammoColl[i].setLocation(Point(ammoX[i], 2.0f, ammoZ[i]));
+		Translation = XMMatrixTranslation(ammoX[i], ammoY[i], ammoZ[i]);
+		ammoColl[i].setLocation(Point(ammoX[i], ammoY[i], ammoZ[i]));
 		ammoColl[i].setheight(3.0f);
 		ammoColl[i].setlength(3.0f);
 		ammoColl[i].setwidth(3.0f);
-		ammoArray[i].meshWorld = Rotation * Scale * Translation;
+		//ammoArray[i].meshWorld = Rotation * Scale * Translation;
 	}
 	//Initial win item location 
-	winX = rand() % 500;
-	winZ = rand() % 500;
-
+	winX = rand() % 128;
+	winZ = rand() % 128;
+	win.setLocation(Point((winX), 2.0f, (winZ)));
+	win.setheight(3.0f);
+	win.setlength(3.0f);
+	win.setwidth(3.0f);
 	return true;
 }
 
 void SeniorPro::UpdateScene(double time)
 {
-	float tempDist;
-	float tempDist2;
-	float tempDist3;
-	float tempDist4;
-	float tempDist5;
-	float tempDist6;
-	float tempDist7;
-	float tempDist8;
-	float tempDist9;
-	float tempDist10;
+	float tempDist = 0.0f;
+	float tempDist2 = 0.0f;
+	float tempDist3 = 0.0f;
+	float tempDist4 = 0.0f;
+	float tempDist5 = 0.0f;
+	float tempDist6 = 0.0f;
+	float tempDist7 = 0.0f;
+	float tempDist8 = 0.0f;
+	float tempDist9 = 0.0f;
+	float tempDist10 = 0.0f;
+
+	// collision for the heightmap
+	float height;
+	bool foundHeight;
+
+		//Reset cube1World
+		groundWorld = XMMatrixIdentity();
+
+		/************************************New Stuff****************************************************/
+		/*//Define cube1's world space matrix
+		Scale = XMMatrixScaling(500.0f, 10.0f, 500.0f);
+		Translation = XMMatrixTranslation(0.0f, 10.0f, 0.0f);*/
+
+		//Define terrains's world space matrix
+		Scale = XMMatrixScaling(1.0f, 0.75f, 1.0f);
+		Translation = XMMatrixTranslation(0.0f, 0.0f, 0.0f);//-64.0f, -10.0f, -64.0f);
+		/************************************New Stuff****************************************************/
+
+		//Set cube1's world space using the transformations
+		groundWorld = Scale * Translation;
+
+		//Reset sphereWorld
+		sphereWorld = XMMatrixIdentity();
+
+		//Define sphereWorld's world space matrix
+		Scale = XMMatrixScaling(5.0f, 5.0f, 5.0f);
+		//Make sure the sphere is always centered around camera
+		Translation = XMMatrixTranslation(XMVectorGetX(mCam.getCamPosition()), XMVectorGetY(mCam.getCamPosition()), XMVectorGetZ(mCam.getCamPosition()));
+
+		//Set sphereWorld's world space using the transformations
+		sphereWorld = Scale * Translation;
+
+		if (graphicsCase == 1) {
+
+				meshArray[6].meshWorld = XMMatrixIdentity();
+				Rotation = XMMatrixRotationY(0.0f);
+				Scale = XMMatrixScaling(0.1f, 0.1f, 0.1f);
+			Translation = XMMatrixTranslation(60.0f, 20.0f, 68.0f);
+				meshArray[6].meshWorld = Rotation * Scale * Translation;
+
+		}
+		if (graphicsCase == 2){
+
+
 
 	if (moveDoors == true)
 	{
-		if (moveLeft <7.8f && moveRight < 7.8f)
+		if (moveLeft < 7.8f && moveRight < 7.8f)
 			moveLeft += 0.01, moveRight += 0.01f;
 	}
 	else
 	{
 		if (moveLeft >= 0.0f && moveRight >= 0.0f)
-			moveLeft -= 0.01, moveRight -= 0.01f;
+			moveLeft -= 0.01f, moveRight -= 0.01f;
 	}
 
 	float closestDist = FLT_MAX;
@@ -952,11 +1160,11 @@ void SeniorPro::UpdateScene(double time)
 	}
 
 	//Set temp pick distances for camera vs building
-	tempDist6 = pick(prwsPos, prwsDir, meshArray[1].vertPosArray, meshArray[1].vertIndexArray, meshArray[1].meshWorld);
-	tempDist7 = pick(prwsPos2, prwsDir2, meshArray[1].vertPosArray, meshArray[1].vertIndexArray, meshArray[1].meshWorld);
-	tempDist8 = pick(prwsPos3, prwsDir3, meshArray[1].vertPosArray, meshArray[1].vertIndexArray, meshArray[1].meshWorld);
-	tempDist9 = pick(prwsPos4, prwsDir4, meshArray[1].vertPosArray, meshArray[1].vertIndexArray, meshArray[1].meshWorld);
-	tempDist10 = pick(prwsPos5, prwsDir5, meshArray[1].vertPosArray, meshArray[1].vertIndexArray, meshArray[1].meshWorld);
+	tempDist6 = pick(prwsPos, prwsDir, meshArray[3].vertPosArray, meshArray[3].vertIndexArray, meshArray[3].meshWorld);
+	tempDist7 = pick(prwsPos2, prwsDir2, meshArray[3].vertPosArray, meshArray[3].vertIndexArray, meshArray[3].meshWorld);
+	tempDist8 = pick(prwsPos3, prwsDir3, meshArray[3].vertPosArray, meshArray[3].vertIndexArray, meshArray[3].meshWorld);
+	tempDist9 = pick(prwsPos4, prwsDir4, meshArray[3].vertPosArray, meshArray[3].vertIndexArray, meshArray[3].meshWorld);
+	tempDist10 = pick(prwsPos5, prwsDir5, meshArray[3].vertPosArray, meshArray[3].vertIndexArray, meshArray[3].meshWorld);
 
 	//Set the pick distances for each object
 	pickedDist = tempDist;
@@ -969,34 +1177,6 @@ void SeniorPro::UpdateScene(double time)
 	pickedDist8 = tempDist8;
 	pickedDist9 = tempDist9;
 	pickedDist10 = tempDist10;
-
-	//Reset cube1World
-	groundWorld = XMMatrixIdentity();
-
-	/************************************New Stuff****************************************************/
-	/*//Define cube1's world space matrix
-	Scale = XMMatrixScaling(500.0f, 10.0f, 500.0f);
-	Translation = XMMatrixTranslation(0.0f, 10.0f, 0.0f);*/
-
-	//Define terrains's world space matrix
-	Scale = XMMatrixScaling(10.0f, 5.0f, 10.0f);
-	Translation = XMMatrixTranslation(-256.0f, -120.0f, -256.0f);
-	/************************************New Stuff****************************************************/
-
-	//Set cube1's world space using the transformations
-	groundWorld = Scale * Translation;
-
-	//Reset sphereWorld
-	sphereWorld = XMMatrixIdentity();
-
-	//Define sphereWorld's world space matrix
-	Scale = XMMatrixScaling(5.0f, 5.0f, 5.0f);
-	//Make sure the sphere is always centered around camera
-	Translation = XMMatrixTranslation(XMVectorGetX(mCam.getCamPosition()), XMVectorGetY(mCam.getCamPosition()), XMVectorGetZ(mCam.getCamPosition()));
-
-	//Set sphereWorld's world space using the transformations
-	sphereWorld = Scale * Translation;
-
 	for (int i = 0; i < MESHCOUNT; i++)
 	{
 
@@ -1007,17 +1187,22 @@ void SeniorPro::UpdateScene(double time)
 			randZ = rand() % 1000;
 			randRot = rand() % 1000;
 			randAttack = rand() % 1000;
+
+
+
+			// Get the height of the triangle that is directly underneath the given camera position.
+			foundHeight = m_QuadTree->GetHeightAtPosition(enemyXPos[i], enemyZPos[i], height);
+			if (foundHeight)
+			{
+				// If there was a triangle under the camera then position the camera just above it by two units.
+				enemyYPos[i] = height + 2.0f;
+			}
+
 			//set the loaded enemy's world space
 			enemyArray[i].meshWorld = XMMatrixIdentity();
 			//Rotation = XMMatrixRotationY(3.14f);
-			if (enemyBox)
-			{
-				Scale = XMMatrixScaling(0.15f, 0.15f, 0.15f);
-			}
-			else
-			{
 				Scale = XMMatrixScaling(0.04f, 0.04f, 0.04f);
-			}
+			
 			//If distance is greater then 20, then randomly move
 			if ((enemyXPos[i] - XMVectorGetX(mCam.getCamPosition()) <= 15 && enemyZPos[i] - XMVectorGetZ(mCam.getCamPosition()) <= 15)
 				&& (enemyXPos[i] - XMVectorGetX(mCam.getCamPosition()) >= -15 && enemyZPos[i] - XMVectorGetZ(mCam.getCamPosition()) >= -15))
@@ -1054,16 +1239,16 @@ void SeniorPro::UpdateScene(double time)
 							Player1.setHealth(Player1.getHealth() - 3);
 
 							//start consuming audio in the source voice
-							g_sourceGun->Start();
+							g_sourceBlaster->Start();
 							//simple message loop
 							//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
 							//{
-							g_sourceGun->Stop();
-							g_sourceGun->FlushSourceBuffers();
-							g_sourceGun->Start();
+							g_sourceBlaster->Stop();
+							g_sourceBlaster->FlushSourceBuffers();
+							g_sourceBlaster->Start();
 
 							//play the sound
-							g_sourceGun->SubmitSourceBuffer(buffer2.xaBuffer());
+							g_sourceBlaster->SubmitSourceBuffer(buffer7.xaBuffer());
 							//}
 
 							//start consuming audio in the source voice
@@ -1080,8 +1265,8 @@ void SeniorPro::UpdateScene(double time)
 							//}
 						}
 
-						Translation = XMMatrixTranslation(enemyXPos[i] += .00, 2.0f, enemyZPos[i] += .00);
-						coll[i].setLocation(Point(enemyXPos[i] += .00, 2.0f, enemyZPos[i] += .00));
+						Translation = XMMatrixTranslation(enemyXPos[i] += .00, enemyYPos[i], enemyZPos[i] += .00);
+						coll[i].setLocation(Point(enemyXPos[i] += .00, enemyYPos[i], enemyZPos[i] += .00));
 
 					}
 					else
@@ -1092,16 +1277,16 @@ void SeniorPro::UpdateScene(double time)
 							Player1.setHealth(Player1.getHealth() - 3);
 
 							//start consuming audio in the source voice
-							g_sourceGun->Start();
+							g_sourceBlaster->Start();
 							//simple message loop
 							//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
 							//{
-							g_sourceGun->Stop();
-							g_sourceGun->FlushSourceBuffers();
-							g_sourceGun->Start();
+							g_sourceBlaster->Stop();
+							g_sourceBlaster->FlushSourceBuffers();
+							g_sourceBlaster->Start();
 
 							//play the sound
-							g_sourceGun->SubmitSourceBuffer(buffer2.xaBuffer());
+							g_sourceBlaster->SubmitSourceBuffer(buffer7.xaBuffer());
 							//}
 
 							//start consuming audio in the source voice
@@ -1117,8 +1302,8 @@ void SeniorPro::UpdateScene(double time)
 							g_sourceHit->SubmitSourceBuffer(buffer6.xaBuffer());
 							//}
 						}
-						Translation = XMMatrixTranslation(enemyXPos[i] += .01, 2.0f, enemyZPos[i] += .01);
-						coll[i].setLocation(Point(enemyXPos[i] += .01, 2.0f, enemyZPos[i] += .01));
+						Translation = XMMatrixTranslation(enemyXPos[i] += .01f, enemyYPos[i], enemyZPos[i] += .01f);
+						coll[i].setLocation(Point(enemyXPos[i] += .01f, enemyYPos[i], enemyZPos[i] += .01f));
 					}
 				}
 				//If playerX > enemyX, increase enemyX, PlayerZ < enemyZ, decrease enemyZ
@@ -1151,16 +1336,16 @@ void SeniorPro::UpdateScene(double time)
 							Player1.setHealth(Player1.getHealth() - 3);
 
 							//start consuming audio in the source voice
-							g_sourceGun->Start();
+							g_sourceBlaster->Start();
 							//simple message loop
 							//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
 							//{
-							g_sourceGun->Stop();
-							g_sourceGun->FlushSourceBuffers();
-							g_sourceGun->Start();
+							g_sourceBlaster->Stop();
+							g_sourceBlaster->FlushSourceBuffers();
+							g_sourceBlaster->Start();
 
 							//play the sound
-							g_sourceGun->SubmitSourceBuffer(buffer2.xaBuffer());
+							g_sourceBlaster->SubmitSourceBuffer(buffer7.xaBuffer());
 							//}
 
 							//start consuming audio in the source voice
@@ -1176,8 +1361,8 @@ void SeniorPro::UpdateScene(double time)
 							g_sourceHit->SubmitSourceBuffer(buffer6.xaBuffer());
 							//}
 						}
-						Translation = XMMatrixTranslation(enemyXPos[i] += .00, 2.0f, enemyZPos[i] -= .00);
-						coll[i].setLocation(Point(enemyXPos[i] += .00, 2.0f, enemyZPos[i] -= .00));
+						Translation = XMMatrixTranslation(enemyXPos[i] += .00, enemyYPos[i], enemyZPos[i] -= .00);
+						coll[i].setLocation(Point(enemyXPos[i] += .00, enemyYPos[i], enemyZPos[i] -= .00));
 					}
 					else{
 						//Attack on random (moving so less likely to hit)
@@ -1186,16 +1371,16 @@ void SeniorPro::UpdateScene(double time)
 							Player1.setHealth(Player1.getHealth() - 3);
 
 							//start consuming audio in the source voice
-							g_sourceGun->Start();
+							g_sourceBlaster->Start();
 							//simple message loop
 							//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
 							//{
-							g_sourceGun->Stop();
-							g_sourceGun->FlushSourceBuffers();
-							g_sourceGun->Start();
+							g_sourceBlaster->Stop();
+							g_sourceBlaster->FlushSourceBuffers();
+							g_sourceBlaster->Start();
 
 							//play the sound
-							g_sourceGun->SubmitSourceBuffer(buffer2.xaBuffer());
+							g_sourceBlaster->SubmitSourceBuffer(buffer7.xaBuffer());
 							//}
 
 							//start consuming audio in the source voice
@@ -1211,8 +1396,8 @@ void SeniorPro::UpdateScene(double time)
 							g_sourceHit->SubmitSourceBuffer(buffer6.xaBuffer());
 							//}
 						}
-						Translation = XMMatrixTranslation(enemyXPos[i] += .01, 2.0f, enemyZPos[i] -= .01);
-						coll[i].setLocation(Point(enemyXPos[i] += .01, 2.0f, enemyZPos[i] -= .01));
+						Translation = XMMatrixTranslation(enemyXPos[i] += .01f, enemyYPos[i], enemyZPos[i] -= .01f);
+						coll[i].setLocation(Point(enemyXPos[i] += .01f, enemyYPos[i], enemyZPos[i] -= .01f));
 					}
 
 				}
@@ -1246,16 +1431,16 @@ void SeniorPro::UpdateScene(double time)
 							Player1.setHealth(Player1.getHealth() - 3);
 
 							//start consuming audio in the source voice
-							g_sourceGun->Start();
+							g_sourceBlaster->Start();
 							//simple message loop
 							//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
 							//{
-							g_sourceGun->Stop();
-							g_sourceGun->FlushSourceBuffers();
-							g_sourceGun->Start();
+							g_sourceBlaster->Stop();
+							g_sourceBlaster->FlushSourceBuffers();
+							g_sourceBlaster->Start();
 
 							//play the sound
-							g_sourceGun->SubmitSourceBuffer(buffer2.xaBuffer());
+							g_sourceBlaster->SubmitSourceBuffer(buffer7.xaBuffer());
 							//}
 
 							//start consuming audio in the source voice
@@ -1272,8 +1457,8 @@ void SeniorPro::UpdateScene(double time)
 							//}
 						}
 
-						Translation = XMMatrixTranslation(enemyXPos[i] -= .00, 2.0f, enemyZPos[i] += .00);
-						coll[i].setLocation(Point(enemyXPos[i] -= .00, 2.0f, enemyZPos[i] += .00));
+						Translation = XMMatrixTranslation(enemyXPos[i] -= .00, enemyYPos[i], enemyZPos[i] += .00);
+						coll[i].setLocation(Point(enemyXPos[i] -= .00, enemyYPos[i], enemyZPos[i] += .00));
 					}
 					else{
 						//Attack on random (moving so less likely to hit)
@@ -1282,16 +1467,16 @@ void SeniorPro::UpdateScene(double time)
 							Player1.setHealth(Player1.getHealth() - 3);
 
 							//start consuming audio in the source voice
-							g_sourceGun->Start();
+							g_sourceBlaster->Start();
 							//simple message loop
 							//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
 							//{
-							g_sourceGun->Stop();
-							g_sourceGun->FlushSourceBuffers();
-							g_sourceGun->Start();
+							g_sourceBlaster->Stop();
+							g_sourceBlaster->FlushSourceBuffers();
+							g_sourceBlaster->Start();
 
 							//play the sound
-							g_sourceGun->SubmitSourceBuffer(buffer2.xaBuffer());
+							g_sourceBlaster->SubmitSourceBuffer(buffer7.xaBuffer());
 							//}
 
 							//start consuming audio in the source voice
@@ -1307,8 +1492,8 @@ void SeniorPro::UpdateScene(double time)
 							g_sourceHit->SubmitSourceBuffer(buffer6.xaBuffer());
 							//}
 						}
-						Translation = XMMatrixTranslation(enemyXPos[i] -= .01, 2.0f, enemyZPos[i] += .01);
-						coll[i].setLocation(Point(enemyXPos[i] -= .01, 2.0f, enemyZPos[i] += .01));
+						Translation = XMMatrixTranslation(enemyXPos[i] -= .01f, enemyYPos[i], enemyZPos[i] += .01f);
+						coll[i].setLocation(Point(enemyXPos[i] -= .01f, enemyYPos[i], enemyZPos[i] += .01f));
 					}
 
 				}
@@ -1341,16 +1526,16 @@ void SeniorPro::UpdateScene(double time)
 							Player1.setHealth(Player1.getHealth() - 3);
 
 							//start consuming audio in the source voice
-							g_sourceGun->Start();
+							g_sourceBlaster->Start();
 							//simple message loop
 							//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
 							//{
-							g_sourceGun->Stop();
-							g_sourceGun->FlushSourceBuffers();
-							g_sourceGun->Start();
+							g_sourceBlaster->Stop();
+							g_sourceBlaster->FlushSourceBuffers();
+							g_sourceBlaster->Start();
 
 							//play the sound
-							g_sourceGun->SubmitSourceBuffer(buffer2.xaBuffer());
+							g_sourceBlaster->SubmitSourceBuffer(buffer7.xaBuffer());
 							//}
 
 							//start consuming audio in the source voice
@@ -1366,8 +1551,8 @@ void SeniorPro::UpdateScene(double time)
 							g_sourceHit->SubmitSourceBuffer(buffer6.xaBuffer());
 							//}
 						}
-						Translation = XMMatrixTranslation(enemyXPos[i] -= .00, 2.0f, enemyZPos[i] -= .00);
-						coll[i].setLocation(Point(enemyXPos[i] -= .00, 2.0f, enemyZPos[i] -= .00));
+						Translation = XMMatrixTranslation(enemyXPos[i] -= .00, enemyYPos[i], enemyZPos[i] -= .00);
+						coll[i].setLocation(Point(enemyXPos[i] -= .00, enemyYPos[i], enemyZPos[i] -= .00));
 					}
 					else
 					{
@@ -1377,16 +1562,16 @@ void SeniorPro::UpdateScene(double time)
 							Player1.setHealth(Player1.getHealth() - 3);
 
 							//start consuming audio in the source voice
-							g_sourceGun->Start();
+							g_sourceBlaster->Start();
 							//simple message loop
 							//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
 							//{
-							g_sourceGun->Stop();
-							g_sourceGun->FlushSourceBuffers();
-							g_sourceGun->Start();
+							g_sourceBlaster->Stop();
+							g_sourceBlaster->FlushSourceBuffers();
+							g_sourceBlaster->Start();
 
 							//play the sound
-							g_sourceGun->SubmitSourceBuffer(buffer2.xaBuffer());
+							g_sourceBlaster->SubmitSourceBuffer(buffer7.xaBuffer());
 							//}
 
 							//start consuming audio in the source voice
@@ -1402,8 +1587,8 @@ void SeniorPro::UpdateScene(double time)
 							g_sourceHit->SubmitSourceBuffer(buffer6.xaBuffer());
 							//}
 						}
-						Translation = XMMatrixTranslation(enemyXPos[i] -= .01, 2.0f, enemyZPos[i] -= .01);
-						coll[i].setLocation(Point(enemyXPos[i] -= .01, 2.0f, enemyZPos[i] -= .01));
+						Translation = XMMatrixTranslation(enemyXPos[i] -= .01f, enemyYPos[i], enemyZPos[i] -= .01f);
+						coll[i].setLocation(Point(enemyXPos[i] -= .01f, enemyYPos[i], enemyZPos[i] -= .01f));
 					}
 				}
 				if (Player1.getHealth() <= 0)
@@ -1478,14 +1663,16 @@ void SeniorPro::UpdateScene(double time)
 					enemyRot[i] = 6.28f;
 
 				//Translate and update enemy and respective collision box
-				Translation = XMMatrixTranslation(enemyXPos[i] += EMoveX[i], 2.0f, enemyZPos[i] += EMoveZ[i]);
-				coll[i].setLocation(Point(enemyXPos[i] += EMoveX[i], 2.0f, enemyZPos[i] += EMoveZ[i]));
+				Translation = XMMatrixTranslation(enemyXPos[i] += EMoveX[i], enemyYPos[i], enemyZPos[i] += EMoveZ[i]);
+				coll[i].setLocation(Point(enemyXPos[i] += EMoveX[i], enemyYPos[i], enemyZPos[i] += EMoveZ[i]));
 
 			}
 
 
 			enemyArray[i].meshWorld = Rotation * Scale * Translation;
 		}
+
+	#pragma endregion EnemyAI
 		//HUD
 		if (meshArray[i].filename == L"HUD3.obj")
 		{
@@ -1511,79 +1698,21 @@ void SeniorPro::UpdateScene(double time)
 			meshArray[i].meshWorld = Rotation * Scale * Translation;*/
 		}
 
-		/*
-		//Right Door
-		if (i == 7)
+		if (meshArray[i].filename == L"ToT.obj")
 		{
 		meshArray[i].meshWorld = XMMatrixIdentity();
-		Rotation = XMMatrixRotationY(0.0f);
-		Scale = XMMatrixScaling(0.50f, 0.633f, 0.25f);
-		Translation = XMMatrixTranslation(-20.08f + moveRight, -1.3f, 18.0f);
 
-		meshArray[i].meshWorld = Rotation * Scale * Translation;
-		}
-		//Left Door
-		if (i == 6)
-		{
-		meshArray[i].meshWorld = XMMatrixIdentity();
 		Rotation = XMMatrixRotationY(0.0f);
-		Scale = XMMatrixScaling(0.50f, 0.633f, 0.25f);
-		Translation = XMMatrixTranslation(20.08f - moveLeft, -1.3f, 18.0f);
+		Scale = XMMatrixScaling(0.4f, 0.4f, 0.4f);
+			Translation = XMMatrixTranslation(80.0f, 0.0f, -80.0f);
 
 		meshArray[i].meshWorld = Rotation * Scale * Translation;
 		}
 
-		//Right Door
-		if (i == 5)
-		{
-		meshArray[i].meshWorld = XMMatrixIdentity();
-		Rotation = XMMatrixRotationY(0.0f);
-		Scale = XMMatrixScaling(0.50f, 0.633f, 0.25f);
-		Translation = XMMatrixTranslation(-20.08f + moveRight, -1.3f, 34.6f);
-
-		meshArray[i].meshWorld = Rotation * Scale * Translation;
-		}
-		//Left Door
-		if (i == 4)
-		{
-		meshArray[i].meshWorld = XMMatrixIdentity();
-		Rotation = XMMatrixRotationY(0.0f);
-		Scale = XMMatrixScaling(0.50f, 0.633f, 0.25f);
-		Translation = XMMatrixTranslation(20.08f - moveLeft, -1.3f, 34.6f);
-
-		meshArray[i].meshWorld = Rotation * Scale * Translation;
-		} */
 		//Temple of Time
-		/*if (meshArray[i].filename == L"ToT.obj")
-		{
-			meshArray[i].meshWorld = XMMatrixIdentity();
+		/*
 
-			Rotation = XMMatrixRotationY(0.0f);
-			Scale = XMMatrixScaling(0.4f, 0.4f, 0.4f);
-			Translation = XMMatrixTranslation(20.0f, 0.0f, -64.0f);
 
-			meshArray[i].meshWorld = Rotation * Scale * Translation;
-		}
-		//Win Object
-		if (i == 4)
-		{
-			meshArray[i].meshWorld = XMMatrixIdentity();
-			Rotation = XMMatrixRotationY(0.0f);
-			Scale = XMMatrixScaling(0.1f, 0.1f, 0.1f);
-			Translation = XMMatrixTranslation(winX - 125 , 4.0f, winZ - 125);
-			win.setLocation(Point(winX - 125, 4.0f, winZ - 125));
-			meshArray[i].meshWorld = Rotation * Scale * Translation;
-		} 
-		if (i == 1)
-		{
-			meshArray[i].meshWorld = XMMatrixIdentity();
-
-			Rotation = XMMatrixRotationY(3.14f);
-			Scale = XMMatrixScaling(1.0f, 1.0f, 1.0f);
-			Translation = XMMatrixTranslation(0.0f, 0.0f, 0.0f);
-
-			meshArray[i].meshWorld = Rotation * Scale * Translation;
-		}
 		/*if (meshArray[i].filename == L"ground.obj")
 		{
 		meshArray[i].meshWorld = XMMatrixIdentity();
@@ -1595,11 +1724,58 @@ void SeniorPro::UpdateScene(double time)
 		meshArray[i].meshWorld = Rotation * Scale * Translation;
 		}*/
 
+			//Menu
+			if (meshArray[i].filename == L"Menu.obj"){
+		meshArray[i].meshWorld = XMMatrixIdentity();
+		Rotation = XMMatrixRotationY(0.0f);
+				Scale = XMMatrixScaling(0.1f, 0.1f, 0.1f);
+				Translation = XMMatrixTranslation(10000.0f, 30000.0f, 10000.0f);
+		meshArray[i].meshWorld = Rotation * Scale * Translation;
+		}
+			//Moon
+			if (meshArray[i].filename == L"Moon.obj")
+		{
+			meshArray[i].meshWorld = XMMatrixIdentity();
+			Rotation = XMMatrixRotationY(0.0f);
+			Scale = XMMatrixScaling(1.5f, 1.5f, 1.5f);
+			Translation = XMMatrixTranslation(70.0f, moonHeight -= 0.06f, 60.0f);
+			meshArray[i].meshWorld = Rotation * Scale * Translation;
+		}
+
+		if (meshArray[i].filename == L"win.obj")
+		{
+			meshArray[i].meshWorld = XMMatrixIdentity();
+			Rotation = XMMatrixRotationY(0.0f);
+			Scale = XMMatrixScaling(0.1f, 0.1f, 0.1f);
+			Translation = XMMatrixTranslation(winX, 3.0f, winZ);
+			win.setLocation(Point(winX, 2.0f, winZ));
+			meshArray[i].meshWorld = Rotation * Scale * Translation;
+		} 
+
+		if (meshArray[i].filename == L"spaceCompound.obj") {
+			meshArray[i].meshWorld = XMMatrixIdentity();
+
+			Rotation = XMMatrixRotationY(3.14f);
+			Scale = XMMatrixScaling(0.25f, 0.75f, 0.25f);
+			Translation = XMMatrixTranslation(62.0f, 17.0f, 60.0f);
+
+			meshArray[i].meshWorld = Rotation * Scale * Translation;
+		}
+
 		if (meshArray[i].filename == L"sa80.obj" || meshArray[i].filename == L"ak47.obj")
 		{
 			meshArray[i].meshWorld = XMMatrixIdentity();
 
+			//kickback if shooted
+			if (isShoot)
+			{
+				Rotation = XMMatrixRotationRollPitchYaw(mCam.getCamPitch() - 0.025, mCam.getCamYaw(), 0);
+			}
+			else
+			{
 			Rotation = XMMatrixRotationRollPitchYaw(mCam.getCamPitch(), mCam.getCamYaw(), 0);
+			}
+
 			if ((meshArray[i].filename == L"ak47.obj" && weaponSelect == 1) || (meshArray[i].filename == L"sa80.obj" && weaponSelect == 2))
 			{
 			Scale = XMMatrixScaling(0.1f, 0.1f, 0.1f);
@@ -1609,6 +1785,7 @@ void SeniorPro::UpdateScene(double time)
 				Scale = XMMatrixScaling(0.0f, 0.0f, 0.0f);
 			}
 			Translation = XMMatrixTranslation(mCam.getsCamPosition().getX(), mCam.getsCamPosition().getY(), mCam.getsCamPosition().getZ());
+
 
 			meshArray[i].meshWorld = Rotation * Scale * Translation;
 		}
@@ -1629,7 +1806,7 @@ void SeniorPro::UpdateScene(double time)
 			if (ItemRot >= 6.28)
 				ItemRot = 0;
 			Scale = XMMatrixScaling(0.05f, 0.1f, 0.05f);
-			Translation = XMMatrixTranslation(itemX[j], 2.0f, itemZ[j]);
+			Translation = XMMatrixTranslation(itemX[j], itemY[j], itemZ[j]);
 			itemArray[j].meshWorld = Rotation * Scale * Translation;
 		}
 
@@ -1640,11 +1817,34 @@ void SeniorPro::UpdateScene(double time)
 			if (ammoRot >= 6.28)
 				ammoRot = 0;
 			Scale = XMMatrixScaling(0.05f, 0.05f, 0.05f);
-			Translation = XMMatrixTranslation(ammoX[j], 2.0f, ammoZ[j]);
+			Translation = XMMatrixTranslation(ammoX[j], ammoY[j], ammoZ[j]);
 			ammoArray[j].meshWorld = Rotation * Scale * Translation;
 		}
 	}
 	
+	if ((moonHeight / 2) - 15 <= 0.0f){
+		thePlayer.setDeath(true);
+		//start consuming audio in the source voice
+		g_sourceDead->Start();
+		//simple message loop
+		//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
+		//{
+		g_sourceDead->Stop();
+		g_sourceDead->FlushSourceBuffers();
+		g_sourceDead->Start();
+
+		//play the sound
+		g_sourceDead->SubmitSourceBuffer(buffer3.xaBuffer());
+		//}
+
+		if (thePlayer.getDeath() == true)
+		{
+			if (MessageBox(0, L"The world is destroyed, you have failed", L"The sky has fallen", MB_OK | MB_ICONWARNING) == IDOK)
+				DestroyWindow(hwnd);
+		}
+		}
+
+	}
 
 	///////////////**************new**************////////////////////
 	/*Scale = XMMatrixScaling(0.04f, 0.04f, 0.04f);			// The model is a bit too large for our scene, so make it smaller
@@ -1685,14 +1885,16 @@ void SeniorPro::RenderText(std::wstring text, int inInt)
 		printString <<
 			L"  Health: " << Player1.getHealth()
 			<< L"                                                                                                                                  Lives: " << Player1.getLives() << "\n"
-			<< L"  Ammo: " << PlayerWep.getMagSize()
-			<< L"                                                                                                                                     Score: " << score << L"\n"
-			<< L"  Extra Mags: "<< PlayerWep.getExtraClips() << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
-			//<< L"player x: " << XMVectorGetX(mCam.getCamPosition()) << "\n"
-			//<< L"player y: " << XMVectorGetY(mCam.getCamPosition()) << "\n"
-			//<< L"player z: " << XMVectorGetZ(mCam.getCamPosition()) << "\n"
+			<< L"  Ammo: " << PlayerWep.getMagSize() << L"          Extra Mags: " << PlayerWep.getExtraClips()
+			<< L"                                                                                                       Score: " << score << L"\n"
+			<< "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+			//<< L"win x: " << winX - 125 << " win y  " << winZ - 125
+			//<< L" player y: " << XMVectorGetY(mCam.getCamPosition()) 
+			//<< L" player z: " << XMVectorGetZ(mCam.getCamPosition()) 
 
-			<< L"  EnemyHeath: " << enemyStats[hitMe].getHealth() << L"\n";
+			<< L"  EnemyHeath: " << enemyStats[hitMe].getHealth() << L"\n"
+			//144 = 72 hours, 96 = 48 hours, 48 = 24 hours
+			<< L" " << (moonHeight / 2) - 15 << L" Hours Remain\n";
 		//<< L"Enemy Picked: " << hitMe << L"\n"
 		//<< L"Picked Dist: " << pickedDist << "\n"
 		//<< L"Picked Dist: " << pickedDist2 << "\n"
@@ -1712,11 +1914,6 @@ void SeniorPro::RenderText(std::wstring text, int inInt)
 				L" OUTTA AMMO, RELOAD!!";
 			printText = printString.str();
 		}
-		/*else {
-			printString <<
-			L"YOU ARE DEAD! HA...HAHAHA!!: ";
-			printText = printString.str();
-			}*/
 	}
 
 	//Set the Font Color
@@ -1825,14 +2022,10 @@ void SeniorPro::DrawScene()
 	{
 		if (!enemyHit[i])
 			if (enemyBox)
-			{
 			drawModel(&enemyArray[i], false);
-	}
-			else
-			{
+
 				drawMD5Model(&enemyArray[i]);
 			}
-	}
 	for (int i = 0; i < ITEMCOUNT; i++)
 	{
 		drawModel(&itemArray[i], false);
@@ -1841,6 +2034,18 @@ void SeniorPro::DrawScene()
 	{
 		drawModel(&ammoArray[i], false);
 	}
+
+	XMMATRIX view, proj, world;
+
+	// Construct the frustum.
+	m_Frustum->ConstructFrustum(100.0f, proj, view);//mCam.getCamProjection(), mCam.getCamView());
+
+	// Set the terrain shader parameters that it will use for rendering.
+	m_TerrainShader->SetShaderParameters(d3d11DevCon, world, view, proj,//mCam.getWorld(), mCam.getCamView(), mCam.getCamProjection(),
+		light.ambient, light.diffuse, light.dir, m_Terrain->GetTexture());
+
+	// Render the terrain using the quad tree and terrain shader.
+	m_QuadTree->Render(m_Frustum, d3d11DevCon, m_TerrainShader);
 
 	/////Draw the Sky's Sphere//////
 	//Set the spheres index buffer
@@ -1890,16 +2095,34 @@ void SeniorPro::DrawScene()
 	{
 		drawModel(&ammoArray[i], true);
 	}
+	if (graphicsCase == 2)
+	{
 	RenderText(L"Health: ", Player1.getHealth());
 	RenderText(L"Lives: ", Player1.getLives());
 	RenderText(L"Health: ", PlayerWep.getMagSize());
 	RenderText(L"Enemy Picked Health %d", enemyStats[hitMe].getHealth());
+	}
 	//Present the backbuffer to the screen
 	SwapChain->Present(0, 0);
 }
 
 void SeniorPro::DetectInput(double time)
 {
+	// collision for the heightmap
+	float height;
+	bool foundHeight;
+	
+	// Get the current position of the camera.
+	XMVECTOR position = mCam.getCamPosition();
+
+	// Get the height of the triangle that is directly underneath the given camera position.
+	foundHeight = m_QuadTree->GetHeightAtPosition(XMVectorGetX(position), XMVectorGetZ(position), height);
+	if (foundHeight)
+	{
+		// If there was a triangle under the camera then position the camera just above it by two units.
+		mCam.setCamPosition(XMVectorGetX(position), height + 4.0f, XMVectorGetZ(position), 0.0f);
+	}
+	
 	DIMOUSESTATE mouseCurrState;
 
 	BYTE keyboardState[256];
@@ -1940,7 +2163,42 @@ void SeniorPro::DetectInput(double time)
 		g_source->SubmitSourceBuffer(buffer.xaBuffer());
 		//}
 	}
+	//Menu Screen
+	if (graphicsCase == 1){
+		//Play
+		if (keyboardState[DIK_1] & 0X80)
+		{
+			graphicsCase = 2;
+		}
+		//Leaderboards
+		if (keyboardState[DIK_2] & 0X80)
+		{
+			graphicsCase = 2;
+		}
+		//Quit
+		if (keyboardState[DIK_3] & 0X80)
+		{
+			PostMessage(hwnd, WM_DESTROY, 0, 0);
+		}
 
+		if ((mouseCurrState.lX != mouseLastState.lX) || (mouseCurrState.lY != mouseLastState.lY))
+		{
+			//camYaw += mouseLastState.lX * 0.001f;
+			mCam.setCamYaw(mCam.getCamYaw() + (mouseLastState.lX * 0.001f));
+
+			if (mCam.getCamYaw() > 6.28f)
+				mCam.setCamYaw(0.0f);
+			if (mCam.getCamYaw() < 0.0f)
+				mCam.setCamYaw(6.28f);
+			//camPitch += mouseCurrState.lY * 0.001f;
+			mCam.setCamPitch(mCam.getCamPitch() + (mouseLastState.lY * 0.001f));
+
+			mouseLastState = mouseCurrState;
+		}
+
+		mCam.UpdateCamera();
+	}
+	if (graphicsCase == 2){
 	for (int i = 0; i < ENEMYCOUNT; i++){
 		if (coll[i].checkPointCollision(Point(XMVectorGetX(mCam.getCamPosition()), XMVectorGetY(mCam.getCamPosition()), XMVectorGetZ(mCam.getCamPosition())))){
 			move = false;
@@ -1985,7 +2243,8 @@ void SeniorPro::DetectInput(double time)
 	//Check for win condition
 	if (win.checkPointCollision(Point(XMVectorGetX(mCam.getCamPosition()), XMVectorGetY(mCam.getCamPosition()), XMVectorGetZ(mCam.getCamPosition())))){
 		score += 9001;
-
+		winX = 100000;
+		winZ = 100000;
 	}
 
 	//Check for collision and then allow for user to  move
@@ -2068,6 +2327,11 @@ void SeniorPro::DetectInput(double time)
 			enemyArray[i].UpdateMD5Model(time*timeFactor, 0, d3d11DevCon);
 		}
 	}
+
+	if (keyboardState[DIK_B] & 0X80)
+	{
+		enemyBox = !enemyBox;
+	}
 	///////////////**************new**************////////////////////
 
 	if ((mouseCurrState.rgbButtons[0]))
@@ -2116,6 +2380,13 @@ void SeniorPro::DetectInput(double time)
 			{
 				if (enemyHit[i] == 0) //No need to check enemies already hit
 				{
+					//tempDist = pick(prwsPos, prwsDir, enemyArray[i].vertPosArray, enemyArray[i].vertIndexArray, enemyArray[i].meshWorld);
+					/*for (int k = 0; k < MD5Model.numSubsets; k++)
+						{
+						for (int i = 0; i < MD5Model.subsets[k].vertices*/
+					/*XMVECTOR h = XMVectorSet(1, 1, 1, 1);
+					//XMVECTOR h = new XMVECTOR(enemyArray[i].MD5Model.subsets[0].vertices);
+					XMMATRIX test;*/
 					tempDist = pick(prwsPos, prwsDir, enemyArray[i].vertPosArray, enemyArray[i].vertIndexArray, enemyArray[i].meshWorld);
 					if (tempDist < closestDist)
 					{
@@ -2132,11 +2403,16 @@ void SeniorPro::DetectInput(double time)
 					enemyStats[hitIndex].setHealth(enemyStats[hitIndex].getHealth() - 20);
 					//If their health is less then 0 they are dead. remove them.
 					if (enemyStats[hitIndex].getHealth() <= 0){
+						// TRANSPORT
+
 						enemies[hitIndex].setDeath(true);
 						
 				enemyHit[hitIndex] = 1;
 				pickedDist = closestDist;
 				score++;
+
+						enemyXPos[hitIndex] = 1000;
+						enemyZPos[hitIndex] = 1000;
 			}
 				}
 
@@ -2185,11 +2461,14 @@ void SeniorPro::DetectInput(double time)
 		mouseLastState = mouseCurrState;
 	}
 
+
+
 	mCam.UpdateCamera();
 	//Best.updatePos(mCam.getsCamPosition(), mCam.getsCamTarget(), mCam.getsCamUp());
 
 	// make a better following class
 	//em.updatePos(Point(em.getpos().getX() - Best.getpos().getX(), em.getpos().getY(), 0.0f), Best.getpos(), em.getup());
+	}
 	return;
 }
 
