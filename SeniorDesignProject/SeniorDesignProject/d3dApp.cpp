@@ -1,5 +1,6 @@
 //***************************************************************************************
 #pragma comment(lib, "Ws2_32.lib")
+#define _CRT_SECURE_NO_WARNINGS
 #include "d3dApp.h"
 #include "VertexMain.h"
 
