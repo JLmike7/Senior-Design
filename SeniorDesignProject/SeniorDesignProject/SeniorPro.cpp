@@ -10,7 +10,7 @@
 #include "textureclass.h"
 
 #define MESHCOUNT 8
-#define ENEMYCOUNT 10
+#define ENEMYCOUNT 8
 #define ITEMCOUNT 30
 #define AMMOCOUNT 30
 
@@ -52,7 +52,7 @@ private:
 	Struct::HeightMapInfo hmInfo;
 	XMMATRIX groundWorld;
 	XMMATRIX sphereWorld;
-	
+
 	XMMATRIX Rotation;
 	XMMATRIX Scale;
 	XMMATRIX Translation;
@@ -514,7 +514,7 @@ bool SeniorPro::InitScene()
 	}
 	//Ammo
 	for (int i = 0; i < ITEMCOUNT; i++)
-	{
+		{
 		if (!ammoArray[i].LoadObjModel(L"ammo.obj", material, true, false, d3d11Device, SwapChain))
 			return false;
 	}
@@ -522,7 +522,7 @@ bool SeniorPro::InitScene()
 
 	//Enemies
 	for (int i = 0; i < ENEMYCOUNT; i++)
-	{
+		{
 		if (!enemyArray[i].LoadObjModel(L"Enemy.obj", material, true, false, d3d11Device, SwapChain))
 			return false;
 
@@ -532,7 +532,7 @@ bool SeniorPro::InitScene()
 			if (!enemyArray[i].LoadMD5Anim(L"boy.md5anim", SwapChain))
 				return false;
 		}
-	
+
 	//Compile Shaders from shader file
 	hr = D3DX11CompileFromFile(L"Effects.fx", 0, 0, "VS", "vs_4_0", 0, 0, 0, &VS_Buffer, 0, 0);
 	hr = D3DX11CompileFromFile(L"Effects.fx", 0, 0, "PS", "ps_4_0", 0, 0, 0, &PS_Buffer, 0, 0);
@@ -970,8 +970,11 @@ bool SeniorPro::InitScene()
 		// Init enemy locations
 		for (int y = 0; y < ENEMYCOUNT; y++)
 		{
-			enemyXPos[y] = enemyXPos[y - 1] + 10.0f;
-			enemyZPos[y] += 0.0f;
+			randX2 = rand() % 128;
+			randZ2 = rand() % 128;
+
+			enemyXPos[y] = randX2;
+			enemyZPos[y] = randZ2;
 		}
 		
 		enemyHit[i] = 0.0f;
@@ -1009,7 +1012,7 @@ bool SeniorPro::InitScene()
 		bool foundHeight;
 
 		// Get the height of the triangle that is directly underneath the given camera position.
-		foundHeight = m_QuadTree->GetHeightAtPosition(enemyXPos[i], enemyZPos[i], height);
+		foundHeight = m_QuadTree->GetHeightAtPosition(itemX[i], itemZ[i], height);
 		if (foundHeight)
 		{
 			// If there was a triangle under the camera then position the camera just above it by two units.
@@ -1041,7 +1044,7 @@ bool SeniorPro::InitScene()
 		bool foundHeight;
 
 		// Get the height of the triangle that is directly underneath the given camera position.
-		foundHeight = m_QuadTree->GetHeightAtPosition(enemyXPos[i], enemyZPos[i], height);
+		foundHeight = m_QuadTree->GetHeightAtPosition(ammoX[i], ammoZ[i], height);
 		if (foundHeight)
 		{
 			// If there was a triangle under the camera then position the camera just above it by two units.
@@ -1060,9 +1063,21 @@ bool SeniorPro::InitScene()
 		//ammoArray[i].meshWorld = Rotation * Scale * Translation;
 	}
 	//Initial win item location 
+	float height;
+	bool foundHeight;
+
+	
 	winX = rand() % 128;
 	winZ = rand() % 128;
-	win.setLocation(Point((winX), 2.0f, (winZ)));
+	// Get the height of the triangle that is directly underneath the given camera position.
+	foundHeight = m_QuadTree->GetHeightAtPosition(winX, winZ, height);
+	if (foundHeight)
+	{
+		// If there was a triangle under the camera then position the camera just above it by two units.
+		winY = height + 2.0f;
+	}
+	win.setLocation(Point((winX), winY, (winZ)));
+
 	win.setheight(3.0f);
 	win.setlength(3.0f);
 	win.setwidth(3.0f);
@@ -1118,7 +1133,7 @@ void SeniorPro::UpdateScene(double time)
 				meshArray[6].meshWorld = XMMatrixIdentity();
 				Rotation = XMMatrixRotationY(0.0f);
 				Scale = XMMatrixScaling(0.1f, 0.1f, 0.1f);
-			Translation = XMMatrixTranslation(60.0f, 20.0f, 68.0f);
+				Translation = XMMatrixTranslation(60.0f, 15.0f, 68.0f);
 				meshArray[6].meshWorld = Rotation * Scale * Translation;
 
 		}
@@ -1267,7 +1282,7 @@ void SeniorPro::UpdateScene(double time)
 
 						Translation = XMMatrixTranslation(enemyXPos[i] += .00, enemyYPos[i], enemyZPos[i] += .00);
 						coll[i].setLocation(Point(enemyXPos[i] += .00, enemyYPos[i], enemyZPos[i] += .00));
-
+						
 					}
 					else
 					{
@@ -1595,46 +1610,46 @@ void SeniorPro::UpdateScene(double time)
 				{
 					Player1.setHealth(100);
 					Player1.setLives(Player1.getLives() - 1);
-					//start consuming audio in the source voice
-					g_sourceRevive->Start();
-					//simple message loop
-					//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
-					//{
-					g_sourceRevive->Stop();
-					g_sourceRevive->FlushSourceBuffers();
-					g_sourceRevive->Start();
+		//start consuming audio in the source voice
+		g_sourceRevive->Start();
+		//simple message loop
+		//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
+		//{
+		g_sourceRevive->Stop();
+		g_sourceRevive->FlushSourceBuffers();
+		g_sourceRevive->Start();
 
-					//play the sound
-					g_sourceRevive->SubmitSourceBuffer(buffer4.xaBuffer());
-					//}
-				}
-				if (Player1.getLives() <= 0)
-				{
-					thePlayer.setDeath(true);
-					//start consuming audio in the source voice
-					g_sourceDead->Start();
-					//simple message loop
-					//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
-					//{
-					g_sourceDead->Stop();
-					g_sourceDead->FlushSourceBuffers();
-					g_sourceDead->Start();
+		//play the sound
+		g_sourceRevive->SubmitSourceBuffer(buffer4.xaBuffer());
+		//}
+	}
+	if (Player1.getLives() <= 0)
+	{
+		thePlayer.setDeath(true);
+		//start consuming audio in the source voice
+		g_sourceDead->Start();
+		//simple message loop
+		//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
+		//{
+		g_sourceDead->Stop();
+		g_sourceDead->FlushSourceBuffers();
+		g_sourceDead->Start();
 
-					//play the sound
-					g_sourceDead->SubmitSourceBuffer(buffer3.xaBuffer());
-					//}
-				}
+		//play the sound
+		g_sourceDead->SubmitSourceBuffer(buffer3.xaBuffer());
+		//}
+	}
 
-				if (thePlayer.getDeath() == true)
-				{
-					if (MessageBox(0, L"You have been killed, would you like to restart?", L"You are dead", MB_YESNO | MB_ICONQUESTION) == IDNO)
-						DestroyWindow(hwnd);
-					else
-					{
-						thePlayer.Init(_settings);
-						Player1.Init();
-						PlayerWep.Init();
-					}
+	if (thePlayer.getDeath() == true)
+	{
+		if (MessageBox(0, L"You have been killed, would you like to restart?", L"You are dead", MB_YESNO | MB_ICONQUESTION) == IDNO)
+			DestroyWindow(hwnd);
+		else
+		{
+			thePlayer.Init();
+			Player1.Init();
+			PlayerWep.Init();
+		}
 
 				}
 			}
@@ -1646,26 +1661,26 @@ void SeniorPro::UpdateScene(double time)
 					EMoveX[i] *= -1.0f;
 				}
 				if (randZ % 300 == 0)
-				{
+					{
 					EMoveZ[i] *= -1.0f;
-				}
+					}
 				//Only change rotation if number is divisible by 275
 				if (randRot % 275 == 0)
-				{
+					{
 					ERot[i] *= -1.0f;
-				}
+					}
 
 				//Rotate enemy, don't let it go past full 360 degrees (2 pi)
 				Rotation = XMMatrixRotationY(enemyRot[i] += ERot[i]);
-				if (enemyRot[i] > 6.28f)
-					enemyRot[i] = 0.0f;
-				if (enemyRot[i] < 0.0f)
-					enemyRot[i] = 6.28f;
+						if (enemyRot[i] > 6.28f)
+							enemyRot[i] = 0.0f;
+						if (enemyRot[i] < 0.0f)
+							enemyRot[i] = 6.28f;
 
 				//Translate and update enemy and respective collision box
 				Translation = XMMatrixTranslation(enemyXPos[i] += EMoveX[i], enemyYPos[i], enemyZPos[i] += EMoveZ[i]);
 				coll[i].setLocation(Point(enemyXPos[i] += EMoveX[i], enemyYPos[i], enemyZPos[i] += EMoveZ[i]));
-
+				
 			}
 
 
@@ -1684,11 +1699,11 @@ void SeniorPro::UpdateScene(double time)
 			Scale = XMMatrixScaling(0.1f, 0.1f, 0.1f);
 			Translation = XMMatrixTranslation(mCam.getsCamPosition().getX(), mCam.getsCamPosition().getY(), mCam.getsCamPosition().getZ());
 			//Translation = XMMatrixTranslation(XMVectorGetX(mCam.getCamPosition()), XMVectorGetY(mCam.getCamPosition()) - 2.7, XMVectorGetZ(mCam.getCamPosition()));
-
-
+			
+		
 			meshArray[i].meshWorld = Rotation * Scale * Translation;
 
-			/*
+		/*
 			meshArray[i].meshWorld = XMMatrixIdentity();
 
 			Rotation = XMMatrixRotationRollPitchYaw(mCam.getCamPitch(), mCam.getCamYaw(), 0);
@@ -1700,13 +1715,13 @@ void SeniorPro::UpdateScene(double time)
 
 		if (meshArray[i].filename == L"ToT.obj")
 		{
-		meshArray[i].meshWorld = XMMatrixIdentity();
+			meshArray[i].meshWorld = XMMatrixIdentity();
 
-		Rotation = XMMatrixRotationY(0.0f);
+			Rotation = XMMatrixRotationY(3.14f);
 		Scale = XMMatrixScaling(0.4f, 0.4f, 0.4f);
-			Translation = XMMatrixTranslation(80.0f, 0.0f, -80.0f);
+			Translation = XMMatrixTranslation(20.0f, 7.5f, -3.0f);
 
-		meshArray[i].meshWorld = Rotation * Scale * Translation;
+			meshArray[i].meshWorld = Rotation * Scale * Translation;
 		}
 
 		//Temple of Time
@@ -1715,7 +1730,7 @@ void SeniorPro::UpdateScene(double time)
 
 		/*if (meshArray[i].filename == L"ground.obj")
 		{
-		meshArray[i].meshWorld = XMMatrixIdentity();
+			meshArray[i].meshWorld = XMMatrixIdentity();
 
 		Rotation = XMMatrixRotationY(3.14f);
 		Scale = XMMatrixScaling(10.0f, 1.0f, 10.0f);
@@ -1726,15 +1741,15 @@ void SeniorPro::UpdateScene(double time)
 
 			//Menu
 			if (meshArray[i].filename == L"Menu.obj"){
-		meshArray[i].meshWorld = XMMatrixIdentity();
-		Rotation = XMMatrixRotationY(0.0f);
+				meshArray[i].meshWorld = XMMatrixIdentity();
+			Rotation = XMMatrixRotationY(0.0f);
 				Scale = XMMatrixScaling(0.1f, 0.1f, 0.1f);
 				Translation = XMMatrixTranslation(10000.0f, 30000.0f, 10000.0f);
-		meshArray[i].meshWorld = Rotation * Scale * Translation;
+			meshArray[i].meshWorld = Rotation * Scale * Translation;
 		}
 			//Moon
 			if (meshArray[i].filename == L"Moon.obj")
-		{
+	{
 			meshArray[i].meshWorld = XMMatrixIdentity();
 			Rotation = XMMatrixRotationY(0.0f);
 			Scale = XMMatrixScaling(1.5f, 1.5f, 1.5f);
@@ -1747,17 +1762,17 @@ void SeniorPro::UpdateScene(double time)
 			meshArray[i].meshWorld = XMMatrixIdentity();
 			Rotation = XMMatrixRotationY(0.0f);
 			Scale = XMMatrixScaling(0.1f, 0.1f, 0.1f);
-			Translation = XMMatrixTranslation(winX, 3.0f, winZ);
-			win.setLocation(Point(winX, 2.0f, winZ));
+			Translation = XMMatrixTranslation(winX, winY, winZ);
+			win.setLocation(Point(winX, winY, winZ));
 			meshArray[i].meshWorld = Rotation * Scale * Translation;
-		} 
+		}
 
 		if (meshArray[i].filename == L"spaceCompound.obj") {
 			meshArray[i].meshWorld = XMMatrixIdentity();
 
 			Rotation = XMMatrixRotationY(3.14f);
 			Scale = XMMatrixScaling(0.25f, 0.75f, 0.25f);
-			Translation = XMMatrixTranslation(62.0f, 17.0f, 60.0f);
+			Translation = XMMatrixTranslation(62.0f, 19.0f, 60.0f);
 
 			meshArray[i].meshWorld = Rotation * Scale * Translation;
 		}
@@ -1778,7 +1793,7 @@ void SeniorPro::UpdateScene(double time)
 
 			if ((meshArray[i].filename == L"ak47.obj" && weaponSelect == 1) || (meshArray[i].filename == L"sa80.obj" && weaponSelect == 2))
 			{
-			Scale = XMMatrixScaling(0.1f, 0.1f, 0.1f);
+				Scale = XMMatrixScaling(0.1f, 0.1f, 0.1f);
 			}
 			else
 			{
@@ -1791,12 +1806,12 @@ void SeniorPro::UpdateScene(double time)
 		}
 		/*if (meshArray[i].filename == L"eclipse.obj")
 		{
-			Rotation = XMMatrixRotationY(ItemRot + 0.1f);
-			if (ItemRot >= 6.28)
-				ItemRot = 0;
-			Scale = XMMatrixScaling(0.15f, 0.15f, 0.15f);
-			Translation = XMMatrixTranslation(0.0f, 2.0f, 0.0f);
-			meshArray[i].meshWorld = Rotation * Scale * Translation;
+		Rotation = XMMatrixRotationY(ItemRot + 0.1f);
+		if (ItemRot >= 6.28)
+		ItemRot = 0;
+		Scale = XMMatrixScaling(0.15f, 0.15f, 0.15f);
+		Translation = XMMatrixTranslation(0.0f, 2.0f, 0.0f);
+		meshArray[i].meshWorld = Rotation * Scale * Translation;
 		}*/
 		//Draw game items
 		for (int j = 0; j < ITEMCOUNT; j++)
@@ -1821,7 +1836,7 @@ void SeniorPro::UpdateScene(double time)
 			ammoArray[j].meshWorld = Rotation * Scale * Translation;
 		}
 	}
-	
+
 	if ((moonHeight / 2) - 15 <= 0.0f){
 		thePlayer.setDeath(true);
 		//start consuming audio in the source voice
@@ -1883,7 +1898,7 @@ void SeniorPro::RenderText(std::wstring text, int inInt)
 	if (thePlayer.getDeath() == false)
 	{
 		printString <<
-			L"  Health: " << Player1.getHealth()
+		L"  Health: " << Player1.getHealth()
 			<< L"                                                                                                                                  Lives: " << Player1.getLives() << "\n"
 			<< L"  Ammo: " << PlayerWep.getMagSize() << L"          Extra Mags: " << PlayerWep.getExtraClips()
 			<< L"                                                                                                       Score: " << score << L"\n"
@@ -2025,11 +2040,11 @@ void SeniorPro::DrawScene()
 			drawModel(&enemyArray[i], false);
 
 				drawMD5Model(&enemyArray[i]);
-			}
-	for (int i = 0; i < ITEMCOUNT; i++)
-	{
-		drawModel(&itemArray[i], false);
 	}
+	for (int i = 0; i < ITEMCOUNT; i++)
+			{
+		drawModel(&itemArray[i], false);
+			}
 	for (int i = 0; i < AMMOCOUNT; i++)
 	{
 		drawModel(&ammoArray[i], false);
@@ -2276,24 +2291,24 @@ void SeniorPro::DetectInput(double time)
 	{
 		if (PlayerWep.getExtraClips() > 0)
 		{
-			if (PlayerWep.getMagSize() < 8)
-			{
-				//start consuming audio in the source voice
+		if (PlayerWep.getMagSize() < 8)
+		{
+			//start consuming audio in the source voice
 
-				//simple message loop
-				//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
-				//{
-				g_sourceReload->Stop();
-				g_sourceReload->FlushSourceBuffers();
-				g_sourceReload->Start();
+			//simple message loop
+			//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
+			//{
+			g_sourceReload->Stop();
+			g_sourceReload->FlushSourceBuffers();
+			g_sourceReload->Start();
 
-				//play the sound
-				g_sourceGun->SubmitSourceBuffer(buffer5.xaBuffer());
-				//}
+			//play the sound
+			g_sourceGun->SubmitSourceBuffer(buffer5.xaBuffer());
+			//}
 				PlayerWep.reload();
 				PlayerWep.setExtraClips(-1);
-				reloadBro = false;
-			}
+			reloadBro = false;
+		}
 		}
 
 	}

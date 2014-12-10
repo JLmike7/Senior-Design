@@ -23,7 +23,7 @@ namespace ProjectUnitTests
 			myBiped.setTeam(2);
 			Assert::AreEqual(myBiped.getTeam(), 2);
 		}
-		TEST_METHOD(TestGetFiring)
+		/*TEST_METHOD(TestGetFiring)
 		{
 			bool fire = false;
 			// Test get firing
@@ -78,7 +78,7 @@ namespace ProjectUnitTests
 			Biped myBiped;
 			myBiped.setTeamColor(2);
 			Assert::AreEqual(myBiped.getTeamColor(), 2);
-		}
+		}*/
 
 		TEST_METHOD(TestGetDeath)
 		{
