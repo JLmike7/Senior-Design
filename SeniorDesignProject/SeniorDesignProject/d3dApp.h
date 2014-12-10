@@ -44,7 +44,6 @@ protected:
 	Stats enemyStats[20];
 	//Stats enemyStats[20];
 	bool reloadBro = false;
-	Settings* _settings;
 
 	//Position playerLoc;
 	LPCWSTR WndClassName;	//Define our window class name

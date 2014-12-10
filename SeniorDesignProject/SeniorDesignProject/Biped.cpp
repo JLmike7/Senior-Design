@@ -1,10 +1,4 @@
 #include "Biped.h"
-#include "Stats.h"
-#include "Settings.h"
-
-Biped::Biped(Settings* _settings){
-	Init(_settings);
-}
 
 Biped::Biped()
 {
@@ -15,10 +9,9 @@ Biped::~Biped()
 
 }
 
-void Biped::Init(Settings* _settings)
+void Biped::Init()
 {
 	position = new Position();
-	settings = _settings;
 	stance = WALK;
 	teamNumber = -1;
 	death = false;
@@ -113,9 +106,6 @@ void Biped::fire(){
 }
 bool Biped::isDead(){
 	return stats->isDead();
-}
-void Biped::lookTo(Direction direction){
-	position->lookTo(direction, (float)settings->getLookSensitivity());
 }
 void Biped::lookAt(Point* point, bool tracking){
 	position->lookAt(point, tracking);

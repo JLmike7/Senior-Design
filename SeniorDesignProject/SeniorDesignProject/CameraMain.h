@@ -30,8 +30,6 @@ public:
 	Point getsCamUp();
 	void setCamUp(float a, float b, float c, float d);
 
-	///////////////**************new**************////////////////////
-
 	void setDefaultForward(float a, float b, float c, float d);
 	XMVECTOR getDefaultForward();
 	void setDefaultRight(float a, float b, float c, float d);
@@ -52,7 +50,6 @@ public:
 	float getCamPitch();
 
 	void UpdateCamera();
-	///////////////**************new**************////////////////////
 
 private:
 	XMMATRIX WVP;
@@ -63,7 +60,7 @@ private:
 	XMVECTOR camPosition;
 	XMVECTOR camTarget;
 	XMVECTOR camUp;
-	///////////////**************new**************////////////////////
+
 	XMVECTOR DefaultForward;
 	XMVECTOR DefaultRight;
 	XMVECTOR camForward;
@@ -76,7 +73,6 @@ private:
 
 	float camYaw;
 	float camPitch;
-	///////////////**************new**************////////////////////
 };
 
 #endif // CAMERA_H

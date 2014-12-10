@@ -13,9 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Common">
-      <UniqueIdentifier>{c9252ad4-910b-4d11-ac53-12445fee0493}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Problem Domain">
       <UniqueIdentifier>{43c8dcd7-b5b9-4042-be78-464a0cbecbd0}</UniqueIdentifier>
     </Filter>
@@ -60,28 +57,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="World.cpp">
-      <Filter>Source Files\Problem Domain</Filter>
-    </ClCompile>
     <ClCompile Include="Weapon.cpp">
       <Filter>Source Files\Problem Domain</Filter>
     </ClCompile>
     <ClCompile Include="Stats.cpp">
-      <Filter>Source Files\Problem Domain</Filter>
-    </ClCompile>
-    <ClCompile Include="Physics.cpp">
-      <Filter>Source Files\Problem Domain</Filter>
-    </ClCompile>
-    <ClCompile Include="Physics.cpp">
-      <Filter>Source Files\Problem Domain</Filter>
-    </ClCompile>
-    <ClCompile Include="Menu.cpp">
-      <Filter>Source Files\Menu</Filter>
-    </ClCompile>
-    <ClCompile Include="Controller.cpp">
-      <Filter>Source Files\Problem Domain\Controller</Filter>
-    </ClCompile>
-    <ClCompile Include="Object.cpp">
       <Filter>Source Files\Problem Domain</Filter>
     </ClCompile>
     <ClCompile Include="Biped.cpp">
@@ -90,40 +69,13 @@
     <ClCompile Include="point.cpp">
       <Filter>Source Files\Problem Domain</Filter>
     </ClCompile>
-    <ClCompile Include="Team.cpp">
-      <Filter>Source Files\Problem Domain</Filter>
-    </ClCompile>
-    <ClCompile Include="Settings.cpp">
-      <Filter>Source Files\Menu</Filter>
-    </ClCompile>
     <ClCompile Include="cubemap.cpp">
-      <Filter>Source Files\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="Effects.cpp">
-      <Filter>Source Files\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderStates.cpp">
-      <Filter>Source Files\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="Vertex.cpp">
       <Filter>Source Files\UI</Filter>
     </ClCompile>
     <ClCompile Include="SeniorPro.cpp">
       <Filter>Source Files\UI</Filter>
     </ClCompile>
-    <ClCompile Include="Position.cpp">
-      <Filter>Source Files\Unused</Filter>
-    </ClCompile>
-    <ClCompile Include="Box.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="LookDirection.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ShadowMap.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Ssao.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="WalkingStatus.cpp">
@@ -140,30 +92,6 @@
     </ClCompile>
     <ClCompile Include="Mesh.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>Source Files\Problem Domain</Filter>
-    </ClCompile>
-    <ClCompile Include="d3dUtil.cpp">
-      <Filter>Source Files\Problem Domain</Filter>
-    </ClCompile>
-    <ClCompile Include="GeometryGenerator.cpp">
-      <Filter>Source Files\Problem Domain</Filter>
-    </ClCompile>
-    <ClCompile Include="LightHelper.cpp">
-      <Filter>Source Files\Problem Domain</Filter>
-    </ClCompile>
-    <ClCompile Include="MathHelper.cpp">
-      <Filter>Source Files\Problem Domain</Filter>
-    </ClCompile>
-    <ClCompile Include="TextureMgr.cpp">
-      <Filter>Source Files\Problem Domain</Filter>
-    </ClCompile>
-    <ClCompile Include="Waves.cpp">
-      <Filter>Source Files\Problem Domain</Filter>
-    </ClCompile>
-    <ClCompile Include="xnacollision.cpp">
-      <Filter>Source Files\Problem Domain</Filter>
     </ClCompile>
     <ClCompile Include="Enemy.cpp">
       <Filter>Source Files</Filter>
@@ -192,18 +120,12 @@
     <ClCompile Include="textureclass.cpp">
       <Filter>Header Files\Terrain</Filter>
     </ClCompile>
-    <ClCompile Include="Terrain.cpp">
-      <Filter>Source Files\Terrain</Filter>
+    <ClCompile Include="Position.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Biped.h">
-      <Filter>Header Files\Problem Domain</Filter>
-    </ClInclude>
-    <ClInclude Include="Object.h">
-      <Filter>Header Files\Problem Domain</Filter>
-    </ClInclude>
-    <ClInclude Include="Physics.h">
       <Filter>Header Files\Problem Domain</Filter>
     </ClInclude>
     <ClInclude Include="Stats.h">
@@ -212,64 +134,19 @@
     <ClInclude Include="Weapon.h">
       <Filter>Header Files\Problem Domain</Filter>
     </ClInclude>
-    <ClInclude Include="World.h">
-      <Filter>Header Files\Problem Domain</Filter>
-    </ClInclude>
-    <ClInclude Include="Menu.h">
-      <Filter>Header Files\Menu</Filter>
-    </ClInclude>
-    <ClInclude Include="Settings.h">
-      <Filter>Header Files\Menu</Filter>
-    </ClInclude>
     <ClInclude Include="Biped.h">
-      <Filter>Header Files\Problem Domain</Filter>
-    </ClInclude>
-    <ClInclude Include="Object.h">
       <Filter>Header Files\Problem Domain</Filter>
     </ClInclude>
     <ClInclude Include="Point.h">
       <Filter>Header Files\Problem Domain</Filter>
     </ClInclude>
-    <ClInclude Include="Team.h">
-      <Filter>Header Files\Problem Domain</Filter>
-    </ClInclude>
     <ClInclude Include="cubemap.h">
       <Filter>Header Files\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="Effects.h">
-      <Filter>Header Files\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderStates.h">
-      <Filter>Header Files\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="Vertex.h">
-      <Filter>Header Files\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="Controller.h">
-      <Filter>Header Files\Unused</Filter>
-    </ClInclude>
-    <ClInclude Include="Position.h">
-      <Filter>Header Files\Unused</Filter>
-    </ClInclude>
-    <ClInclude Include="Box.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="LookDirection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ShadowMap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Ssao.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Stance.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="WalkingStatus.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Direction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Wave.h">
@@ -290,36 +167,6 @@
     <ClInclude Include="Mesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BasicModel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>Header Files\Problem Domain</Filter>
-    </ClInclude>
-    <ClInclude Include="d3dUtil.h">
-      <Filter>Header Files\Problem Domain</Filter>
-    </ClInclude>
-    <ClInclude Include="GameTimer.h">
-      <Filter>Header Files\Problem Domain</Filter>
-    </ClInclude>
-    <ClInclude Include="LightHelper.h">
-      <Filter>Header Files\Problem Domain</Filter>
-    </ClInclude>
-    <ClInclude Include="MathHelper.h">
-      <Filter>Header Files\Problem Domain</Filter>
-    </ClInclude>
-    <ClInclude Include="TextureMgr.h">
-      <Filter>Header Files\Problem Domain</Filter>
-    </ClInclude>
-    <ClInclude Include="Waves.h">
-      <Filter>Header Files\Problem Domain</Filter>
-    </ClInclude>
-    <ClInclude Include="xnacollision.h">
-      <Filter>Header Files\Problem Domain</Filter>
-    </ClInclude>
-    <ClInclude Include="GeometryGenerator.h">
-      <Filter>Header Files\Problem Domain</Filter>
-    </ClInclude>
     <ClInclude Include="quadTreeClass.h">
       <Filter>Header Files\Terrain</Filter>
     </ClInclude>
@@ -335,8 +182,26 @@
     <ClInclude Include="textureclass.h">
       <Filter>Header Files\Terrain</Filter>
     </ClInclude>
-    <ClInclude Include="Terrain.h">
-      <Filter>Source Files\Terrain</Filter>
+    <ClInclude Include="Collision.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Collisionwithroundobj.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TriangleCollision.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Direction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Stance.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Position.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -5,7 +5,6 @@
 #include "Position.h"
 #include "Direction.h"
 #include "Stats.h"
-#include "Settings.h"
 #include "Stance.h"
 #include "WalkingStatus.h"
 
@@ -14,11 +13,10 @@
 #define HIT_BOX_DEPTH 0.75f
 
 
-class Biped :
-	public Object{
+class Biped {
 
 public:
-	void Init(Settings *settings);
+	void Init();
 	Stance getStance();
 	void setStance(Stance stance);
 	//	void setHitbox(Box* box);
@@ -35,20 +33,17 @@ public:
 	Position* getPosition();
 	void fire();
 	void jump();
-	void lookTo(Direction direction);
 	void lookAt(Point* point, bool tracking);
 	void walk(Direction direction, bool startStop);
 	bool getDeath();
 	void setDeath(bool isDead);
 
-	Biped(Settings* settings);
 	Biped();
 	~Biped();
 
 private:
 
 protected:
-	Settings*			settings;
 	int					teamNumber;
 	Stance				stance;
 	Stats*				stats;
