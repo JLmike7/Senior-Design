@@ -9,8 +9,8 @@
 #include "terrainshaderclass.h"
 #include "textureclass.h"
 
-#define MESHCOUNT 8
-#define ENEMYCOUNT 8
+#define MESHCOUNT 9
+#define ENEMYCOUNT 9
 #define ITEMCOUNT 30
 #define AMMOCOUNT 30
 
@@ -460,13 +460,13 @@ SeniorPro::~SeniorPro()
 		m_TerrainShader = 0;
 	}
 
-	// Release the terrain object.
-	if (m_Terrain)
-	{
-		m_Terrain->Shutdown();
-		delete m_Terrain;
-		m_Terrain = 0;
-	}
+	//// Release the terrain object.
+	//if (m_Terrain)
+	//{
+	//	m_Terrain->Shutdown();
+	//	delete m_Terrain;
+	//	m_Terrain = 0;
+	//}
 };
 
 bool SeniorPro::InitScene()
@@ -492,7 +492,9 @@ bool SeniorPro::InitScene()
 		return false;
 	if (!meshArray[6].LoadObjModel(L"Menu.obj", material, true, false, d3d11Device, SwapChain))
 		return false;
-	if (!meshArray[7].LoadObjModel(L"ToT.obj", material, true, true, d3d11Device, SwapChain))
+	if (!meshArray[7].LoadObjModel(L"ToT.obj", material, true, false, d3d11Device, SwapChain))
+		return false;
+	if (!meshArray[8].LoadObjModel(L"ground.obj", material, true, true, d3d11Device, SwapChain))
 		return false;
 	/*//if (!meshArray[3].LoadObjModel(L"ToT.obj", material, true, true, d3d11Device, SwapChain))
 		return false;
@@ -521,7 +523,7 @@ bool SeniorPro::InitScene()
 
 
 	//Enemies
-	for (int i = 0; i < ENEMYCOUNT; i++)
+	for (int i = 0; i < ENEMYCOUNT-1; i++)
 		{
 		if (!enemyArray[i].LoadObjModel(L"Enemy.obj", material, true, false, d3d11Device, SwapChain))
 			return false;
@@ -532,13 +534,16 @@ bool SeniorPro::InitScene()
 			if (!enemyArray[i].LoadMD5Anim(L"boy.md5anim", SwapChain))
 				return false;
 		}
+	//Boss
+	if (!enemyArray[ENEMYCOUNT-1].LoadObjModel(L"boss.obj", material, true, false, d3d11Device, SwapChain))
+		return false;
 
 	//Compile Shaders from shader file
-	hr = D3DX11CompileFromFile(L"Effects.fx", 0, 0, "VS", "vs_4_0", 0, 0, 0, &VS_Buffer, 0, 0);
-	hr = D3DX11CompileFromFile(L"Effects.fx", 0, 0, "PS", "ps_4_0", 0, 0, 0, &PS_Buffer, 0, 0);
-	hr = D3DX11CompileFromFile(L"Effects.fx", 0, 0, "D2D_PS", "ps_4_0", 0, 0, 0, &D2D_PS_Buffer, 0, 0);
-	hr = D3DX11CompileFromFile(L"Effects.fx", 0, 0, "SKYMAP_VS", "vs_4_0", 0, 0, 0, &mCubemap->SKYMAP_VS_Buffer, 0, 0);
-	hr = D3DX11CompileFromFile(L"Effects.fx", 0, 0, "SKYMAP_PS", "ps_4_0", 0, 0, 0, &mCubemap->SKYMAP_PS_Buffer, 0, 0);
+	hr = D3DX11CompileFromFile(L"Effects.fx", 0, 0, "VS", "vs_5_0", 0, 0, 0, &VS_Buffer, 0, 0);
+	hr = D3DX11CompileFromFile(L"Effects.fx", 0, 0, "PS", "ps_5_0", 0, 0, 0, &PS_Buffer, 0, 0);
+	hr = D3DX11CompileFromFile(L"Effects.fx", 0, 0, "D2D_PS", "ps_5_0", 0, 0, 0, &D2D_PS_Buffer, 0, 0);
+	hr = D3DX11CompileFromFile(L"Effects.fx", 0, 0, "SKYMAP_VS", "vs_5_0", 0, 0, 0, &mCubemap->SKYMAP_VS_Buffer, 0, 0);
+	hr = D3DX11CompileFromFile(L"Effects.fx", 0, 0, "SKYMAP_PS", "ps_5_0", 0, 0, 0, &mCubemap->SKYMAP_PS_Buffer, 0, 0);
 
 	//Create the Shader Objects
 	hr = d3d11Device->CreateVertexShader(VS_Buffer->GetBufferPointer(), VS_Buffer->GetBufferSize(), NULL, &VS);
@@ -552,18 +557,18 @@ bool SeniorPro::InitScene()
 	d3d11DevCon->PSSetShader(PS, 0, 0);
 
 	//Regular light settings
-	light.dir = XMFLOAT3(0.0f, 1.0f, 0.0f);
-	light.ambient = XMFLOAT4(0.2f, 0.2f, 0.2f, 1.0f);
-	light.diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	//light.dir = XMFLOAT3(0.0f, -1.0f, 0.0f);
+	//light.ambient = XMFLOAT4(0.2f, 0.2f, 0.2f, 1.0f);
+	//light.diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 
 	//Spotlight Light settings
-	/*light.pos = XMFLOAT3(0.0f, 1.0f, 0.0f);
-	light.dir = XMFLOAT3(0.0f, 0.0f, 1.0f);
+	light.pos = XMFLOAT3(0.0f, 100.0f, 0.0f);
+	light.dir = XMFLOAT3(0.0f, 1.0f, 0.0f);
 	light.range = 1000.0f;
-	light.cone = 20.0f;
+	light.cone = 5.0f;
 	light.att = XMFLOAT3(0.4f, 0.02f, 0.000f);
-	light.ambient = XMFLOAT4(0.2f, 0.2f, 0.2f, 1.0f);
-	light.diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);*/
+	light.ambient = XMFLOAT4(0.2f, 0.2f, 0.2f, 0.5f);
+	light.diffuse = XMFLOAT4(1.0f, 1.0f, 1.0f, 0.5f);
 
 	/*//Create the vertex buffer
 	Vertex::Vertex v[] =
@@ -1203,488 +1208,978 @@ void SeniorPro::UpdateScene(double time)
 			randRot = rand() % 1000;
 			randAttack = rand() % 1000;
 
+			if (i < ENEMYCOUNT - 1){
 
+				// Get the height of the triangle that is directly underneath the given camera position.
+				foundHeight = m_QuadTree->GetHeightAtPosition(enemyXPos[i], enemyZPos[i], height);
+				if (foundHeight)
+				{
+					// If there was a triangle under the camera then position the camera just above it by two units.
+					enemyYPos[i] = height + 2.0f;
+				}
 
-			// Get the height of the triangle that is directly underneath the given camera position.
-			foundHeight = m_QuadTree->GetHeightAtPosition(enemyXPos[i], enemyZPos[i], height);
-			if (foundHeight)
-			{
-				// If there was a triangle under the camera then position the camera just above it by two units.
-				enemyYPos[i] = height + 2.0f;
-			}
-
-			//set the loaded enemy's world space
-			enemyArray[i].meshWorld = XMMatrixIdentity();
-			//Rotation = XMMatrixRotationY(3.14f);
+				//set the loaded enemy's world space
+				enemyArray[i].meshWorld = XMMatrixIdentity();
+				//Rotation = XMMatrixRotationY(3.14f);
 				Scale = XMMatrixScaling(0.04f, 0.04f, 0.04f);
-			
-			//If distance is greater then 20, then randomly move
-			if ((enemyXPos[i] - XMVectorGetX(mCam.getCamPosition()) <= 15 && enemyZPos[i] - XMVectorGetZ(mCam.getCamPosition()) <= 15)
-				&& (enemyXPos[i] - XMVectorGetX(mCam.getCamPosition()) >= -15 && enemyZPos[i] - XMVectorGetZ(mCam.getCamPosition()) >= -15))
-				//Player is near! Attack!
-			{
-				//If playerX > enemyX, increase enemyX, PlayerZ > enemyZ, increase enemyZ
-				if (XMVectorGetX(mCam.getCamPosition()) >= enemyXPos[i] && XMVectorGetZ(mCam.getCamPosition()) >= enemyZPos[i])
+
+				//If distance is greater then 20, then randomly move
+				if ((enemyXPos[i] - XMVectorGetX(mCam.getCamPosition()) <= 15 && enemyZPos[i] - XMVectorGetZ(mCam.getCamPosition()) <= 15)
+					&& (enemyXPos[i] - XMVectorGetX(mCam.getCamPosition()) >= -15 && enemyZPos[i] - XMVectorGetZ(mCam.getCamPosition()) >= -15))
+					//Player is near! Attack!
 				{
-					//Rotate enemy toward player
-					if ((mCam.getCamYaw() >= enemyRot[i]))
+					//If playerX > enemyX, increase enemyX, PlayerZ > enemyZ, increase enemyZ
+					if (XMVectorGetX(mCam.getCamPosition()) >= enemyXPos[i] && XMVectorGetZ(mCam.getCamPosition()) >= enemyZPos[i])
 					{
-						Rotation = XMMatrixRotationY(enemyRot[i] += 0.01f);
-						if (enemyRot[i] > 6.28f)
-							enemyRot[i] = 0.0f;
-						if (enemyRot[i] < 0.0f)
-							enemyRot[i] = 6.28f;
-					}
-					else
-					{
-						Rotation = XMMatrixRotationY(enemyRot[i] -= 0.01f);
-						if (enemyRot[i] > 6.28f)
-							enemyRot[i] = 0.0f;
-						if (enemyRot[i] < 0.0f)
-							enemyRot[i] = 6.28f;
-					}
-
-					//If enemy is close to player, stop!
-					if ((enemyXPos[i] - XMVectorGetX(mCam.getCamPosition()) <= 5 && enemyZPos[i] - XMVectorGetZ(mCam.getCamPosition()) <= 5)
-						&& (enemyXPos[i] - XMVectorGetX(mCam.getCamPosition()) >= -5 && enemyZPos[i] - XMVectorGetZ(mCam.getCamPosition()) >= -5))
-					{
-						//Attack on random
-						if (randAttack % 33 == 0)
+						//Rotate enemy toward player
+						if ((mCam.getCamYaw() >= enemyRot[i]))
 						{
-							Player1.setHealth(Player1.getHealth() - 3);
-
-							//start consuming audio in the source voice
-							g_sourceBlaster->Start();
-							//simple message loop
-							//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
-							//{
-							g_sourceBlaster->Stop();
-							g_sourceBlaster->FlushSourceBuffers();
-							g_sourceBlaster->Start();
-
-							//play the sound
-							g_sourceBlaster->SubmitSourceBuffer(buffer7.xaBuffer());
-							//}
-
-							//start consuming audio in the source voice
-							g_sourceHit->Start();
-							//simple message loop
-							//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
-							//{
-							g_sourceHit->Stop();
-							g_sourceHit->FlushSourceBuffers();
-							g_sourceHit->Start();
-
-							//play the sound
-							g_sourceHit->SubmitSourceBuffer(buffer6.xaBuffer());
-							//}
+							Rotation = XMMatrixRotationY(enemyRot[i] += 0.01f);
+							if (enemyRot[i] > 6.28f)
+								enemyRot[i] = 0.0f;
+							if (enemyRot[i] < 0.0f)
+								enemyRot[i] = 6.28f;
+						}
+						else
+						{
+							Rotation = XMMatrixRotationY(enemyRot[i] -= 0.01f);
+							if (enemyRot[i] > 6.28f)
+								enemyRot[i] = 0.0f;
+							if (enemyRot[i] < 0.0f)
+								enemyRot[i] = 6.28f;
 						}
 
-						Translation = XMMatrixTranslation(enemyXPos[i] += .00, enemyYPos[i], enemyZPos[i] += .00);
-						coll[i].setLocation(Point(enemyXPos[i] += .00, enemyYPos[i], enemyZPos[i] += .00));
-						
-					}
-					else
-					{
-						//Attack on random
-						if (randAttack % 77 == 0)
+						//If enemy is close to player, stop!
+						if ((enemyXPos[i] - XMVectorGetX(mCam.getCamPosition()) <= 5 && enemyZPos[i] - XMVectorGetZ(mCam.getCamPosition()) <= 5)
+							&& (enemyXPos[i] - XMVectorGetX(mCam.getCamPosition()) >= -5 && enemyZPos[i] - XMVectorGetZ(mCam.getCamPosition()) >= -5))
 						{
-							Player1.setHealth(Player1.getHealth() - 3);
+							//Attack on random
+							if (randAttack % 33 == 0)
+							{
+								Player1.setHealth(Player1.getHealth() - 3);
 
-							//start consuming audio in the source voice
-							g_sourceBlaster->Start();
-							//simple message loop
-							//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
-							//{
-							g_sourceBlaster->Stop();
-							g_sourceBlaster->FlushSourceBuffers();
-							g_sourceBlaster->Start();
+								//start consuming audio in the source voice
+								g_sourceBlaster->Start();
+								//simple message loop
+								//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
+								//{
+								g_sourceBlaster->Stop();
+								g_sourceBlaster->FlushSourceBuffers();
+								g_sourceBlaster->Start();
 
-							//play the sound
-							g_sourceBlaster->SubmitSourceBuffer(buffer7.xaBuffer());
-							//}
+								//play the sound
+								g_sourceBlaster->SubmitSourceBuffer(buffer7.xaBuffer());
+								//}
 
-							//start consuming audio in the source voice
-							g_sourceHit->Start();
-							//simple message loop
-							//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
-							//{
-							g_sourceHit->Stop();
-							g_sourceHit->FlushSourceBuffers();
-							g_sourceHit->Start();
+								//start consuming audio in the source voice
+								g_sourceHit->Start();
+								//simple message loop
+								//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
+								//{
+								g_sourceHit->Stop();
+								g_sourceHit->FlushSourceBuffers();
+								g_sourceHit->Start();
 
-							//play the sound
-							g_sourceHit->SubmitSourceBuffer(buffer6.xaBuffer());
-							//}
+								//play the sound
+								g_sourceHit->SubmitSourceBuffer(buffer6.xaBuffer());
+								//}
+							}
+
+							Translation = XMMatrixTranslation(enemyXPos[i] += .00, enemyYPos[i], enemyZPos[i] += .00);
+							coll[i].setLocation(Point(enemyXPos[i] += .00, enemyYPos[i], enemyZPos[i] += .00));
+
 						}
-						Translation = XMMatrixTranslation(enemyXPos[i] += .01f, enemyYPos[i], enemyZPos[i] += .01f);
-						coll[i].setLocation(Point(enemyXPos[i] += .01f, enemyYPos[i], enemyZPos[i] += .01f));
+						else
+						{
+							//Attack on random
+							if (randAttack % 77 == 0)
+							{
+								Player1.setHealth(Player1.getHealth() - 3);
+
+								//start consuming audio in the source voice
+								g_sourceBlaster->Start();
+								//simple message loop
+								//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
+								//{
+								g_sourceBlaster->Stop();
+								g_sourceBlaster->FlushSourceBuffers();
+								g_sourceBlaster->Start();
+
+								//play the sound
+								g_sourceBlaster->SubmitSourceBuffer(buffer7.xaBuffer());
+								//}
+
+								//start consuming audio in the source voice
+								g_sourceHit->Start();
+								//simple message loop
+								//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
+								//{
+								g_sourceHit->Stop();
+								g_sourceHit->FlushSourceBuffers();
+								g_sourceHit->Start();
+
+								//play the sound
+								g_sourceHit->SubmitSourceBuffer(buffer6.xaBuffer());
+								//}
+							}
+							Translation = XMMatrixTranslation(enemyXPos[i] += .01f, enemyYPos[i], enemyZPos[i] += .01f);
+							coll[i].setLocation(Point(enemyXPos[i] += .01f, enemyYPos[i], enemyZPos[i] += .01f));
+						}
+					}
+					//If playerX > enemyX, increase enemyX, PlayerZ < enemyZ, decrease enemyZ
+					if (XMVectorGetX(mCam.getCamPosition()) >= enemyXPos[i] && XMVectorGetZ(mCam.getCamPosition()) < enemyZPos[i])
+					{
+						//Rotate enemy toward player
+						if ((mCam.getCamYaw() >= enemyRot[i]))
+						{
+							Rotation = XMMatrixRotationY(enemyRot[i] += 0.01f);
+							if (enemyRot[i] > 6.28f)
+								enemyRot[i] = 0.0f;
+							if (enemyRot[i] < 0.0f)
+								enemyRot[i] = 6.28f;
+						}
+						else
+						{
+							Rotation = XMMatrixRotationY(enemyRot[i] -= 0.01f);
+							if (enemyRot[i] > 6.28f)
+								enemyRot[i] = 0.0f;
+							if (enemyRot[i] < 0.0f)
+								enemyRot[i] = 6.28f;
+						}
+						//If enemy is close to player, stop!
+						if ((enemyXPos[i] - XMVectorGetX(mCam.getCamPosition()) <= 5 && enemyZPos[i] - XMVectorGetZ(mCam.getCamPosition()) <= 5)
+							&& (enemyXPos[i] - XMVectorGetX(mCam.getCamPosition()) >= -5 && enemyZPos[i] - XMVectorGetZ(mCam.getCamPosition()) >= -5))
+						{
+							//Attack on random
+							if (randAttack % 33 == 0)
+							{
+								Player1.setHealth(Player1.getHealth() - 3);
+
+								//start consuming audio in the source voice
+								g_sourceBlaster->Start();
+								//simple message loop
+								//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
+								//{
+								g_sourceBlaster->Stop();
+								g_sourceBlaster->FlushSourceBuffers();
+								g_sourceBlaster->Start();
+
+								//play the sound
+								g_sourceBlaster->SubmitSourceBuffer(buffer7.xaBuffer());
+								//}
+
+								//start consuming audio in the source voice
+								g_sourceHit->Start();
+								//simple message loop
+								//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
+								//{
+								g_sourceHit->Stop();
+								g_sourceHit->FlushSourceBuffers();
+								g_sourceHit->Start();
+
+								//play the sound
+								g_sourceHit->SubmitSourceBuffer(buffer6.xaBuffer());
+								//}
+							}
+							Translation = XMMatrixTranslation(enemyXPos[i] += .00, enemyYPos[i], enemyZPos[i] -= .00);
+							coll[i].setLocation(Point(enemyXPos[i] += .00, enemyYPos[i], enemyZPos[i] -= .00));
+						}
+						else{
+							//Attack on random (moving so less likely to hit)
+							if (randAttack % 77 == 0)
+							{
+								Player1.setHealth(Player1.getHealth() - 3);
+
+								//start consuming audio in the source voice
+								g_sourceBlaster->Start();
+								//simple message loop
+								//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
+								//{
+								g_sourceBlaster->Stop();
+								g_sourceBlaster->FlushSourceBuffers();
+								g_sourceBlaster->Start();
+
+								//play the sound
+								g_sourceBlaster->SubmitSourceBuffer(buffer7.xaBuffer());
+								//}
+
+								//start consuming audio in the source voice
+								g_sourceHit->Start();
+								//simple message loop
+								//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
+								//{
+								g_sourceHit->Stop();
+								g_sourceHit->FlushSourceBuffers();
+								g_sourceHit->Start();
+
+								//play the sound
+								g_sourceHit->SubmitSourceBuffer(buffer6.xaBuffer());
+								//}
+							}
+							Translation = XMMatrixTranslation(enemyXPos[i] += .01f, enemyYPos[i], enemyZPos[i] -= .01f);
+							coll[i].setLocation(Point(enemyXPos[i] += .01f, enemyYPos[i], enemyZPos[i] -= .01f));
+						}
+
+					}
+					//If playerX < enemyX, decrease enemyX, PlayerZ > enemyZ, increase enemyZ
+					if (XMVectorGetX(mCam.getCamPosition()) < enemyXPos[i] && XMVectorGetZ(mCam.getCamPosition()) >= enemyZPos[i])
+					{
+						//Rotate enemy toward player
+						if ((mCam.getCamYaw() >= enemyRot[i]))
+						{
+							Rotation = XMMatrixRotationY(enemyRot[i] += 0.01f);
+							if (enemyRot[i] > 6.28f)
+								enemyRot[i] = 0.0f;
+							if (enemyRot[i] < 0.0f)
+								enemyRot[i] = 6.28f;
+						}
+						else
+						{
+							Rotation = XMMatrixRotationY(enemyRot[i] -= 0.01f);
+							if (enemyRot[i] > 6.28f)
+								enemyRot[i] = 0.0f;
+							if (enemyRot[i] < 0.0f)
+								enemyRot[i] = 6.28f;
+						}
+						//If enemy is close to player, stop!
+						if ((enemyXPos[i] - XMVectorGetX(mCam.getCamPosition()) <= 5 && enemyZPos[i] - XMVectorGetZ(mCam.getCamPosition()) <= 5)
+							&& (enemyXPos[i] - XMVectorGetX(mCam.getCamPosition()) >= -5 && enemyZPos[i] - XMVectorGetZ(mCam.getCamPosition()) >= -5))
+						{
+							//Attack on random
+							if (randAttack % 33 == 0)
+							{
+								Player1.setHealth(Player1.getHealth() - 3);
+
+								//start consuming audio in the source voice
+								g_sourceBlaster->Start();
+								//simple message loop
+								//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
+								//{
+								g_sourceBlaster->Stop();
+								g_sourceBlaster->FlushSourceBuffers();
+								g_sourceBlaster->Start();
+
+								//play the sound
+								g_sourceBlaster->SubmitSourceBuffer(buffer7.xaBuffer());
+								//}
+
+								//start consuming audio in the source voice
+								g_sourceHit->Start();
+								//simple message loop
+								//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
+								//{
+								g_sourceHit->Stop();
+								g_sourceHit->FlushSourceBuffers();
+								g_sourceHit->Start();
+
+								//play the sound
+								g_sourceHit->SubmitSourceBuffer(buffer6.xaBuffer());
+								//}
+							}
+
+							Translation = XMMatrixTranslation(enemyXPos[i] -= .00, enemyYPos[i], enemyZPos[i] += .00);
+							coll[i].setLocation(Point(enemyXPos[i] -= .00, enemyYPos[i], enemyZPos[i] += .00));
+						}
+						else{
+							//Attack on random (moving so less likely to hit)
+							if (randAttack % 77 == 0)
+							{
+								Player1.setHealth(Player1.getHealth() - 3);
+
+								//start consuming audio in the source voice
+								g_sourceBlaster->Start();
+								//simple message loop
+								//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
+								//{
+								g_sourceBlaster->Stop();
+								g_sourceBlaster->FlushSourceBuffers();
+								g_sourceBlaster->Start();
+
+								//play the sound
+								g_sourceBlaster->SubmitSourceBuffer(buffer7.xaBuffer());
+								//}
+
+								//start consuming audio in the source voice
+								g_sourceHit->Start();
+								//simple message loop
+								//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
+								//{
+								g_sourceHit->Stop();
+								g_sourceHit->FlushSourceBuffers();
+								g_sourceHit->Start();
+
+								//play the sound
+								g_sourceHit->SubmitSourceBuffer(buffer6.xaBuffer());
+								//}
+							}
+							Translation = XMMatrixTranslation(enemyXPos[i] -= .05f, enemyYPos[i], enemyZPos[i] += .05f);
+							coll[i].setLocation(Point(enemyXPos[i] -= .05f, enemyYPos[i], enemyZPos[i] += .01f));
+						}
+
+					}
+					//If playerX < enemyX, decrease enemyX, PlayerZ < enemyZ, decrease enemyZ
+					if (XMVectorGetX(mCam.getCamPosition()) < enemyXPos[i] && XMVectorGetZ(mCam.getCamPosition()) < enemyZPos[i])
+					{
+						//Rotate enemy toward player
+						if ((mCam.getCamYaw() >= enemyRot[i]))
+						{
+							Rotation = XMMatrixRotationY(enemyRot[i] += 0.01f);
+							if (enemyRot[i] > 6.28f)
+								enemyRot[i] = 0.0f;
+							if (enemyRot[i] < 0.0f)
+								enemyRot[i] = 6.28f;
+						}
+						else
+						{
+							Rotation = XMMatrixRotationY(enemyRot[i] -= 0.01f);
+							if (enemyRot[i] > 6.28f)
+								enemyRot[i] = 0.0f;
+							if (enemyRot[i] < 0.0f)
+								enemyRot[i] = 6.28f;
+						}
+						if ((enemyXPos[i] - XMVectorGetX(mCam.getCamPosition()) <= 5 && enemyZPos[i] - XMVectorGetZ(mCam.getCamPosition()) <= 5)
+							&& (enemyXPos[i] - XMVectorGetX(mCam.getCamPosition()) >= -5 && enemyZPos[i] - XMVectorGetZ(mCam.getCamPosition()) >= -5))
+						{
+							//Attack on random
+							if (randAttack % 33 == 0)
+							{
+								Player1.setHealth(Player1.getHealth() - 3);
+
+								//start consuming audio in the source voice
+								g_sourceBlaster->Start();
+								//simple message loop
+								//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
+								//{
+								g_sourceBlaster->Stop();
+								g_sourceBlaster->FlushSourceBuffers();
+								g_sourceBlaster->Start();
+
+								//play the sound
+								g_sourceBlaster->SubmitSourceBuffer(buffer7.xaBuffer());
+								//}
+
+								//start consuming audio in the source voice
+								g_sourceHit->Start();
+								//simple message loop
+								//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
+								//{
+								g_sourceHit->Stop();
+								g_sourceHit->FlushSourceBuffers();
+								g_sourceHit->Start();
+
+								//play the sound
+								g_sourceHit->SubmitSourceBuffer(buffer6.xaBuffer());
+								//}
+							}
+							Translation = XMMatrixTranslation(enemyXPos[i] -= .00, enemyYPos[i], enemyZPos[i] -= .00);
+							coll[i].setLocation(Point(enemyXPos[i] -= .00, enemyYPos[i], enemyZPos[i] -= .00));
+						}
+						else
+						{
+							//Attack on random (moving so less likely to hit)
+							if (randAttack % 77 == 0)
+							{
+								Player1.setHealth(Player1.getHealth() - 3);
+
+								//start consuming audio in the source voice
+								g_sourceBlaster->Start();
+								//simple message loop
+								//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
+								//{
+								g_sourceBlaster->Stop();
+								g_sourceBlaster->FlushSourceBuffers();
+								g_sourceBlaster->Start();
+
+								//play the sound
+								g_sourceBlaster->SubmitSourceBuffer(buffer7.xaBuffer());
+								//}
+
+								//start consuming audio in the source voice
+								g_sourceHit->Start();
+								//simple message loop
+								//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
+								//{
+								g_sourceHit->Stop();
+								g_sourceHit->FlushSourceBuffers();
+								g_sourceHit->Start();
+
+								//play the sound
+								g_sourceHit->SubmitSourceBuffer(buffer6.xaBuffer());
+								//}
+							}
+							Translation = XMMatrixTranslation(enemyXPos[i] -= .05f, enemyYPos[i], enemyZPos[i] -= .05f);
+							coll[i].setLocation(Point(enemyXPos[i] -= .05f, enemyYPos[i], enemyZPos[i] -= .05f));
+						}
+					}
+					if (Player1.getHealth() <= 0)
+					{
+						Player1.setHealth(100);
+						Player1.setLives(Player1.getLives() - 1);
+						//start consuming audio in the source voice
+						g_sourceRevive->Start();
+						//simple message loop
+						//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
+						//{
+						g_sourceRevive->Stop();
+						g_sourceRevive->FlushSourceBuffers();
+						g_sourceRevive->Start();
+
+						//play the sound
+						g_sourceRevive->SubmitSourceBuffer(buffer4.xaBuffer());
+						//}
+					}
+					if (Player1.getLives() <= 0)
+					{
+						thePlayer.setDeath(true);
+						//start consuming audio in the source voice
+						g_sourceDead->Start();
+						//simple message loop
+						//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
+						//{
+						g_sourceDead->Stop();
+						g_sourceDead->FlushSourceBuffers();
+						g_sourceDead->Start();
+
+						//play the sound
+						g_sourceDead->SubmitSourceBuffer(buffer3.xaBuffer());
+						//}
+					}
+
+					if (thePlayer.getDeath() == true)
+					{
+						if (MessageBox(0, L"You have been killed, would you like to restart?", L"You are dead", MB_YESNO | MB_ICONQUESTION) == IDNO)
+							DestroyWindow(hwnd);
+						else
+						{
+							thePlayer.Init();
+							Player1.Init();
+							PlayerWep.Init();
+						}
+
 					}
 				}
-				//If playerX > enemyX, increase enemyX, PlayerZ < enemyZ, decrease enemyZ
-				if (XMVectorGetX(mCam.getCamPosition()) >= enemyXPos[i] && XMVectorGetZ(mCam.getCamPosition()) < enemyZPos[i])
-				{
-					//Rotate enemy toward player
-					if ((mCam.getCamYaw() >= enemyRot[i]))
+				else {
+					//OPTIMIZED AI MOVEMENT/ROTATION
+					//Only change directions if number is divisible by 300
+					if (randX % 300 == 0)
 					{
-						Rotation = XMMatrixRotationY(enemyRot[i] += 0.01f);
-						if (enemyRot[i] > 6.28f)
-							enemyRot[i] = 0.0f;
-						if (enemyRot[i] < 0.0f)
-							enemyRot[i] = 6.28f;
+						EMoveX[i] *= -1.0f;
 					}
-					else
+					if (randZ % 300 == 0)
 					{
-						Rotation = XMMatrixRotationY(enemyRot[i] -= 0.01f);
-						if (enemyRot[i] > 6.28f)
-							enemyRot[i] = 0.0f;
-						if (enemyRot[i] < 0.0f)
-							enemyRot[i] = 6.28f;
+						EMoveZ[i] *= -1.0f;
 					}
-					//If enemy is close to player, stop!
-					if ((enemyXPos[i] - XMVectorGetX(mCam.getCamPosition()) <= 5 && enemyZPos[i] - XMVectorGetZ(mCam.getCamPosition()) <= 5)
-						&& (enemyXPos[i] - XMVectorGetX(mCam.getCamPosition()) >= -5 && enemyZPos[i] - XMVectorGetZ(mCam.getCamPosition()) >= -5))
+					//Only change rotation if number is divisible by 275
+					if (randRot % 275 == 0)
 					{
-						//Attack on random
-						if (randAttack % 33 == 0)
-						{
-							Player1.setHealth(Player1.getHealth() - 3);
-
-							//start consuming audio in the source voice
-							g_sourceBlaster->Start();
-							//simple message loop
-							//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
-							//{
-							g_sourceBlaster->Stop();
-							g_sourceBlaster->FlushSourceBuffers();
-							g_sourceBlaster->Start();
-
-							//play the sound
-							g_sourceBlaster->SubmitSourceBuffer(buffer7.xaBuffer());
-							//}
-
-							//start consuming audio in the source voice
-							g_sourceHit->Start();
-							//simple message loop
-							//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
-							//{
-							g_sourceHit->Stop();
-							g_sourceHit->FlushSourceBuffers();
-							g_sourceHit->Start();
-
-							//play the sound
-							g_sourceHit->SubmitSourceBuffer(buffer6.xaBuffer());
-							//}
-						}
-						Translation = XMMatrixTranslation(enemyXPos[i] += .00, enemyYPos[i], enemyZPos[i] -= .00);
-						coll[i].setLocation(Point(enemyXPos[i] += .00, enemyYPos[i], enemyZPos[i] -= .00));
+						ERot[i] *= -1.0f;
 					}
-					else{
-						//Attack on random (moving so less likely to hit)
-						if (randAttack % 77 == 0)
-						{
-							Player1.setHealth(Player1.getHealth() - 3);
 
-							//start consuming audio in the source voice
-							g_sourceBlaster->Start();
-							//simple message loop
-							//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
-							//{
-							g_sourceBlaster->Stop();
-							g_sourceBlaster->FlushSourceBuffers();
-							g_sourceBlaster->Start();
+					//Rotate enemy, don't let it go past full 360 degrees (2 pi)
+					Rotation = XMMatrixRotationY(enemyRot[i] += ERot[i]);
+					if (enemyRot[i] > 6.28f)
+						enemyRot[i] = 0.0f;
+					if (enemyRot[i] < 0.0f)
+						enemyRot[i] = 6.28f;
 
-							//play the sound
-							g_sourceBlaster->SubmitSourceBuffer(buffer7.xaBuffer());
-							//}
-
-							//start consuming audio in the source voice
-							g_sourceHit->Start();
-							//simple message loop
-							//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
-							//{
-							g_sourceHit->Stop();
-							g_sourceHit->FlushSourceBuffers();
-							g_sourceHit->Start();
-
-							//play the sound
-							g_sourceHit->SubmitSourceBuffer(buffer6.xaBuffer());
-							//}
-						}
-						Translation = XMMatrixTranslation(enemyXPos[i] += .01f, enemyYPos[i], enemyZPos[i] -= .01f);
-						coll[i].setLocation(Point(enemyXPos[i] += .01f, enemyYPos[i], enemyZPos[i] -= .01f));
-					}
+					//Translate and update enemy and respective collision box
+					Translation = XMMatrixTranslation(enemyXPos[i] += EMoveX[i], enemyYPos[i], enemyZPos[i] += EMoveZ[i]);
+					coll[i].setLocation(Point(enemyXPos[i] += EMoveX[i], enemyYPos[i], enemyZPos[i] += EMoveZ[i]));
 
 				}
-				//If playerX < enemyX, decrease enemyX, PlayerZ > enemyZ, increase enemyZ
-				if (XMVectorGetX(mCam.getCamPosition()) < enemyXPos[i] && XMVectorGetZ(mCam.getCamPosition()) >= enemyZPos[i])
-				{
-					//Rotate enemy toward player
-					if ((mCam.getCamYaw() >= enemyRot[i]))
-					{
-						Rotation = XMMatrixRotationY(enemyRot[i] += 0.01f);
-						if (enemyRot[i] > 6.28f)
-							enemyRot[i] = 0.0f;
-						if (enemyRot[i] < 0.0f)
-							enemyRot[i] = 6.28f;
-					}
-					else
-					{
-						Rotation = XMMatrixRotationY(enemyRot[i] -= 0.01f);
-						if (enemyRot[i] > 6.28f)
-							enemyRot[i] = 0.0f;
-						if (enemyRot[i] < 0.0f)
-							enemyRot[i] = 6.28f;
-					}
-					//If enemy is close to player, stop!
-					if ((enemyXPos[i] - XMVectorGetX(mCam.getCamPosition()) <= 5 && enemyZPos[i] - XMVectorGetZ(mCam.getCamPosition()) <= 5)
-						&& (enemyXPos[i] - XMVectorGetX(mCam.getCamPosition()) >= -5 && enemyZPos[i] - XMVectorGetZ(mCam.getCamPosition()) >= -5))
-					{
-						//Attack on random
-						if (randAttack % 33 == 0)
-						{
-							Player1.setHealth(Player1.getHealth() - 3);
 
-							//start consuming audio in the source voice
-							g_sourceBlaster->Start();
-							//simple message loop
-							//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
-							//{
-							g_sourceBlaster->Stop();
-							g_sourceBlaster->FlushSourceBuffers();
-							g_sourceBlaster->Start();
 
-							//play the sound
-							g_sourceBlaster->SubmitSourceBuffer(buffer7.xaBuffer());
-							//}
-
-							//start consuming audio in the source voice
-							g_sourceHit->Start();
-							//simple message loop
-							//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
-							//{
-							g_sourceHit->Stop();
-							g_sourceHit->FlushSourceBuffers();
-							g_sourceHit->Start();
-
-							//play the sound
-							g_sourceHit->SubmitSourceBuffer(buffer6.xaBuffer());
-							//}
-						}
-
-						Translation = XMMatrixTranslation(enemyXPos[i] -= .00, enemyYPos[i], enemyZPos[i] += .00);
-						coll[i].setLocation(Point(enemyXPos[i] -= .00, enemyYPos[i], enemyZPos[i] += .00));
-					}
-					else{
-						//Attack on random (moving so less likely to hit)
-						if (randAttack % 77 == 0)
-						{
-							Player1.setHealth(Player1.getHealth() - 3);
-
-							//start consuming audio in the source voice
-							g_sourceBlaster->Start();
-							//simple message loop
-							//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
-							//{
-							g_sourceBlaster->Stop();
-							g_sourceBlaster->FlushSourceBuffers();
-							g_sourceBlaster->Start();
-
-							//play the sound
-							g_sourceBlaster->SubmitSourceBuffer(buffer7.xaBuffer());
-							//}
-
-							//start consuming audio in the source voice
-							g_sourceHit->Start();
-							//simple message loop
-							//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
-							//{
-							g_sourceHit->Stop();
-							g_sourceHit->FlushSourceBuffers();
-							g_sourceHit->Start();
-
-							//play the sound
-							g_sourceHit->SubmitSourceBuffer(buffer6.xaBuffer());
-							//}
-						}
-						Translation = XMMatrixTranslation(enemyXPos[i] -= .01f, enemyYPos[i], enemyZPos[i] += .01f);
-						coll[i].setLocation(Point(enemyXPos[i] -= .01f, enemyYPos[i], enemyZPos[i] += .01f));
-					}
-
-				}
-				//If playerX < enemyX, decrease enemyX, PlayerZ < enemyZ, decrease enemyZ
-				if (XMVectorGetX(mCam.getCamPosition()) < enemyXPos[i] && XMVectorGetZ(mCam.getCamPosition()) < enemyZPos[i])
-				{
-					//Rotate enemy toward player
-					if ((mCam.getCamYaw() >= enemyRot[i]))
-					{
-						Rotation = XMMatrixRotationY(enemyRot[i] += 0.01f);
-						if (enemyRot[i] > 6.28f)
-							enemyRot[i] = 0.0f;
-						if (enemyRot[i] < 0.0f)
-							enemyRot[i] = 6.28f;
-					}
-					else
-					{
-						Rotation = XMMatrixRotationY(enemyRot[i] -= 0.01f);
-						if (enemyRot[i] > 6.28f)
-							enemyRot[i] = 0.0f;
-						if (enemyRot[i] < 0.0f)
-							enemyRot[i] = 6.28f;
-					}
-					if ((enemyXPos[i] - XMVectorGetX(mCam.getCamPosition()) <= 5 && enemyZPos[i] - XMVectorGetZ(mCam.getCamPosition()) <= 5)
-						&& (enemyXPos[i] - XMVectorGetX(mCam.getCamPosition()) >= -5 && enemyZPos[i] - XMVectorGetZ(mCam.getCamPosition()) >= -5))
-					{
-						//Attack on random
-						if (randAttack % 33 == 0)
-						{
-							Player1.setHealth(Player1.getHealth() - 3);
-
-							//start consuming audio in the source voice
-							g_sourceBlaster->Start();
-							//simple message loop
-							//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
-							//{
-							g_sourceBlaster->Stop();
-							g_sourceBlaster->FlushSourceBuffers();
-							g_sourceBlaster->Start();
-
-							//play the sound
-							g_sourceBlaster->SubmitSourceBuffer(buffer7.xaBuffer());
-							//}
-
-							//start consuming audio in the source voice
-							g_sourceHit->Start();
-							//simple message loop
-							//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
-							//{
-							g_sourceHit->Stop();
-							g_sourceHit->FlushSourceBuffers();
-							g_sourceHit->Start();
-
-							//play the sound
-							g_sourceHit->SubmitSourceBuffer(buffer6.xaBuffer());
-							//}
-						}
-						Translation = XMMatrixTranslation(enemyXPos[i] -= .00, enemyYPos[i], enemyZPos[i] -= .00);
-						coll[i].setLocation(Point(enemyXPos[i] -= .00, enemyYPos[i], enemyZPos[i] -= .00));
-					}
-					else
-					{
-						//Attack on random (moving so less likely to hit)
-						if (randAttack % 77 == 0)
-						{
-							Player1.setHealth(Player1.getHealth() - 3);
-
-							//start consuming audio in the source voice
-							g_sourceBlaster->Start();
-							//simple message loop
-							//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
-							//{
-							g_sourceBlaster->Stop();
-							g_sourceBlaster->FlushSourceBuffers();
-							g_sourceBlaster->Start();
-
-							//play the sound
-							g_sourceBlaster->SubmitSourceBuffer(buffer7.xaBuffer());
-							//}
-
-							//start consuming audio in the source voice
-							g_sourceHit->Start();
-							//simple message loop
-							//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
-							//{
-							g_sourceHit->Stop();
-							g_sourceHit->FlushSourceBuffers();
-							g_sourceHit->Start();
-
-							//play the sound
-							g_sourceHit->SubmitSourceBuffer(buffer6.xaBuffer());
-							//}
-						}
-						Translation = XMMatrixTranslation(enemyXPos[i] -= .01f, enemyYPos[i], enemyZPos[i] -= .01f);
-						coll[i].setLocation(Point(enemyXPos[i] -= .01f, enemyYPos[i], enemyZPos[i] -= .01f));
-					}
-				}
-				if (Player1.getHealth() <= 0)
-				{
-					Player1.setHealth(100);
-					Player1.setLives(Player1.getLives() - 1);
-		//start consuming audio in the source voice
-		g_sourceRevive->Start();
-		//simple message loop
-		//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
-		//{
-		g_sourceRevive->Stop();
-		g_sourceRevive->FlushSourceBuffers();
-		g_sourceRevive->Start();
-
-		//play the sound
-		g_sourceRevive->SubmitSourceBuffer(buffer4.xaBuffer());
-		//}
-	}
-	if (Player1.getLives() <= 0)
-	{
-		thePlayer.setDeath(true);
-		//start consuming audio in the source voice
-		g_sourceDead->Start();
-		//simple message loop
-		//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
-		//{
-		g_sourceDead->Stop();
-		g_sourceDead->FlushSourceBuffers();
-		g_sourceDead->Start();
-
-		//play the sound
-		g_sourceDead->SubmitSourceBuffer(buffer3.xaBuffer());
-		//}
-	}
-
-	if (thePlayer.getDeath() == true)
-	{
-		if (MessageBox(0, L"You have been killed, would you like to restart?", L"You are dead", MB_YESNO | MB_ICONQUESTION) == IDNO)
-			DestroyWindow(hwnd);
-		else
-		{
-			thePlayer.Init();
-			Player1.Init();
-			PlayerWep.Init();
+				enemyArray[i].meshWorld = Rotation * Scale * Translation;
+			}
 		}
 
-				}
-			}
-			else {
-				//OPTIMIZED AI MOVEMENT/ROTATION
-				//Only change directions if number is divisible by 300
-				if (randX % 300 == 0)
+		//
+		//BOSS
+		//
+		if (killedEnemies >= ENEMYCOUNT - 1)
+		{
+			enemyBox = true;
+				// Get the height of the triangle that is directly underneath the given camera position.
+				foundHeight = m_QuadTree->GetHeightAtPosition(enemyXPos[i], enemyZPos[i], height);
+				if (foundHeight)
 				{
-					EMoveX[i] *= -1.0f;
+					// If there was a triangle under the camera then position the camera just above it by two units.
+					enemyYPos[i] = height + 5.0f;
 				}
-				if (randZ % 300 == 0)
+
+				//set the loaded enemy's world space
+				enemyArray[i].meshWorld = XMMatrixIdentity();
+				//Rotation = XMMatrixRotationY(3.14f);
+				Scale = XMMatrixScaling(0.04f, 0.04f, 0.04f);
+
+				//If distance is greater then 20, then randomly move
+				if ((enemyXPos[i] - XMVectorGetX(mCam.getCamPosition()) <= 30 && enemyZPos[i] - XMVectorGetZ(mCam.getCamPosition()) <= 30)
+					&& (enemyXPos[i] - XMVectorGetX(mCam.getCamPosition()) >= -30 && enemyZPos[i] - XMVectorGetZ(mCam.getCamPosition()) >= -30))
+					//Player is near! Attack!
+				{
+					//If playerX > enemyX, increase enemyX, PlayerZ > enemyZ, increase enemyZ
+					if (XMVectorGetX(mCam.getCamPosition()) >= enemyXPos[i] && XMVectorGetZ(mCam.getCamPosition()) >= enemyZPos[i])
 					{
-					EMoveZ[i] *= -1.0f;
+						//Rotate enemy toward player
+						if ((mCam.getCamYaw() >= enemyRot[i]))
+						{
+							Rotation = XMMatrixRotationY(enemyRot[i] += 0.01f);
+							if (enemyRot[i] > 6.28f)
+								enemyRot[i] = 0.0f;
+							if (enemyRot[i] < 0.0f)
+								enemyRot[i] = 6.28f;
+						}
+						else
+						{
+							Rotation = XMMatrixRotationY(enemyRot[i] -= 0.01f);
+							if (enemyRot[i] > 6.28f)
+								enemyRot[i] = 0.0f;
+							if (enemyRot[i] < 0.0f)
+								enemyRot[i] = 6.28f;
+						}
+
+						//If enemy is close to player, stop!
+						if ((enemyXPos[i] - XMVectorGetX(mCam.getCamPosition()) <= 5 && enemyZPos[i] - XMVectorGetZ(mCam.getCamPosition()) <= 5)
+							&& (enemyXPos[i] - XMVectorGetX(mCam.getCamPosition()) >= -5 && enemyZPos[i] - XMVectorGetZ(mCam.getCamPosition()) >= -5))
+						{
+							//Attack on random
+							if (randAttack % 33 == 0)
+							{
+								Player1.setHealth(Player1.getHealth() - 3);
+
+								//start consuming audio in the source voice
+								g_sourceBlaster->Start();
+								//simple message loop
+								//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
+								//{
+								g_sourceBlaster->Stop();
+								g_sourceBlaster->FlushSourceBuffers();
+								g_sourceBlaster->Start();
+
+								//play the sound
+								g_sourceBlaster->SubmitSourceBuffer(buffer7.xaBuffer());
+								//}
+
+								//start consuming audio in the source voice
+								g_sourceHit->Start();
+								//simple message loop
+								//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
+								//{
+								g_sourceHit->Stop();
+								g_sourceHit->FlushSourceBuffers();
+								g_sourceHit->Start();
+
+								//play the sound
+								g_sourceHit->SubmitSourceBuffer(buffer6.xaBuffer());
+								//}
+							}
+
+							Translation = XMMatrixTranslation(enemyXPos[i] += .00, enemyYPos[i], enemyZPos[i] += .00);
+							coll[i].setLocation(Point(enemyXPos[i] += .00, enemyYPos[i], enemyZPos[i] += .00));
+
+						}
+						else
+						{
+							//Attack on random
+							if (randAttack % 77 == 0)
+							{
+								Player1.setHealth(Player1.getHealth() - 3);
+
+								//start consuming audio in the source voice
+								g_sourceBlaster->Start();
+								//simple message loop
+								//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
+								//{
+								g_sourceBlaster->Stop();
+								g_sourceBlaster->FlushSourceBuffers();
+								g_sourceBlaster->Start();
+
+								//play the sound
+								g_sourceBlaster->SubmitSourceBuffer(buffer7.xaBuffer());
+								//}
+
+								//start consuming audio in the source voice
+								g_sourceHit->Start();
+								//simple message loop
+								//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
+								//{
+								g_sourceHit->Stop();
+								g_sourceHit->FlushSourceBuffers();
+								g_sourceHit->Start();
+
+								//play the sound
+								g_sourceHit->SubmitSourceBuffer(buffer6.xaBuffer());
+								//}
+							}
+							Translation = XMMatrixTranslation(enemyXPos[i] += .01f, enemyYPos[i], enemyZPos[i] += .01f);
+							coll[i].setLocation(Point(enemyXPos[i] += .01f, enemyYPos[i], enemyZPos[i] += .01f));
+						}
 					}
-				//Only change rotation if number is divisible by 275
-				if (randRot % 275 == 0)
+					//If playerX > enemyX, increase enemyX, PlayerZ < enemyZ, decrease enemyZ
+					if (XMVectorGetX(mCam.getCamPosition()) >= enemyXPos[i] && XMVectorGetZ(mCam.getCamPosition()) < enemyZPos[i])
 					{
-					ERot[i] *= -1.0f;
+						//Rotate enemy toward player
+						if ((mCam.getCamYaw() >= enemyRot[i]))
+						{
+							Rotation = XMMatrixRotationY(enemyRot[i] += 0.01f);
+							if (enemyRot[i] > 6.28f)
+								enemyRot[i] = 0.0f;
+							if (enemyRot[i] < 0.0f)
+								enemyRot[i] = 6.28f;
+						}
+						else
+						{
+							Rotation = XMMatrixRotationY(enemyRot[i] -= 0.01f);
+							if (enemyRot[i] > 6.28f)
+								enemyRot[i] = 0.0f;
+							if (enemyRot[i] < 0.0f)
+								enemyRot[i] = 6.28f;
+						}
+						//If enemy is close to player, stop!
+						if ((enemyXPos[i] - XMVectorGetX(mCam.getCamPosition()) <= 5 && enemyZPos[i] - XMVectorGetZ(mCam.getCamPosition()) <= 5)
+							&& (enemyXPos[i] - XMVectorGetX(mCam.getCamPosition()) >= -5 && enemyZPos[i] - XMVectorGetZ(mCam.getCamPosition()) >= -5))
+						{
+							//Attack on random
+							if (randAttack % 33 == 0)
+							{
+								Player1.setHealth(Player1.getHealth() - 3);
+
+								//start consuming audio in the source voice
+								g_sourceBlaster->Start();
+								//simple message loop
+								//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
+								//{
+								g_sourceBlaster->Stop();
+								g_sourceBlaster->FlushSourceBuffers();
+								g_sourceBlaster->Start();
+
+								//play the sound
+								g_sourceBlaster->SubmitSourceBuffer(buffer7.xaBuffer());
+								//}
+
+								//start consuming audio in the source voice
+								g_sourceHit->Start();
+								//simple message loop
+								//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
+								//{
+								g_sourceHit->Stop();
+								g_sourceHit->FlushSourceBuffers();
+								g_sourceHit->Start();
+
+								//play the sound
+								g_sourceHit->SubmitSourceBuffer(buffer6.xaBuffer());
+								//}
+							}
+							Translation = XMMatrixTranslation(enemyXPos[i] += .00, enemyYPos[i], enemyZPos[i] -= .00);
+							coll[i].setLocation(Point(enemyXPos[i] += .00, enemyYPos[i], enemyZPos[i] -= .00));
+						}
+						else{
+							//Attack on random (moving so less likely to hit)
+							if (randAttack % 77 == 0)
+							{
+								Player1.setHealth(Player1.getHealth() - 3);
+
+								//start consuming audio in the source voice
+								g_sourceBlaster->Start();
+								//simple message loop
+								//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
+								//{
+								g_sourceBlaster->Stop();
+								g_sourceBlaster->FlushSourceBuffers();
+								g_sourceBlaster->Start();
+
+								//play the sound
+								g_sourceBlaster->SubmitSourceBuffer(buffer7.xaBuffer());
+								//}
+
+								//start consuming audio in the source voice
+								g_sourceHit->Start();
+								//simple message loop
+								//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
+								//{
+								g_sourceHit->Stop();
+								g_sourceHit->FlushSourceBuffers();
+								g_sourceHit->Start();
+
+								//play the sound
+								g_sourceHit->SubmitSourceBuffer(buffer6.xaBuffer());
+								//}
+							}
+							Translation = XMMatrixTranslation(enemyXPos[i] += .01f, enemyYPos[i], enemyZPos[i] -= .01f);
+							coll[i].setLocation(Point(enemyXPos[i] += .01f, enemyYPos[i], enemyZPos[i] -= .01f));
+						}
+
+					}
+					//If playerX < enemyX, decrease enemyX, PlayerZ > enemyZ, increase enemyZ
+					if (XMVectorGetX(mCam.getCamPosition()) < enemyXPos[i] && XMVectorGetZ(mCam.getCamPosition()) >= enemyZPos[i])
+					{
+						//Rotate enemy toward player
+						if ((mCam.getCamYaw() >= enemyRot[i]))
+						{
+							Rotation = XMMatrixRotationY(enemyRot[i] += 0.01f);
+							if (enemyRot[i] > 6.28f)
+								enemyRot[i] = 0.0f;
+							if (enemyRot[i] < 0.0f)
+								enemyRot[i] = 6.28f;
+						}
+						else
+						{
+							Rotation = XMMatrixRotationY(enemyRot[i] -= 0.01f);
+							if (enemyRot[i] > 6.28f)
+								enemyRot[i] = 0.0f;
+							if (enemyRot[i] < 0.0f)
+								enemyRot[i] = 6.28f;
+						}
+						//If enemy is close to player, stop!
+						if ((enemyXPos[i] - XMVectorGetX(mCam.getCamPosition()) <= 5 && enemyZPos[i] - XMVectorGetZ(mCam.getCamPosition()) <= 5)
+							&& (enemyXPos[i] - XMVectorGetX(mCam.getCamPosition()) >= -5 && enemyZPos[i] - XMVectorGetZ(mCam.getCamPosition()) >= -5))
+						{
+							//Attack on random
+							if (randAttack % 33 == 0)
+							{
+								Player1.setHealth(Player1.getHealth() - 3);
+
+								//start consuming audio in the source voice
+								g_sourceBlaster->Start();
+								//simple message loop
+								//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
+								//{
+								g_sourceBlaster->Stop();
+								g_sourceBlaster->FlushSourceBuffers();
+								g_sourceBlaster->Start();
+
+								//play the sound
+								g_sourceBlaster->SubmitSourceBuffer(buffer7.xaBuffer());
+								//}
+
+								//start consuming audio in the source voice
+								g_sourceHit->Start();
+								//simple message loop
+								//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
+								//{
+								g_sourceHit->Stop();
+								g_sourceHit->FlushSourceBuffers();
+								g_sourceHit->Start();
+
+								//play the sound
+								g_sourceHit->SubmitSourceBuffer(buffer6.xaBuffer());
+								//}
+							}
+
+							Translation = XMMatrixTranslation(enemyXPos[i] -= .00, enemyYPos[i], enemyZPos[i] += .00);
+							coll[i].setLocation(Point(enemyXPos[i] -= .00, enemyYPos[i], enemyZPos[i] += .00));
+						}
+						else{
+							//Attack on random (moving so less likely to hit)
+							if (randAttack % 77 == 0)
+							{
+								Player1.setHealth(Player1.getHealth() - 3);
+
+								//start consuming audio in the source voice
+								g_sourceBlaster->Start();
+								//simple message loop
+								//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
+								//{
+								g_sourceBlaster->Stop();
+								g_sourceBlaster->FlushSourceBuffers();
+								g_sourceBlaster->Start();
+
+								//play the sound
+								g_sourceBlaster->SubmitSourceBuffer(buffer7.xaBuffer());
+								//}
+
+								//start consuming audio in the source voice
+								g_sourceHit->Start();
+								//simple message loop
+								//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
+								//{
+								g_sourceHit->Stop();
+								g_sourceHit->FlushSourceBuffers();
+								g_sourceHit->Start();
+
+								//play the sound
+								g_sourceHit->SubmitSourceBuffer(buffer6.xaBuffer());
+								//}
+							}
+							Translation = XMMatrixTranslation(enemyXPos[i] -= .01f, enemyYPos[i], enemyZPos[i] += .01f);
+							coll[i].setLocation(Point(enemyXPos[i] -= .01f, enemyYPos[i], enemyZPos[i] += .01f));
+						}
+
+					}
+					//If playerX < enemyX, decrease enemyX, PlayerZ < enemyZ, decrease enemyZ
+					if (XMVectorGetX(mCam.getCamPosition()) < enemyXPos[i] && XMVectorGetZ(mCam.getCamPosition()) < enemyZPos[i])
+					{
+						//Rotate enemy toward player
+						if ((mCam.getCamYaw() >= enemyRot[i]))
+						{
+							Rotation = XMMatrixRotationY(enemyRot[i] += 0.01f);
+							if (enemyRot[i] > 6.28f)
+								enemyRot[i] = 0.0f;
+							if (enemyRot[i] < 0.0f)
+								enemyRot[i] = 6.28f;
+						}
+						else
+						{
+							Rotation = XMMatrixRotationY(enemyRot[i] -= 0.01f);
+							if (enemyRot[i] > 6.28f)
+								enemyRot[i] = 0.0f;
+							if (enemyRot[i] < 0.0f)
+								enemyRot[i] = 6.28f;
+						}
+						if ((enemyXPos[i] - XMVectorGetX(mCam.getCamPosition()) <= 5 && enemyZPos[i] - XMVectorGetZ(mCam.getCamPosition()) <= 5)
+							&& (enemyXPos[i] - XMVectorGetX(mCam.getCamPosition()) >= -5 && enemyZPos[i] - XMVectorGetZ(mCam.getCamPosition()) >= -5))
+						{
+							//Attack on random
+							if (randAttack % 33 == 0)
+							{
+								Player1.setHealth(Player1.getHealth() - 3);
+
+								//start consuming audio in the source voice
+								g_sourceBlaster->Start();
+								//simple message loop
+								//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
+								//{
+								g_sourceBlaster->Stop();
+								g_sourceBlaster->FlushSourceBuffers();
+								g_sourceBlaster->Start();
+
+								//play the sound
+								g_sourceBlaster->SubmitSourceBuffer(buffer7.xaBuffer());
+								//}
+
+								//start consuming audio in the source voice
+								g_sourceHit->Start();
+								//simple message loop
+								//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
+								//{
+								g_sourceHit->Stop();
+								g_sourceHit->FlushSourceBuffers();
+								g_sourceHit->Start();
+
+								//play the sound
+								g_sourceHit->SubmitSourceBuffer(buffer6.xaBuffer());
+								//}
+							}
+							Translation = XMMatrixTranslation(enemyXPos[i] -= .00, enemyYPos[i], enemyZPos[i] -= .00);
+							coll[i].setLocation(Point(enemyXPos[i] -= .00, enemyYPos[i], enemyZPos[i] -= .00));
+						}
+						else
+						{
+							//Attack on random (moving so less likely to hit)
+							if (randAttack % 77 == 0)
+							{
+								Player1.setHealth(Player1.getHealth() - 3);
+
+								//start consuming audio in the source voice
+								g_sourceBlaster->Start();
+								//simple message loop
+								//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
+								//{
+								g_sourceBlaster->Stop();
+								g_sourceBlaster->FlushSourceBuffers();
+								g_sourceBlaster->Start();
+
+								//play the sound
+								g_sourceBlaster->SubmitSourceBuffer(buffer7.xaBuffer());
+								//}
+
+								//start consuming audio in the source voice
+								g_sourceHit->Start();
+								//simple message loop
+								//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
+								//{
+								g_sourceHit->Stop();
+								g_sourceHit->FlushSourceBuffers();
+								g_sourceHit->Start();
+
+								//play the sound
+								g_sourceHit->SubmitSourceBuffer(buffer6.xaBuffer());
+								//}
+							}
+							Translation = XMMatrixTranslation(enemyXPos[i] -= .01f, enemyYPos[i], enemyZPos[i] -= .01f);
+							coll[i].setLocation(Point(enemyXPos[i] -= .01f, enemyYPos[i], enemyZPos[i] -= .01f));
+						}
+					}
+					if (Player1.getHealth() <= 0)
+					{
+						Player1.setHealth(100);
+						Player1.setLives(Player1.getLives() - 1);
+						//start consuming audio in the source voice
+						g_sourceRevive->Start();
+						//simple message loop
+						//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
+						//{
+						g_sourceRevive->Stop();
+						g_sourceRevive->FlushSourceBuffers();
+						g_sourceRevive->Start();
+
+						//play the sound
+						g_sourceRevive->SubmitSourceBuffer(buffer4.xaBuffer());
+						//}
+					}
+					if (Player1.getLives() <= 0)
+					{
+						thePlayer.setDeath(true);
+						//start consuming audio in the source voice
+						g_sourceDead->Start();
+						//simple message loop
+						//while (MessageBox(0, TEXT("Do you want to play the sound?"), TEXT("ABLAX: PAS"), MB_YESNO) == IDYES)
+						//{
+						g_sourceDead->Stop();
+						g_sourceDead->FlushSourceBuffers();
+						g_sourceDead->Start();
+
+						//play the sound
+						g_sourceDead->SubmitSourceBuffer(buffer3.xaBuffer());
+						//}
 					}
 
-				//Rotate enemy, don't let it go past full 360 degrees (2 pi)
-				Rotation = XMMatrixRotationY(enemyRot[i] += ERot[i]);
-						if (enemyRot[i] > 6.28f)
-							enemyRot[i] = 0.0f;
-						if (enemyRot[i] < 0.0f)
-							enemyRot[i] = 6.28f;
+					if (thePlayer.getDeath() == true)
+					{
+						if (MessageBox(0, L"You have been killed, would you like to restart?", L"You are dead", MB_YESNO | MB_ICONQUESTION) == IDNO)
+							DestroyWindow(hwnd);
+						else
+						{
+							thePlayer.Init();
+							Player1.Init();
+							PlayerWep.Init();
+						}
 
-				//Translate and update enemy and respective collision box
-				Translation = XMMatrixTranslation(enemyXPos[i] += EMoveX[i], enemyYPos[i], enemyZPos[i] += EMoveZ[i]);
-				coll[i].setLocation(Point(enemyXPos[i] += EMoveX[i], enemyYPos[i], enemyZPos[i] += EMoveZ[i]));
-				
-			}
+					}
+
+				}
+				else {
+					//OPTIMIZED AI MOVEMENT/ROTATION
+					//Only change directions if number is divisible by 300
+					if (randX % 300 == 0)
+					{
+						EMoveX[i] *= -1.0f;
+					}
+					if (randZ % 300 == 0)
+					{
+						EMoveZ[i] *= -1.0f;
+					}
+					//Only change rotation if number is divisible by 275
+					if (randRot % 275 == 0)
+					{
+						ERot[i] *= -1.0f;
+					}
+
+					//Rotate enemy, don't let it go past full 360 degrees (2 pi)
+					Rotation = XMMatrixRotationY(enemyRot[i] += ERot[i]);
+					if (enemyRot[i] > 6.28f)
+						enemyRot[i] = 0.0f;
+					if (enemyRot[i] < 0.0f)
+						enemyRot[i] = 6.28f;
+
+					//Translate and update enemy and respective collision box
+					Translation = XMMatrixTranslation(enemyXPos[i] += EMoveX[i], enemyYPos[i], enemyZPos[i] += EMoveZ[i]);
+					coll[i].setLocation(Point(enemyXPos[i] += EMoveX[i], enemyYPos[i], enemyZPos[i] += EMoveZ[i]));
+
+				}
 
 
-			enemyArray[i].meshWorld = Rotation * Scale * Translation;
+				enemyArray[i].meshWorld = Rotation * Scale * Translation;
 		}
 
 	#pragma endregion EnemyAI
@@ -1725,31 +2220,32 @@ void SeniorPro::UpdateScene(double time)
 		}
 
 		//Temple of Time
-		/*
+		
 
 
-		/*if (meshArray[i].filename == L"ground.obj")
+		//ground
+		if (meshArray[i].filename == L"ground.obj")
 		{
 			meshArray[i].meshWorld = XMMatrixIdentity();
 
 		Rotation = XMMatrixRotationY(3.14f);
 		Scale = XMMatrixScaling(10.0f, 1.0f, 10.0f);
-		Translation = XMMatrixTranslation(0.0f, -0.02f, 0.0f);
+		Translation = XMMatrixTranslation(0.0f, 7.0f, 0.0f);
 
 		meshArray[i].meshWorld = Rotation * Scale * Translation;
-		}*/
+		}
 
-			//Menu
-			if (meshArray[i].filename == L"Menu.obj"){
-				meshArray[i].meshWorld = XMMatrixIdentity();
+		//Menu
+		if (meshArray[i].filename == L"Menu.obj"){
+			meshArray[i].meshWorld = XMMatrixIdentity();
 			Rotation = XMMatrixRotationY(0.0f);
 			Scale = XMMatrixScaling(0.1f, 0.1f, 0.1f);
 			Translation = XMMatrixTranslation(10000.0f, 30000.0f, 10000.0f);
 			meshArray[i].meshWorld = Rotation * Scale * Translation;
 		}
-			//Moon
-			if (meshArray[i].filename == L"Moon.obj")
-	{
+		//Moon
+		if (meshArray[i].filename == L"Moon.obj")
+		{
 			meshArray[i].meshWorld = XMMatrixIdentity();
 			Rotation = XMMatrixRotationY(0.0f);
 			Scale = XMMatrixScaling(1.5f, 1.5f, 1.5f);
@@ -1760,7 +2256,7 @@ void SeniorPro::UpdateScene(double time)
 		if (meshArray[i].filename == L"win.obj")
 		{
 			meshArray[i].meshWorld = XMMatrixIdentity();
-			Rotation = XMMatrixRotationY(0.0f);
+			Rotation = XMMatrixRotationY(winRot += 0.001f);
 			Scale = XMMatrixScaling(0.1f, 0.1f, 0.1f);
 			Translation = XMMatrixTranslation(winX, winY, winZ);
 			win.setLocation(Point(winX, winY, winZ));
@@ -1867,14 +2363,14 @@ void SeniorPro::UpdateScene(double time)
 	smilesWorld = Scale * Translation;*/
 	///////////////**************new**************////////////////////
 
-	//Spotlight stuff
-	/*light.pos.x = XMVectorGetX(mCam.getCamPosition());
-	light.pos.y = XMVectorGetY(mCam.getCamPosition());
-	light.pos.z = XMVectorGetZ(mCam.getCamPosition());
+	////Spotlight stuff
+	//light.pos.x = XMVectorGetX(mCam.getCamPosition());
+	//light.pos.y = XMVectorGetY(mCam.getCamPosition());
+	//light.pos.z = XMVectorGetZ(mCam.getCamPosition());
 
-	light.dir.x = XMVectorGetX(mCam.getCamTarget()) - light.pos.x;
-	light.dir.y = XMVectorGetY(mCam.getCamTarget()) - light.pos.y;
-	light.dir.z = XMVectorGetZ(mCam.getCamTarget()) - light.pos.z;*/
+	//light.dir.x = XMVectorGetX(mCam.getCamTarget()) - light.pos.x;
+	//light.dir.y = XMVectorGetY(mCam.getCamTarget()) - light.pos.y;
+	//light.dir.z = XMVectorGetZ(mCam.getCamTarget()) - light.pos.z;
 }
 
 void SeniorPro::RenderText(std::wstring text, int inInt)
@@ -1900,8 +2396,9 @@ void SeniorPro::RenderText(std::wstring text, int inInt)
 		printString <<
 		L"  Health: " << Player1.getHealth()
 			<< L"                                                                                                                                  Lives: " << Player1.getLives() << "\n"
-			<< L"  Ammo: " << PlayerWep.getMagSize() << L"          Extra Mags: " << PlayerWep.getExtraClips()
-			<< L"                                                                                                       Score: " << score << L"\n"
+			<< L"  Ammo: " << PlayerWep.getMagSize()
+			<< L"                                                                                                                        Score: " << score << L"\n"
+			<< L" Extra Mags: " << PlayerWep.getExtraClips()
 			<< "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
 			//<< L"win x: " << winX - 125 << " win y  " << winZ - 125
 			//<< L" player y: " << XMVectorGetY(mCam.getCamPosition()) 
@@ -2416,7 +2913,7 @@ void SeniorPro::DetectInput(double time)
 				enemyHit[hitIndex] = 1;
 				pickedDist = closestDist;
 				score++;
-
+				killedEnemies += 1;
 						enemyXPos[hitIndex] = 1000;
 						enemyZPos[hitIndex] = 1000;
 			}

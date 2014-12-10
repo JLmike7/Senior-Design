@@ -44,7 +44,8 @@ protected:
 	Stats enemyStats[20];
 	//Stats enemyStats[20];
 	bool reloadBro = false;
-
+	bool spawnBoss = false;
+	int killedEnemies = 0;
 	//Position playerLoc;
 	LPCWSTR WndClassName;	//Define our window class name
 	HWND hwnd;	//Sets our windows handle to NULL
@@ -82,6 +83,7 @@ protected:
 
 	Struct::cbPerObject cbPerObj;
 	Struct::Light light;
+	Struct::Light light2;
 	Struct::cbPerFrame constbuffPerFrame;
 	std::vector<Struct::SurfaceMaterial> material;
 
