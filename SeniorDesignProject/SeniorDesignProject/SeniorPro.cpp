@@ -62,7 +62,6 @@ private:
 	UINT offset = 0;
 
 	Mesh enemyArray[ENEMYCOUNT];
-	//Mesh enemyCollisionBox[ENEMYCOUNT];
 	Mesh itemArray[ITEMCOUNT];
 	Mesh ammoArray[AMMOCOUNT];
 	int* enemyHit = new int[ENEMYCOUNT];
@@ -2123,6 +2122,13 @@ void SeniorPro::DrawScene()
 
 void SeniorPro::DetectInput(double time)
 {
+
+	float timeFactor = 0.75f;	// You can speed up or slow down time by changing this
+	for (int i = 0; i < ENEMYCOUNT; i++)
+	{
+		enemyArray[i].UpdateMD5Model(time*timeFactor, 0, d3d11DevCon);
+	}
+
 	// collision for the heightmap
 	float height;
 	bool foundHeight;
@@ -2325,14 +2331,14 @@ void SeniorPro::DetectInput(double time)
 		weaponSelect = 2;
 	}
 
-	if (keyboardState[DIK_Y] & 0X80)
+	/*if (keyboardState[DIK_Y] & 0X80)
 	{
 		float timeFactor = 0.75f;	// You can speed up or slow down time by changing this
 		for (int i = 0; i < ENEMYCOUNT; i++)
 		{
 			enemyArray[i].UpdateMD5Model(time*timeFactor, 0, d3d11DevCon);
 		}
-	}
+	}*/
 
 	if (keyboardState[DIK_B] & 0X80)
 	{
