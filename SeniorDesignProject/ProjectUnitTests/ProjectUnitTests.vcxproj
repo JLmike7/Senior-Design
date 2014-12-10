@@ -43,7 +43,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(IncludePath);$(DXSDK_DIR)Include;$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSDK_IncludePath);$(FrameworkSDKDir)\include;C:\Users\Nickolas\Source\Repos\Senior-Design\SeniorDesignProject\SeniorDesignProject</IncludePath>
+    <IncludePath>$(IncludePath);$(DXSDK_DIR)Include;$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSDK_IncludePath);$(FrameworkSDKDir)\include;C:\Users\Aaron\Source\Repos\Senior-Design\SeniorDesignProject\SeniorDesignProject</IncludePath>
     <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(LibraryPath);$(DXSDK_DIR)Lib\x86;$(VCInstallDir)lib;$(VCInstallDir)atlmfc\lib;$(WindowsSDK_LibraryPath_x86);$(FrameworkSDKDir)\lib;C:\Program Files %28x86%29\Windows Kits\8.0\Lib\win8\um\x86;C:\Program Files %28x86%29\Windows Kits\8.0\Lib\win8\um\x64;</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -62,7 +62,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>C:\Users\Nickolas\Source\Repos\Senior-Design\SeniorDesignProject\SeniorDesignProject\Debug\Biped.obj;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>C:\Users\Aaron\Source\Repos\Senior-Design\SeniorDesignProject\SeniorDesignProject\Debug\Biped.obj;C:\Users\Aaron\Source\Repos\Senior-Design\SeniorDesignProject\SeniorDesignProject\Debug\Position.obj;C:\Users\Aaron\Source\Repos\Senior-Design\SeniorDesignProject\SeniorDesignProject\Debug\Stats.obj;C:\Users\Aaron\Source\Repos\Senior-Design\SeniorDesignProject\SeniorDesignProject\Debug\Point.obj;C:\Users\Aaron\Source\Repos\Senior-Design\SeniorDesignProject\SeniorDesignProject\Debug\Weapon.obj;C:\Users\Aaron\Source\Repos\Senior-Design\SeniorDesignProject\SeniorDesignProject\Debug\LookDirection.obj;C:\Users\Aaron\Source\Repos\Senior-Design\SeniorDesignProject\SeniorDesignProject\Debug\WalkingStatus.obj;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

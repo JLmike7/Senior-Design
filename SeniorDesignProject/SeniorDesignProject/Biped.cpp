@@ -13,7 +13,7 @@ void Biped::Init()
 {
 	position = new Position();
 	stance = WALK;
-	teamNumber = -1;
+	teamNumber = 1;
 	death = false;
 	//hitbox = new Box(position->getLocation(),HIT_BOX_WIDTH,HIT_BOX_HEIGHT,HIT_BOX_DEPTH);
 }
