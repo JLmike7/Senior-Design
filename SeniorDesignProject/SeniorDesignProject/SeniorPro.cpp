@@ -10,7 +10,7 @@
 #include "textureclass.h"
 
 #define MESHCOUNT 8
-#define ENEMYCOUNT 10
+#define ENEMYCOUNT 8
 #define ITEMCOUNT 30
 #define AMMOCOUNT 30
 
@@ -970,8 +970,11 @@ bool SeniorPro::InitScene()
 		// Init enemy locations
 		for (int y = 0; y < ENEMYCOUNT; y++)
 		{
-			enemyXPos[y] = enemyXPos[y - 1] + 10.0f;
-			enemyZPos[y] += 0.0f;
+			randX2 = rand() % 128;
+			randZ2 = rand() % 128;
+
+			enemyXPos[y] = randX2;
+			enemyZPos[y] = randZ2;
 		}
 		
 		enemyHit[i] = 0.0f;
@@ -1009,7 +1012,7 @@ bool SeniorPro::InitScene()
 		bool foundHeight;
 
 		// Get the height of the triangle that is directly underneath the given camera position.
-		foundHeight = m_QuadTree->GetHeightAtPosition(enemyXPos[i], enemyZPos[i], height);
+		foundHeight = m_QuadTree->GetHeightAtPosition(itemX[i], itemZ[i], height);
 		if (foundHeight)
 		{
 			// If there was a triangle under the camera then position the camera just above it by two units.
@@ -1041,7 +1044,7 @@ bool SeniorPro::InitScene()
 		bool foundHeight;
 
 		// Get the height of the triangle that is directly underneath the given camera position.
-		foundHeight = m_QuadTree->GetHeightAtPosition(enemyXPos[i], enemyZPos[i], height);
+		foundHeight = m_QuadTree->GetHeightAtPosition(ammoX[i], ammoZ[i], height);
 		if (foundHeight)
 		{
 			// If there was a triangle under the camera then position the camera just above it by two units.
@@ -1060,9 +1063,21 @@ bool SeniorPro::InitScene()
 		//ammoArray[i].meshWorld = Rotation * Scale * Translation;
 	}
 	//Initial win item location 
+	float height;
+	bool foundHeight;
+
+	
 	winX = rand() % 128;
 	winZ = rand() % 128;
-	win.setLocation(Point((winX), 2.0f, (winZ)));
+	// Get the height of the triangle that is directly underneath the given camera position.
+	foundHeight = m_QuadTree->GetHeightAtPosition(winX, winZ, height);
+	if (foundHeight)
+	{
+		// If there was a triangle under the camera then position the camera just above it by two units.
+		winY = height + 2.0f;
+	}
+	win.setLocation(Point((winX), winY, (winZ)));
+
 	win.setheight(3.0f);
 	win.setlength(3.0f);
 	win.setwidth(3.0f);
@@ -1118,7 +1133,7 @@ void SeniorPro::UpdateScene(double time)
 				meshArray[6].meshWorld = XMMatrixIdentity();
 				Rotation = XMMatrixRotationY(0.0f);
 				Scale = XMMatrixScaling(0.1f, 0.1f, 0.1f);
-			Translation = XMMatrixTranslation(60.0f, 20.0f, 68.0f);
+				Translation = XMMatrixTranslation(60.0f, 15.0f, 68.0f);
 				meshArray[6].meshWorld = Rotation * Scale * Translation;
 
 		}
@@ -1702,9 +1717,9 @@ void SeniorPro::UpdateScene(double time)
 		{
 			meshArray[i].meshWorld = XMMatrixIdentity();
 
-			Rotation = XMMatrixRotationY(0.0f);
-		Scale = XMMatrixScaling(0.4f, 0.4f, 0.4f);
-			Translation = XMMatrixTranslation(80.0f, 0.0f, -80.0f);
+			Rotation = XMMatrixRotationY(3.14f);
+			Scale = XMMatrixScaling(0.4f, 0.4f, 0.4f);
+			Translation = XMMatrixTranslation(20.0f, 7.5f, -3.0f);
 
 			meshArray[i].meshWorld = Rotation * Scale * Translation;
 		}
@@ -1728,8 +1743,8 @@ void SeniorPro::UpdateScene(double time)
 			if (meshArray[i].filename == L"Menu.obj"){
 				meshArray[i].meshWorld = XMMatrixIdentity();
 			Rotation = XMMatrixRotationY(0.0f);
-				Scale = XMMatrixScaling(0.1f, 0.1f, 0.1f);
-				Translation = XMMatrixTranslation(10000.0f, 30000.0f, 10000.0f);
+			Scale = XMMatrixScaling(0.1f, 0.1f, 0.1f);
+			Translation = XMMatrixTranslation(10000.0f, 30000.0f, 10000.0f);
 			meshArray[i].meshWorld = Rotation * Scale * Translation;
 		}
 			//Moon
@@ -1747,8 +1762,8 @@ void SeniorPro::UpdateScene(double time)
 			meshArray[i].meshWorld = XMMatrixIdentity();
 			Rotation = XMMatrixRotationY(0.0f);
 			Scale = XMMatrixScaling(0.1f, 0.1f, 0.1f);
-			Translation = XMMatrixTranslation(winX, 3.0f, winZ);
-			win.setLocation(Point(winX, 2.0f, winZ));
+			Translation = XMMatrixTranslation(winX, winY, winZ);
+			win.setLocation(Point(winX, winY, winZ));
 			meshArray[i].meshWorld = Rotation * Scale * Translation;
 		}
 
@@ -1757,7 +1772,7 @@ void SeniorPro::UpdateScene(double time)
 
 			Rotation = XMMatrixRotationY(3.14f);
 			Scale = XMMatrixScaling(0.25f, 0.75f, 0.25f);
-			Translation = XMMatrixTranslation(62.0f, 17.0f, 60.0f);
+			Translation = XMMatrixTranslation(62.0f, 19.0f, 60.0f);
 
 			meshArray[i].meshWorld = Rotation * Scale * Translation;
 		}

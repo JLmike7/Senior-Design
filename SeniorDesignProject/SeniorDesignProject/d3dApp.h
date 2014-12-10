@@ -63,18 +63,19 @@ protected:
 	float scaleX;
 	float scaleY;
 
-	int itemX[30];
-	int itemY[30];
-	int itemZ[30];
+	float itemX[30];
+	float itemY[30];
+	float itemZ[30];
 	float ItemRot = 0.00f;
 
-	int ammoX[30];
-	int ammoY[30];
-	int ammoZ[30];
+	float ammoX[30];
+	float ammoY[30];
+	float ammoZ[30];
 	float ammoRot = 0.00f;
 
-	int winX;
-	int winZ;
+	float winX;
+	float winY;
+	float winZ;
 	float winRot = 0.00f;
 
 	float moonHeight = 144;
@@ -135,6 +136,8 @@ protected:
 	int randAmmoZ;
 	int randWinX;
 	int randWinZ;
+	int randX2;
+	int randZ2;
 
 	//Bools
 	bool pickItem = false;

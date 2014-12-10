@@ -186,14 +186,14 @@
     <ClCompile Include="terrainclass.cpp">
       <Filter>Header Files\Terrain</Filter>
     </ClCompile>
-    <ClCompile Include="terrainshaderclass.cpp">
-      <Filter>Header Files\Terrain</Filter>
-    </ClCompile>
     <ClCompile Include="textureclass.cpp">
       <Filter>Header Files\Terrain</Filter>
     </ClCompile>
     <ClCompile Include="Terrain.cpp">
       <Filter>Source Files\Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="terrainshaderclass.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
