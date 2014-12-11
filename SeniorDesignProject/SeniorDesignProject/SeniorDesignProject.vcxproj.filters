@@ -385,7 +385,4 @@
   <ItemGroup>
     <Media Include="Music.mp3" />
   </ItemGroup>
-  <ItemGroup>
-    <Object Include="boss.obj" />
-  </ItemGroup>
 </Project>

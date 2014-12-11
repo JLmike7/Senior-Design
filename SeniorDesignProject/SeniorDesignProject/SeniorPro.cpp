@@ -2621,7 +2621,7 @@ void SeniorPro::DetectInput(double time)
 {
 
 	float timeFactor = 0.75f;	// You can speed up or slow down time by changing this
-	for (int i = 0; i < ENEMYCOUNT; i++)
+	for (int i = 0; i < ENEMYCOUNT - 1; i++)
 	{
 		enemyArray[i].UpdateMD5Model(time*timeFactor, 0, d3d11DevCon);
 	}
